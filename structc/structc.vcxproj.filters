@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="struct">
+      <UniqueIdentifier>{ca5474af-6888-49e8-b125-8d13eecf9637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{698d6ab3-4fff-4d0a-a87c-b04c3a2325fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{45401b62-d1d1-46b5-82a6-e36b137ebb51}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="strext.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="elag.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="chead.h">
+      <Filter>main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="structc.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="test\test_strext.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\strext.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
