@@ -1,0 +1,16 @@
+#include "chead.h"
+#include "dos.h"
+
+//
+// main_run - 业务运行的主体
+// 通过 ISDEBUG -> main_test
+//
+void main_run(int argc, char * argv[]) {
+#ifdef ISDEBUG
+    TEST_FUNC(main_test, argc, argv);
+#endif
+    
+    //
+    // 开始你的表演 ... 
+    //
+}
