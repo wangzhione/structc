@@ -6,21 +6,15 @@
  */
 
 //
-// 平台检测 : NOWOS == LINUS | WINDS | MACOS
-// 但是我们目前只支持, 最新的 WINDS CL 和 LINUX GCC 环境
+// 编译平台检测 : winds cl -> WCL | LGCC -> linux gcc
+// 目前我们只支持, 最新的 WINDS CL 和 LINUX GCC 环境
 //
-#define LINUS   (1)
-#define WINDS   (2)
-#define MACOS   (3)
-
-#if defined(_MSC_VER)
-#   define NOWOS   WINDS
-#elif defined(__APPLE__)
-#   define NOWOS   MACOS
-#elif defined(__GNUC__)
-#   define NOWOS   LINUS
+#if defined(__GNUC__)
+#   define LGCC (1)
+#elif defined(_MSC_VER)
+#   define WCL  (2)
 #else
-#   error ERR (￣︶￣) OS
+#   error BUILD (￣︶￣) S
 #endif
 
 //
@@ -31,20 +25,35 @@
 #   define ISDEBUG
 #endif
 
+#if defined(WCL)
+
 //
 // CPU 检测 : x64 or x86
-// ISX64() == true 表示 x64 否则 x86
+// ISX64 defined 表示 x64 否则 x86
 //
-inline _Bool ISX64() {
-    return 8 == sizeof ((void *)0);
-}
+#   if defined(_M_ARM64) || defined(_M_X64)
+#       define ISX64
+#   endif
+
+#   if defined(_M_PPC)
+#       define ISBENIAN
+#endif
+
+#endif
+
+#if defined(LGCC)
+
+#   if defined(__x86_64__)
+#       define ISX64
+#   endif
 
 // 
-// 大小端检测 : ISBIG() == true 表示大端
+// 大小端检测 : ISBENIAN defined 表示大端
 //
-inline _Bool ISBIG() {
-    union { char c[sizeof(unsigned)]; unsigned u; } e = { { 's', '?', '?', 'b' } };
-    return (char)e.u == 'b';
-}
+#   if defined(__BIG_ENDIAN__) || defined(__BIG_ENDIAN_BITFIELD)
+#       define ISBENIAN
+#   endif
+
+#endif
 
 #endif//_H_DOS

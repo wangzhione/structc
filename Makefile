@@ -14,7 +14,7 @@ TEST_DIR	?= test
 OUTS		?= ./Output
 OBJ_DIR		?= obj
 
-EXE			?= out
+EXE         ?= out
 
 #
 # DIRS		: 所有可变编译文件目录
@@ -95,7 +95,7 @@ librunc.a : $(OBJO)
 $(OUTS):
 	-mkdir -p $(OBJP)
 	-mkdir -p $@/$(TEST_DIR)
-	
+
 
 # 清除操作
 clean :
