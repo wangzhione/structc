@@ -1,4 +1,4 @@
-#include "strext.h"
+#include "estring.h"
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
@@ -54,12 +54,12 @@ str_fwrites(const char * path, const char * str) {
 }
 
 //
-// tstr_fappends - 将c串str写入到path路径的文件中末尾
+// str_fappends - 将c串str写入到path路径的文件中末尾
 // path		: 文件路径
 // str		: c的串内容
 // return	: >=0 is success, < 0 is error
 //
 int 
-tstr_fappends(const char * pat, const char * str) {
+str_fappends(const char * pat, const char * str) {
 	return 0;
 }

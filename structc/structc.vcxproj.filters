@@ -24,20 +24,14 @@
     <ClInclude Include="system\elag.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="struct\strext.h">
-      <Filter>struct</Filter>
-    </ClInclude>
     <ClInclude Include="system\dos.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="struct\estring.h">
+      <Filter>struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="struct\strext.c">
-      <Filter>struct</Filter>
-    </ClCompile>
-    <ClCompile Include="test\strext_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="main\main.c">
       <Filter>main</Filter>
     </ClCompile>
@@ -46,6 +40,12 @@
     </ClCompile>
     <ClCompile Include="main\main_test.c">
       <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\estring.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="test\estring_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
-#include "chead.h"
+#include <chead.h>
 
-void main_test(int argc, char * argv[]) {
+void main_test(void) {
     
 }

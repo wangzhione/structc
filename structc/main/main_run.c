@@ -1,5 +1,5 @@
-#include "chead.h"
-#include "dos.h"
+#include <dos.h>
+#include <chead.h>
 
 //
 // main_run - 业务运行的主体
@@ -7,7 +7,7 @@
 //
 void main_run(int argc, char * argv[]) {
 #ifdef ISDEBUG
-    TEST_FUNC(main_test, argc, argv);
+    TEST_FUNC(main_test);
 #endif
     
     //

@@ -46,11 +46,11 @@ extern char * str_freadend(const char * path);
 extern int str_fwrites(const char * path, const char * str);
 
 //
-// tstr_fappends - 将c串str写入到path路径的文件中末尾
+// str_fappends - 将c串str写入到path路径的文件中末尾
 // path		: 文件路径
 // str		: c的串内容
 // return	: >=0 is success, < 0 is error
 //
-extern int tstr_fappends(const char * pat, const char * str);
+extern int str_fappends(const char * pat, const char * str);
 
 #endif//_H_STREXT
