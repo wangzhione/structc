@@ -27,7 +27,7 @@
     <ClInclude Include="system\dos.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="struct\estring.h">
+    <ClInclude Include="struct\strext.h">
       <Filter>struct</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +41,10 @@
     <ClCompile Include="main\main_test.c">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="struct\estring.c">
+    <ClCompile Include="struct\strext.c">
       <Filter>struct</Filter>
     </ClCompile>
-    <ClCompile Include="test\estring_test.c">
+    <ClCompile Include="test\strext_test.c">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

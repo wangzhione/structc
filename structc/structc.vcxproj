@@ -71,7 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
-    <ClInclude Include="struct\estring.h" />
+    <ClInclude Include="struct\strext.h" />
     <ClInclude Include="system\dos.h" />
     <ClInclude Include="system\elag.h" />
   </ItemGroup>
@@ -79,8 +79,8 @@
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_run.c" />
     <ClCompile Include="main\main_test.c" />
-    <ClCompile Include="struct\estring.c" />
-    <ClCompile Include="test\estring_test.c" />
+    <ClCompile Include="struct\strext.c" />
+    <ClCompile Include="test\strext_test.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

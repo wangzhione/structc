@@ -1,5 +1,5 @@
 #include <chead.h>
-#include <estring.h>
+#include <strext.h>
 
 /*
  单元功能测试要求 : 
@@ -15,7 +15,7 @@
 //
 // estring_test - 测试 estring_test.h 中接口设计
 //
-void estring_test(void) {
+void strext_test(void) {
     unsigned hash = str_hash(STR(__func__)); 
     printf("%s -> %u\n", STR(__func__), hash);
 }
