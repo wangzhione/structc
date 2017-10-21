@@ -37,11 +37,13 @@ TESTE	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).$(EXE))
 # 全局编译的设置
 #
 CC		= gcc
-LIB 	= -lpthread -lm
 CFLAGS 	= -g -O2 -Wall -Wno-unused-result -std=gnu11
 
+LIB 	= -lpthread -lm -ljemalloc
+DEFE	= -DJEMALLOC_NO_DEMANGLE
+
 RHAD	= $(CC) $(CFLAGS) $(IINC)
-RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB)
+RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB) $(DEFE)
 RUNO	= $(RHAD) -c -o $(OBJP)$@ $<
 RUN		= $(RHAD) -o $(OUTS)/$@ $(RTAL)
 

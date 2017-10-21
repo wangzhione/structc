@@ -16,9 +16,18 @@
 
 ## 1. winds 部署
 
-    a). 使用 Best New CL
-    b). 只保留 X64 DEBUG 环境
+    a). 使用 Best New CL | 只保留 x64 Debug and Release 环境
         项目右击 -> [属性] -> [配置管理器] -> 移除所有其它环境
+
+    b). 添加包含库
+        项目右击 -> [属性] -> [VC++ 目录] -> [库目录]
+
+
+        项目右击 -> [属性] -> [链接器] -> [输入]
+
+        jemalloc-vc141-Release-static.lib
+
+        
     c). 添加包含目录
         项目右击 -> [属性] -> [VC++ 目录] -> [包含目录]
 
@@ -26,19 +35,32 @@
         $(ProjectDir)system     -- 操作系统一些通用操作
         $(ProjectDir)base       -- 基于上面的基础核心模块
 
-    d). 设置编译额外选项
-        项目右击 -> [属性] -> [C/C++] -> [高级] -> [编译为] -> [编译为C代码/TC]
-        项目右击 -> [属性] -> [C/C++] -> [代码生成] -> [运行库] -> [多线程/MT]
-        项目右击 -> [属性] -> [链接器] -> [系统] -> [子系统] -> [控制台]
-
-    e). 添加预编译处理器
+    d). 添加预编译处理器
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
 
         _DEBUG
+        JEMALLOC_EXPORT=
+        JEMALLOC_STATIC
         WIN32_LEAN_AND_MEAN
         _CRT_SECURE_NO_WARNINGS
         _CRT_NONSTDC_NO_DEPRECATE
         _WINSOCK_DEPRECATED_NO_WARNINGS
+
+        [Release]
+        - _DEBUG
+
+    e). 设置编译额外选项
+        项目右击 -> [属性] -> [C/C++] -> [常规] -> [调试信息格式] -> [程序数据库 (/Zi)]
+        项目右击 -> [属性] -> [C/C++] -> [高级] -> [编译为] -> [编译为C代码/TC]
+        项目右击 -> [属性] -> [C/C++] -> [代码生成] -> [运行库] -> [多线程/MT]
+        项目右击 -> [属性] -> [链接器] -> [常规] -> [启用增量链接] -> [否 (/INCREMENTAL:NO)]
+        项目右击 -> [属性] -> [链接器] -> [系统] -> [子系统] -> [控制台]
+        项目右击 -> [属性] -> [链接器] -> [命令行] -> /LTCG 
+
+        [Release]
+        - [控制台]
+        | [否 (/INCREMENTAL:NO)]
+        | [程序数据库 (/Zi)]
 
     f). 单元测试规则
 
@@ -56,3 +78,33 @@
         项目右击 -> [属性] -> [生成事件] -> [后期生成事件] -> [命令行]
 
 ### 2. linux 部署
+
+    不妨采用Best New Ubuntu x64 GCC 环境搭建
+
+    a) 依赖安装
+
+```Bash
+# 开发环境安装
+sudo apt-get install gcc gdb autogen autoconf
+
+# jemalloc 安装
+cd
+wget https://github.com/jemalloc/jemalloc/releases/download/5.0.1/jemalloc-5.0.1.tar.bz2
+tar -jxvf jemalloc-5.0.1.tar.bz2
+cd jemalloc-5.0.1
+
+./autogen.sh
+make -j2
+sudo make install
+
+rm -rf jemalloc-5.0.1
+
+```
+
+    b) 编译设置
+
+       -lm 
+       -ljemalloc 
+       -lpthread
+
+       -DJEMALLOC_NO_DEMANGLE

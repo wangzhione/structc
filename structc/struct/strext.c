@@ -1,4 +1,4 @@
-#include "estring.h"
+#include <strext.h>
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
