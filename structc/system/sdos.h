@@ -1,5 +1,5 @@
-#ifndef _H_DOS
-#define _H_DOS
+#ifndef _H_SDOS
+#define _H_SDOS
 
 /*
     平台相关提供的简单检测宏 
@@ -15,14 +15,6 @@
 #   define WCL  (2)
 #else
 #   error BUILD (￣︶￣) S
-#endif
-
-//
-// 测试环境检测 : DEBUG or RELEASE
-// ISDEBUG EXISTS 表示是测试环境, 否则是 RELEASE 发布环境
-//
-#if defined(_DEBUG) || defined(DEBUG)
-#   define ISDEBUG
 #endif
 
 #if defined(WCL)
@@ -56,4 +48,4 @@
 
 #endif
 
-#endif//_H_DOS
+#endif//_H_SDOS

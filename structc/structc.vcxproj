@@ -79,7 +79,7 @@
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
     <ClInclude Include="struct\strext.h" />
-    <ClInclude Include="system\dos.h" />
+    <ClInclude Include="system\sdos.h" />
     <ClInclude Include="system\elag.h" />
     <ClInclude Include="system\jemalloc\jemalloc.h" />
     <ClInclude Include="system\stdext.h" />

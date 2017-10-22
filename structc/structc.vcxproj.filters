@@ -27,9 +27,6 @@
     <ClInclude Include="system\elag.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="system\dos.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="struct\strext.h">
       <Filter>struct</Filter>
     </ClInclude>
@@ -40,6 +37,9 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="system\stdext.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\sdos.h">
       <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>

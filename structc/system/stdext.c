@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <jemalloc/jemalloc.h>
 
+//
+// 编译导入
+// gcc -I./structc/system 编译链接不了 -ljemalloc
+//
 #define _NO_STDEXT_
-#include <stdext.h>
+#include "stdext.h"
 
 //
 // free_ext - free 包装函数

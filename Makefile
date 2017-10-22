@@ -31,49 +31,38 @@ OBJO	=	$(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
 OBJP	=	$(OUTS)/$(OBJ_DIR)/
 
 TESTC	=	$(wildcard $(ROOT)/$(TEST_DIR)/*.c)
-TESTE	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).$(EXE))
+TESTO	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 
 #
 # 全局编译的设置
 #
 CC		= gcc
 CFLAGS 	= -g -O2 -Wall -Wno-unused-result -std=gnu11
+LIB 	= -lpthread -lm
 
-LIB 	= -lpthread -lm -ljemalloc
-DEFE	= -DJEMALLOC_NO_DEMANGLE
+# 
+# make "DPRE=-D_DEBUG"
+# 开启 DEBUG 编译
+#
+DPRE	= 
 
 RHAD	= $(CC) $(CFLAGS) $(IINC)
-RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB) $(DEFE)
-RUNO	= $(RHAD) -c -o $(OBJP)$@ $<
+RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB)
+RUNO	= $(RHAD) -c -o $(OBJP)$@ $< $(DPRE)
 RUN		= $(RHAD) -o $(OUTS)/$@ $(RTAL)
-
-# 单元测试使用, 生成指定主函数的运行程序, 替换回main操作
-RUNT	= $(RHAD) -o $(OUTS)/$(TEST_DIR)/$@ $(RTAL)
-COPT	= objcopy --redefine-sym $(basename $@)=main $(OBJP)$(basename $@).o
 
 #
 # 具体的产品生产								
 #
 .PHONY : all clean
 
-all : main.$(EXE) $(TESTE)
+all : main.$(EXE)
 
 #
 # 主运行程序main
 #
 main.$(EXE) : main.o main_run.o main_test.o librunc.a
 	$(RUN)
-
-#
-# -> 单元测试程序生成
-#
-define CALL_TEST
-$(1) : $$(notdir $$(basename $(1))).o librunc.a | $$(OUTS)
-	$$(COPT)
-	$$(RUNT)
-endef
-
-$(foreach v, $(TESTE), $(eval $(call CALL_TEST, $(v))))
 
 #
 # 循环产生 -> 所有 - 链接文件 *.o
@@ -86,9 +75,10 @@ endef
 $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 
 #
-# 生成 libsimplec.a 静态库, 方便处理所有问题
+# 生成 librunc.a 静态库, 方便处理所有问题
 #
-librunc.a : $(OBJO)
+librunc.a : $(OBJO) $(TESTO)
+	$(CC) $(CFLAGS) -c -o $(OBJP)stdext.o $(ROOT)/$(SYSTEM_DIR)/stdext.c -DJEMALLOC_NO_DEMANGLE $(DPRE)
 	ar cr $(OBJP)$@ $(foreach v, $^, $(OBJP)$(v))
 
 #
@@ -96,7 +86,6 @@ librunc.a : $(OBJO)
 #
 $(OUTS):
 	-mkdir -p $(OBJP)
-	-mkdir -p $@/$(TEST_DIR)
 
 
 # 清除操作
