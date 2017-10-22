@@ -97,6 +97,7 @@ cd jemalloc-5.0.1
 make -j2
 sudo make install
 
+sudo ldconfig
 rm -rf jemalloc-5.0.1
 
 ```
@@ -104,7 +105,12 @@ rm -rf jemalloc-5.0.1
     b) 编译设置
 
        -lm 
-       -ljemalloc 
        -lpthread
 
-       -DJEMALLOC_NO_DEMANGLE
+    c) 踩坑
+        
+        gcc -I 会诱发 stdext.o 没有嵌入 jemalloc 相关代码, 使用下面方式
+
+```bash
+gcc -g -O2 -Wall -Wno-unused-result -std=gnu11 -c -o ./Output/obj/stdext.o ./structc/system/stdext.c -DJEMALLOC_NO_DEMANGLE
+```
