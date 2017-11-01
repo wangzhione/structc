@@ -62,7 +62,7 @@ inline void *
 realloc_ext(void * ptr, size_t size) {
     void * nptr = je_realloc(ptr, size);
     if (NULL == nptr) {
-        je_free(ptr);   // 可有客户, 内存模块已经是未定义行为的边缘了
+        je_free(ptr);   // 可有可无, 内存模块已经是未定义行为的边缘了
         _ext(ptr, size);   
     }
     return ptr;

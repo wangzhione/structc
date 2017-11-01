@@ -1,4 +1,6 @@
 #include <strext.h>
+#include <stdlib.h>
+#include <assert.h>
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
@@ -7,8 +9,13 @@
 //
 unsigned 
 str_hash(const char * str) {
-
-	return 0u;
+	register unsigned h = 0u;
+	if (str) {
+		register unsigned c;
+		while ((c = *str++))
+			h = h * 131u + c;
+	}
+	return h;
 }
 
 //
@@ -19,7 +26,18 @@ str_hash(const char * str) {
 //
 int 
 str_icmp(const char * ls, const char * rs) {
-	return 0;
+	int l, r;
+	if (!ls || !rs) 
+		return (int)(ls - rs);
+	
+	do {
+		if ((l = *ls++) >= 'A' && l < 'B')
+			l += 'a' - 'A';
+		if ((r = *rs++) >= 'A' && r < 'B')
+			r += 'a' - 'A';
+	} while (l == r && l);
+	
+	return l - r;
 }
 
 //
@@ -29,6 +47,12 @@ str_icmp(const char * ls, const char * rs) {
 //
 char * 
 str_dup(const char * str) {
+	if (str) {
+		size_t len = strlen(str) + 1;
+		char * ssr = malloc(len * sizeof(char));
+		assert(ssr != NULL);
+		return memcpy(ssr, str, len);
+	}
 	return NULL;
 }
 
@@ -39,6 +63,7 @@ str_dup(const char * str) {
 //
 char * 
 str_freadend(const char * path) {
+
 	return NULL;
 }
 
