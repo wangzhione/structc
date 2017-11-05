@@ -17,9 +17,9 @@
 // ...      : 可变参数, 保留
 //
 #define EXTERN_RUN(ftest, ...)  \
-do {							\
-    extern void ftest();		\
-    ftest (__VA_ARGS__);		\
+do {                            \
+    extern void ftest();        \
+    ftest (__VA_ARGS__);        \
 } while(0)
 
 //

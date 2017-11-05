@@ -25,16 +25,16 @@ str_hash(const char * str) {
 //
 int 
 str_icmp(const char * ls, const char * rs) {
-	int l, r;
-	if (!ls || !rs) 
-		return (int)(ls - rs);
+    int l, r;
+    if (!ls || !rs) 
+        return (int)(ls - rs);
 	
-	do {
-		if ((l = *ls++) >= 'A' && l < 'B')
-			l += 'a' - 'A';
-		if ((r = *rs++) >= 'A' && r < 'B')
-			r += 'a' - 'A';
-	} while (l == r && l);
+    do {
+	    if ((l = *ls++) >= 'A' && l < 'B')
+            l += 'a' - 'A';
+        if ((r = *rs++) >= 'A' && r < 'B')
+            r += 'a' - 'A';
+    } while (l == r && l);
 	
 	return l - r;
 }
