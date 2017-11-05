@@ -24,9 +24,6 @@
     <ClInclude Include="base\chead.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="system\elag.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="struct\strext.h">
       <Filter>struct</Filter>
     </ClInclude>
@@ -40,6 +37,9 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="system\sdos.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\assext.h">
       <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>

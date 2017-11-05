@@ -18,4 +18,8 @@
 void strext_test(void) {
     unsigned hash = str_hash(STR(__func__)); 
     printf("%s -> %u\n", STR(__func__), hash);
+
+	// Êä³öÊı¾İ²âÊÔ
+	char * txt = str_freadend("README.md");
+	puts(txt);
 }

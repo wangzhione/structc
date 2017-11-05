@@ -1,6 +1,5 @@
 #include <strext.h>
-#include <stdlib.h>
-#include <assert.h>
+#include <assext.h>
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
@@ -63,8 +62,54 @@ str_dup(const char * str) {
 //
 char * 
 str_freadend(const char * path) {
+	int err;
+	size_t rn, cap, len;
+	char * str, buf[BUFSIZ];
+	FILE * txt = fopen(path, "rb");
+	if (NULL == txt) {
+		RETURN(NULL, "fopen rb path error = %s.", path);
+	}
 
-	return NULL;
+	// 分配内存
+	len = 0;
+	str = malloc(cap = BUFSIZ);
+
+	// 读取文件内容
+	do {
+		rn = fread(buf, sizeof(char), BUFSIZ, txt);
+		if ((err = ferror(txt))) {
+			free(str);
+			fclose(txt);
+			RETURN(NULL, "fread err path = %d, %s.", err, path);
+		}
+		// 开始添加构建数据
+		if (len + rn >= cap)
+			str = realloc(str, cap <<= 1);
+		memcpy(str + len, buf, rn);
+		len += rn;
+	} while (rn == BUFSIZ);
+
+	// 设置结尾, 并返回结果
+	str[len] = '\0';
+	return realloc(str, len + 1);
+}
+
+// _str_fwrite - 按照约定输出数据到文件中
+static int _str_fwrite(const char * path, const char * str, const char * mode) {
+	int len;
+	FILE * txt;
+	if (!path || !*path || !str || !mode) {
+		RETURN(EParam, "check !path || !*path || !str || !mode");
+	}
+
+	// 打开文件, 写入消息, 关闭文件
+	if ((txt = fopen(path, mode)) == NULL) {
+		RETURN(EFd, "fopen error path = %s, mode = %s.", path, mode);
+	}
+	len = fputs(str, txt);
+	fclose(txt);
+	// 输出文件长度
+	return len;
 }
 
 //
@@ -73,9 +118,9 @@ str_freadend(const char * path) {
 // str		: c的串内容
 // return	: >=0 is success, < 0 is error
 //
-int 
+inline int 
 str_fwrites(const char * path, const char * str) {
-	return 0;
+	return _str_fwrite(path, str, "wb");
 }
 
 //
@@ -84,7 +129,7 @@ str_fwrites(const char * path, const char * str) {
 // str		: c的串内容
 // return	: >=0 is success, < 0 is error
 //
-int 
-str_fappends(const char * pat, const char * str) {
-	return 0;
+inline int 
+str_fappends(const char * path, const char * str) {
+	return _str_fwrite(path, str, "ab");
 }
