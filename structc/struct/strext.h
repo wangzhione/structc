@@ -44,7 +44,7 @@ extern char * str_freadend(const char * path);
 // str		: c的串内容
 // return	: >=0 is success, < 0 is error
 //
-extern inline int str_fwrites(const char * path, const char * str);
+extern int str_fwrites(const char * path, const char * str);
 
 //
 // str_fappends - 将c串str写入到path路径的文件中末尾
@@ -52,6 +52,6 @@ extern inline int str_fwrites(const char * path, const char * str);
 // str		: c的串内容
 // return	: >=0 is success, < 0 is error
 //
-extern inline int str_fappends(const char * path, const char * str);
+extern int str_fappends(const char * path, const char * str);
 
 #endif//_H_STREXT

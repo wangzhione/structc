@@ -98,7 +98,8 @@ make -j2
 sudo make install
 
 sudo ldconfig
-rm -rf jemalloc-5.0.1
+cd ../
+rm -rf jemalloc-5.0.1 jemalloc-5.0.1.tar.bz2
 
 ```
 
