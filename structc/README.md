@@ -79,7 +79,7 @@
 
 ### 2. linux 部署
 
-    不妨采用Best New Ubuntu x64 GCC 环境搭建
+    不妨采用Best New Ubuntu x64 GCC环境搭建
 
     a) 依赖安装
 
@@ -100,7 +100,6 @@ sudo make install
 sudo ldconfig
 cd ../
 rm -rf jemalloc-5.0.1 jemalloc-5.0.1.tar.bz2
-
 ```
 
     b) 编译设置

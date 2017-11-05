@@ -41,8 +41,8 @@ do {                                                                    \
 //
 #define TEST_FUNC(ftest, ...)                                           \
 do {                                                                    \
-    clock_t $s = clock();                                               \
     extern void ftest();                                                \
+    clock_t $s = clock();                                               \
     ftest (##__VA_ARGS__);                                              \
     double $e = (double)clock();                                        \
     printf(STR(ftest) " run time:%lfs.\n", ($e - $s) / CLOCKS_PER_SEC); \

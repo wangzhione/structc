@@ -18,18 +18,18 @@
 //
 #define CERR(fmt, ...)                                                  \
 fprintf(stderr, "[%s:%s:%d][%d:%s]" fmt "\r\n",                         \
-	__FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
+    __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
 
 #define CERR_EXIT(fmt, ...)     \
 do {                            \
-	CERR(fmt, ##__VA_ARGS__);   \
-	exit(EXIT_FAILURE);         \
+    CERR(fmt, ##__VA_ARGS__);   \
+    exit(EXIT_FAILURE);         \
 } while(0)
 
 
 #define CERR_IF(cond)   \
 if ((cond))             \
-	CERR_EXIT(#cond)
+    CERR_EXIT(#cond)
 
 //
 // RETURN - 打印错误信息, 并return返回指定结果
@@ -56,7 +56,7 @@ do {                            \
 #ifndef DEBUG_CODE
 # ifdef _DEBUG
 #	define DEBUG_CODE(code) \
-		do code while(0)
+        do code while(0)
 # else
 #	define DEBUG_CODE(code) 
 # endif	//	! _DEBUG

@@ -19,6 +19,12 @@
     <Filter Include="system\jemalloc">
       <UniqueIdentifier>{e2b35c38-8fb0-4365-a5a3-537d8199b169}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\src">
+      <UniqueIdentifier>{bc89aff9-5ee7-48db-bdc6-6e90610f7f31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="struct\src">
+      <UniqueIdentifier>{2dab8c92-2f8f-4dd0-a1cd-8c50f801d670}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h">
@@ -53,17 +59,17 @@
     <ClCompile Include="main\main_test.c">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="struct\strext.c">
-      <Filter>struct</Filter>
-    </ClCompile>
     <ClCompile Include="test\strext_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="system\stdext.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="test\stdext_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\stdext.c">
+      <Filter>system\src</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\strext.c">
+      <Filter>struct\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
