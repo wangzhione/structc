@@ -64,12 +64,18 @@ tstr_dupstr(tstr_t tstr) {
 //
 tstr_t 
 tstr_create(const char * str, size_t len) {
-    return NULL;
+    tstr_t tstr = calloc(1, sizeof(struct tstr));
+    if (str && len > 0)
+        tstr_appendn(tstr, str, len);
+    return tstr;
 }
 
 tstr_t 
 tstr_creates(const char * str) {
-    return NULL;
+    tstr_t tstr = calloc(1, sizeof(struct tstr));
+    if (str)
+        tstr_appends(tstr, str);
+    return tstr;
 }
 
 //
