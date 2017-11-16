@@ -28,7 +28,7 @@ tstr_expand(tstr_t tstr, size_t len) {
 // len		: 弹出的长度
 // return	: void
 //
-inline void 
+void 
 tstr_popup(tstr_t tstr, size_t len) {
     if (len > tstr->len)
         tstr->len = 0;
@@ -83,9 +83,10 @@ tstr_creates(const char * str) {
 // tstr		: 待释放的串结构
 // return   : void
 //
-void 
+inline void 
 tstr_delete(tstr_t tstr) {
-
+    free(tstr->str);
+    free(tstr);
 }
 
 //
@@ -94,17 +95,28 @@ tstr_delete(tstr_t tstr) {
 // str		: 添加的c串
 // sz		: 添加串的长度
 //
-void 
+inline void 
 tstr_appendc(tstr_t tstr, int c) {
-
+    // 这类函数不做安全检查, 为了性能
+    tstr_expand(tstr, 1);
+    tstr->str[tstr->len++] = c;
 }
+
 void 
 tstr_appends(tstr_t tstr, const char * str) {
-
+    if (tstr && str) {
+        size_t sz = strlen(str);
+        if (sz > 0)
+            tstr_appendn(tstr, str, sz);
+        tstr_cstr(tstr);
+    }
 }
-void 
-tstr_appendn(tstr_t tstr, const char * str, size_t sz) {
 
+inline void 
+tstr_appendn(tstr_t tstr, const char * str, size_t sz) {
+    tstr_expand(tstr, sz);
+    memcpy(tstr->str + tstr->len, str, sz);
+    tstr->len += sz;
 }
 
 //
