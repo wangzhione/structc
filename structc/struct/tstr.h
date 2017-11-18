@@ -82,4 +82,13 @@ extern void tstr_popup(tstr_t tstr, size_t len);
 //
 extern char * tstr_dupstr(tstr_t tstr);
 
+//
+// tstr_printf - 参照 sprintf 填充方式写入内容
+// tstr     : tstr_t 串
+// format   : 待格式化的串
+// ...      : 等待进入的变量
+// return   : 返回创建好的C字符串内容
+//
+extern char * tstr_printf(tstr_t tstr, const char * format, ...);
+
 #endif//_H_TSTR

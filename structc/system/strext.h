@@ -32,6 +32,14 @@ extern int str_icmp(const char * ls, const char * rs);
 extern char * str_dup(const char * str);
 
 //
+// str_printf - 字符串构建函数
+// format   : 构建格式参照pritnf
+// ...      : 参数集
+// return   : char * 堆上内存
+//
+extern char * str_printf(const char * format, ...);
+
+//
 // str_freadend - 简单的文件读取类,会读取完毕这个文件内容返回, 需要自己free
 // path		: 文件路径
 // return	: 创建好的字符串内容, 返回NULL表示读取失败

@@ -22,4 +22,9 @@ void strext_test(void) {
 	// 输出数据测试
 	char * txt = str_freadend("README.md");
 	puts(txt);
+
+    // 开始字符串构建
+    char * str = str_printf("你好吗 ? double = %0.4f\n", 1.2340);
+    puts(str);
+    free(str);
 }

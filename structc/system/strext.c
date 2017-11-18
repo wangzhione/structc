@@ -55,6 +55,60 @@ str_dup(const char * str) {
 	return NULL;
 }
 
+// _str_printf : 成功直接返回
+static char * _str_printf(const char * format, va_list arg) {
+    char buf[BUFSIZ];
+    int len = vsnprintf(buf, sizeof buf, format, arg);
+    assert(len >= 0);
+    if (len < sizeof buf) {
+        char * ret = malloc(len + 1);
+        assert(ret != NULL);
+        return memcpy(ret, buf, len + 1);
+    }
+    return NULL;
+}
+
+//
+// str_printf - 字符串构建函数
+// format   : 构建格式参照pritnf
+// ...      : 参数集
+// return   : char * 堆上内存
+//
+char * 
+str_printf(const char * format, ...) {
+    char * ret;
+    int len, cap;
+    va_list arg;
+    va_start(arg, format);
+
+    // BUFSIZ 以下内存直接分配
+    ret = _str_printf(format, arg);
+    if (ret != NULL)
+        return ret;
+
+    cap = BUFSIZ << 1;
+    for (;;) {
+        ret = malloc(cap);
+        assert(ret != NULL);
+        len = vsnprintf(ret, cap, format, arg);
+        // 失败的情况
+        if (len < 0) {
+            free(ret);
+            RETURN(NULL, "vsnprintf error format is = %s.", format);
+        }
+
+        // 成功情况
+        if (len < cap)
+            break;
+
+        // 内存不足的情况
+        free(ret);
+        cap <<= 1;
+    }
+
+    return realloc(ret, len + 1);
+}
+
 //
 // str_freadend - 简单的文件读取类,会读取完毕这个文件内容返回, 需要自己free
 // path		: 文件路径
