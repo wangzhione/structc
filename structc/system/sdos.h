@@ -29,7 +29,7 @@
 
 #   if defined(_M_PPC)
 #       define ISBENIAN
-#endif
+#   endif
 
 #endif
 

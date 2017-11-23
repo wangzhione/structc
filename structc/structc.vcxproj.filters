@@ -51,6 +51,12 @@
     <ClInclude Include="system\strext.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="struct\list.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\struct.h">
+      <Filter>struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -75,6 +81,9 @@
       <Filter>system\src</Filter>
     </ClCompile>
     <ClCompile Include="struct\tstr.c">
+      <Filter>struct\src</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\list.c">
       <Filter>struct\src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,9 +3,7 @@
 
 /*
  stdxxx.h 扩展库
-
- 主要功能 : 扩展内存分配
-calloc_
+ 主要功能 : 扩展当前的内存分配行为
  */
 
 #include <stdio.h>

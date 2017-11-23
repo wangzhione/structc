@@ -78,6 +78,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
+    <ClInclude Include="struct\list.h" />
+    <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\tstr.h" />
     <ClInclude Include="system\assext.h" />
     <ClInclude Include="system\sdos.h" />
@@ -90,6 +92,7 @@
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_run.c" />
     <ClCompile Include="main\main_test.c" />
+    <ClCompile Include="struct\list.c" />
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
