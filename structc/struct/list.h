@@ -16,9 +16,9 @@ struct $list {
 struct list { 
     struct $list * root;    // 存储链表的头节点
 
-    cmp_f fadd;     // 链表中插入数据执行的方法
-    cmp_f fget;     // 链表中查找数据执行的方法
-    die_f fdie;     // 链表中删除数据执行的方法
+    icmp_f fadd;     // 链表中插入数据执行的方法
+    icmp_f fget;     // 链表中查找数据执行的方法
+    node_f fdie;     // 链表中删除数据执行的方法
 };
 
 typedef struct list * list_t;
@@ -30,7 +30,7 @@ typedef struct list * list_t;
 // fdie     : 销毁数据方法
 // return   : 创建好的链表对象
 //
-inline list_t list_create_(cmp_f fadd, cmp_f fget, die_f fdie) {
+inline list_t list_create_(icmp_f fadd, icmp_f fget, node_f fdie) {
     list_t list = malloc(sizeof(struct list));
     list->root = NULL;
     list->fadd = fadd;
@@ -40,7 +40,7 @@ inline list_t list_create_(cmp_f fadd, cmp_f fget, die_f fdie) {
 }
 
 #define list_create(fadd, fget, fdie) \
-list_create_((cmp_f)fadd, (cmp_f)fget, (die_f)fdie)
+list_create_((icmp_f)fadd, (icmp_f)fget, (node_f)fdie)
 
 //
 // list_delete - 链表数据销毁操作
