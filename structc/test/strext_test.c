@@ -27,4 +27,12 @@ void strext_test(void) {
     char * str = str_printf("你好吗 ? double = %0.4f\n", 1.2340);
     puts(str);
     free(str);
+
+    // 开始判断空格
+    char nsr[] = " 123   ";
+    puts(nsr);
+
+    // printf 从左向右执行
+    char * nstr = str_trim(nsr);
+    printf("nsr = %s, len = %zu\n", nstr, strlen(nstr));
 }

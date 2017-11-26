@@ -32,6 +32,13 @@ extern int str_icmp(const char * ls, const char * rs);
 extern char * str_dup(const char * str);
 
 //
+// str_trim - 去除字符数组前后控制字符
+// str      : 待操作的字符数组 \0 结尾
+// return   : 返回构建好字符数组首地址
+//
+extern char * str_trim(char str[]);
+
+//
 // str_printf - 字符串构建函数
 // format   : 构建格式参照pritnf
 // ...      : 参数集

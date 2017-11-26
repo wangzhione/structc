@@ -1,5 +1,6 @@
 #include <strext.h>
 #include <assext.h>
+#include <ctype.h>
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
@@ -54,6 +55,33 @@ str_dup(const char * str) {
 	}
 	return NULL;
 }
+
+//
+// str_trim - 去除字符数组前后控制字符
+// str      : 待操作的字符数组 \0 结尾
+// return   : 返回构建好字符数组首地址
+//
+char * 
+str_trim(char str[]) {
+    char * s, * e;
+    if (!str || !*str)
+        return str;
+
+    // 找到第一个不是空格字符的地址
+    for (s = str; isspace(*s); ++s)
+        ;
+
+    // 找到最后一个不是空格字符的地址
+    e = s + strlen(s) - 1;
+    if (isspace(*e)) {
+        do --e; while (isspace(*e));
+        e[1] = '\0';
+    }
+
+    // 开始返回移动后的首地址
+    return s == str ? str : memmove(str, s, e - s + 2);
+}
+
 
 // _str_printf : 成功直接返回
 static char * _str_printf(const char * format, va_list arg) {

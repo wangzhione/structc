@@ -10,8 +10,8 @@
 // return	: tstr->str + tstr->len 位置的串
 //
 char * 
-tstr_expand(tstr_t tstr, size_t len) {
-    size_t cap = tstr->cap;
+tstr_expand(tstr_t tstr, unsigned len) {
+    unsigned cap = tstr->cap;
     if ((len += tstr->len) > cap) {
         for (cap = cap < _UINT_TSTR ? _UINT_TSTR : cap; cap < len; cap <<= 1)
             ;
@@ -29,7 +29,7 @@ tstr_expand(tstr_t tstr, size_t len) {
 // return	: void
 //
 void 
-tstr_popup(tstr_t tstr, size_t len) {
+tstr_popup(tstr_t tstr, unsigned len) {
     if (len > tstr->len)
         tstr->len = 0;
     else {
@@ -63,7 +63,7 @@ tstr_dupstr(tstr_t tstr) {
 // return	: 返回创建好的字符串,内存不足会打印日志退出程序
 //
 tstr_t 
-tstr_create(const char * str, size_t len) {
+tstr_create(const char * str, unsigned len) {
     tstr_t tstr = calloc(1, sizeof(struct tstr));
     if (str && len > 0)
         tstr_appendn(tstr, str, len);
@@ -105,7 +105,7 @@ tstr_appendc(tstr_t tstr, int c) {
 void 
 tstr_appends(tstr_t tstr, const char * str) {
     if (tstr && str) {
-        size_t sz = strlen(str);
+        unsigned sz = (unsigned)strlen(str);
         if (sz > 0)
             tstr_appendn(tstr, str, sz);
         tstr_cstr(tstr);
@@ -113,7 +113,7 @@ tstr_appends(tstr_t tstr, const char * str) {
 }
 
 inline void 
-tstr_appendn(tstr_t tstr, const char * str, size_t sz) {
+tstr_appendn(tstr_t tstr, const char * str, unsigned sz) {
     tstr_expand(tstr, sz);
     memcpy(tstr->str + tstr->len, str, sz);
     tstr->len += sz;

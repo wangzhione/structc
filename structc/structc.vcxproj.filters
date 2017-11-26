@@ -33,9 +33,6 @@
     <ClInclude Include="system\jemalloc\jemalloc.h">
       <Filter>system\jemalloc</Filter>
     </ClInclude>
-    <ClInclude Include="system\strings.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="system\stdext.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -56,6 +53,9 @@
     </ClInclude>
     <ClInclude Include="struct\struct.h">
       <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="system\strings.h">
+      <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
