@@ -1,6 +1,5 @@
-#include <stdlib.h>
-
 #include <chead.h>
+#include <stdext.h>
 
 //
 // main - 程序的总入口, 从扯开始

@@ -19,11 +19,11 @@
     <Filter Include="system\jemalloc">
       <UniqueIdentifier>{e2b35c38-8fb0-4365-a5a3-537d8199b169}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\src">
-      <UniqueIdentifier>{bc89aff9-5ee7-48db-bdc6-6e90610f7f31}</UniqueIdentifier>
+    <Filter Include="struct\inc">
+      <UniqueIdentifier>{7cbc6383-ad28-4243-986b-c8a3a1999628}</UniqueIdentifier>
     </Filter>
-    <Filter Include="struct\src">
-      <UniqueIdentifier>{2dab8c92-2f8f-4dd0-a1cd-8c50f801d670}</UniqueIdentifier>
+    <Filter Include="system\inc">
+      <UniqueIdentifier>{bb07773a-ee1a-4ff0-a766-5a101f818e44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,29 +33,29 @@
     <ClInclude Include="system\jemalloc\jemalloc.h">
       <Filter>system\jemalloc</Filter>
     </ClInclude>
-    <ClInclude Include="system\stdext.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="system\sdos.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="system\assext.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="struct\tstr.h">
-      <Filter>struct</Filter>
-    </ClInclude>
-    <ClInclude Include="system\strext.h">
-      <Filter>system</Filter>
+      <Filter>struct\inc</Filter>
     </ClInclude>
     <ClInclude Include="struct\list.h">
-      <Filter>struct</Filter>
+      <Filter>struct\inc</Filter>
     </ClInclude>
     <ClInclude Include="struct\struct.h">
-      <Filter>struct</Filter>
+      <Filter>struct\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="system\assext.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="system\sdos.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="system\stdext.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="system\strext.h">
+      <Filter>system\inc</Filter>
     </ClInclude>
     <ClInclude Include="system\strings.h">
-      <Filter>system</Filter>
+      <Filter>system\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -74,17 +74,17 @@
     <ClCompile Include="test\stdext_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="system\stdext.c">
-      <Filter>system\src</Filter>
-    </ClCompile>
-    <ClCompile Include="system\strext.c">
-      <Filter>system\src</Filter>
+    <ClCompile Include="struct\list.c">
+      <Filter>struct</Filter>
     </ClCompile>
     <ClCompile Include="struct\tstr.c">
-      <Filter>struct\src</Filter>
+      <Filter>struct</Filter>
     </ClCompile>
-    <ClCompile Include="struct\list.c">
-      <Filter>struct\src</Filter>
+    <ClCompile Include="system\stdext.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\strext.c">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
