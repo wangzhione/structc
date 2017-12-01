@@ -7,7 +7,7 @@
 //
 void main_run(int argc, char * argv[]) {
 #ifdef _DEBUG
-    TEST_FUNC(main_test);
+    EXTERN_RUN(main_test);
 #endif
     
     //

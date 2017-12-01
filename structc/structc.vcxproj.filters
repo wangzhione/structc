@@ -25,6 +25,9 @@
     <Filter Include="system\inc">
       <UniqueIdentifier>{bb07773a-ee1a-4ff0-a766-5a101f818e44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\uv">
+      <UniqueIdentifier>{bb1acb3a-45f0-400a-a376-36c43777209f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h">
@@ -57,6 +60,24 @@
     <ClInclude Include="system\strings.h">
       <Filter>system\inc</Filter>
     </ClInclude>
+    <ClInclude Include="system\uv\tree.h">
+      <Filter>system\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv.h">
+      <Filter>system\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv-errno.h">
+      <Filter>system\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv-threadpool.h">
+      <Filter>system\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv-version.h">
+      <Filter>system\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv-win.h">
+      <Filter>system\uv</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -85,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="system\strext.c">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="test\uv_tty_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

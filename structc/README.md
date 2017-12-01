@@ -25,15 +25,24 @@
 
         项目右击 -> [属性] -> [链接器] -> [输入]
 
-        jemalloc-vc141-Release-static.lib
+		libuv.lib
+		psapi.lib
+		user32.lib
+		shell32.lib
+		ws2_32.lib
+		userenv.lib
+		iphlpapi.lib
+		advapi32.lib
+		jemalloc-vc141-Release-static.lib
 
         
     c). 添加包含目录
         项目右击 -> [属性] -> [VC++ 目录] -> [包含目录]
 
+		$(ProjectDir)base       -- 基于上面的基础核心模块
         $(ProjectDir)struct     -- 基础数据结构提供
         $(ProjectDir)system     -- 操作系统一些通用操作
-        $(ProjectDir)base       -- 基于上面的基础核心模块
+		$(ProjectDir)system/uv  -- 网络IO操作, 目前内嵌libuv
 
     d). 添加预编译处理器
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
@@ -100,11 +109,20 @@ sudo make install
 sudo ldconfig
 cd ../
 rm -rf jemalloc-5.0.1 jemalloc-5.0.1.tar.bz2
+
+# libuv 安装
+sh autogen.sh
+./configure
+make
+sudo make install
+sudo ldconfig
+
 ```
 
     b) 编译设置
 
        -lm 
+	   -uv
        -lpthread
 
     c) 踩坑

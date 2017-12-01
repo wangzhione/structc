@@ -37,8 +37,8 @@ TESTO	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 # 全局编译的设置
 #
 CC		= gcc
-CFLAGS 	= -g -O2 -Wall -Wno-unused-result -std=gnu11
-LIB 	= -lpthread -lm
+CFLAGS 	= -g -O2 -Wall -Wno-unused-result -std=gnu11 
+LIB 	= -lm -l:libuv.a -lpthread
 
 # 
 # make "DPRE=-D_DEBUG"

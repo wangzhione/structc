@@ -13,6 +13,7 @@ Release/
 -p
 ~*
 *~
+core
 *.db
 *.suo
 *.swp
@@ -28,6 +29,7 @@ Release/
 *.obj
 *.idb
 *.TMP
+core*
 .*.swo
 *.iobj
 *.ipdb

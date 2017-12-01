@@ -38,11 +38,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDIr)struct;$(ProjectDIr)system;$(ProjectDIr)base;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDIr)system/uv;$(IncludePath)</IncludePath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDir)base;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDir)system/uv;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -56,7 +56,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -73,7 +73,7 @@
       <Optimization>Full</Optimization>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -87,6 +87,12 @@
     <ClInclude Include="system\stdext.h" />
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\strings.h" />
+    <ClInclude Include="system\uv\tree.h" />
+    <ClInclude Include="system\uv\uv-errno.h" />
+    <ClInclude Include="system\uv\uv-threadpool.h" />
+    <ClInclude Include="system\uv\uv-version.h" />
+    <ClInclude Include="system\uv\uv-win.h" />
+    <ClInclude Include="system\uv\uv.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c" />
@@ -98,6 +104,7 @@
     <ClCompile Include="system\strext.c" />
     <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\strext_test.c" />
+    <ClCompile Include="test\uv_tty_test.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
