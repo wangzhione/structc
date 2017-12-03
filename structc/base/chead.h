@@ -5,6 +5,12 @@
 #include <stdio.h>
 
 //
+// LEN - 获取数组长度
+// arr : 数组名
+//
+#define LEN(arr) sizeof(arr)/sizeof(*(arr))
+
+//
 // STR - 添加双引号的宏 
 // v    : 待添加双引号的量
 //
