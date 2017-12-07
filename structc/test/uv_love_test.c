@@ -2,7 +2,7 @@
 #include <chead.h>
 #include <assext.h>
 
-struct loves {
+struct love {
     uv_timer_t tick;
 
     uv_tty_t tty;
@@ -40,15 +40,15 @@ static char * _figure[] = {
 };
 
 // _love_stty : 内部发送消息
-static inline _love_stty(struct loves * love, const char * msg) {
+static inline _love_stty(struct love * love, const char * msg) {
     uv_buf_t buf;
     buf.base = (char *)msg;
     buf.len = (int)strlen(buf.base);
     uv_try_write((uv_stream_t *)&love->tty, &buf, 1);
 }
 
-// _loves_init : 初始化当前 tty 结构
-static void _loves_init(struct loves * love) {
+// _love_init : 初始化当前 tty 结构
+static void _love_init(struct love * love) {
     uv_loop_t * loop = uv_default_loop();
     memset(love, 0, sizeof *love);
 
@@ -74,8 +74,8 @@ static void _loves_init(struct loves * love) {
     uv_timer_init(loop, &love->tick);
 }
 
-// _love_stty_screem : 屏幕输出内容
-static void _love_stty_screem(struct loves * love) {
+// _love_screem : 屏幕绘制内容
+static void _love_screem(struct love * love) {
     char buf[BUFSIZ];
     int cnt = love->pos < love->len ? love->pos : love->len;
 
@@ -90,11 +90,11 @@ static void _love_stty_screem(struct loves * love) {
 }
 
 // _update - 更新刷新事件
-static void _update(struct loves * love) {
+static void _love_update(struct love * love) {
     ++love->pos;
 
     // 开始绘制内容
-    _love_stty_screem(love);
+    _love_screem(love);
 
     // 运行结束直接返回
     if (love->pos >= love->height) {
@@ -108,11 +108,11 @@ static void _update(struct loves * love) {
 // uv_love_test - 情怀 ~
 //
 void uv_love_test(void) {
-    struct loves love;
-    _loves_init(&love);
+    struct love love;
+    _love_init(&love);
 
     // 开始初始化, 定时器刷新事件
-    uv_timer_start(&love.tick, (uv_timer_cb)_update, 200, 200);
+    uv_timer_start(&love.tick, (uv_timer_cb)_love_update, 200, 200);
 
     // 事件启动起来
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
