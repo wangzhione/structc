@@ -1,5 +1,8 @@
 ﻿#
 # 前期编译一些目录结构使用宏
+# Release : make 
+# Debug   : make "DPRE=-D_DEBUG"
+# Clean   : make clean
 #
 ROOT		?= ./structc
 
@@ -39,12 +42,6 @@ TESTO	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 CC		= gcc
 CFLAGS 	= -g -O2 -Wall -Wno-unused-result -std=gnu11 
 LIB 	= -lm -l:libuv.a -lpthread
-
-# 
-# make "DPRE=-D_DEBUG"
-# 开启 DEBUG 编译
-#
-DPRE	= 
 
 RHAD	= $(CC) $(CFLAGS) $(IINC)
 RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB)

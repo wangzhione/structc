@@ -1,4 +1,4 @@
-#include <uv.h>
+ï»¿#include <uv.h>
 #include <chead.h>
 #include <assext.h>
 
@@ -16,104 +16,104 @@ struct love {
 };
 
 static char * _figure[] = {
-    u8"  ±³Ó° :- Íô¹úÕæ\n",
+    u8"  èƒŒå½± :- æ±ªå›½çœŸ\n",
     u8"  \n",
-    u8"  ±³Ó°\n",
-    u8"  ×ÜÊÇºÜ¼òµ¥\n",
-    u8"  ¼òµ¥\n",
-    u8"  ÊÇÒ»ÖÖ·ç¾°\n",
+    u8"  èƒŒå½±\n",
+    u8"  æ€»æ˜¯å¾ˆç®€å•\n",
+    u8"  ç®€å•\n",
+    u8"  æ˜¯ä¸€ç§é£æ™¯\n",
     u8"  \n",
-    u8"  ±³Ó°\n",
-    u8"  ×ÜÊÇºÜÄêÇá\n",
-    u8"  ÄêÇá\n",
-    u8"  ÊÇÒ»ÖÖÇåÃ÷\n",
+    u8"  èƒŒå½±\n",
+    u8"  æ€»æ˜¯å¾ˆå¹´è½»\n",
+    u8"  å¹´è½»\n",
+    u8"  æ˜¯ä¸€ç§æ¸…æ˜\n",
     u8"  \n",
-    u8"  ±³Ó°\n",
-    u8"  ×ÜÊÇºÜº¬Ğî\n",
-    u8"  º¬Ğî\n",
-    u8"  ÊÇÒ»ÖÖ÷ÈÁ¦\n",
+    u8"  èƒŒå½±\n",
+    u8"  æ€»æ˜¯å¾ˆå«è“„\n",
+    u8"  å«è“„\n",
+    u8"  æ˜¯ä¸€ç§é­…åŠ›\n",
     u8"  \n",
-    u8"  ±³Ó°\n",
-    u8"  ×ÜÊÇºÜ¹ÂÁã\n",
-    u8"  ¹ÂÁã\n",
-    u8"  ¸üÈÃÈË¼ÇµÃÇå\n"
+    u8"  èƒŒå½±\n",
+    u8"  æ€»æ˜¯å¾ˆå­¤é›¶\n",
+    u8"  å­¤é›¶\n",
+    u8"  æ›´è®©äººè®°å¾—æ¸…\n"
 };
 
-// _love_stty : ÄÚ²¿·¢ËÍÏûÏ¢
-static inline _love_stty(struct love * love, const char * msg) {
+// _love_stty : å†…éƒ¨å‘é€æ¶ˆæ¯
+static inline void _love_stty(struct love * love, const char * msg) {
     uv_buf_t buf;
     buf.base = (char *)msg;
     buf.len = (int)strlen(buf.base);
     uv_try_write((uv_stream_t *)&love->tty, &buf, 1);
 }
 
-// _love_init : ³õÊ¼»¯µ±Ç° tty ½á¹¹
+// _love_init : åˆå§‹åŒ–å½“å‰ tty ç»“æ„
 static void _love_init(struct love * love) {
     uv_loop_t * loop = uv_default_loop();
     memset(love, 0, sizeof *love);
 
-    // ³õÊ¼»¯ tty »·¾³
+    // åˆå§‹åŒ– tty ç¯å¢ƒ
     uv_tty_init(loop, &love->tty, 1, 0);
     uv_tty_set_mode(&love->tty, UV_TTY_MODE_NORMAL);
 
-    // Ö»¶Ô tty Êä³ö´¦Àí
+    // åªå¯¹ tty è¾“å‡ºå¤„ç†
     if (uv_guess_handle(1) != UV_TTY)
         CERR_EXIT("uv_guess_handle(1) != UV_TTY!");
 
-    // »ñÈ¡µ±Ç°ÆÁÄ»¿í¸ßĞÅÏ¢
+    // è·å–å½“å‰å±å¹•å®½é«˜ä¿¡æ¯
     if (uv_tty_get_winsize(&love->tty, &love->width, &love->height)) {
         uv_tty_reset_mode();
         CERR_EXIT("Could not get TTY information");
     }
 
-    // ÉèÖÃ¾ßÌåÄÚÈİ
+    // è®¾ç½®å…·ä½“å†…å®¹
     love->msgs = _figure;
     love->len = LEN(_figure);
 
-    // ³õÊ¼»¯¶¨Ê±Æ÷
+    // åˆå§‹åŒ–å®šæ—¶å™¨
     uv_timer_init(loop, &love->tick);
 }
 
-// _love_screem : ÆÁÄ»»æÖÆÄÚÈİ
+// _love_screem : å±å¹•ç»˜åˆ¶å†…å®¹
 static void _love_screem(struct love * love) {
     char buf[BUFSIZ];
     int cnt = love->pos < love->len ? love->pos : love->len;
 
-    // ÖØÖÃË÷ÒıÎ»ÖÃ
+    // é‡ç½®ç´¢å¼•ä½ç½®
     int idx = love->height - love->pos;
-    snprintf(buf, LEN(buf), "\033[2J\033[%dB", idx);
+    snprintf(buf, LEN(buf), "\033[2J\033[H\033[%dB", idx);
     _love_stty(love, buf);
 
-    // È«²¿ÏÔÊ¾
+    // å…¨éƒ¨æ˜¾ç¤º
     for (idx = 0; idx < cnt; idx++)
         _love_stty(love, love->msgs[idx]);
 }
 
-// _update - ¸üĞÂË¢ĞÂÊÂ¼ş
+// _update - æ›´æ–°åˆ·æ–°äº‹ä»¶
 static void _love_update(struct love * love) {
     ++love->pos;
 
-    // ¿ªÊ¼»æÖÆÄÚÈİ
+    // å¼€å§‹ç»˜åˆ¶å†…å®¹
     _love_screem(love);
 
-    // ÔËĞĞ½áÊøÖ±½Ó·µ»Ø
+    // è¿è¡Œç»“æŸç›´æ¥è¿”å›
     if (love->pos >= love->height) {
-        // ÖØÖÃtty
+        // é‡ç½®tty
         uv_tty_reset_mode();
         uv_timer_stop(&love->tick);
     }
 }
 
 //
-// uv_love_test - Çé»³ ~
+// uv_love_test - æƒ…æ€€ ~
 //
 void uv_love_test(void) {
     struct love love;
     _love_init(&love);
 
-    // ¿ªÊ¼³õÊ¼»¯, ¶¨Ê±Æ÷Ë¢ĞÂÊÂ¼ş
+    // å¼€å§‹åˆå§‹åŒ–, å®šæ—¶å™¨åˆ·æ–°äº‹ä»¶
     uv_timer_start(&love.tick, (uv_timer_cb)_love_update, 200, 200);
 
-    // ÊÂ¼şÆô¶¯ÆğÀ´
+    // äº‹ä»¶å¯åŠ¨èµ·æ¥
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
 }
