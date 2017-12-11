@@ -31,6 +31,6 @@ typedef int (* each_f)(void * node, void * arg);
 // start_f - pthread create func
 //  : int * run(int * arg)
 //
-typedef void *  (* start_f)(void * arg);
+typedef void * (* start_f)(void * arg);
 
 #endif//_H_STRUCT

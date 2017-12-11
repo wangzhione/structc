@@ -1,7 +1,7 @@
-#include <uv.h>
+ï»¿#include <uv.h>
 #include <assext.h>
 
-// ¼Ì³Ğ uv_timer_t ½á¹¹
+// ç»§æ‰¿ uv_timer_t ç»“æ„
 struct gravity {
     uv_timer_t tick;
 
@@ -14,19 +14,19 @@ struct gravity {
     char * msg;
 };
 
-// _update - ¸üĞÂÍ¼Æ¬ÄÚÈİ
+// _update - æ›´æ–°å›¾ç‰‡å†…å®¹
 static void _update(struct gravity * grav) {
     char data[BUFSIZ];
     uv_buf_t buf;
     buf.base = data;
     //
-    // \033[2J      : ÇåÆÁ
-    // \033[H       : ¹â±êÒÆµ½(0, 0)
-    // \033[%dB     : ¹â±êÏÂÒÆ %d ĞĞ
-    // \033[%dC     : ¹â±êÓÒÒÆ %d ĞĞ
-    // \033[42;37m  : µ×É« 41 ÂÌµ×, ×ÖÉ« 37 °××Ö
+    // \033[2J      : æ¸…å±
+    // \033[H       : å…‰æ ‡ç§»åˆ°(0, 0)
+    // \033[%dB     : å…‰æ ‡ä¸‹ç§» %d è¡Œ
+    // \033[%dC     : å…‰æ ‡å³ç§» %d è¡Œ
+    // \033[42;37m  : åº•è‰² 41 ç»¿åº•, å­—è‰² 37 ç™½å­—
     //
-    // \033[0m      : ¹Ø±ÕËùÓĞÊôĞÔ
+    // \033[0m      : å…³é—­æ‰€æœ‰å±æ€§
     //
     buf.len = sprintf(data, "\033[2J\033[H\033[%dB\033[%dC\033[42;37m%s",
                             grav->pos,
@@ -34,25 +34,25 @@ static void _update(struct gravity * grav) {
                             grav->msg);
     assert(buf.len < BUFSIZ);
     if (grav->pos == grav->height) {
-        // ¹Ø±ÕÆÁÄ»¶îÍâÊôĞÔ
+        // å…³é—­å±å¹•é¢å¤–å±æ€§
         const char * resets = "\033[0m";
         strcat(data, resets);
         buf.len += (int)strlen(resets);
     }
 
-    // Ğ´ÈëÏûÏ¢
+    // å†™å…¥æ¶ˆæ¯
     uv_try_write((uv_stream_t *)&grav->tty, &buf, 1);
 
-    // µ±³¬¹ıµ±Ç°ÆÁÄ», ÍË³ö¶¨Ê±Æ÷
+    // å½“è¶…è¿‡å½“å‰å±å¹•, é€€å‡ºå®šæ—¶å™¨
     if (++grav->pos > grav->height) {
-        // ÖØÖÃtty
+        // é‡ç½®tty
         uv_tty_reset_mode();
         uv_timer_stop(&grav->tick);
     }
 }
 
 //
-// uv_timer_test - ²âÊÔ timer Ê¹ÓÃ
+// uv_timer_test - æµ‹è¯• timer ä½¿ç”¨
 //
 void uv_timer_test(void) {
     uv_loop_t * loop = uv_default_loop();
@@ -61,7 +61,7 @@ void uv_timer_test(void) {
     uv_tty_init(loop, &grav.tty, 1, 0);
     uv_tty_set_mode(&grav.tty, UV_TTY_MODE_NORMAL);
 
-    // »ñÈ¡µ±Ç°ÆÁÄ»¿í¸ßĞÅÏ¢
+    // è·å–å½“å‰å±å¹•å®½é«˜ä¿¡æ¯
     if (uv_tty_get_winsize(&grav.tty, &grav.width, &grav.height)) {
         fprintf(stderr, "Could not get TTY information\n");
         uv_tty_reset_mode();
@@ -70,8 +70,8 @@ void uv_timer_test(void) {
 
     fprintf(stderr, "Width %d, height %d\n", grav.width, grav.height);
     
-    // Æô¶¯ timer Ë¢ĞÂÆÁÄ»ĞÅÏ¢
-    grav.msg = u8"ÎÒ²»¸ÊĞÄ ~";
+    // å¯åŠ¨ timer åˆ·æ–°å±å¹•ä¿¡æ¯
+    grav.msg = u8"æˆ‘ä¸ç”˜å¿ƒ ~";
     uv_timer_init(loop, &grav.tick);
     uv_timer_start(&grav.tick, (uv_timer_cb)_update, 200, 200);
     

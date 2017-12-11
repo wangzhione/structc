@@ -1,7 +1,7 @@
-#include <stdext.h>
+ï»¿#include <stdext.h>
 
 //
-// ¼òµ¥²âÊÔÒ»ÏÂÄÚ´æÄ£¿éÊ¹ÓÃ
+// ç®€å•æµ‹è¯•ä¸€ä¸‹å†…å­˜æ¨¡å—ä½¿ç”¨
 //
 void stdext_test(void) {
     int * piyo = malloc(sizeof(int));

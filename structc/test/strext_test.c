@@ -1,38 +1,38 @@
-#include <chead.h>
+ï»¿#include <chead.h>
 #include <strext.h>
 
 /*
- µ¥Ôª¹¦ÄÜ²âÊÔÒªÇó : 
+ å•å…ƒåŠŸèƒ½æµ‹è¯•è¦æ±‚ : 
  
- ±àĞ´¹æÂÉ : 
- {½Ó¿Ú}.h -> {½Ó¿Ú}_test.c -> void {½Ó¿Ú}_test(void) { ... }
+ ç¼–å†™è§„å¾‹ : 
+ {æ¥å£}.h -> {æ¥å£}_test.c -> void {æ¥å£}_test(void) { ... }
 
- µ÷ÓÃ¹æÂÉ :
- chead.h :: TEST_FUNC({½Ó¿Ú}_test) ·ÅÈë structc.c :: test_structc 
+ è°ƒç”¨è§„å¾‹ :
+ chead.h :: TEST_FUNC({æ¥å£}_test) æ”¾å…¥ structc.c :: test_structc 
 
  */
 
 //
-// estring_test - ²âÊÔ estring_test.h ÖĞ½Ó¿ÚÉè¼Æ
+// estring_test - æµ‹è¯• estring_test.h ä¸­æ¥å£è®¾è®¡
 //
 void strext_test(void) {
     unsigned hash = str_hash(STR(__func__)); 
     printf("%s -> %u\n", STR(__func__), hash);
 
-	// Êä³öÊı¾İ²âÊÔ
+	// è¾“å‡ºæ•°æ®æµ‹è¯•
 	char * txt = str_freadend("README.md");
 	puts(txt);
 
-    // ¿ªÊ¼×Ö·û´®¹¹½¨
-    char * str = str_printf("ÄãºÃÂğ ? double = %0.4f\n", 1.2340);
+    // å¼€å§‹å­—ç¬¦ä¸²æ„å»º
+    char * str = str_printf("ä½ å¥½å— ? double = %0.4f\n", 1.2340);
     puts(str);
     free(str);
 
-    // ¿ªÊ¼ÅĞ¶Ï¿Õ¸ñ
+    // å¼€å§‹åˆ¤æ–­ç©ºæ ¼
     char nsr[] = " 123   ";
     puts(nsr);
 
-    // printf ´Ó×óÏòÓÒÖ´ĞĞ
+    // printf ä»å·¦å‘å³æ‰§è¡Œ
     char * nstr = str_trim(nsr);
     printf("nsr = %s, len = %zu\n", nstr, strlen(nstr));
 }
