@@ -1,27 +1,27 @@
-#ifndef _H_SDOS
+ï»¿#ifndef _H_SDOS
 #define _H_SDOS
 
 /*
-    Æ½Ì¨Ïà¹ØÌá¹©µÄ¼òµ¥¼ì²âºê 
+    å¹³å°ç›¸å…³æä¾›çš„ç®€å•æ£€æµ‹å® 
  */
 
 //
-// ±àÒëÆ½Ì¨¼ì²â : winds cl -> WCL | LGCC -> linux gcc
-// Ä¿Ç°ÎÒÃÇÖ»Ö§³Ö, ×îĞÂµÄ WINDS CL ºÍ LINUX GCC »·¾³
+// ç¼–è¯‘å¹³å°æ£€æµ‹ : winds cl -> WCL | LGCC -> linux gcc
+// ç›®å‰æˆ‘ä»¬åªæ”¯æŒ, æœ€æ–°çš„ WINDS CL å’Œ LINUX GCC ç¯å¢ƒ
 //
 #if defined(__GNUC__)
 #   define LGCC (1)
 #elif defined(_MSC_VER)
 #   define WCL  (2)
 #else
-#   error BUILD (£ş¦á£ş) S
+#   error BUILD (ï¿£ï¸¶ï¿£) S
 #endif
 
 #if defined(WCL)
 
 //
-// CPU ¼ì²â : x64 or x86
-// ISX64 defined ±íÊ¾ x64 ·ñÔò x86
+// CPU æ£€æµ‹ : x64 or x86
+// ISX64 defined è¡¨ç¤º x64 å¦åˆ™ x86
 //
 #   if defined(_M_ARM64) || defined(_M_X64)
 #       define ISX64
@@ -40,7 +40,7 @@
 #   endif
 
 // 
-// ´óĞ¡¶Ë¼ì²â : ISBENIAN defined ±íÊ¾´ó¶Ë
+// å¤§å°ç«¯æ£€æµ‹ : ISBENIAN defined è¡¨ç¤ºå¤§ç«¯
 //
 #   if defined(__BIG_ENDIAN__) || defined(__BIG_ENDIAN_BITFIELD)
 #       define ISBENIAN

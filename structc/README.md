@@ -39,10 +39,10 @@
     c). 添加包含目录
         项目右击 -> [属性] -> [VC++ 目录] -> [包含目录]
 
-		$(ProjectDir)base       -- 基于上面的基础核心模块
+        $(ProjectDir)base       -- 基于上面的基础核心模块
         $(ProjectDir)struct     -- 基础数据结构提供
         $(ProjectDir)system     -- 操作系统一些通用操作
-		$(ProjectDir)system/uv  -- 网络IO操作, 目前内嵌libuv
+        $(ProjectDir)system/uv  -- 网络IO操作, 目前内嵌libuv
 
     d). 添加预编译处理器
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
@@ -94,7 +94,7 @@
 
 ```Bash
 # 开发环境安装
-sudo apt-get install gcc gdb autogen autoconf
+sudo apt install gcc gdb autogen autoconf
 
 # jemalloc 安装
 cd
@@ -102,21 +102,30 @@ wget https://github.com/jemalloc/jemalloc/releases/download/5.0.1/jemalloc-5.0.1
 tar -jxvf jemalloc-5.0.1.tar.bz2
 cd jemalloc-5.0.1
 
-./autogen.sh
-make -j2
-sudo make install
+sh autogen.sh
 
+make -j4
+
+sudo make install
 sudo ldconfig
 cd ../
 rm -rf jemalloc-5.0.1 jemalloc-5.0.1.tar.bz2
 
 # libuv 安装
+cd
+wget https://github.com/libuv/libuv/archive/v1.18.0.tar.gz
+tar -zxvf v1.18.0.tar.gz
+cd libuv-1.18.0
+
 sh autogen.sh
 ./configure
-make
+
+make -j4
+
 sudo make install
 sudo ldconfig
-
+cd ../
+rm -rf libuv-1.18.0 v1.18.0.tar.gz
 ```
 
     b) 编译设置

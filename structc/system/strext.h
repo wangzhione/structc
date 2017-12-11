@@ -1,70 +1,70 @@
-#ifndef _H_STREXT
+ï»¿#ifndef _H_STREXT
 #define _H_STREXT
 
 /*
-	¼Ì³Ð : string.h
-	¹¦ÄÜ : À©Õ¹ string.h ÖÐ²¿·Ö¹¦ÄÜ, ·½±ãÒµÎñ²ãµ÷ÓÃ
+	ç»§æ‰¿ : string.h
+	åŠŸèƒ½ : æ‰©å±• string.h ä¸­éƒ¨åˆ†åŠŸèƒ½, æ–¹ä¾¿ä¸šåŠ¡å±‚è°ƒç”¨
  */
 
 #include <stdext.h>
 #include <string.h>
 
 //
-// str_hash - Brian KernighanÓë Dennis Ritchie ¼ò±ã¿ì½ÝµÄ hashËã·¨
-// str		: ×Ö·û´®ÄÚÈÝ
-// return	: ·µ»Ø¼ÆËãºóµÄhashÖµ
+// str_hash - Brian Kernighanä¸Ž Dennis Ritchie ç®€ä¾¿å¿«æ·çš„ hashç®—æ³•
+// str		: å­—ç¬¦ä¸²å†…å®¹
+// return	: è¿”å›žè®¡ç®—åŽçš„hashå€¼
 //
 extern unsigned str_hash(const char * str);
 
 //
-// str_icmp - ×Ö·û´®²»Çø·Ö´óÐ¡Ð´±È½Ïº¯Êý
-// ls		: ×ó´®
-// rs		: ÓÒ´®
-// return	: ls > rs ·µ»Ø > 0; ... < 0; ... =0
+// str_icmp - å­—ç¬¦ä¸²ä¸åŒºåˆ†å¤§å°å†™æ¯”è¾ƒå‡½æ•°
+// ls		: å·¦ä¸²
+// rs		: å³ä¸²
+// return	: ls > rs è¿”å›ž > 0; ... < 0; ... =0
 //
 extern int str_icmp(const char * ls, const char * rs);
 
 //
-// str_dup - ×Ö·û´®¿½±´mallocº¯Êý, ÐèÒª×Ô¼ºfree
-// str		: ´ý¿½±´µÄ´®
-// return	: ·µ»Ø¿½±´ºóµÄ´®
+// str_dup - å­—ç¬¦ä¸²æ‹·è´mallocå‡½æ•°, éœ€è¦è‡ªå·±free
+// str		: å¾…æ‹·è´çš„ä¸²
+// return	: è¿”å›žæ‹·è´åŽçš„ä¸²
 //
 extern char * str_dup(const char * str);
 
 //
-// str_trim - È¥³ý×Ö·ûÊý×éÇ°ºó¿ØÖÆ×Ö·û
-// str      : ´ý²Ù×÷µÄ×Ö·ûÊý×é \0 ½áÎ²
-// return   : ·µ»Ø¹¹½¨ºÃ×Ö·ûÊý×éÊ×µØÖ·
+// str_trim - åŽ»é™¤å­—ç¬¦æ•°ç»„å‰åŽæŽ§åˆ¶å­—ç¬¦
+// str      : å¾…æ“ä½œçš„å­—ç¬¦æ•°ç»„ \0 ç»“å°¾
+// return   : è¿”å›žæž„å»ºå¥½å­—ç¬¦æ•°ç»„é¦–åœ°å€
 //
 extern char * str_trim(char str[]);
 
 //
-// str_printf - ×Ö·û´®¹¹½¨º¯Êý
-// format   : ¹¹½¨¸ñÊ½²ÎÕÕpritnf
-// ...      : ²ÎÊý¼¯
-// return   : char * ¶ÑÉÏÄÚ´æ
+// str_printf - å­—ç¬¦ä¸²æž„å»ºå‡½æ•°
+// format   : æž„å»ºæ ¼å¼å‚ç…§pritnf
+// ...      : å‚æ•°é›†
+// return   : char * å †ä¸Šå†…å­˜
 //
 extern char * str_printf(const char * format, ...);
 
 //
-// str_freadend - ¼òµ¥µÄÎÄ¼þ¶ÁÈ¡Àà,»á¶ÁÈ¡Íê±ÏÕâ¸öÎÄ¼þÄÚÈÝ·µ»Ø, ÐèÒª×Ô¼ºfree
-// path		: ÎÄ¼þÂ·¾¶
-// return	: ´´½¨ºÃµÄ×Ö·û´®ÄÚÈÝ, ·µ»ØNULL±íÊ¾¶ÁÈ¡Ê§°Ü
+// str_freadend - ç®€å•çš„æ–‡ä»¶è¯»å–ç±»,ä¼šè¯»å–å®Œæ¯•è¿™ä¸ªæ–‡ä»¶å†…å®¹è¿”å›ž, éœ€è¦è‡ªå·±free
+// path		: æ–‡ä»¶è·¯å¾„
+// return	: åˆ›å»ºå¥½çš„å­—ç¬¦ä¸²å†…å®¹, è¿”å›žNULLè¡¨ç¤ºè¯»å–å¤±è´¥
 //
 extern char * str_freadend(const char * path);
 
 //
-// str_fwrites - ½«c´®str¸²¸ÇÐ´Èëµ½pathÂ·¾¶µÄÎÄ¼þÖÐ
-// path		: ÎÄ¼þÂ·¾¶
-// str		: cµÄ´®ÄÚÈÝ
+// str_fwrites - å°†cä¸²strè¦†ç›–å†™å…¥åˆ°pathè·¯å¾„çš„æ–‡ä»¶ä¸­
+// path		: æ–‡ä»¶è·¯å¾„
+// str		: cçš„ä¸²å†…å®¹
 // return	: >=0 is success, < 0 is error
 //
 extern int str_fwrites(const char * path, const char * str);
 
 //
-// str_fappends - ½«c´®strÐ´Èëµ½pathÂ·¾¶µÄÎÄ¼þÖÐÄ©Î²
-// path		: ÎÄ¼þÂ·¾¶
-// str		: cµÄ´®ÄÚÈÝ
+// str_fappends - å°†cä¸²strå†™å…¥åˆ°pathè·¯å¾„çš„æ–‡ä»¶ä¸­æœ«å°¾
+// path		: æ–‡ä»¶è·¯å¾„
+// str		: cçš„ä¸²å†…å®¹
 // return	: >=0 is success, < 0 is error
 //
 extern int str_fappends(const char * path, const char * str);

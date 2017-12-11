@@ -1,10 +1,10 @@
-#ifndef _H_LIST
+ï»¿#ifndef _H_LIST
 #define _H_LIST
 
 #include <struct.h>
 
 //
-// list.h ÓĞĞòÍ¨ÓÃµÄµ¥Á´±í¿â
+// list.h æœ‰åºé€šç”¨çš„å•é“¾è¡¨åº“
 //
 
 struct $list {
@@ -14,21 +14,21 @@ struct $list {
 #define LIST_HEAD struct $list $node
 
 struct list { 
-    struct $list * root;    // ´æ´¢Á´±íµÄÍ·½Úµã
+    struct $list * root;    // å­˜å‚¨é“¾è¡¨çš„å¤´èŠ‚ç‚¹
 
-    icmp_f fadd;     // Á´±íÖĞ²åÈëÊı¾İÖ´ĞĞµÄ·½·¨
-    icmp_f fget;     // Á´±íÖĞ²éÕÒÊı¾İÖ´ĞĞµÄ·½·¨
-    node_f fdie;     // Á´±íÖĞÉ¾³ıÊı¾İÖ´ĞĞµÄ·½·¨
+    icmp_f fadd;     // é“¾è¡¨ä¸­æ’å…¥æ•°æ®æ‰§è¡Œçš„æ–¹æ³•
+    icmp_f fget;     // é“¾è¡¨ä¸­æŸ¥æ‰¾æ•°æ®æ‰§è¡Œçš„æ–¹æ³•
+    node_f fdie;     // é“¾è¡¨ä¸­åˆ é™¤æ•°æ®æ‰§è¡Œçš„æ–¹æ³•
 };
 
 typedef struct list * list_t;
 
 //
-// list_create_ - ¹¹½¨ list ¶ÔÏó
-// fadd     : ²åÈëÊı¾İ·½·¨
-// fget     : »ñÈ¡Êı¾İ·½·¨
-// fdie     : Ïú»ÙÊı¾İ·½·¨
-// return   : ´´½¨ºÃµÄÁ´±í¶ÔÏó
+// list_create_ - æ„å»º list å¯¹è±¡
+// fadd     : æ’å…¥æ•°æ®æ–¹æ³•
+// fget     : è·å–æ•°æ®æ–¹æ³•
+// fdie     : é”€æ¯æ•°æ®æ–¹æ³•
+// return   : åˆ›å»ºå¥½çš„é“¾è¡¨å¯¹è±¡
 //
 inline list_t list_create_(icmp_f fadd, icmp_f fget, node_f fdie) {
     list_t list = malloc(sizeof(struct list));
@@ -43,8 +43,8 @@ inline list_t list_create_(icmp_f fadd, icmp_f fget, node_f fdie) {
 list_create_((icmp_f)fadd, (icmp_f)fget, (node_f)fdie)
 
 //
-// list_delete - Á´±íÊı¾İÏú»Ù²Ù×÷
-// list     : »ù´¡µÄÁ´±í½á¹¹
+// list_delete - é“¾è¡¨æ•°æ®é”€æ¯æ“ä½œ
+// list     : åŸºç¡€çš„é“¾è¡¨ç»“æ„
 // return   : void
 //
 extern void list_delete(list_t list);

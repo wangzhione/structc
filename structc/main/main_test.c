@@ -1,8 +1,8 @@
-#include <chead.h>
+ï»¿#include <chead.h>
 #include <assext.h>
 
 //
-// main_test - Õû¸ö¹¦ÄÜ²âÊÔÈë¿Ú
+// main_test - æ•´ä¸ªåŠŸèƒ½æµ‹è¯•å…¥å£
 //
 void main_test(void) {
     EXTERN_RUN(uv_love_test);

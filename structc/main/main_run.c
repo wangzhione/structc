@@ -1,9 +1,9 @@
-#include <sdos.h>
+ï»¿#include <sdos.h>
 #include <chead.h>
 
 //
-// main_run - ÒµÎñÔËÐÐµÄÖ÷Ìå
-// Í¨¹ý _DEBUG -> main_test
+// main_run - ä¸šåŠ¡è¿è¡Œçš„ä¸»ä½“
+// é€šè¿‡ _DEBUG -> main_test
 //
 void main_run(int argc, char * argv[]) {
 #ifdef _DEBUG
@@ -11,7 +11,7 @@ void main_run(int argc, char * argv[]) {
 #endif
     
     //
-    // ¿ªÊ¼ÄãµÄ±íÑÝ ... 
+    // å¼€å§‹ä½ çš„è¡¨æ¼” ... 
     //
 
 }

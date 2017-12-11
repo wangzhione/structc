@@ -1,8 +1,8 @@
-#include <list.h>
+ï»¿#include <list.h>
 
 //
-// list_delete - Á´±íÊý¾ÝÏú»Ù²Ù×÷
-// list     : »ù´¡µÄÁ´±í½á¹¹
+// list_delete - é“¾è¡¨æ•°æ®é”€æ¯æ“ä½œ
+// list     : åŸºç¡€çš„é“¾è¡¨ç»“æž„
 // return   : void
 //
 void 
@@ -11,7 +11,7 @@ list_delete(list_t list) {
     if (!list || !list->fdie)
         return;
 
-    // ÏêÏ¸´¦ÀíÁ´±íÊý¾Ý±ä»¯
+    // è¯¦ç»†å¤„ç†é“¾è¡¨æ•°æ®å˜åŒ–
     head = list->root;
     while (head) {
         struct $list * next = head->next;

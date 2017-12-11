@@ -1,13 +1,13 @@
-#include <tstr.h>
+ï»¿#include <tstr.h>
 
-// ×Ö·û´®¹¹½¨µÄ³õÊ¼»¯´óĞ¡
+// å­—ç¬¦ä¸²æ„å»ºçš„åˆå§‹åŒ–å¤§å°
 #define _UINT_TSTR  (32u)
 
 //
-// tstr_expand - Îªµ±Ç°×Ö·û´®À©Èİ, ÊôÓÚµÍ¼¶api
-// tstr		: ¿É±ä×Ö·û´®
-// len		: À©ÈİµÄ³¤¶È
-// return	: tstr->str + tstr->len Î»ÖÃµÄ´®
+// tstr_expand - ä¸ºå½“å‰å­—ç¬¦ä¸²æ‰©å®¹, å±äºä½çº§api
+// tstr		: å¯å˜å­—ç¬¦ä¸²
+// len		: æ‰©å®¹çš„é•¿åº¦
+// return	: tstr->str + tstr->len ä½ç½®çš„ä¸²
 //
 char * 
 tstr_expand(tstr_t tstr, size_t len) {
@@ -15,7 +15,7 @@ tstr_expand(tstr_t tstr, size_t len) {
     if ((len += tstr->len) > cap) {
         for (cap = cap < _UINT_TSTR ? _UINT_TSTR : cap; cap < len; cap <<= 1)
             ;
-        // ĞèÒªÖØĞÂ·ÖÅäÄÚ´æ
+        // éœ€è¦é‡æ–°åˆ†é…å†…å­˜
         tstr->str = realloc(tstr->str, cap);
         tstr->cap = cap;
     }
@@ -23,9 +23,9 @@ tstr_expand(tstr_t tstr, size_t len) {
 }
 
 //
-// tstr_popup - ´Ó×Ö·û´®Í·µ¯³ölen³¤¶È×Ö·û
-// tstr		: ¿É±ä×Ö·û´®
-// len		: µ¯³öµÄ³¤¶È
+// tstr_popup - ä»å­—ç¬¦ä¸²å¤´å¼¹å‡ºlené•¿åº¦å­—ç¬¦
+// tstr		: å¯å˜å­—ç¬¦ä¸²
+// len		: å¼¹å‡ºçš„é•¿åº¦
 // return	: void
 //
 void 
@@ -39,14 +39,14 @@ tstr_popup(tstr_t tstr, size_t len) {
 }
 
 //
-// tstr_dupstr - µÃµ½Ò»¸ö¾«¼òµÄcµÄ´®, ĞèÒª×Ô¼ºÊÂºófree
-// tstr		: tstr_t ´®
-// return	: ·µ»Ø´´½¨ºÃµÄc´®
+// tstr_dupstr - å¾—åˆ°ä¸€ä¸ªç²¾ç®€çš„cçš„ä¸², éœ€è¦è‡ªå·±äº‹åfree
+// tstr		: tstr_t ä¸²
+// return	: è¿”å›åˆ›å»ºå¥½çš„cä¸²
 //
 char * 
 tstr_dupstr(tstr_t tstr) {
     if (tstr && tstr->len >= 1) {
-        // ¹¹ÔìÄÚ´æ, ·µ»Ø×îÖÕ½á¹û
+        // æ„é€ å†…å­˜, è¿”å›æœ€ç»ˆç»“æœ
         size_t len = tstr->len + !!tstr->str[tstr->len - 1];
         char * str = malloc(len * sizeof(char));
         memcpy(str, tstr->str, len - 1);
@@ -57,10 +57,10 @@ tstr_dupstr(tstr_t tstr) {
 }
 
 //
-// tstr_t ´´½¨º¯Êı, »á¸ù¾İcµÄtstr´®´´½¨Ò»¸ötstr_t½á¹¹µÄ×Ö·û´®
-// str		: ´ı´´½¨µÄ×Ö·û´®
-// len		: ´´½¨´®µÄ³¤¶È
-// return	: ·µ»Ø´´½¨ºÃµÄ×Ö·û´®,ÄÚ´æ²»×ã»á´òÓ¡ÈÕÖ¾ÍË³ö³ÌĞò
+// tstr_t åˆ›å»ºå‡½æ•°, ä¼šæ ¹æ®cçš„tsträ¸²åˆ›å»ºä¸€ä¸ªtstr_tç»“æ„çš„å­—ç¬¦ä¸²
+// str		: å¾…åˆ›å»ºçš„å­—ç¬¦ä¸²
+// len		: åˆ›å»ºä¸²çš„é•¿åº¦
+// return	: è¿”å›åˆ›å»ºå¥½çš„å­—ç¬¦ä¸²,å†…å­˜ä¸è¶³ä¼šæ‰“å°æ—¥å¿—é€€å‡ºç¨‹åº
 //
 tstr_t 
 tstr_create(const char * str, size_t len) {
@@ -79,8 +79,8 @@ tstr_creates(const char * str) {
 }
 
 //
-// tstr_delete - tstr_t ÊÍ·Åº¯Êı
-// tstr		: ´ıÊÍ·ÅµÄ´®½á¹¹
+// tstr_delete - tstr_t é‡Šæ”¾å‡½æ•°
+// tstr		: å¾…é‡Šæ”¾çš„ä¸²ç»“æ„
 // return   : void
 //
 inline void 
@@ -90,14 +90,14 @@ tstr_delete(tstr_t tstr) {
 }
 
 //
-// Ïòtstr_t´®½á¹¹ÖĞÌí¼Ó×Ö·ûµÈ, ÄÚ´æ·ÖÅäÊ§°ÜÄÚ²¿»á×Ô¼º´¦Àí
-// c		: µ¥¸öÌí¼ÓµÄchar
-// str		: Ìí¼ÓµÄc´®
-// sz		: Ìí¼Ó´®µÄ³¤¶È
+// å‘tstr_tä¸²ç»“æ„ä¸­æ·»åŠ å­—ç¬¦ç­‰, å†…å­˜åˆ†é…å¤±è´¥å†…éƒ¨ä¼šè‡ªå·±å¤„ç†
+// c		: å•ä¸ªæ·»åŠ çš„char
+// str		: æ·»åŠ çš„cä¸²
+// sz		: æ·»åŠ ä¸²çš„é•¿åº¦
 //
 inline void 
 tstr_appendc(tstr_t tstr, int c) {
-    // ÕâÀàº¯Êı²»×ö°²È«¼ì²é, ÎªÁËĞÔÄÜ
+    // è¿™ç±»å‡½æ•°ä¸åšå®‰å…¨æ£€æŸ¥, ä¸ºäº†æ€§èƒ½
     tstr_expand(tstr, 1);
     tstr->str[tstr->len++] = c;
 }
@@ -120,9 +120,9 @@ tstr_appendn(tstr_t tstr, const char * str, size_t sz) {
 }
 
 //
-// tstr_cstr - Í¨¹ıcstr_t´®µÃµ½Ò»¸öcµÄ´®ÒÔ'\0'½áÎ²
-// tstr		: tstr_t ´®
-// return	: ·µ»Ø¹¹½¨ºÃµÄcµÄ´®, ÄÚ´æµØÖ·tstr->str
+// tstr_cstr - é€šè¿‡cstr_tä¸²å¾—åˆ°ä¸€ä¸ªcçš„ä¸²ä»¥'\0'ç»“å°¾
+// tstr		: tstr_t ä¸²
+// return	: è¿”å›æ„å»ºå¥½çš„cçš„ä¸², å†…å­˜åœ°å€tstr->str
 //
 char * 
 tstr_cstr(tstr_t tstr) {
@@ -133,12 +133,12 @@ tstr_cstr(tstr_t tstr) {
     return tstr->str;
 }
 
-// _tstr_printf : BUFSIZ ÒÔÏÂÄÚ´æ´¦Àí
+// _tstr_printf : BUFSIZ ä»¥ä¸‹å†…å­˜å¤„ç†
 static int _tstr_printf(tstr_t tstr, const char * format, va_list arg) {
     char buf[BUFSIZ];
     int len = vsnprintf(buf, sizeof buf, format, arg);
     if (len < sizeof buf) {
-        // ºÏ·¨Ö±½Ó¹¹½¨ÄÚ´æ·µ»Ø
+        // åˆæ³•ç›´æ¥æ„å»ºå†…å­˜è¿”å›
         if (len >= 0)
             tstr_appendn(tstr, buf, len);
         tstr_cstr(tstr);
@@ -147,11 +147,11 @@ static int _tstr_printf(tstr_t tstr, const char * format, va_list arg) {
 }
 
 //
-// tstr_printf - ²ÎÕÕ sprintf Ìî³ä·½Ê½Ğ´ÈëÄÚÈİ
-// tstr     : tstr_t ´®
-// format   : ´ı¸ñÊ½»¯µÄ´®
-// ...      : µÈ´ı½øÈëµÄ±äÁ¿
-// return   : ·µ»Ø´´½¨ºÃµÄC×Ö·û´®ÄÚÈİ
+// tstr_printf - å‚ç…§ sprintf å¡«å……æ–¹å¼å†™å…¥å†…å®¹
+// tstr     : tstr_t ä¸²
+// format   : å¾…æ ¼å¼åŒ–çš„ä¸²
+// ...      : ç­‰å¾…è¿›å…¥çš„å˜é‡
+// return   : è¿”å›åˆ›å»ºå¥½çš„Cå­—ç¬¦ä¸²å†…å®¹
 //
 char * 
 tstr_printf(tstr_t tstr, const char * format, ...) {
@@ -159,28 +159,28 @@ tstr_printf(tstr_t tstr, const char * format, ...) {
     va_list arg;
     va_start(arg, format);
 
-    // ³õ²½¹¹½¨Ê§°ÜÖ±½Ó·µ»Ø
+    // åˆæ­¥æ„å»ºå¤±è´¥ç›´æ¥è¿”å›
     cap = _tstr_printf(tstr, format, arg);
     if (cap < BUFSIZ)
         return tstr->str;
     
-    // ¿ªÊ¼ÏêÏ¸¹¹½¨ÄÚ´æ
+    // å¼€å§‹è¯¦ç»†æ„å»ºå†…å­˜
     for (;;) {
         char * ret = malloc(cap <<= 1);
         int len = vsnprintf(ret, cap, format, arg);
-        // Ê§°ÜµÄÇé¿ö, ÕâÀïÃ»ÓĞ´òÓ¡´íÎóĞÅÏ¢. ĞèÒªÉÏ²ã×Ô¼º´¦Àí
+        // å¤±è´¥çš„æƒ…å†µ, è¿™é‡Œæ²¡æœ‰æ‰“å°é”™è¯¯ä¿¡æ¯. éœ€è¦ä¸Šå±‚è‡ªå·±å¤„ç†
         if (len < 0) {
             free(ret);
             break;
         }
 
-        // ³É¹¦Çé¿ö, ²åÈëÄÚ´æÊı¾İ
+        // æˆåŠŸæƒ…å†µ, æ’å…¥å†…å­˜æ•°æ®
         if (len < cap) {
             tstr_appendn(tstr, ret, len);
             break;
         }
 
-        // ÖØĞÂ¹¹½¨ÄÚ´æ
+        // é‡æ–°æ„å»ºå†…å­˜
         free(ret);
     }
 

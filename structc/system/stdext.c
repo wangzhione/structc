@@ -1,15 +1,15 @@
-#include <jemalloc/jemalloc.h>
+ï»¿#include <jemalloc/jemalloc.h>
 
 //
-// ±àÒëµ¼Èë
-// gcc -I./structc/system ±àÒëÁ´½Ó²»ÁË -ljemalloc
+// ç¼–è¯‘å¯¼å…¥
+// gcc -I./structc/system ç¼–è¯‘é“¾æ¥ä¸äº† -ljemalloc
 //
 #define _NO_STDEXT_
 #include "stdext.h"
 
 //
-// free_ - free °ü×°º¯Êı
-// ptr      : Í¨¹ıÏÂÃæº¯Êı·ÖÅäµÄÄÚ´æ, ±ØĞëÍ¨¹ıÕâ¸öº¯ÊıÏú»Ù
+// free_ - free åŒ…è£…å‡½æ•°
+// ptr      : é€šè¿‡ä¸‹é¢å‡½æ•°åˆ†é…çš„å†…å­˜, å¿…é¡»é€šè¿‡è¿™ä¸ªå‡½æ•°é”€æ¯
 // return   : void
 //
 inline void 
@@ -17,7 +17,7 @@ free_(void * ptr) {
     je_free(ptr);
 }
 
-// ¼òµ¥´íÎóĞÅÏ¢´òÓ¡
+// ç®€å•é”™è¯¯ä¿¡æ¯æ‰“å°
 static inline void _ext(void * ptr, size_t size) {
     fprintf(stderr, "alloc error ptr = %p, size = %zu!\n", ptr, size);
     fflush(stderr);
@@ -25,9 +25,9 @@ static inline void _ext(void * ptr, size_t size) {
 }
 
 //
-// malloc_ - malloc °ü×°, ·â×°Ò»Ğ©ÒµÎñÌØĞÔ´úÂë
-// size     : ·ÖÅäµÄÄÚ´æ×Ö½Ú
-// return   : ·µ»Ø¿ÉÊ¹ÓÃµÄÄÚ´æµØÖ·.
+// malloc_ - malloc åŒ…è£…, å°è£…ä¸€äº›ä¸šåŠ¡ç‰¹æ€§ä»£ç 
+// size     : åˆ†é…çš„å†…å­˜å­—èŠ‚
+// return   : è¿”å›å¯ä½¿ç”¨çš„å†…å­˜åœ°å€.
 //
 inline void * 
 malloc_(size_t size) {
@@ -38,10 +38,10 @@ malloc_(size_t size) {
 }
 
 //
-// calloc_ - calloc °ü×°, ·â×°Ò»Ğ©ÌØÊâÒµÎñ
-// num      : ÊıÁ¿
-// size     : ´óĞ¡
-// return   : ·µ»Ø¿ÉÓÃÄÚ´æµØÖ·, ²¢ÇÒÖÃ0
+// calloc_ - calloc åŒ…è£…, å°è£…ä¸€äº›ç‰¹æ®Šä¸šåŠ¡
+// num      : æ•°é‡
+// size     : å¤§å°
+// return   : è¿”å›å¯ç”¨å†…å­˜åœ°å€, å¹¶ä¸”ç½®0
 //
 inline void * 
 calloc_(size_t num, size_t size) {
@@ -52,16 +52,16 @@ calloc_(size_t num, size_t size) {
 }
 
 //
-// realloc_ - realoc °ü×°º¯Êı, ·â×°Ò»Ğ©ÌØÊâÒµÎñ
-// ptr      : ÖØĞÂ·ÖÅäµÄÄÚ´æÊ×µØÖ·, NULL µÈÍ¬ÓÚ malloc
-// size     : ÖØĞÂ·ÖÅäµÄÄÚ´æ´óĞ¡
-// return   : ·µ»ØÖØĞÂ·ÖÅäºÃµÄĞÂµØÖ·ÄÚÈİ
+// realloc_ - realoc åŒ…è£…å‡½æ•°, å°è£…ä¸€äº›ç‰¹æ®Šä¸šåŠ¡
+// ptr      : é‡æ–°åˆ†é…çš„å†…å­˜é¦–åœ°å€, NULL ç­‰åŒäº malloc
+// size     : é‡æ–°åˆ†é…çš„å†…å­˜å¤§å°
+// return   : è¿”å›é‡æ–°åˆ†é…å¥½çš„æ–°åœ°å€å†…å®¹
 //
 inline void * 
 realloc_(void * ptr, size_t size) {
     void * nptr = je_realloc(ptr, size);
     if (NULL == nptr) {
-        je_free(ptr);   // ¿ÉÓĞ¿ÉÎŞ, ÄÚ´æÄ£¿éÒÑ¾­ÊÇÎ´¶¨ÒåĞĞÎªµÄ±ßÔµÁË
+        je_free(ptr);   // å¯æœ‰å¯æ— , å†…å­˜æ¨¡å—å·²ç»æ˜¯æœªå®šä¹‰è¡Œä¸ºçš„è¾¹ç¼˜äº†
         _ext(ptr, size);   
     }
     return ptr;

@@ -1,28 +1,28 @@
-#ifndef _H_STRUCT
+ï»¿#ifndef _H_STRUCT
 #define _H_STRUCT
 
 #include <stdext.h>
 
 //
-// icmp_f - ±È½ÏĞĞÎªµÄÀàĞÍ
+// icmp_f - æ¯”è¾ƒè¡Œä¸ºçš„ç±»å‹
 //  : int add_cmp(const void * now, const void * node)
 //
 typedef int (* icmp_f)();
 
 //
-// vnew_f - ¸ù¾İ¹æÔò¹¹½¨¶ÔÏó
+// vnew_f - æ ¹æ®è§„åˆ™æ„å»ºå¯¹è±¡
 //  : void * rb_new(void * node)
 //
 typedef void * (* vnew_f)();
 
 //
-// node_f - Ïú»Ùµ±Ç°¶ÔÏó½Úµã
+// node_f - é”€æ¯å½“å‰å¯¹è±¡èŠ‚ç‚¹
 //  : void list_die(void * node); 
 //
 typedef void (* node_f)(void * node);
 
 //
-// each_f - each Ñ­»·²Ù×÷, arg Íâ²¿²ÎÊı, node ÊÇÄÚ²¿½áµã
+// each_f - each å¾ªç¯æ“ä½œ, arg å¤–éƒ¨å‚æ•°, node æ˜¯å†…éƒ¨ç»“ç‚¹
 //  : int dict_echo(struct dict * node, void * arg) { return 0; }
 //
 typedef int (* each_f)(void * node, void * arg);

@@ -1,26 +1,26 @@
-#ifndef _H_CHEAD
+﻿#ifndef _H_CHEAD
 #define _H_CHEAD
 
 #include <time.h>
 #include <stdio.h>
 
 //
-// LEN - ��ȡ���鳤��
-// arr : ������
+// LEN - 获取数组长度
+// arr : 数组名
 //
 #define LEN(arr) sizeof(arr)/sizeof(*(arr))
 
 //
-// STR - ����˫���ŵĺ� 
-// v    : ������˫���ŵ���
+// STR - 添加双引号的宏 
+// v    : 待添加双引号的量
 //
 #define STR_(v) #v
 #define STR(v)	STR_(v)
 
 //
-// EXTERN_RUN - �򵥵�����, ������ʹ�õĺ�
-// ftest    : ��Ҫִ�еĺ�������
-// ...      : �ɱ����, ����
+// EXTERN_RUN - 简单的声明, 并立即使用的宏
+// ftest    : 需要执行的函数名称
+// ...      : 可变参数, 保留
 //
 #define EXTERN_RUN(ftest, ...)  \
 do {                            \
@@ -29,8 +29,8 @@ do {                            \
 } while(0)
 
 //
-// TEST_CODE - ���Դ����, �������ʱ����Ϣ
-// code : { ... } �����Ĵ����
+// TEST_CODE - 测试代码块, 并输出简单时间信息
+// code : { ... } 包裹的代码块
 //
 #define TEST_CODE(code)                                                 \
 do {                                                                    \
@@ -41,9 +41,9 @@ do {                                                                    \
 } while (0)
 
 //
-// TEST_FUNC - ���ڵ�Ԫ���Ժ���, ִ�в��������ʱ��
-// ftest    : ��Ҫִ�еĲ��Ժ�������
-// ...      : �ɱ����, ����
+// TEST_FUNC - 用于单元测试函数, 执行并输出运行时间
+// ftest    : 需要执行的测试函数名称
+// ...      : 可变参数, 保留
 //
 #define TEST_FUNC(ftest, ...)                                           \
 do {                                                                    \

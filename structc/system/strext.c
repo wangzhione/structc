@@ -1,11 +1,11 @@
-#include <strext.h>
+ï»¿#include <strext.h>
 #include <assext.h>
 #include <ctype.h>
 
 //
-// str_hash - Brian KernighanÓë Dennis Ritchie ¼ò±ã¿ì½ÝµÄ hashËã·¨
-// str		: ×Ö·û´®ÄÚÈÝ
-// return	: ·µ»Ø¼ÆËãºóµÄhashÖµ
+// str_hash - Brian Kernighanä¸Ž Dennis Ritchie ç®€ä¾¿å¿«æ·çš„ hashç®—æ³•
+// str		: å­—ç¬¦ä¸²å†…å®¹
+// return	: è¿”å›žè®¡ç®—åŽçš„hashå€¼
 //
 unsigned 
 str_hash(const char * str) {
@@ -19,10 +19,10 @@ str_hash(const char * str) {
 }
 
 //
-// str_icmp - ×Ö·û´®²»Çø·Ö´óÐ¡Ð´±È½Ïº¯Êý
-// ls		: ×ó´®
-// rs		: ÓÒ´®
-// return	: ls > rs ·µ»Ø > 0; ... < 0; ... =0
+// str_icmp - å­—ç¬¦ä¸²ä¸åŒºåˆ†å¤§å°å†™æ¯”è¾ƒå‡½æ•°
+// ls		: å·¦ä¸²
+// rs		: å³ä¸²
+// return	: ls > rs è¿”å›ž > 0; ... < 0; ... =0
 //
 int 
 str_icmp(const char * ls, const char * rs) {
@@ -41,9 +41,9 @@ str_icmp(const char * ls, const char * rs) {
 }
 
 //
-// str_dup - ×Ö·û´®¿½±´mallocº¯Êý, ÐèÒª×Ô¼ºfree
-// str		: ´ý¿½±´µÄ´®
-// return	: ·µ»Ø¿½±´ºóµÄ´®
+// str_dup - å­—ç¬¦ä¸²æ‹·è´mallocå‡½æ•°, éœ€è¦è‡ªå·±free
+// str		: å¾…æ‹·è´çš„ä¸²
+// return	: è¿”å›žæ‹·è´åŽçš„ä¸²
 //
 char * 
 str_dup(const char * str) {
@@ -57,9 +57,9 @@ str_dup(const char * str) {
 }
 
 //
-// str_trim - È¥³ý×Ö·ûÊý×éÇ°ºó¿ØÖÆ×Ö·û
-// str      : ´ý²Ù×÷µÄ×Ö·ûÊý×é \0 ½áÎ²
-// return   : ·µ»Ø¹¹½¨ºÃ×Ö·ûÊý×éÊ×µØÖ·
+// str_trim - åŽ»é™¤å­—ç¬¦æ•°ç»„å‰åŽæŽ§åˆ¶å­—ç¬¦
+// str      : å¾…æ“ä½œçš„å­—ç¬¦æ•°ç»„ \0 ç»“å°¾
+// return   : è¿”å›žæž„å»ºå¥½å­—ç¬¦æ•°ç»„é¦–åœ°å€
 //
 char * 
 str_trim(char str[]) {
@@ -67,23 +67,23 @@ str_trim(char str[]) {
     if (!str || !*str)
         return str;
 
-    // ÕÒµ½µÚÒ»¸ö²»ÊÇ¿Õ¸ñ×Ö·ûµÄµØÖ·
+    // æ‰¾åˆ°ç¬¬ä¸€ä¸ªä¸æ˜¯ç©ºæ ¼å­—ç¬¦çš„åœ°å€
     for (s = str; isspace(*s); ++s)
         ;
 
-    // ÕÒµ½×îºóÒ»¸ö²»ÊÇ¿Õ¸ñ×Ö·ûµÄµØÖ·
+    // æ‰¾åˆ°æœ€åŽä¸€ä¸ªä¸æ˜¯ç©ºæ ¼å­—ç¬¦çš„åœ°å€
     e = s + strlen(s) - 1;
     if (isspace(*e)) {
         do --e; while (isspace(*e));
         e[1] = '\0';
     }
 
-    // ¿ªÊ¼·µ»ØÒÆ¶¯ºóµÄÊ×µØÖ·
+    // å¼€å§‹è¿”å›žç§»åŠ¨åŽçš„é¦–åœ°å€
     return s == str ? str : memmove(str, s, e - s + 2);
 }
 
 
-// _str_printf : ³É¹¦Ö±½Ó·µ»Ø
+// _str_printf : æˆåŠŸç›´æŽ¥è¿”å›ž
 static char * _str_printf(const char * format, va_list arg) {
     char buf[BUFSIZ];
     int len = vsnprintf(buf, sizeof buf, format, arg);
@@ -97,10 +97,10 @@ static char * _str_printf(const char * format, va_list arg) {
 }
 
 //
-// str_printf - ×Ö·û´®¹¹½¨º¯Êý
-// format   : ¹¹½¨¸ñÊ½²ÎÕÕpritnf
-// ...      : ²ÎÊý¼¯
-// return   : char * ¶ÑÉÏÄÚ´æ
+// str_printf - å­—ç¬¦ä¸²æž„å»ºå‡½æ•°
+// format   : æž„å»ºæ ¼å¼å‚ç…§pritnf
+// ...      : å‚æ•°é›†
+// return   : char * å †ä¸Šå†…å­˜
 //
 char * 
 str_printf(const char * format, ...) {
@@ -109,7 +109,7 @@ str_printf(const char * format, ...) {
     va_list arg;
     va_start(arg, format);
 
-    // BUFSIZ ÒÔÏÂÄÚ´æÖ±½Ó·ÖÅä
+    // BUFSIZ ä»¥ä¸‹å†…å­˜ç›´æŽ¥åˆ†é…
     ret = _str_printf(format, arg);
     if (ret != NULL)
         return ret;
@@ -119,17 +119,17 @@ str_printf(const char * format, ...) {
         ret = malloc(cap);
         assert(ret != NULL);
         len = vsnprintf(ret, cap, format, arg);
-        // Ê§°ÜµÄÇé¿ö
+        // å¤±è´¥çš„æƒ…å†µ
         if (len < 0) {
             free(ret);
             RETURN(NULL, "vsnprintf error format is = %s.", format);
         }
 
-        // ³É¹¦Çé¿ö
+        // æˆåŠŸæƒ…å†µ
         if (len < cap)
             break;
 
-        // ÄÚ´æ²»×ãµÄÇé¿ö
+        // å†…å­˜ä¸è¶³çš„æƒ…å†µ
         free(ret);
         cap <<= 1;
     }
@@ -138,9 +138,9 @@ str_printf(const char * format, ...) {
 }
 
 //
-// str_freadend - ¼òµ¥µÄÎÄ¼þ¶ÁÈ¡Àà,»á¶ÁÈ¡Íê±ÏÕâ¸öÎÄ¼þÄÚÈÝ·µ»Ø, ÐèÒª×Ô¼ºfree
-// path		: ÎÄ¼þÂ·¾¶
-// return	: ´´½¨ºÃµÄ×Ö·û´®ÄÚÈÝ, ·µ»ØNULL±íÊ¾¶ÁÈ¡Ê§°Ü
+// str_freadend - ç®€å•çš„æ–‡ä»¶è¯»å–ç±»,ä¼šè¯»å–å®Œæ¯•è¿™ä¸ªæ–‡ä»¶å†…å®¹è¿”å›ž, éœ€è¦è‡ªå·±free
+// path		: æ–‡ä»¶è·¯å¾„
+// return	: åˆ›å»ºå¥½çš„å­—ç¬¦ä¸²å†…å®¹, è¿”å›žNULLè¡¨ç¤ºè¯»å–å¤±è´¥
 //
 char * 
 str_freadend(const char * path) {
@@ -152,11 +152,11 @@ str_freadend(const char * path) {
 		RETURN(NULL, "fopen rb path error = %s.", path);
 	}
 
-	// ·ÖÅäÄÚ´æ
+	// åˆ†é…å†…å­˜
 	len = 0;
 	str = malloc(cap = BUFSIZ);
 
-	// ¶ÁÈ¡ÎÄ¼þÄÚÈÝ
+	// è¯»å–æ–‡ä»¶å†…å®¹
 	do {
 		rn = fread(buf, sizeof(char), BUFSIZ, txt);
 		if ((err = ferror(txt))) {
@@ -164,19 +164,19 @@ str_freadend(const char * path) {
 			fclose(txt);
 			RETURN(NULL, "fread err path = %d, %s.", err, path);
 		}
-		// ¿ªÊ¼Ìí¼Ó¹¹½¨Êý¾Ý
+		// å¼€å§‹æ·»åŠ æž„å»ºæ•°æ®
 		if (len + rn >= cap)
 			str = realloc(str, cap <<= 1);
 		memcpy(str + len, buf, rn);
 		len += rn;
 	} while (rn == BUFSIZ);
 
-	// ÉèÖÃ½áÎ², ²¢·µ»Ø½á¹û
+	// è®¾ç½®ç»“å°¾, å¹¶è¿”å›žç»“æžœ
 	str[len] = '\0';
 	return realloc(str, len + 1);
 }
 
-// _str_fwrite - °´ÕÕÔ¼¶¨Êä³öÊý¾Ýµ½ÎÄ¼þÖÐ
+// _str_fwrite - æŒ‰ç…§çº¦å®šè¾“å‡ºæ•°æ®åˆ°æ–‡ä»¶ä¸­
 static int _str_fwrite(const char * path, const char * str, const char * mode) {
 	int len;
 	FILE * txt;
@@ -184,20 +184,20 @@ static int _str_fwrite(const char * path, const char * str, const char * mode) {
 		RETURN(EParam, "check !path || !*path || !str || !mode");
 	}
 
-	// ´ò¿ªÎÄ¼þ, Ð´ÈëÏûÏ¢, ¹Ø±ÕÎÄ¼þ
+	// æ‰“å¼€æ–‡ä»¶, å†™å…¥æ¶ˆæ¯, å…³é—­æ–‡ä»¶
 	if ((txt = fopen(path, mode)) == NULL) {
 		RETURN(EFd, "fopen error path = %s, mode = %s.", path, mode);
 	}
 	len = fputs(str, txt);
 	fclose(txt);
-	// Êä³öÎÄ¼þ³¤¶È
+	// è¾“å‡ºæ–‡ä»¶é•¿åº¦
 	return len;
 }
 
 //
-// str_fwrites - ½«c´®str¸²¸ÇÐ´Èëµ½pathÂ·¾¶µÄÎÄ¼þÖÐ
-// path		: ÎÄ¼þÂ·¾¶
-// str		: cµÄ´®ÄÚÈÝ
+// str_fwrites - å°†cä¸²strè¦†ç›–å†™å…¥åˆ°pathè·¯å¾„çš„æ–‡ä»¶ä¸­
+// path		: æ–‡ä»¶è·¯å¾„
+// str		: cçš„ä¸²å†…å®¹
 // return	: >=0 is success, < 0 is error
 //
 inline int 
@@ -206,9 +206,9 @@ str_fwrites(const char * path, const char * str) {
 }
 
 //
-// str_fappends - ½«c´®strÐ´Èëµ½pathÂ·¾¶µÄÎÄ¼þÖÐÄ©Î²
-// path		: ÎÄ¼þÂ·¾¶
-// str		: cµÄ´®ÄÚÈÝ
+// str_fappends - å°†cä¸²strå†™å…¥åˆ°pathè·¯å¾„çš„æ–‡ä»¶ä¸­æœ«å°¾
+// path		: æ–‡ä»¶è·¯å¾„
+// str		: cçš„ä¸²å†…å®¹
 // return	: >=0 is success, < 0 is error
 //
 inline int 

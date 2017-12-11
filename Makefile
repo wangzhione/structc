@@ -17,8 +17,6 @@ TEST_DIR	?= test
 OUTS		?= ./Output
 OBJ_DIR		?= obj
 
-EXE         ?= out
-
 #
 # DIRS		: 所有可变编译文件目录
 # IINC		: -I 需要导入的include 目录
@@ -53,12 +51,12 @@ RUN		= $(RHAD) -o $(OUTS)/$@ $(RTAL)
 #
 .PHONY : all clean
 
-all : main.$(EXE)
+all : main.out
 
 #
 # 主运行程序main
 #
-main.$(EXE) : main.o main_run.o main_test.o librunc.a
+main.out : main.o main_run.o main_test.o librunc.a
 	$(RUN)
 
 #
@@ -90,3 +88,4 @@ clean :
 	-rm -rf $(OUTS)
 	-rm -rf Debug Release logs x64
 	-rm -rf $(ROOT)/Debug $(ROOT)/logs $(ROOT)/Release $(ROOT)/x64
+
