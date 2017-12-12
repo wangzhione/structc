@@ -32,17 +32,6 @@
 // 2^29     2^30	0.000011	805306457
 // 2^30     2^31	0.000000	1610612741
 
-// _log2power : 以2为底log函数, 但是不准确
-static inline unsigned _log2power(unsigned p) {
-    unsigned log2 = 0;
-    log2 |= ((p & 0xFFFF0000) != 0) << 4;    
-    log2 |= ((p & 0xFF00FF00) != 0) << 3;    
-    log2 |= ((p & 0xF0F0F0F0) != 0) << 2;    
-    log2 |= ((p & 0xCCCCCCCC) != 0) << 1;  
-    log2 |= ((p & 0xAAAAAAAA) != 0) << 0;      
-    return log2; 
-}
-
 static unsigned _primes[][2] = {
     { 0   ,         53 },
     { 2^6 ,         97 },
@@ -87,10 +76,7 @@ void strings_test(void) {
     l = ffs(x = -1);
     printf("x = %d -> %d\n", x, l);
 
-    printf("log1024 = %u\n", _log2power(1024));
-    printf("log1025 = %u\n", _log2power(1025));
-    printf("log1026 = %u\n", _log2power(1026));
-
+    // 下面是以后 hash 种子取值的先行军
     x = 1;
     l = 18000;
     int nx = _primes[x - 1][0];

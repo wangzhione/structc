@@ -49,4 +49,42 @@ list_create_((icmp_f)fadd, (icmp_f)fget, (node_f)fdie)
 //
 extern void list_delete(list_t list);
 
+//
+// list_get - 匹配得到链表中指定值
+// list     : 基础的链表结构
+// left     : 待查找的结点内容 
+// return   : 查找到的节点, NULL 表示没有查到
+//
+extern void * list_get_(list_t list, const void * left);
+#define list_get(list, left) \
+list_get_(list, (const void *)(intptr_t)left)
+
+//
+// list_pop - 匹配弹出链表中指定值
+// list     : 基础的链表结构
+// left     : 待查找的结点内容 
+// return   : 查找到的节点, NULL 表示没有查到 
+//
+extern void * list_pop_(list_t list, const void * left);
+#define list_pop(list, left) \
+list_pop_(list, (const void *)(intptr_t)left)
+
+//
+// list_add - 链表中添加数据, 从小到大 fadd(left, ) <= 0
+// list     : 基础的链表结构 
+// left     : 待插入的链表结点
+// return   : void
+// 
+extern void list_add(list_t list, void * left);
+
+//
+// list_each - 链表循环处理函数, 仅仅测试而已
+// list     : 基础的链表结构
+// feach    : 处理每个结点行为函数
+// return   : void
+//
+extern void list_each_(list_t list, node_f feach);
+#define list_each(list, feach) \
+list_each_(list, feach)
+
 #endif//_H_LIST
