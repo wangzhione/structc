@@ -15,7 +15,29 @@
 
 ***
 
-### ~ * ~ 写个好手 ...
+### 也许要扯些
+
+[structc 环境搭建](./structc/README.md)
+
+    - winds 双击
+        - 目前只维护 x64 的 Debug 和 Release
+        - Best New CL build
+
+    - linux 搞起
+        - Debug   : make DPRE=-D_DEBUG
+        - Release : make
+        - Clean   : make clean
+
+    - 工程目录简讲
+        - main 目录
+            - main_run.c 写业务代码
+            - main_test.c 加 test目录下单测
+        - test 目录
+            - *_test.c -> void *_test(void) { ... }        
+
+***
+
+#### ~ * ~ 写个好手 ...
 
     为要寻一个明星
     - 徐志摩 

@@ -1,7 +1,7 @@
 ﻿#
 # 前期编译一些目录结构使用宏
 # Release : make 
-# Debug   : make "DPRE=-D_DEBUG"
+# Debug   : make DPRE=-D_DEBUG
 # Clean   : make clean
 #
 ROOT		?= ./structc
