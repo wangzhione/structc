@@ -11,7 +11,7 @@ struct $list {
     struct $list * next;
 };
 
-#define LIST_HEAD struct $list $node
+#define $LIST struct $list $node;
 
 struct list { 
     struct $list * root;    // 存储链表的头节点
@@ -24,23 +24,28 @@ struct list {
 typedef struct list * list_t;
 
 //
+// list_next - 获取结点n的下一个结点.
+// n		: 当前结点
+//
+#define list_next(n) ((void *)((struct $list *)(n))->next)
+
+//
 // list_create_ - 构建 list 对象
 // fadd     : 插入数据方法
 // fget     : 获取数据方法
-// fdie     : 销毁数据方法
 // return   : 创建好的链表对象
 //
-inline list_t list_create_(icmp_f fadd, icmp_f fget, node_f fdie) {
+inline list_t list_create_(icmp_f fadd, icmp_f fget) {
     list_t list = malloc(sizeof(struct list));
     list->root = NULL;
     list->fadd = fadd;
     list->fget = fget;
-    list->fdie = fdie;
+    list->fdie = NULL;
     return list;
 }
 
-#define list_create(fadd, fget, fdie) \
-list_create_((icmp_f)fadd, (icmp_f)fget, (node_f)fdie)
+#define list_create(fadd, fget) \
+list_create_((icmp_f)fadd, (icmp_f)fget)
 
 //
 // list_delete - 链表数据销毁操作
@@ -85,6 +90,6 @@ extern void list_add(list_t list, void * left);
 //
 extern void list_each_(list_t list, node_f feach);
 #define list_each(list, feach) \
-list_each_(list, feach)
+list_each_(list, (node_f)feach)
 
 #endif//_H_LIST

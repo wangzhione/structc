@@ -1,24 +1,31 @@
 ﻿#include <list.h>
 
 //
+// list_next - 获取结点n的下一个结点.
+// n		: 当前结点
+//
+#undef  list_next
+#define list_next(n) ((struct $list *)(n))->next
+
+//
 // list_delete - 链表数据销毁操作
 // list     : 基础的链表结构
 // return   : void
 //
 void 
 list_delete(list_t list) {
-    struct $list * head;
-    if (!list || !list->fdie)
-        return;
+    if (!list) return;
 
-    // 详细处理链表数据变化
-    head = list->root;
-    while (head) {
-        struct $list * next = head->next;
-        list->fdie(head);
-        head = next;
+    if (list->fdie) {
+        // 详细处理链表数据变化
+        struct $list * head = list->root;
+        while (head) {
+            struct $list * next = head->next;
+            list->fdie(head);
+            head = next;
+        }
     }
-    
+
     free(list);
 }
 
@@ -90,7 +97,7 @@ list_add(list_t list, void * left) {
     // 看是否是头结点
     head = list->root;
     if (!head || list->fadd(left, head) <= 0) {
-        ((struct $list *)left)->next = list->root;
+        list_next(left) = list->root;
         list->root = left;
         return;
     }
@@ -103,7 +110,7 @@ list_add(list_t list, void * left) {
     }
 
     // 添加最终的连接关系
-    ((struct $list *)left)->next = head->next;
+    list_next(left) = head->next;
     head->next = left;
 }
 
@@ -118,8 +125,9 @@ list_each_(list_t list, node_f feach) {
     if (list) {
         struct $list * head = list->root;
         while (head) {
+            struct $list * next = head->next;
             feach(head);
-            head = head->next;
+            head = next;
         }
     }
 }
