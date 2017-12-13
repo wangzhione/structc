@@ -1,7 +1,7 @@
 ﻿#
 # 前期编译一些目录结构使用宏
 # Release : make 
-# Debug   : make DPRE=-D_DEBUG
+# Debug   : make D=-D_DEBUG
 # Clean   : make clean
 #
 ROOT		?= ./structc
@@ -43,7 +43,7 @@ LIB 	= -lm -l:libuv.a -lpthread
 
 RHAD	= $(CC) $(CFLAGS) $(IINC)
 RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB)
-RUNO	= $(RHAD) -c -o $(OBJP)$@ $< $(DPRE)
+RUNO	= $(RHAD) -c -o $(OBJP)$@ $< $(D)
 RUN		= $(RHAD) -o $(OUTS)/$@ $(RTAL)
 
 #

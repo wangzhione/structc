@@ -24,7 +24,7 @@
         - Best New CL build
 
     - linux 搞起
-        - Debug   : make DPRE=-D_DEBUG
+        - Debug   : make D=-D_DEBUG
         - Release : make
         - Clean   : make clean
 
