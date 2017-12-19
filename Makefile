@@ -4,7 +4,7 @@
 # Debug   : make D=-D_DEBUG
 # Clean   : make clean
 #
-ROOT		?= ./structc
+ROOT		?= structc
 
 MAIN_DIR	?= main
 
@@ -14,7 +14,7 @@ BASE_DIR 	?= base
 
 TEST_DIR	?= test
 
-OUTS		?= ./Output
+OUTS		?= Output
 OBJ_DIR		?= obj
 
 #
