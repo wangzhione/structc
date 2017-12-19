@@ -102,8 +102,10 @@
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
+    <ClCompile Include="test\list_test.c" />
     <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\strext_test.c" />
+    <ClCompile Include="test\strings_test.c" />
     <ClCompile Include="test\uv_timer_test.c" />
     <ClCompile Include="test\uv_love_test.c" />
     <ClCompile Include="test\uv_tty_test.c" />

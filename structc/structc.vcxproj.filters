@@ -116,6 +116,12 @@
     <ClCompile Include="test\uv_love_test.c">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="test\list_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\strings_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
