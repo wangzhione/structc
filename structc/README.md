@@ -141,3 +141,5 @@ rm -rf libuv-1.18.0 v1.18.0.tar.gz
 ```bash
 gcc -g -O2 -Wall -Wno-unused-result -std=gnu11 -c stdext.c -DJEMALLOC_NO_DEMANGLE
 ```
+
+        解决编译无法内嵌问题!

@@ -30,7 +30,7 @@ typedef struct list * list_t;
 #define list_next(n) ((void *)((struct $list *)(n))->next)
 
 //
-// list_create_ - 构建 list 对象
+// list_create - 构建 list 对象
 // fadd     : 插入数据方法
 // fget     : 获取数据方法
 // return   : 创建好的链表对象

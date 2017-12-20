@@ -1,4 +1,4 @@
-#include <list.h>
+﻿#include <list.h>
 #include <chead.h>
 
 #define _INT_NAME (64)
@@ -12,7 +12,7 @@ struct peoples {
 
 // _peoples_add : 默认年龄从小到大排序, 并且获取
 static inline int _peoples_add(struct peoples * left, struct peoples * node) {
-    return left->age - node->age;
+    return (int)(left->age - node->age);
 }
 
 // _peoples_each : 单纯的打印接口信息
