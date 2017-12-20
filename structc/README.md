@@ -48,8 +48,8 @@
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
 
         _DEBUG
-        JEMALLOC_EXPORT=
         JEMALLOC_STATIC
+        JEMALLOC_EXPORT=
         WIN32_LEAN_AND_MEAN
         _CRT_SECURE_NO_WARNINGS
         _CRT_NONSTDC_NO_DEPRECATE
@@ -131,7 +131,7 @@ rm -rf libuv-1.18.0 v1.18.0.tar.gz
     b) 编译设置
 
        -lm 
-	   -uv
+	   -l:libuv.a
        -lpthread
 
     c) 踩坑
@@ -139,5 +139,5 @@ rm -rf libuv-1.18.0 v1.18.0.tar.gz
         gcc -I 会诱发 stdext.o 没有嵌入 jemalloc 相关代码, 使用下面方式
 
 ```bash
-gcc -g -O2 -Wall -Wno-unused-result -std=gnu11 -c -o ./Output/obj/stdext.o ./structc/system/stdext.c -DJEMALLOC_NO_DEMANGLE
+gcc -g -O2 -Wall -Wno-unused-result -std=gnu11 -c stdext.c -DJEMALLOC_NO_DEMANGLE
 ```
