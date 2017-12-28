@@ -13,7 +13,7 @@ int main(int argc, char * argv[]) {
     // ... ...
 
     //
-    // make "DPRE=-D_DEBUG"
+    // make D=-D_DEBUG
     // main_test 单元测试才会启动
     //
 #if defined(_DEBUG)

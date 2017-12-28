@@ -6,32 +6,32 @@
 #
 ROOT		?= structc
 
-MAIN_DIR	?= main
+DMAIN	    ?= main
 
-STRUCT_DIR	?= struct
-SYSTEM_DIR	?= system
-BASE_DIR 	?= base
+DSTRUCT	    ?= struct
+DSYSTEM	    ?= system
+DBASE 	    ?= base
 
-TEST_DIR	?= test
+DTEST	    ?= test
 
 OUTS		?= Output
-OBJ_DIR		?= obj
+DOBJ		?= obj
 
 #
 # DIRS		: 所有可变编译文件目录
 # IINC		: -I 需要导入的include 目录
 # SRCC		: 所有 .c 文件
 #
-DIRS	=	$(STRUCT_DIR) $(SYSTEM_DIR) $(BASE_DIR)
+DIRS	=	$(DSTRUCT) $(DSYSTEM) $(DBASE)
 
 IINC	=	$(foreach v, $(DIRS), -I$(ROOT)/$(v))
-SRCC	=	$(wildcard $(foreach v, $(MAIN_DIR) $(DIRS) $(TEST_DIR), $(ROOT)/$(v)/*.c))
+SRCC	=	$(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST), $(ROOT)/$(v)/*.c))
 
 OBJC	=	$(wildcard $(foreach v, $(DIRS), $(ROOT)/$(v)/*.c))
 OBJO	=	$(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
-OBJP	=	$(OUTS)/$(OBJ_DIR)/
+OBJP	=	$(OUTS)/$(DOBJ)/
 
-TESTC	=	$(wildcard $(ROOT)/$(TEST_DIR)/*.c)
+TESTC	=	$(wildcard $(ROOT)/$(DTEST)/*.c)
 TESTO	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 
 #
@@ -73,7 +73,7 @@ $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 # 生成 librunc.a 静态库, 方便处理所有问题
 #
 librunc.a : $(OBJO) $(TESTO)
-	$(CC) $(CFLAGS) -c -o $(OBJP)stdext.o $(ROOT)/$(SYSTEM_DIR)/stdext.c -DJEMALLOC_NO_DEMANGLE $(DPRE)
+	$(CC) $(CFLAGS) -c -o $(OBJP)stdext.o $(ROOT)/$(DSYSTEM)/stdext.c -DJEMALLOC_NO_DEMANGLE $(DPRE)
 	ar cr $(OBJP)$@ $(foreach v, $^, $(OBJP)$(v))
 
 #
