@@ -347,17 +347,17 @@ typedef struct {
 } uv_stat_t;
 
 
-typedef void (* uv_fs_event_cb)(uv_fs_event_t * handle,
-                               const char * filename,
+typedef void (*uv_fs_event_cb)(uv_fs_event_t* handle,
+                               const char* filename,
                                int events,
                                int status);
 
-typedef void (* uv_fs_poll_cb)(uv_fs_poll_t * handle,
+typedef void (*uv_fs_poll_cb)(uv_fs_poll_t* handle,
                               int status,
-                              const uv_stat_t * prev,
-                              const uv_stat_t * curr);
+                              const uv_stat_t* prev,
+                              const uv_stat_t* curr);
 
-typedef void (* uv_signal_cb)(uv_signal_t * handle, int signum);
+typedef void (*uv_signal_cb)(uv_signal_t* handle, int signum);
 
 
 typedef enum {
@@ -1070,6 +1070,7 @@ UV_EXTERN int uv_os_homedir(char* buffer, size_t* size);
 UV_EXTERN int uv_os_tmpdir(char* buffer, size_t* size);
 UV_EXTERN int uv_os_get_passwd(uv_passwd_t* pwd);
 UV_EXTERN void uv_os_free_passwd(uv_passwd_t* pwd);
+UV_EXTERN uv_pid_t uv_os_getpid(void);
 UV_EXTERN uv_pid_t uv_os_getppid(void);
 
 UV_EXTERN int uv_cpu_info(uv_cpu_info_t** cpu_infos, int* count);
