@@ -10,5 +10,5 @@ void main_test(void) {
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(list_test);
+    EXTERN_RUN(thread_test);
 }

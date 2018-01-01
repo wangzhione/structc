@@ -28,6 +28,9 @@
     <Filter Include="system\uv">
       <UniqueIdentifier>{bb1acb3a-45f0-400a-a376-36c43777209f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\pthread">
+      <UniqueIdentifier>{f3c1c5a2-98b0-46b1-b5c5-05a6fd58f55b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h">
@@ -78,6 +81,18 @@
     <ClInclude Include="system\uv\uv-win.h">
       <Filter>system\uv</Filter>
     </ClInclude>
+    <ClInclude Include="system\pthread\pthread.h">
+      <Filter>system\pthread</Filter>
+    </ClInclude>
+    <ClInclude Include="system\pthread\sched.h">
+      <Filter>system\pthread</Filter>
+    </ClInclude>
+    <ClInclude Include="system\pthread\semaphore.h">
+      <Filter>system\pthread</Filter>
+    </ClInclude>
+    <ClInclude Include="system\thread.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -120,6 +135,9 @@
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="test\strings_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\thread_test.c">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

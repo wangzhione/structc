@@ -35,6 +35,9 @@ typedef struct list * list_t;
 // fget     : 获取数据方法
 // return   : 创建好的链表对象
 //
+#define list_create(fadd, fget) \
+list_create_((icmp_f)fadd, (icmp_f)fget)
+
 inline list_t list_create_(icmp_f fadd, icmp_f fget) {
     list_t list = malloc(sizeof(struct list));
     list->root = NULL;
@@ -43,9 +46,6 @@ inline list_t list_create_(icmp_f fadd, icmp_f fget) {
     list->fdie = NULL;
     return list;
 }
-
-#define list_create(fadd, fget) \
-list_create_((icmp_f)fadd, (icmp_f)fget)
 
 //
 // list_delete - 链表数据销毁操作
@@ -60,9 +60,10 @@ extern void list_delete(list_t list);
 // left     : 待查找的结点内容 
 // return   : 查找到的节点, NULL 表示没有查到
 //
-extern void * list_get_(list_t list, const void * left);
 #define list_get(list, left) \
 list_get_(list, (const void *)(intptr_t)left)
+
+extern void * list_get_(list_t list, const void * left);
 
 //
 // list_pop - 匹配弹出链表中指定值
@@ -70,9 +71,10 @@ list_get_(list, (const void *)(intptr_t)left)
 // left     : 待查找的结点内容 
 // return   : 查找到的节点, NULL 表示没有查到 
 //
-extern void * list_pop_(list_t list, const void * left);
 #define list_pop(list, left) \
 list_pop_(list, (const void *)(intptr_t)left)
+
+extern void * list_pop_(list_t list, const void * left);
 
 //
 // list_add - 链表中添加数据, 从小到大 fadd(left, ) <= 0
@@ -88,8 +90,9 @@ extern void list_add(list_t list, void * left);
 // feach    : 处理每个结点行为函数
 // return   : void
 //
-extern void list_each_(list_t list, node_f feach);
 #define list_each(list, feach) \
 list_each_(list, (node_f)feach)
+
+extern void list_each_(list_t list, node_f feach);
 
 #endif//_H_LIST

@@ -10,8 +10,8 @@
 
 ## 0. 存在合理性
 
-    a). 条理清晰的用C去提供服务
-    b). 减少开发成本, 用winds测试, linux发布
+    a). 条理清晰的用 C 去提供服务
+    b). 减少开发成本, 用 winds 测试, linux 发布
     c). 平台采用x64下 winds DEBUG, linux release
 
 ## 1. winds 部署
@@ -33,22 +33,25 @@
 		userenv.lib
 		iphlpapi.lib
 		advapi32.lib
+		pthread_lib.lib
 		jemalloc-vc141-Release-static.lib
 
         
     c). 添加包含目录
         项目右击 -> [属性] -> [VC++ 目录] -> [包含目录]
 
-        $(ProjectDir)base       -- 基于上面的基础核心模块
-        $(ProjectDir)struct     -- 基础数据结构提供
-        $(ProjectDir)system     -- 操作系统一些通用操作
-        $(ProjectDir)system/uv  -- 网络IO操作, 目前内嵌libuv
+        $(ProjectDir)base			 -- 基于上面的基础核心模块
+        $(ProjectDir)struct			 -- 基础数据结构提供
+        $(ProjectDir)system			 -- 操作系统一些通用操作
+        $(ProjectDir)system/uv		 -- 网络IO操作, 内嵌libuv
+		$(ProjectDir)system/pthread  -- POSIX pthread 线程模型
 
     d). 添加预编译处理器
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
 
         _DEBUG
-        JEMALLOC_STATIC
+		JEMALLOC_STATIC
+		PTW32_STATIC_LIB
         JEMALLOC_EXPORT=
         WIN32_LEAN_AND_MEAN
         _CRT_SECURE_NO_WARNINGS

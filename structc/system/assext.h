@@ -67,6 +67,12 @@ do {                            \
     return val;                 \
 } while(0)
 
+#define RETNIL(fmt, ...)        \
+do {                            \
+    CERR(fmt, ##__VA_ARGS__);   \
+    return ;                    \
+} while(0)
+
 /*
  * 这里是一个 在 DEBUG 模式下的测试宏
  *

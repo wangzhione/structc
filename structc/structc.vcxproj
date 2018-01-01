@@ -38,11 +38,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDIr)system/uv;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDIr)system/uv;$(ProjectDIr)system/pthread;$(IncludePath)</IncludePath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDir)system/uv;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDir)system/uv;$(ProjectDir)system/pthread;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -51,12 +51,12 @@
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;JEMALLOC_EXPORT=;JEMALLOC_STATIC;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;JEMALLOC_STATIC;PTW32_STATIC_LIB;JEMALLOC_EXPORT=;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -68,12 +68,12 @@
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
       <CompileAs>CompileAsC</CompileAs>
-      <PreprocessorDefinitions>JEMALLOC_EXPORT=;JEMALLOC_STATIC;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>JEMALLOC_STATIC;PTW32_STATIC_LIB;JEMALLOC_EXPORT=;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <Optimization>Full</Optimization>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -82,11 +82,15 @@
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\tstr.h" />
     <ClInclude Include="system\assext.h" />
+    <ClInclude Include="system\pthread\pthread.h" />
+    <ClInclude Include="system\pthread\sched.h" />
+    <ClInclude Include="system\pthread\semaphore.h" />
     <ClInclude Include="system\sdos.h" />
     <ClInclude Include="system\jemalloc\jemalloc.h" />
     <ClInclude Include="system\stdext.h" />
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\strings.h" />
+    <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\uv\tree.h" />
     <ClInclude Include="system\uv\uv-errno.h" />
     <ClInclude Include="system\uv\uv-threadpool.h" />
@@ -106,6 +110,7 @@
     <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\strext_test.c" />
     <ClCompile Include="test\strings_test.c" />
+    <ClCompile Include="test\thread_test.c" />
     <ClCompile Include="test\uv_timer_test.c" />
     <ClCompile Include="test\uv_love_test.c" />
     <ClCompile Include="test\uv_tty_test.c" />
