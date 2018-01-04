@@ -1,23 +1,18 @@
 ﻿#ifndef _H_SDOS
 #define _H_SDOS
 
-/*
-    平台相关提供的简单检测宏 
- */
-
 //
-// 编译平台检测 : winds cl -> WCL | LGCC -> linux gcc
-// 目前我们只支持, 最新的 WINDS CL 和 LINUX GCC 环境
+// 平台相关提供的简单检测宏 :)
 //
-#if defined(__GNUC__)
-#   define LGCC (1)
-#elif defined(_MSC_VER)
-#   define WCL  (2)
-#else
+// 莫名的伤感起来 ~  
+//   __GNUC__ -> Linux GCC
+//   _MSC_VER -> Winds CL
+//
+#if !defined(__GNUC__) && !defined(_MSC_VER)
 #   error BUILD (￣︶￣) S
 #endif
 
-#if defined(WCL)
+#if defined(_MSC_VER)
 
 //
 // CPU 检测 : x64 or x86
@@ -33,7 +28,7 @@
 
 #endif
 
-#if defined(LGCC)
+#if defined(__GNUC__)
 
 #   if defined(__x86_64__)
 #       define ISX64

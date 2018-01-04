@@ -68,15 +68,12 @@ do {                            \
 } while(0)
 
 #define RETNIL(fmt, ...)        \
-do {                            \
-    CERR(fmt, ##__VA_ARGS__);   \
-    return ;                    \
-} while(0)
+RETURN(NIL, fmt, ##__VA_ARGS__)
 
 /*
  * 这里是一个 在 DEBUG 模式下的测试宏
  *
- * 用法 :
+
  * DEBUG_CODE({
  *	puts("debug start...");
  * });

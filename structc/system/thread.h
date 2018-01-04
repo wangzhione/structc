@@ -1,17 +1,16 @@
 #ifndef _H_THREAD
 #define _H_THREAD
 
-#include <sdos.h>
 #include <assext.h>
 #include <struct.h>
 #include <pthread.h>
 #include <semaphore.h>
 
-#ifdef LGCC
+#ifdef __GNUC__
 #   define PTHREAD_ERROR    (-1)
 #endif
 
-#ifdef WCL
+#ifdef _MSC_VER
 #   define PTHREAD_ERROR    ((ptw32_handle_t) { NULL, -1 })
 #endif
 
