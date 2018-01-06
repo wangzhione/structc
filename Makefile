@@ -7,23 +7,21 @@
 ROOT		?= structc
 
 DMAIN	    ?= main
-
-DSTRUCT	    ?= struct
-DSYSTEM	    ?= system
-DBASE 	    ?= base
-
 DTEST	    ?= test
+
+DSYSTEM	    ?= system
+DSTRUCT	    ?= struct
+DBASE 	    ?= base
 
 OUTS		?= Output
 DOBJ		?= obj
 
 #
 # DIRS		: 所有可变编译文件目录
-# IINC		: -I 需要导入的include 目录
+# IINC		: -I 需要导入的 include 目录
 # SRCC		: 所有 .c 文件
 #
-DIRS	=	$(DSTRUCT) $(DSYSTEM) $(DBASE)
-
+DIRS	=	$(DSYSTEM) $(DSTRUCT) $(DBASE)
 IINC	=	$(foreach v, $(DIRS), -I$(ROOT)/$(v))
 SRCC	=	$(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST), $(ROOT)/$(v)/*.c))
 
@@ -51,12 +49,12 @@ RUN		= $(RHAD) -o $(OUTS)/$@ $(RTAL)
 #
 .PHONY : all clean
 
-all : main.out
+all : main.exe
 
 #
 # 主运行程序main
 #
-main.out : main.o main_run.o main_test.o librunc.a
+main.exe : main.o main_run.o main_test.o librunc.a
 	$(RUN)
 
 #
@@ -73,7 +71,6 @@ $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 # 生成 librunc.a 静态库, 方便处理所有问题
 #
 librunc.a : $(OBJO) $(TESTO)
-	$(CC) $(CFLAGS) -c -o $(OBJP)stdext.o $(ROOT)/$(DSYSTEM)/stdext.c -DJEMALLOC_NO_DEMANGLE $(DPRE)
 	ar cr $(OBJP)$@ $(foreach v, $^, $(OBJP)$(v))
 
 #

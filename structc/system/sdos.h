@@ -1,14 +1,13 @@
 ﻿#ifndef _H_SDOS
 #define _H_SDOS
 
-//
-// 平台相关提供的简单检测宏 :)
-//
+// 
+// :) 
 // 莫名的伤感起来 ~  
-//   __GNUC__ -> Linux GCC
-//   _MSC_VER -> Winds CL
+// _MSC_VER -> Winds CL
+// __GNUC__ -> Linux GCC
 //
-#if !defined(__GNUC__) && !defined(_MSC_VER)
+#if !defined(_MSC_VER) && !defined(__GNUC__)
 #   error BUILD (￣︶￣) S
 #endif
 

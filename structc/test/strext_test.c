@@ -20,7 +20,7 @@ void strext_test(void) {
     printf("%s -> %u\n", STR(__func__), hash);
 
 	// 输出数据测试
-	char * txt = str_freadend("README.md");
+	char * txt = str_freads("README.md");
 	puts(txt);
 
     // 开始字符串构建

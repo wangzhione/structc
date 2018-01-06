@@ -116,9 +116,6 @@
     <ClCompile Include="struct\tstr.c">
       <Filter>struct</Filter>
     </ClCompile>
-    <ClCompile Include="system\stdext.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="system\strext.c">
       <Filter>system</Filter>
     </ClCompile>

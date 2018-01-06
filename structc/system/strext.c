@@ -138,12 +138,12 @@ str_printf(const char * format, ...) {
 }
 
 //
-// str_freadend - 简单的文件读取类,会读取完毕这个文件内容返回, 需要自己free
+// str_freads - 简单的文件读取类,会读取完毕这个文件内容返回, 需要自己free
 // path		: 文件路径
 // return	: 创建好的字符串内容, 返回NULL表示读取失败
 //
 char * 
-str_freadend(const char * path) {
+str_freads(const char * path) {
 	int err;
 	size_t rn, cap, len;
 	char * str, buf[BUFSIZ];

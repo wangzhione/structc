@@ -104,7 +104,6 @@
     <ClCompile Include="main\main_test.c" />
     <ClCompile Include="struct\list.c" />
     <ClCompile Include="struct\tstr.c" />
-    <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
     <ClCompile Include="test\list_test.c" />
     <ClCompile Include="test\stdext_test.c" />
