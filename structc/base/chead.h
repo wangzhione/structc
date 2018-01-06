@@ -1,8 +1,9 @@
 ﻿#ifndef _H_CHEAD
 #define _H_CHEAD
 
-#include <time.h>
-#include <stdio.h>
+#include <sdos.h>
+#include <strext.h>
+#include <thread.h>
 
 //
 // LEN - 获取数组长度

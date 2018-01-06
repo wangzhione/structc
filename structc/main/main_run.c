@@ -1,8 +1,8 @@
-﻿#include <sdos.h>
-#include <chead.h>
+﻿#include <chead.h>
 
 //
 // main_run - 业务运行的主体
+// return   : void
 //
 void main_run(int argc, char * argv[]) {
     //
