@@ -13,15 +13,13 @@ struct $list {
 
 #define $LIST struct $list $node;
 
-struct list { 
+typedef struct { 
     struct $list * root;    // 存储链表的头节点
 
     icmp_f fadd;     // 链表中插入数据执行的方法
     icmp_f fget;     // 链表中查找数据执行的方法
     node_f fdie;     // 链表中删除数据执行的方法
-};
-
-typedef struct list * list_t;
+} * list_t;
 
 //
 // list_next - 获取结点n的下一个结点.
@@ -39,7 +37,7 @@ typedef struct list * list_t;
 list_create_((icmp_f)fadd, (icmp_f)fget)
 
 inline list_t list_create_(icmp_f fadd, icmp_f fget) {
-    list_t list = malloc(sizeof(struct list));
+    list_t list = malloc(sizeof *list);
     list->root = NULL;
     list->fadd = fadd;
     list->fget = fget;

@@ -1,7 +1,7 @@
 ﻿#ifndef _H_STRUCT
 #define _H_STRUCT
 
-#include <stdext.h>
+#include <strext.h>
 
 //
 // icmp_f - 比较行为的类型

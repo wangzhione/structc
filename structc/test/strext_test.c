@@ -1,5 +1,4 @@
 ﻿#include <chead.h>
-#include <strext.h>
 
 /*
  单元功能测试要求 : 

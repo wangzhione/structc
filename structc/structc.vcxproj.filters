@@ -93,6 +93,9 @@
     <ClInclude Include="system\thread.h">
       <Filter>system\inc</Filter>
     </ClInclude>
+    <ClInclude Include="struct\rtree.h">
+      <Filter>struct\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="test\thread_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\rtree.c">
+      <Filter>struct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
