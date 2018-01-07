@@ -37,12 +37,12 @@ TESTO	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 #
 CC		= gcc
 CFLAGS 	= -g -O2 -Wall -Wno-unused-result -std=gnu11 
-LIB 	= -lm -l:libuv.a -lpthread
+LIB 	= -static -lm -lpthread -luv
 
-RHAD	= $(CC) $(CFLAGS) $(IINC)
+RHAD	= $(CC) $(CFLAGS) $(D)
 RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB)
-RUNO	= $(RHAD) -c -o $(OBJP)$@ $< $(D)
-RUN		= $(RHAD) -o $(OUTS)/$@ $(RTAL)
+RUNO	= $(RHAD) $(IINC) -c -o $(OBJP)$@ $<
+RUN		= $(RHAD) $(IINC) -o $(OUTS)/$@ $(RTAL)
 
 #
 # 具体的产品生产								
@@ -71,6 +71,7 @@ $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 # 生成 librunc.a 静态库, 方便处理所有问题
 #
 librunc.a : $(OBJO) $(TESTO)
+	$(RHAD) -c -o $(OBJP)stdext.o $(ROOT)/$(DSYSTEM)/stdext.c -DJEMALLOC_NO_DEMANGLE -l:libjemalloc.a
 	ar cr $(OBJP)$@ $(foreach v, $^, $(OBJP)$(v))
 
 #

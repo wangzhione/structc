@@ -50,9 +50,9 @@
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
 
         _DEBUG
-		JEMALLOC_STATIC
 		PTW32_STATIC_LIB
-        JEMALLOC_EXPORT=
+		JEMALLOC_STATIC
+		JEMALLOC_EXPORT=
         WIN32_LEAN_AND_MEAN
         _CRT_SECURE_NO_WARNINGS
         _CRT_NONSTDC_NO_DEPRECATE

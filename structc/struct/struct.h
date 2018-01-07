@@ -11,7 +11,7 @@ typedef int (* icmp_f)();
 
 //
 // vnew_f - 根据规则构建对象
-//  : void * rb_new(void * node)
+//  : void * rtree_new(void * node)
 //
 typedef void * (* vnew_f)();
 

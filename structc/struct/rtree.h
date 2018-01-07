@@ -21,6 +21,8 @@ typedef struct {
     icmp_f fcmp;
     vnew_f fnew;
     node_f fdie;
+
+    icmp_f fget;
 } * rtree_t;
 
 //
@@ -30,7 +32,7 @@ typedef struct {
 // fdie     : 结点销毁函数
 // return   : 返回构建红黑树
 //
-#define rtee_create(fcmp, fnew, fdie) \
+#define rtree_create(fcmp, fnew, fdie) \
 rtree_create_((icmp_f)(fcmp), (vnew_f)(fnew), (node_f)(fdie))
 
 extern rtree_t rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie);
@@ -41,5 +43,28 @@ extern rtree_t rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie);
 // return   : void
 //
 extern void rtree_delete(rtree_t tree);
+
+//
+// rtree_search - 红黑树查找函数
+// tree     : 待查找的红黑树结构
+// return   : 返回查找的节点
+//
+extern void * rtree_search(rtree_t tree, void * pack);
+
+//
+// rtree_insert - 红黑树中插入节点 fnew(pack)
+// tree     : 红黑树结构
+// pack     : 待插入基础结构
+// return   : void
+//
+extern void rtree_insert(rtree_t tree, void * pack);
+
+//
+// rtree_remove - 红黑树中删除节点
+// tree     : 红黑树结构
+// pack     : 待删除基础结构
+// return   : void
+//
+extern void rtree_remove(rtree_t tree, void * pack);
 
 #endif//_H_RTREE

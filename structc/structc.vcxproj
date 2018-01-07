@@ -51,7 +51,7 @@
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;JEMALLOC_STATIC;PTW32_STATIC_LIB;JEMALLOC_EXPORT=;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -68,7 +68,7 @@
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
       <CompileAs>CompileAsC</CompileAs>
-      <PreprocessorDefinitions>JEMALLOC_STATIC;PTW32_STATIC_LIB;JEMALLOC_EXPORT=;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <Optimization>Full</Optimization>
     </ClCompile>
@@ -106,8 +106,10 @@
     <ClCompile Include="struct\list.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
+    <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
     <ClCompile Include="test\list_test.c" />
+    <ClCompile Include="test\rtree_test.c" />
     <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\strext_test.c" />
     <ClCompile Include="test\strings_test.c" />

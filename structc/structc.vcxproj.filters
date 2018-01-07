@@ -143,6 +143,12 @@
     <ClCompile Include="struct\rtree.c">
       <Filter>struct</Filter>
     </ClCompile>
+    <ClCompile Include="test\rtree_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\stdext.c">
+      <Filter>system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
