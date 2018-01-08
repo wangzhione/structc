@@ -36,7 +36,7 @@ TESTO	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 # 全局编译的设置
 #
 CC		= gcc
-CFLAGS 	= -g -O2 -Wall -Wno-unused-result -std=gnu11 
+CFLAGS 	= -g -O2 -Wall -Wno-unused-result
 LIB 	= -static -lm -lpthread -luv
 
 RHAD	= $(CC) $(CFLAGS) $(D)
