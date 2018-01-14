@@ -11,7 +11,7 @@
 #endif
 
 #ifdef _MSC_VER
-#   define PTHREAD_ERROR    ((ptw32_handle_t) { NULL, -1 })
+#   define PTHREAD_ERROR    ((pthread_t) { NULL, -1 })
 #endif
 
 //
