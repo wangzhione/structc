@@ -4,45 +4,45 @@
 # Debug   : make D=-D_DEBUG
 # Clean   : make clean
 #
-ROOT		?= structc
+ROOT        ?= structc
 
-DMAIN	    ?= main
-DTEST	    ?= test
+DMAIN       ?= main
+DTEST       ?= test
 
-DSYSTEM	    ?= system
+DSYSTEM     ?= system
 DSTRUCT	    ?= struct
 DBASE 	    ?= base
 
-OUTS		?= Output
-DOBJ		?= obj
+OUTS        ?= Output
+DOBJ        ?= obj
 
 #
-# DIRS		: 所有可变编译文件目录
-# IINC		: -I 需要导入的 include 目录
-# SRCC		: 所有 .c 文件
+# DIRS      : 所有可变编译文件目录
+# IINC      : -I 需要导入的 include 目录
+# SRCC      : 所有 .c 文件
 #
-DIRS	=	$(DSYSTEM) $(DSTRUCT) $(DBASE)
-IINC	=	$(foreach v, $(DIRS), -I$(ROOT)/$(v))
-SRCC	=	$(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST), $(ROOT)/$(v)/*.c))
+DIRS    =   $(DSYSTEM) $(DSTRUCT) $(DBASE)
+IINC    =   $(foreach v, $(DIRS), -I$(ROOT)/$(v))
+SRCC    =   $(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST), $(ROOT)/$(v)/*.c))
 
-OBJC	=	$(wildcard $(foreach v, $(DIRS), $(ROOT)/$(v)/*.c))
-OBJO	=	$(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
-OBJP	=	$(OUTS)/$(DOBJ)/
+OBJC    =   $(wildcard $(foreach v, $(DIRS), $(ROOT)/$(v)/*.c))
+OBJO    =   $(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
+OBJP    =   $(OUTS)/$(DOBJ)/
 
-TESTC	=	$(wildcard $(ROOT)/$(DTEST)/*.c)
-TESTO	=	$(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
+TESTC   =   $(wildcard $(ROOT)/$(DTEST)/*.c)
+TESTO   =   $(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 
 #
 # 全局编译的设置
 #
-CC		= gcc
-CFLAGS 	= -g -O2 -Wall -Wno-unused-result
-LIB 	= -static -lm -lpthread -luv
+CC      = gcc
+CFLAGS  = -g -O2 -Wall -Wno-unused-result
+LIB     = -static -lm -lpthread -luv
 
-RHAD	= $(CC) $(CFLAGS) $(D)
-RTAL	= $(foreach v, $^, $(OBJP)$(v)) $(LIB)
-RUNO	= $(RHAD) $(IINC) -c -o $(OBJP)$@ $<
-RUN		= $(RHAD) $(IINC) -o $(OUTS)/$@ $(RTAL)
+RHAD    = $(CC) $(CFLAGS) $(D)
+RTAL    = $(foreach v, $^, $(OBJP)$(v)) $(LIB)
+RUNO    = $(RHAD) $(IINC) -c -o $(OBJP)$@ $<
+RUN     = $(RHAD) $(IINC) -o $(OUTS)/$@ $(RTAL)
 
 #
 # 具体的产品生产								
