@@ -1,5 +1,5 @@
 ﻿#
-# 前期编译一些目录结构使用宏
+# 编译的目录结构
 # Release : make 
 # Debug   : make D=-D_DEBUG
 # Clean   : make clean
