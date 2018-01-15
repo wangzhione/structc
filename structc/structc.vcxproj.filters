@@ -31,6 +31,9 @@
     <Filter Include="system\pthread">
       <UniqueIdentifier>{f3c1c5a2-98b0-46b1-b5c5-05a6fd58f55b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\atom">
+      <UniqueIdentifier>{03198923-4307-4de1-a539-a60b0b763a04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h">
@@ -96,6 +99,18 @@
     <ClInclude Include="struct\rtree.h">
       <Filter>struct\inc</Filter>
     </ClInclude>
+    <ClInclude Include="system\atom.h">
+      <Filter>system\atom</Filter>
+    </ClInclude>
+    <ClInclude Include="system\atomic$c11.h">
+      <Filter>system\atom</Filter>
+    </ClInclude>
+    <ClInclude Include="system\atomic$cl.h">
+      <Filter>system\atom</Filter>
+    </ClInclude>
+    <ClInclude Include="system\atomic.h">
+      <Filter>system\atom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -148,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="system\stdext.c">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="test\atom_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

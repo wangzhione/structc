@@ -132,9 +132,10 @@ rm -rf libuv-1.18.0 v1.18.0.tar.gz
 ```
 
     b) 编译设置
-
+		
+       -static
        -lm 
-	   -l:libuv.a
+	   -luv
        -lpthread
 
     c) 踩坑

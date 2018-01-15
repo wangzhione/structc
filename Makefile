@@ -37,7 +37,7 @@ TESTO   =   $(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 #
 CC      = gcc
 CFLAGS  = -g -O2 -Wall -Wno-unused-result
-LIB     = -static -lm -lpthread -luv
+LIB     = -static -lm -luv -lpthread
 
 RHAD    = $(CC) $(CFLAGS) $(D)
 RTAL    = $(foreach v, $^, $(OBJP)$(v)) $(LIB)

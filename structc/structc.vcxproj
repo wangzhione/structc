@@ -83,6 +83,10 @@
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\tstr.h" />
     <ClInclude Include="system\assext.h" />
+    <ClInclude Include="system\atom.h" />
+    <ClInclude Include="system\atomic$c11.h" />
+    <ClInclude Include="system\atomic$cl.h" />
+    <ClInclude Include="system\atomic.h" />
     <ClInclude Include="system\pthread\pthread.h" />
     <ClInclude Include="system\pthread\sched.h" />
     <ClInclude Include="system\pthread\semaphore.h" />
@@ -108,6 +112,7 @@
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
+    <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\list_test.c" />
     <ClCompile Include="test\rtree_test.c" />
     <ClCompile Include="test\stdext_test.c" />
