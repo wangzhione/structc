@@ -143,7 +143,7 @@ rm -rf libuv-1.18.0 v1.18.0.tar.gz
         gcc -I 会诱发 stdext.o 没有嵌入 jemalloc 相关代码, 使用下面方式
 
 ```bash
-gcc -g -O2 -Wall -Wno-unused-result -std=gnu11 -c stdext.c -DJEMALLOC_NO_DEMANGLE
+gcc -g -O2 -Wall -Wno-unused-result -c stdext.c -DJEMALLOC_NO_DEMANGLE -l:libjemalloc.a
 ```
 
-        解决编译无法内嵌问题!
+        解决编译无法内嵌 jemalloc 问题!
