@@ -44,15 +44,15 @@
         $(ProjectDir)struct			 -- 基础数据结构提供
         $(ProjectDir)system			 -- 操作系统一些通用操作
         $(ProjectDir)system/uv		 -- 网络IO操作, 内嵌libuv
-		$(ProjectDir)system/pthread  -- POSIX pthread 线程模型
+        $(ProjectDir)system/pthread  -- POSIX pthread 线程模型
 
     d). 添加预编译处理器
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
 
         _DEBUG
-		PTW32_STATIC_LIB
-		JEMALLOC_STATIC
-		JEMALLOC_EXPORT=
+        PTW32_STATIC_LIB
+        JEMALLOC_STATIC
+        JEMALLOC_EXPORT=
         WIN32_LEAN_AND_MEAN
         _CRT_SECURE_NO_WARNINGS
         _CRT_NONSTDC_NO_DEPRECATE
