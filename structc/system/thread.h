@@ -1,4 +1,4 @@
-#ifndef _H_THREAD
+ï»¿#ifndef _H_THREAD
 #define _H_THREAD
 
 #include <assext.h>
@@ -15,19 +15,19 @@
 #endif
 
 //
-// pthread_error - ÅĞ¶ÏÏß³Ì id ÊÇ·ñÒì³£
-// tid      : Ïß³Ì id
-// return   : true ±íÊ¾Òì³£
+// pthread_error - åˆ¤æ–­çº¿ç¨‹ id æ˜¯å¦å¼‚å¸¸
+// tid      : çº¿ç¨‹ id
+// return   : true è¡¨ç¤ºå¼‚å¸¸
 //
 inline bool pthread_error(pthread_t tid) {
     return pthread_equal(tid, PTHREAD_ERROR);
 }
 
 //
-// pthread_run - Òì²½Æô¶¯Ïß³Ì
-// frun     : ÔËĞĞµÄÖ÷Ìå
-// arg      : ÔËĞĞ²ÎÊı
-// return   : ·µ»ØÏß³ÌÔËĞĞ id 
+// pthread_run - å¼‚æ­¥å¯åŠ¨çº¿ç¨‹
+// frun     : è¿è¡Œçš„ä¸»ä½“
+// arg      : è¿è¡Œå‚æ•°
+// return   : è¿”å›çº¿ç¨‹è¿è¡Œ id 
 //
 #define pthread_run(frun, arg) \
 pthread_run_((node_f)(frun), (void *)(intptr_t)(arg))
@@ -42,8 +42,8 @@ inline pthread_t pthread_run_(node_f frun, void * arg) {
 }
 
 //
-// pthread_end - µÈ´ıÆô¶¯Ïß³Ì½áÊø
-// tid      : Ïß³Ìid
+// pthread_end - ç­‰å¾…å¯åŠ¨çº¿ç¨‹ç»“æŸ
+// tid      : çº¿ç¨‹id
 // return   : void
 //
 inline void pthread_end(pthread_t tid) {
@@ -51,10 +51,10 @@ inline void pthread_end(pthread_t tid) {
 }
 
 //
-// pthread_async - Òì²½Æô¶¯·ÖÀëÏß³Ì
-// frun     : ÔËĞĞµÄÖ÷Ìå
-// arg      : ÔËĞĞ²ÎÊı
-// return   : ·µ»ØÏß³ÌÔËĞĞ id 
+// pthread_async - å¼‚æ­¥å¯åŠ¨åˆ†ç¦»çº¿ç¨‹
+// frun     : è¿è¡Œçš„ä¸»ä½“
+// arg      : è¿è¡Œå‚æ•°
+// return   : è¿”å›çº¿ç¨‹è¿è¡Œ id 
 // 
 #define pthread_async(frun, arg) \
 pthread_async_((node_f)(frun), (void *)(intptr_t)(arg))

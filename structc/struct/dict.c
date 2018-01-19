@@ -39,17 +39,10 @@ struct keypair {
     char key[];
 };
 
-struct dict {
-    node_f fdie;                // 结点注册的销毁函数
-    unsigned idx;               // 使用的质数表索引
-    unsigned used;              // 用户已经使用的结点个数
-    struct keypair ** table;    // size = primes[idx][0]
-};
-
 // 销毁结点数据
-static inline void _keypair_delete(struct dict * d, struct keypair * pair) {
-    if (pair->val && d->fdie)
-        d->fdie(pair->val);
+static inline void _keypair_delete(node_f fdie, struct keypair * pair) {
+    if (pair->val && fdie)
+        fdie(pair->val);
     free(pair);
 }
 
@@ -62,6 +55,13 @@ static inline struct keypair * _keypair_create(unsigned hash, void * v, const ch
     memcpy(pair->key, k, len);
     return pair;
 }
+
+struct dict {
+    node_f fdie;                // 结点注册的销毁函数
+    unsigned idx;               // 使用的质数表索引
+    unsigned used;              // 用户已经使用的结点个数
+    struct keypair ** table;    // size = primes[idx][0]
+};
 
 static void _dict_resize(struct dict * d) {
     unsigned size, prime, i;

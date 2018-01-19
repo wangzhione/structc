@@ -1,10 +1,10 @@
-#ifndef _H_RTREE
+ï»¿#ifndef _H_RTREE
 #define _H_RTREE
 
 #include <struct.h>
 
 //
-// ºìºÚÊ÷Í¨ÓÃ½á¹¹, ĞèÒª½« $RTREE ·ÅÔÚ½á¹¹¿ªÍ·²¿Î»
+// çº¢é»‘æ ‘é€šç”¨ç»“æ„, éœ€è¦å°† $RTREE æ”¾åœ¨ç»“æ„å¼€å¤´éƒ¨ä½
 //
 
 struct $rtree {
@@ -26,11 +26,11 @@ typedef struct {
 } * rtree_t;
 
 //
-// rtee_create - ´´½¨Ò»¸öºìºÚÊ÷½á¹¹
-// fcmp     : ½áµã²éÕÒº¯Êı
-// fnew     : ½áµã¹¹Ôìº¯Êı
-// fdie     : ½áµãÏú»Ùº¯Êı
-// return   : ·µ»Ø¹¹½¨ºìºÚÊ÷
+// rtee_create - åˆ›å»ºä¸€ä¸ªçº¢é»‘æ ‘ç»“æ„
+// fcmp     : ç»“ç‚¹æŸ¥æ‰¾å‡½æ•°
+// fnew     : ç»“ç‚¹æ„é€ å‡½æ•°
+// fdie     : ç»“ç‚¹é”€æ¯å‡½æ•°
+// return   : è¿”å›æ„å»ºçº¢é»‘æ ‘
 //
 #define rtree_create(fcmp, fnew, fdie) \
 rtree_create_((icmp_f)(fcmp), (vnew_f)(fnew), (node_f)(fdie))
@@ -38,31 +38,31 @@ rtree_create_((icmp_f)(fcmp), (vnew_f)(fnew), (node_f)(fdie))
 extern rtree_t rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie);
 
 //
-// rtree_delete - ºìºÚÊ÷Ïú»Ùº¯Êı
-// tree     : ´ıÏú»ÙµÄºìºÚÊ÷
+// rtree_delete - çº¢é»‘æ ‘é”€æ¯å‡½æ•°
+// tree     : å¾…é”€æ¯çš„çº¢é»‘æ ‘
 // return   : void
 //
 extern void rtree_delete(rtree_t tree);
 
 //
-// rtree_search - ºìºÚÊ÷²éÕÒº¯Êı
-// tree     : ´ı²éÕÒµÄºìºÚÊ÷½á¹¹
-// return   : ·µ»Ø²éÕÒµÄ½Úµã
+// rtree_search - çº¢é»‘æ ‘æŸ¥æ‰¾å‡½æ•°
+// tree     : å¾…æŸ¥æ‰¾çš„çº¢é»‘æ ‘ç»“æ„
+// return   : è¿”å›æŸ¥æ‰¾çš„èŠ‚ç‚¹
 //
 extern void * rtree_search(rtree_t tree, void * pack);
 
 //
-// rtree_insert - ºìºÚÊ÷ÖĞ²åÈë½Úµã fnew(pack)
-// tree     : ºìºÚÊ÷½á¹¹
-// pack     : ´ı²åÈë»ù´¡½á¹¹
+// rtree_insert - çº¢é»‘æ ‘ä¸­æ’å…¥èŠ‚ç‚¹ fnew(pack)
+// tree     : çº¢é»‘æ ‘ç»“æ„
+// pack     : å¾…æ’å…¥åŸºç¡€ç»“æ„
 // return   : void
 //
 extern void rtree_insert(rtree_t tree, void * pack);
 
 //
-// rtree_remove - ºìºÚÊ÷ÖĞÉ¾³ı½Úµã
-// tree     : ºìºÚÊ÷½á¹¹
-// pack     : ´ıÉ¾³ı»ù´¡½á¹¹
+// rtree_remove - çº¢é»‘æ ‘ä¸­åˆ é™¤èŠ‚ç‚¹
+// tree     : çº¢é»‘æ ‘ç»“æ„
+// pack     : å¾…åˆ é™¤åŸºç¡€ç»“æ„
 // return   : void
 //
 extern void rtree_remove(rtree_t tree, void * pack);
