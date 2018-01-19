@@ -1,4 +1,4 @@
-#ifndef _H_DICT
+﻿#ifndef _H_DICT
 #define _H_DICT
 
 #include <strext.h>

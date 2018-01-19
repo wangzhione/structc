@@ -1,9 +1,9 @@
-#include <dict.h>
+ï»¿#include <dict.h>
 
 //
-// ÖÊÊý±í
+// è´¨æ•°è¡¨
 //
-static const unsigned primes[][2] = {
+static const unsigned _primes[][2] = {
     { (2^6 )-1,         53 },
     { (2^7 )-1,         97 },
     { (2^8 )-1,        193 },
@@ -40,20 +40,20 @@ struct keypair {
 };
 
 struct dict {
-    node_f fdie;                // ½áµã×¢²áµÄÏú»Ùº¯Êý
-    unsigned idx;               // Ê¹ÓÃµÄÖÊÊý±íË÷Òý
-    unsigned used;              // ÓÃ»§ÒÑ¾­Ê¹ÓÃµÄ½áµã¸öÊý
+    node_f fdie;                // ç»“ç‚¹æ³¨å†Œçš„é”€æ¯å‡½æ•°
+    unsigned idx;               // ä½¿ç”¨çš„è´¨æ•°è¡¨ç´¢å¼•
+    unsigned used;              // ç”¨æˆ·å·²ç»ä½¿ç”¨çš„ç»“ç‚¹ä¸ªæ•°
     struct keypair ** table;    // size = primes[idx][0]
 };
 
-// Ïú»Ù½áµãÊý¾Ý
+// é”€æ¯ç»“ç‚¹æ•°æ®
 static inline void _keypair_delete(struct dict * d, struct keypair * pair) {
     if (pair->val && d->fdie)
         d->fdie(pair->val);
     free(pair);
 }
 
-// ´´½¨½áµãÊý¾Ý
+// åˆ›å»ºç»“ç‚¹æ•°æ®
 static inline struct keypair * _keypair_create(unsigned hash, void * v, const char * k) {
     size_t len = strlen(k) + 1;
     struct keypair * pair = malloc(sizeof(struct keypair) + len);
@@ -68,17 +68,16 @@ static void _dict_resize(struct dict * d) {
     struct keypair ** table;
     unsigned used = d->used;
 
-    if (used < primes[d->idx][0])
+    if (used < _primes[d->idx][0])
         return;
     
-    // ¹¹ÔìÐÂµÄÄÚ´æ²¼¾Ö´óÐ¡
-    ++d->idx;
-    size = primes[d->idx][0];
-    prime = primes[d->idx][1];
-    table = calloc(size, sizeof(struct keypair *));
+    // æž„é€ æ–°çš„å†…å­˜å¸ƒå±€å¤§å°
+    size = _primes[d->idx][1];
+    prime = _primes[++d->idx][1];
+    table = calloc(prime, sizeof(struct keypair *));
 
-    // ¿ªÊ¼×ªÒÆÊý¾Ý
-    for (i = 0; i < used; ++i) {
+    // å¼€å§‹è½¬ç§»æ•°æ®
+    for (i = 0; i < size; ++i) {
         struct keypair * pair = d->table[i];
         while (pair) {
             struct keypair * next = pair->next;
@@ -90,7 +89,7 @@ static void _dict_resize(struct dict * d) {
         }
     }
 
-    // table ÖØÐÂ±ä»¯
+    // table é‡æ–°å˜åŒ–
     free(d->table);
     d->table = table;
 }
