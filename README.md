@@ -1,4 +1,4 @@
-# c struct 基础库
+# C STRUCT 基础库
 
     目的 : 构建一个稍微通用点的 c 结构体基础库
     方式 : 基于注册
@@ -8,8 +8,8 @@
 
 -- [北方的故事](http://music.163.com/#/m/song?id=37782112&userid=16529894)
 
-    核心围绕, 单链表, 可变数组, 字符串, 红黑树, hash 表; json 串, 原子锁, 消息队列 ...
-    协助我们为以后搭建多线程 C 项目, 提供好的底层数据额结构支持 ...
+    核心围绕, 单链表, 可变数组, 字符串, 红黑树, 字典; json 串, 原子锁, 消息队列 ...
+    协助我们为以后搭建多线程 C 项目, 提供底层数据结构支持 ...
 
     ...
 
@@ -24,9 +24,9 @@
         - Best New CL build
 
     - linux 搞起
-        - Debug   : make D=-D_DEBUG
         - Release : make
         - Clean   : make clean
+        - Debug   : make D=-D_DEBUG
 
     - 工程目录简讲
         - main 目录
@@ -67,3 +67,5 @@
 ![江湖](./ryou.jpg)
 
 ***
+
+    :)
