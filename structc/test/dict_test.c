@@ -8,10 +8,10 @@ static void _str_die(void * node) {
 // dict test heoo
 //
 void dict_test(void) {
-    dict_t d = dict_create(_str_die);
     unsigned i;
     char * val;
     char * k, key[100];
+    dict_t d = dict_create(_str_die);
 
     for (i = 0; i < 100; ++i) {
         val = str_printf("youto_%d", i);

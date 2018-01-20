@@ -80,6 +80,7 @@
     <ClInclude Include="base\chead.h" />
     <ClInclude Include="struct\dict.h" />
     <ClInclude Include="struct\list.h" />
+    <ClInclude Include="struct\mq.h" />
     <ClInclude Include="struct\rtree.h" />
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\tstr.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="main\main_test.c" />
     <ClCompile Include="struct\dict.c" />
     <ClCompile Include="struct\list.c" />
+    <ClCompile Include="struct\mq.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\stdext.c" />
@@ -117,6 +119,7 @@
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\dict_test.c" />
     <ClCompile Include="test\list_test.c" />
+    <ClCompile Include="test\mq_test.c" />
     <ClCompile Include="test\rtree_test.c" />
     <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\strext_test.c" />

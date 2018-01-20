@@ -114,6 +114,9 @@
     <ClInclude Include="struct\dict.h">
       <Filter>struct\inc</Filter>
     </ClInclude>
+    <ClInclude Include="struct\mq.h">
+      <Filter>struct\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -174,6 +177,12 @@
       <Filter>struct</Filter>
     </ClCompile>
     <ClCompile Include="test\dict_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\mq.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="test\mq_test.c">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
