@@ -117,6 +117,9 @@
     <ClInclude Include="struct\mq.h">
       <Filter>struct\inc</Filter>
     </ClInclude>
+    <ClInclude Include="struct\array.h">
+      <Filter>struct\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="test\mq_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\array.c">
+      <Filter>struct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
