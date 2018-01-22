@@ -50,4 +50,19 @@ extern array_t array_create(unsigned alloc, unsigned size);
 //
 extern void array_delete(array_t a);
 
+//
+// array_push - 数组中插入一个数据
+// a        : 可变数组对象
+// ptr      : 待插入结点的首地址
+// return   : void * 压入数据首地址
+//
+extern void * array_push(array_t a, void * ptr);
+
+//
+// array_pop - 数组中弹出一个数据
+// a        : 可变数组对象
+// return   : void * 返回数据首地址
+//
+extern void * array_pop(array_t a);
+
 #endif//_H_ARRAY
