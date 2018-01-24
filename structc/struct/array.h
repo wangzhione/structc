@@ -3,6 +3,8 @@
 
 #include <struct.h>
 
+#define _UINT_ARRAY     (1u<<5)      // 数组默认大小
+
 struct array {
     unsigned alloc;     // 数组中元素大小
     unsigned size;      // 当前数组的容量
@@ -28,9 +30,9 @@ static inline void array_init(array_t a, unsigned size) {
 // alloc    : 可变数组对象大小
 // size     : 可变数组的初始化容量
 //
-#define ARRAY_CREATE(var, alloc, size)  \
+#define ARRAY_CREATE(var, alloc)        \
 struct array var[1] = { { alloc } };    \
-array_init(var, size)
+array_init(var, _UINT_ARRAY)
 
 #define ARRAY_DELETE(var)               \
 free(var->as)                           \
@@ -38,10 +40,9 @@ free(var->as)                           \
 //
 // array_create - 返回创建可变数组对象
 // alloc    : 可变数组对象大小
-// size     : 可变数组的初始化容量
 // return   : 返回创建的可变数组对象
 //
-extern array_t array_create(unsigned alloc, unsigned size);
+extern array_t array_create(unsigned alloc);
 
 //
 // array_delete - 销毁可变数组对象
