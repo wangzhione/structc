@@ -118,6 +118,7 @@
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
+    <ClCompile Include="test\array_test.c" />
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\dict_test.c" />
     <ClCompile Include="test\list_test.c" />

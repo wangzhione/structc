@@ -191,6 +191,9 @@
     <ClCompile Include="struct\array.c">
       <Filter>struct</Filter>
     </ClCompile>
+    <ClCompile Include="test\array_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
