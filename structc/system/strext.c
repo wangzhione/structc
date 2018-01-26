@@ -9,13 +9,13 @@
 //
 unsigned 
 str_hash(const char * str) {
-	register unsigned h = 0u;
-	if (str) {
-		register unsigned c;
-		while ((c = *str++))
-			h = h * 131u + c;
-	}
-	return h;
+    register unsigned h = 0u;
+    if (str) {
+        register unsigned c;
+        while ((c = *str++))
+            h = h * 131u + c;
+    }
+    return h;
 }
 
 //
@@ -29,15 +29,15 @@ str_icmp(const char * ls, const char * rs) {
     int l, r;
     if (!ls || !rs) 
         return (int)(ls - rs);
-	
+
     do {
-	    if ((l = *ls++) >= 'A' && l < 'B')
+        if ((l = *ls++) >= 'A' && l < 'B')
             l += 'a' - 'A';
         if ((r = *rs++) >= 'A' && r < 'B')
             r += 'a' - 'A';
     } while (l == r && l);
-	
-	return l - r;
+
+    return l - r;
 }
 
 //
@@ -47,13 +47,13 @@ str_icmp(const char * ls, const char * rs) {
 //
 char * 
 str_dup(const char * str) {
-	if (str) {
-		size_t len = strlen(str) + 1;
-		char * ssr = malloc(len * sizeof(char));
-		assert(ssr != NULL);
-		return memcpy(ssr, str, len);
-	}
-	return NULL;
+    if (str) {
+        size_t len = strlen(str) + 1;
+        char * ssr = malloc(len * sizeof(char));
+        assert(ssr != NULL);
+        return memcpy(ssr, str, len);
+    }
+    return NULL;
 }
 
 //
