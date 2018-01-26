@@ -4,15 +4,15 @@
 
 ***
 
--> [凄美的](http://music.163.com/#/m/song?id=436346833&userid=16529894)
+-> [借](https://y.qq.com/n/yqq/song/002WLDmw0vkHtC.html)
 
 ***
 
 ## 0. 存在合理性
 
-    a). 条理清晰的用 C 去提供服务
+    a). 条理清晰的让 C 去提供服务
     b). 减少开发成本, 用 winds 测试, linux 发布
-    c). 平台采用x64下 winds DEBUG, linux release
+    c). 平台采用 x64 下 winds DEBUG, linux release
 
 ## 1. winds 部署
 
