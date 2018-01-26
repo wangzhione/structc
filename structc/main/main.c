@@ -24,5 +24,5 @@ int main(int argc, char * argv[]) {
     //
     EXTERN_RUN(main_run);
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
