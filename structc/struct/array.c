@@ -92,7 +92,7 @@ inline unsigned
 array_idx(array_t a, void * elem) {
     unsigned off;
     assert(NULL != a && elem >= a->as);
-    off = (unsigned)(elem - a->as);
+    off = (unsigned)((char *)elem - (char *)a->as);
     assert(off % a->alloc == 0);
     return off / a->alloc;
 }
