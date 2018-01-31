@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
     <ClInclude Include="struct\array.h" />
+    <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />
     <ClInclude Include="struct\list.h" />
     <ClInclude Include="struct\mq.h" />
@@ -111,6 +112,7 @@
     <ClCompile Include="main\main_run.c" />
     <ClCompile Include="main\main_test.c" />
     <ClCompile Include="struct\array.c" />
+    <ClCompile Include="struct\json.c" />
     <ClCompile Include="struct\dict.c" />
     <ClCompile Include="struct\list.c" />
     <ClCompile Include="struct\mq.c" />

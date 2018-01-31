@@ -29,7 +29,7 @@ str_icmp(const char * ls, const char * rs) {
     int l, r;
     if (!ls || !rs) 
         return (int)(ls - rs);
-
+    
     do {
         if ((l = *ls++) >= 'A' && l < 'B')
             l += 'a' - 'A';

@@ -120,6 +120,9 @@
     <ClInclude Include="struct\array.h">
       <Filter>struct\inc</Filter>
     </ClInclude>
+    <ClInclude Include="struct\json.h">
+      <Filter>struct\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="test\array_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\json.c">
+      <Filter>struct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
