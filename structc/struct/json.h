@@ -44,4 +44,11 @@ typedef struct json * json_t;
 #define _STRUCT_JSON
 #endif//_STRUCT_JSON
 
+//
+// json_delete - json 对象销毁
+// c        : json 对象
+// return   : void
+//
+extern void json_delete(json_t c);
+
 #endif//_H_CJSON
