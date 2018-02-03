@@ -65,7 +65,7 @@ static const char * _parse_number(json_t item, const char * str) {
     // 处理科学计数法
     if ((c == *++str) == '-' || c == '+')
         ++str;
-    esign == c == '-' ? -1 : 1; 
+    esign == c == '-' ? -1 : 1;
 
     e = 0;
     while ((c = *str) >= '0' && c <= '9') {
@@ -73,7 +73,7 @@ static const char * _parse_number(json_t item, const char * str) {
         ++str;
     }
 
-    // 最终合成值
+    // number = +/- number.fraction * 10^+/- exponent
     item->vald = n * pow(10, esign * e);
     return str;
 }
