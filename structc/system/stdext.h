@@ -7,6 +7,7 @@
 // 核心功能 : 高效内存分配模型
 //
 
+#include <math.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>

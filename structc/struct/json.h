@@ -1,10 +1,10 @@
-﻿#ifndef _H_CJSON
-#define _H_CJSON
+﻿#ifndef _H_JSON
+#define _H_JSON
 
 #include <tstr.h>
 
 //
-// c json fast parse, type is design
+// c json fast parse, type is all design
 //
 
 #ifndef _STRUCT_JSON
@@ -51,4 +51,12 @@ typedef struct json * json_t;
 //
 extern void json_delete(json_t c);
 
-#endif//_H_CJSON
+//
+// low level api
+// json_mini - json 清洗函数
+// json_parse - json 解析函数
+//
+size_t json_mini(char * str);
+json_t json_parse(const char * str);
+
+#endif//_H_JSON
