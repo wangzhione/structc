@@ -17,12 +17,21 @@
 extern unsigned str_hash(const char * str);
 
 //
-// str_icmp - 字符串不区分大小写比较函数
+// str_cmpi - 字符串不区分大小写比较函数
 // ls		: 左串
 // rs		: 右串
 // return	: ls > rs 返回 > 0; ... < 0; ... =0
 //
-extern int str_icmp(const char * ls, const char * rs);
+extern int str_cmpi(const char * ls, const char * rs);
+
+//
+// str_cmpin - 字符串不区分小写的限定字符比较函数
+// ls		: 左串
+// rs		: 右串
+// n        : 长度
+// return   : ls > rs 返回 > 0; ... < 0; ... =0
+//
+extern int str_cmpin(const char * ls, const char * rs, size_t n);
 
 //
 // str_dup - 字符串拷贝malloc函数, 需要自己free

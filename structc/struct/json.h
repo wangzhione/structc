@@ -59,4 +59,14 @@ extern void json_delete(json_t c);
 size_t json_mini(char * str);
 json_t json_parse(const char * str);
 
+//
+// json_create_str  - 通过 char * 对象构造 json 对象
+// json_create_file - 通过 path   路径构造 json 对象
+// str      : const char * 字符串
+// path     : 文件路径
+// return   : json_t 对象
+//
+extern json_t json_create_str(const char * str);
+extern json_t json_create_file(const char * path);
+
 #endif//_H_JSON

@@ -34,4 +34,7 @@ void strext_test(void) {
     // printf 从左向右执行
     char * nstr = str_trim(nsr);
     printf("nsr = %s, len = %zu\n", nstr, strlen(nstr));
+
+    // 测试字符串匹配
+    printf("str_cmpin = %d\n", str_cmpin("nUlL", "null;xxx", 4));
 }

@@ -286,13 +286,16 @@ _parse_value(json_t item, const char * str) {
     switch (c) {
     // n or N = null, f or F = false, t or T = true ...
     case 'n': case 'N':
+        if (str_cmpin(str + 1, "ull", 3)) return NULL;
         item->type = JSON_NULL;
         return str + 4; // exists invalid is you!
     case 't': case 'T':
+        if (str_cmpin(str + 1, "rue", 3)) return NULL;
         item->type = JSON_TRUE;
         item->vald = true;
         return str + 4;
     case 'f': case 'F':
+        if (str_cmpin(str + 1, "alse", 4)) return NULL;
         item->type = JSON_FALSE;
         return str + 5;
     case '0': case '1': case '2': case '3': case '4':
@@ -311,8 +314,47 @@ _parse_value(json_t item, const char * str) {
 
 //  将 str 中不需要解析串都去掉, 返回最终串的长度. 并且纪念 mini 比男的还平
 size_t json_mini(char * str) {
+    char c, * in = str, * to = str;
+    
+    while ((c = *to)) {
+        // step 1 : 处理字符串
+        if (c == '"') {
+            *in++ = c;
+            while ((c = *++to) && (c != '"' || to[-1] == '\\'))
+                *in++ = c;
+            if (c) {
+                *in++ = c;
+                ++to;
+            }
+            continue;
+        }
+        // step 2 : 处理不可见特殊字符
+        if (c < '!') {
+            ++to;
+            continue;
+        }
+        if (c == '/') {
+            // step 3 : 处理 // 解析到行末尾
+            if (to[1] == '/') {
+                while ((c = *++to) && c != '\n')
+                    ;
+                continue;
+            }
+            // step 4 : 处理 /*
+            if (to[1] == '*') {
+                while ((c = *++to) && (c != '*' || to[1] != '/'))
+                    ;
+                if (c)
+                    to += 2;
+                continue;
+            }
+        }
+        // step 5 : 合法数据直接保存
+        *in++ = *to++;
+    }
 
-    return 0;
+    *in = '\0';
+    return in - str;
 }
 
 //
@@ -326,6 +368,44 @@ json_t json_parse(const char * str) {
         json_delete(c);
         c = NULL;
     }
+    return c;
+}
+
+//
+// json_create_str  - 通过 char * 对象构造 json 对象
+// json_create_file - 通过 path   路径构造 json 对象
+// str      : const char * 字符串
+// path     : 文件路径
+// return   : json_t 对象
+//
+json_t 
+json_create_str(const char * str) {
+    json_t c = NULL;
+    if (str && *str) {
+        TSTR_CREATE(tsr);
+        tstr_appends(tsr, str);
+
+        // 清洗 + 解析
+        json_mini(tsr->str);
+        c = json_parse(tsr->str);
+
+        TSTR_DELETE(tsr);
+    }
+    return c;
+}
+
+json_t 
+json_create_file(const char * path) {
+    json_t c;
+    char * str;
+    // 读取文件中内容, 并检查
+    if (!path || !*path) return NULL;
+    str = str_freads(path);
+    if (!str || !*str) return NULL;
+
+    // 返回解析结果
+    c = json_create_str(str);
+    free(str);
     return c;
 }
 
