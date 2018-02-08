@@ -200,6 +200,9 @@
     <ClCompile Include="struct\json.c">
       <Filter>struct</Filter>
     </ClCompile>
+    <ClCompile Include="test\json_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

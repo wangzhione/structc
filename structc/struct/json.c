@@ -55,6 +55,9 @@ static const char * _parse_number(json_t item, const char * str) {
         n += s * d;
     }
 
+    // 添加正负号
+    n *= sign;
+
     // 不是科学计数内容直接返回
     item->type = JSON_NUMBER;
     if (c != 'e' && c != 'E') {
@@ -63,7 +66,7 @@ static const char * _parse_number(json_t item, const char * str) {
     }
 
     // 处理科学计数法
-    if ((c == *++str) == '-' || c == '+')
+    if ((c = *++str) == '-' || c == '+')
         ++str;
     esign = c == '-' ? -1 : 1;
 
@@ -106,7 +109,7 @@ static const char * _parse_string(json_t item, const char * str) {
     char c, * ntr, * out;
     unsigned len = 1;
 
-    while ((c = *etr++) != '\"' && c) {
+    while ((c = *etr) != '\"' && c) {
         // 转义字符特殊处理
         if (c == '\\') {
             if (*etr == '\0') 
@@ -114,6 +117,7 @@ static const char * _parse_string(json_t item, const char * str) {
             ++etr;
         }
         ++len;
+        ++etr;
     }
     if (c != '\"') return NULL;
 
@@ -121,7 +125,7 @@ static const char * _parse_string(json_t item, const char * str) {
     ntr = out = malloc(len);
     for (ptr = str; ptr < etr; ++ptr) {
         // 普通字符直接添加处理
-        if (c != '\\') {
+        if ((c = *ptr) != '\\') {
             *ntr++ = c;
             continue;
         }
@@ -187,7 +191,7 @@ static const char * _parse_string(json_t item, const char * str) {
         default : *ntr++ = c;
         }
     }
-    ntr = '\0';
+    *ntr = '\0';
     item->vals = out;
     item->type = JSON_STRING;
     return ptr + 1;
@@ -372,14 +376,29 @@ json_t json_parse(const char * str) {
 }
 
 //
-// json_create_str  - 通过 char * 对象构造 json 对象
-// json_create_file - 通过 path   路径构造 json 对象
+// json_file - 通过 path   路径构造 json 对象
+// json_create  - 通过 char * 对象构造 json 对象
 // str      : const char * 字符串
 // path     : 文件路径
 // return   : json_t 对象
 //
 json_t 
-json_create_str(const char * str) {
+json_file(const char * path) {
+    json_t c;
+    char * str;
+    // 读取文件中内容, 并检查
+    if (!path || !*path) return NULL;
+    str = str_freads(path);
+    if (!str || !*str) return NULL;
+
+    // 返回解析结果
+    c = json_create(str);
+    free(str);
+    return c;
+}
+
+json_t 
+json_create(const char * str) {
     json_t c = NULL;
     if (str && *str) {
         TSTR_CREATE(tsr);
@@ -391,21 +410,6 @@ json_create_str(const char * str) {
 
         TSTR_DELETE(tsr);
     }
-    return c;
-}
-
-json_t 
-json_create_file(const char * path) {
-    json_t c;
-    char * str;
-    // 读取文件中内容, 并检查
-    if (!path || !*path) return NULL;
-    str = str_freads(path);
-    if (!str || !*str) return NULL;
-
-    // 返回解析结果
-    c = json_create_str(str);
-    free(str);
     return c;
 }
 

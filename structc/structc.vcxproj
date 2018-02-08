@@ -123,6 +123,7 @@
     <ClCompile Include="test\array_test.c" />
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\dict_test.c" />
+    <ClCompile Include="test\json_test.c" />
     <ClCompile Include="test\list_test.c" />
     <ClCompile Include="test\mq_test.c" />
     <ClCompile Include="test\rtree_test.c" />
