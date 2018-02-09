@@ -452,13 +452,43 @@ json_array(json_t arr, int idx) {
 //
 json_t 
 json_object(json_t obj, const char * key) {
-
-    return NULL;
+    json_t n = obj->chid;
+    while (n && tstr_icmp(key, n->keys))
+        n = n->next;
+    return n;
 }
 
 //-------------------------------------json parse end-------------------------------------
 
 //-------------------------------------json print begin-----------------------------------
+
+// number 输出
+static char * _print_number(json_t item, tstr_t p) {
+    char * str;
+    double d = item->vald;
+    
+    if (0 == d) {
+        str = tstr_expand(p, 2);  // 普通 0 插入
+        str[0] = '0'; str[1] = '\0';
+    } else {
+        int i = (int)d;
+        if (fabs(d - i) <= DBL_EPSILON && i <= INT_MAX && i >= INT_MIN) {
+            str = tstr_expand(p, 21);
+            sprintf(str, "%d", i); // int 值插入
+        } else {
+            double n = fabs(d);
+            str = tstr_expand(p, 64);// e 记数法
+            if (fabs(floor(d) - d) <= DBL_EPSILON && n < 1.0e60)
+                sprintf(str, "%.0f", d);
+            else if (n < 1.0e-6 || n > 1.0e9)
+                sprintf(str, "%e", d);
+            else 
+                sprintf(str, "%f", d);
+        }
+    }
+
+    return str;
+}
 
 //-------------------------------------json print end-------------------------------------
 
