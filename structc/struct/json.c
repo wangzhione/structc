@@ -110,6 +110,7 @@ static const char * _parse_string(json_t item, const char * str) {
     unsigned len = 1;
 
     while ((c = *etr) != '\"' && c) {
+        ++etr;
         // 转义字符特殊处理
         if (c == '\\') {
             if (*etr == '\0') 
@@ -117,7 +118,6 @@ static const char * _parse_string(json_t item, const char * str) {
             ++etr;
         }
         ++len;
-        ++etr;
     }
     if (c != '\"') return NULL;
 
