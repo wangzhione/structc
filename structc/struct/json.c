@@ -420,8 +420,12 @@ json_create(const char * str) {
 //
 int 
 json_len(json_t arr) {
-
-    return 0;
+    int len = 0;
+    if (arr) {
+        for (arr = arr->chid; arr; arr = arr->next)
+            ++len;
+    }
+    return len;
 }
 
 //
@@ -432,8 +436,12 @@ json_len(json_t arr) {
 //
 json_t 
 json_array(json_t arr, int idx) {
-
-    return NULL;
+    json_t n = arr->chid;
+    while (n && idx > 0) {
+        --idx;
+        n = n->next;
+    }
+    return n;
 }
 
 //
@@ -453,3 +461,7 @@ json_object(json_t obj, const char * key) {
 //-------------------------------------json print begin-----------------------------------
 
 //-------------------------------------json print end-------------------------------------
+
+//-------------------------------------json utils begin-----------------------------------
+
+//-------------------------------------json utils end-------------------------------------
