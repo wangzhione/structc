@@ -69,4 +69,27 @@ json_t json_parse(const char * str);
 extern json_t json_file(const char * path);
 extern json_t json_create(const char * str);
 
+//
+// json_len - 获取当前 json 数组长度
+// arr      : 待处理的 json_t 数组
+// return   : 返回对象中长度
+//
+extern int json_len(json_t arr);
+
+//
+// json_array - 获取 array 数组中子结点
+// arr      : 待处理的 json_t 数组
+// idx      : [0, len(array)) 索引
+// return   : 返回查询到数组结点
+//
+extern json_t json_array(json_t arr, int idx);
+
+//
+// json_object - 获取 object 对象中子对象 
+// obj      : 待处理的 json_t 对象
+// key      : 待查询 key
+// return   : 返回查询到对象结点
+//
+extern json_t json_object(json_t obj, const char * key);
+
 #endif//_H_JSON
