@@ -90,9 +90,8 @@ static const char * _parse_number(json_t item, const char * str) {
     if (c == '.') {
         int d = 0;
         double s = 1;
-        while (c >= '0' && c <= '9') {
+        while ((c = *++str) && c >= '0' && c <= '9') {
             d = d * 10 + c - '0';
-            c = *++str;
             s *= 0.1;
         }
         // 得到整数和小数部分
@@ -278,8 +277,7 @@ static const char * _parse_array(json_t item, const char * str) {
         if (NULL == str) return NULL;
     }
 
-    if (']' != *str) return NULL;
-    return str + 1;
+    return ']' == *str ? str + 1 : NULL;
 }
 
 // object 解析
@@ -317,8 +315,7 @@ static const char * _parse_object(json_t item, const char * str) {
         if (NULL == str) return NULL;
     }
 
-    if ('}' != *str) return NULL;
-    return str + 1;
+    return '}' == *str ? str + 1 : NULL;
 }
 
 static const char * 
@@ -483,8 +480,9 @@ static char * _print_number(json_t item, tstr_t p) {
 // string 打印
 static char * _print_string(char * str, tstr_t p) {
     size_t len;
+    unsigned char c;
     const char * ptr;
-    char c, * ntr, * out;
+    char * ntr, * out;
     // 什么都没有 返回 "" empty string
     if (!str || !*str) {
         out = tstr_expand(p, 3);
@@ -511,14 +509,13 @@ static char * _print_string(char * str, tstr_t p) {
 
     // 开始分配内存
     ntr = out = tstr_expand(p, len + 3);
-    *ntr++ = '"'; 
-    ntr[len] = '"'; 
+    *ntr++ = '"';
     ntr[len+1] = '\0';
 
     // 没有特殊字符直接返回
     if (len == ptr - str) {
         memcpy(ntr, str, len);
-        return out;
+        goto _ret;
     }
 
     // 存在特殊字符挨个处理
@@ -530,15 +527,17 @@ static char * _print_string(char * str, tstr_t p) {
         *ntr++ = '\\';
         switch(c) {
 		case '\b': *ntr++ = 'b'; break;
+        case '\t': *ntr++ = 't'; break;
+        case '\n': *ntr++ = 'n'; break;
 		case '\f': *ntr++ = 'f'; break;
-		case '\n': *ntr++ = 'n'; break;
 		case '\r': *ntr++ = 'r'; break;
-		case '\t': *ntr++ = 't'; break;
 		case '"': case '\\': *ntr++ = c; break;
         // escape and print as unicode codepoint
         default: sprintf(ntr, "u%04x", c); ntr += 5;
         }
     }
+_ret:
+    out[len+1] = '"';
     return out;
 }
 
@@ -607,11 +606,26 @@ _print_value(json_t item, tstr_t p) {
     case JSON_FALSE : out = tstr_expand(p, 6); strcpy(out, "false"); break;
     case JSON_NUMBER: out = _print_number(item, p); break;
     case JSON_STRING: out = _print_string(item->vals, p); break;
-    case JSON_OBJECT: out = _print_array(item, p); break;
-    case JSON_ARRAY : out = _print_object(item, p); break;
+    case JSON_OBJECT: out = _print_object(item, p); break;
+    case JSON_ARRAY : out = _print_array(item, p); break;
     }
     p->len += strlen(p->str + p->len);
     return out;
+}
+
+//
+// json_print - 获取 json 对象的打印字符串
+// c        : json_t 对象
+// return   : 返回生成的 json 字符串, 需要自行 free
+//
+char * 
+json_print(json_t c) {
+    TSTR_CREATE(str);
+    if (NULL == _print_value(c, str)) {
+        TSTR_DELETE(str);
+        return NULL;
+    }
+    return realloc(str->str, str->len + 1);
 }
 
 //-------------------------------------json print end-------------------------------------
@@ -628,23 +642,23 @@ _print_value(json_t item, tstr_t p) {
 json_t 
 json_new_arrays(unsigned char t, const void * arr, int n) {
     int i = 0;
-    json_t n, p, a;
+    json_t m, p, a;
 
-    for (n = p = a = NULL; i < n; ++i) {
-        swtich(t) {
-        case JSON_NULL  : n = json_new_null(); break;
-        case JSON_TRUE  : n = json_new_bool(arr ? ((bool *)arr)[i] : true); break;
-        case JSON_FALSE : n = json_new_bool(arr ? ((bool *)arr)[i] :false); break;
-        case JSON_NUMBER: n = json_new_number(((double *)arr)[i]); break;
-        case JSON_STRING: n = json_new_string(((char **)arr)[i]); break;
+    for (m = p = a = NULL; i < n; ++i) {
+        switch(t) {
+        case JSON_NULL  : m = json_new_null(); break;
+        case JSON_TRUE  : m = json_new_bool(arr ? ((bool *)arr)[i] : true); break;
+        case JSON_FALSE : m = json_new_bool(arr ? ((bool *)arr)[i] :false); break;
+        case JSON_NUMBER: m = json_new_number(((double *)arr)[i]); break;
+        case JSON_STRING: m = json_new_string(((char **)arr)[i]); break;
         default: return NULL;
         }
 
-        p = n;
-        if (i) p->next = n;
+        p = m;
+        if (i) p->next = m;
         else {
             a = json_new_array();
-            a->chid = n;
+            a->chid = m;
         }
     }
 
@@ -661,14 +675,43 @@ json_new_arrays(unsigned char t, const void * arr, int n) {
 //
 json_t 
 json_detach_array(json_t arr, int i) {
+    json_t c, p;
+    if ((!arr) || !(c = arr->chid))
+        return NULL;
 
-    return NULL;
+    // 开始查找
+    for (p = NULL; i > 0 && c; c = c->next) { 
+        p = c;
+        --i;
+    }
+    if (NULL != c) {
+        if (NULL != p)
+            arr->chid = c->next;
+        else
+            p->next = c->next;
+        c->next = NULL;
+    }
+
+    return c;
 }
 
 json_t 
 json_detach_object(json_t obj, const char * k) {
+    json_t c, p;
+    if ((!obj) || (!k) || (!*k) || !(c = obj->chid))
+        return NULL;
+    
+    for (p = NULL; c && str_cmpi(c->keys, k); c = c->next)
+        p = c;
+    if (NULL != c) {
+        if (NULL != p)
+            obj->chid = c->next;
+        else
+            p->next = c->next;
+        c->next = NULL;
+    }
 
-    return NULL;
+    return c;
 }
 
 //-------------------------------------json utils end-------------------------------------
