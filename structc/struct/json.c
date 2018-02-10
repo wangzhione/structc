@@ -21,6 +21,50 @@ json_delete(json_t c) {
     }
 }
 
+//
+// json_len - 获取当前 json 数组长度
+// arr      : 待处理的 json_t 数组
+// return   : 返回对象中长度
+//
+int 
+json_len(json_t arr) {
+    int len = 0;
+    if (arr) {
+        for (arr = arr->chid; arr; arr = arr->next)
+            ++len;
+    }
+    return len;
+}
+
+//
+// json_array - 获取 array 数组中子结点
+// arr      : 待处理的 json_t 数组
+// i        : [0, len(array)) 索引
+// return   : 返回查询到数组结点
+//
+json_t 
+json_array(json_t arr, int i) {
+    json_t n = arr->chid;
+    while (n && i > 0) {
+        --i;
+        n = n->next;
+    }
+    return n;
+}
+
+//
+// json_object - 获取 object 对象中子对象 
+// obj      : 待处理的 json_t 对象
+// k        : 待查询 key
+// return   : 返回查询到对象结点
+//
+json_t 
+json_object(json_t obj, const char * k) {
+    json_t n = obj->chid;
+    while (n && str_cmpi(k, n->keys))
+        n = n->next;
+    return n;
+}
 
 //-------------------------------------json parse begin-----------------------------------
 
@@ -209,11 +253,6 @@ _fail:
 //
 static const char * _parse_value(json_t item, const char * str);
 
-// json_new - 构造 json 对象
-inline json_t json_new(void) {
-    return calloc(1, sizeof(struct json));
-}
-
 // array 解析
 static const char * _parse_array(json_t item, const char * str) {
     json_t chid;
@@ -295,23 +334,19 @@ _parse_value(json_t item, const char * str) {
         return str + 4; // exists invalid is you!
     case 't': case 'T':
         if (str_cmpin(str + 1, "rue", 3)) return NULL;
-        item->type = JSON_TRUE;
-        item->vald = true;
+        item->type = JSON_TRUE; item->vald = true;
         return str + 4;
     case 'f': case 'F':
         if (str_cmpin(str + 1, "alse", 4)) return NULL;
         item->type = JSON_FALSE;
         return str + 5;
+    case '+': case '-': case '.':  
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
-    case '+': case '-': case '.':  
         return _parse_number(item, str);
-    case '"': 
-        return _parse_string(item, str + 1);
-    case '{': 
-        return _parse_object(item, str + 1);
-    case '[': 
-        return _parse_array(item, str + 1);
+    case '"': return _parse_string(item, str + 1);
+    case '{': return _parse_object(item, str + 1);
+    case '[': return _parse_array(item, str + 1);
     }
     return NULL;
 }
@@ -411,51 +446,6 @@ json_create(const char * str) {
         TSTR_DELETE(tsr);
     }
     return c;
-}
-
-//
-// json_len - 获取当前 json 数组长度
-// arr      : 待处理的 json_t 数组
-// return   : 返回对象中长度
-//
-int 
-json_len(json_t arr) {
-    int len = 0;
-    if (arr) {
-        for (arr = arr->chid; arr; arr = arr->next)
-            ++len;
-    }
-    return len;
-}
-
-//
-// json_array - 获取 array 数组中子结点
-// arr      : 待处理的 json_t 数组
-// idx      : [0, len(array)) 索引
-// return   : 返回查询到数组结点
-//
-json_t 
-json_array(json_t arr, int idx) {
-    json_t n = arr->chid;
-    while (n && idx > 0) {
-        --idx;
-        n = n->next;
-    }
-    return n;
-}
-
-//
-// json_object - 获取 object 对象中子对象 
-// obj      : 待处理的 json_t 对象
-// key      : 待查询 key
-// return   : 返回查询到对象结点
-//
-json_t 
-json_object(json_t obj, const char * key) {
-    json_t n = obj->chid;
-    while (n && tstr_icmp(key, n->keys))
-        n = n->next;
-    return n;
 }
 
 //-------------------------------------json parse end-------------------------------------
@@ -608,8 +598,57 @@ static char * _print_object(json_t item, tstr_t p) {
     return p->str + n;
 }
 
+static char * 
+_print_value(json_t item, tstr_t p) {
+    char * out = NULL;
+    switch(item->type) {
+    case JSON_NULL  : out = tstr_expand(p, 5); strcpy(out, "null"); break;
+    case JSON_TRUE  : out = tstr_expand(p, 5); strcpy(out, "true"); break;
+    case JSON_FALSE : out = tstr_expand(p, 6); strcpy(out, "false"); break;
+    case JSON_NUMBER: out = _print_number(item, p); break;
+    case JSON_STRING: out = _print_string(item->vals, p); break;
+    case JSON_OBJECT: out = _print_array(item, p); break;
+    case JSON_ARRAY : out = _print_object(item, p); break;
+    }
+    p->len += strlen(p->str + p->len);
+    return out;
+}
+
 //-------------------------------------json print end-------------------------------------
 
 //-------------------------------------json utils begin-----------------------------------
+
+//
+// json_new_arrays - 通过类型创建类型数组 json 对象
+// t        : 类型宏
+// arr      : 源数组对象
+// n        : 源数组长度
+// return   : 返回创建好的数组 json 对象
+//
+json_t 
+json_new_arrays(unsigned char t, const void * arr, int n) {
+
+    return NULL;
+}
+
+//
+// json_detach_xxxxx - 通过索引分离出 json 子 json 对象
+// arr      : 待处理的 json_t 数组
+// i        : [0, len(array)) 索引
+// obj      : 待处理的 json_t 对象
+// k        : 待查询 key
+// return   : 分离后的对象
+//
+json_t 
+json_detach_array(json_t arr, int i) {
+
+    return NULL;
+}
+
+json_t 
+json_detach_object(json_t obj, const char * k) {
+
+    return NULL;
+}
 
 //-------------------------------------json utils end-------------------------------------
