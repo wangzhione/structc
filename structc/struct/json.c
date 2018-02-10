@@ -627,8 +627,28 @@ _print_value(json_t item, tstr_t p) {
 //
 json_t 
 json_new_arrays(unsigned char t, const void * arr, int n) {
+    int i = 0;
+    json_t n, p, a;
 
-    return NULL;
+    for (n = p = a = NULL; i < n; ++i) {
+        swtich(t) {
+        case JSON_NULL  : n = json_new_null(); break;
+        case JSON_TRUE  : n = json_new_bool(arr ? ((bool *)arr)[i] : true); break;
+        case JSON_FALSE : n = json_new_bool(arr ? ((bool *)arr)[i] :false); break;
+        case JSON_NUMBER: n = json_new_number(((double *)arr)[i]); break;
+        case JSON_STRING: n = json_new_string(((char **)arr)[i]); break;
+        default: return NULL;
+        }
+
+        p = n;
+        if (i) p->next = n;
+        else {
+            a = json_new_array();
+            a->chid = n;
+        }
+    }
+
+    return a;
 }
 
 //
