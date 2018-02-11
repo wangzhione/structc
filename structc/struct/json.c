@@ -497,7 +497,7 @@ static char * _print_string(char * str, tstr_t p) {
         switch (c) {
         case '\b': case '\t': case '\n':
         case '\f': case '\r':
-        case '"': case '\\': 
+        case '"': case '\\':
             ++len; break;
         default:
             if (c < 32) {
@@ -526,12 +526,12 @@ static char * _print_string(char * str, tstr_t p) {
         }
         *ntr++ = '\\';
         switch(c) {
-		case '\b': *ntr++ = 'b'; break;
+        case '\b': *ntr++ = 'b'; break;
         case '\t': *ntr++ = 't'; break;
         case '\n': *ntr++ = 'n'; break;
-		case '\f': *ntr++ = 'f'; break;
-		case '\r': *ntr++ = 'r'; break;
-		case '"': case '\\': *ntr++ = c; break;
+        case '\f': *ntr++ = 'f'; break;
+        case '\r': *ntr++ = 'r'; break;
+        case '"': case '\\': *ntr++ = c; break;
         // escape and print as unicode codepoint
         default: sprintf(ntr, "u%04x", c); ntr += 5;
         }
