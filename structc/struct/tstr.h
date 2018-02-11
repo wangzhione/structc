@@ -14,8 +14,8 @@ struct tstr {
 typedef struct tstr * tstr_t;
 
 //
-// TSTR_CREATE - 堆上创建tstr_t结构
-// TSTR_DELETE - 释放堆上tstr_t结构
+// TSTR_CREATE - 栈上创建tstr_t结构
+// TSTR_DELETE - 释放栈上tstr_t结构
 // var  : 变量名
 //
 #define TSTR_CREATE(var) \
