@@ -1,6 +1,6 @@
-﻿#include <strext.h>
-#include <assext.h>
+﻿#include <sdos.h>
 #include <ctype.h>
+#include <strext.h>
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
