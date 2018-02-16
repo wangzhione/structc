@@ -13,7 +13,7 @@ DSYSTEM     ?= system
 DSTRUCT	    ?= struct
 DBASE 	    ?= base
 
-OUTS        ?= Output
+OUTS        ?= Outs
 DOBJ        ?= obj
 
 #
