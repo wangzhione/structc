@@ -17,9 +17,12 @@
 // CERR_EXIT - 打印错误信息, 并直接exit
 // CERR_IF - 条件判断异常退出的辅助宏
 //
+
+#ifndef CERR
 #define CERR(fmt, ...)                                                  \
 fprintf(stderr, "[%s:%s:%d][%d:%s]" fmt "\r\n",                         \
     __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
+#endif//CERR
 
 #define CERR_EXIT(fmt, ...)     \
 do {                            \

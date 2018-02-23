@@ -123,6 +123,9 @@
     <ClInclude Include="struct\json.h">
       <Filter>struct\inc</Filter>
     </ClInclude>
+    <ClInclude Include="system\socket.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -207,6 +210,9 @@
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="system\stderr.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\socket.c">
       <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>

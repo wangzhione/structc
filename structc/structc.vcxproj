@@ -96,6 +96,7 @@
     <ClInclude Include="system\pthread\semaphore.h" />
     <ClInclude Include="system\sdos.h" />
     <ClInclude Include="system\jemalloc\jemalloc.h" />
+    <ClInclude Include="system\socket.h" />
     <ClInclude Include="system\stdext.h" />
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\strings.h" />
@@ -118,6 +119,7 @@
     <ClCompile Include="struct\mq.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
+    <ClCompile Include="system\socket.c" />
     <ClCompile Include="system\stderr.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
