@@ -38,7 +38,7 @@ do {                                                                    \
     clock_t $s = clock();                                               \
     code                                                                \
     double $e = (double)clock();                                        \
-    printf("Code test run time:%lfs.\n", ($e - $s) / CLOCKS_PER_SEC);   \
+    printf("test code run time:%lfs.\n", ($e - $s) / CLOCKS_PER_SEC);   \
 } while (0)
 
 //

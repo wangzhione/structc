@@ -203,6 +203,12 @@
     <ClCompile Include="test\json_test.c">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="test\strerr_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\stderr.c">
+      <Filter>system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

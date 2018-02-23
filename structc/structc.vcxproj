@@ -118,6 +118,7 @@
     <ClCompile Include="struct\mq.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
+    <ClCompile Include="system\stderr.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
     <ClCompile Include="test\array_test.c" />
@@ -128,6 +129,7 @@
     <ClCompile Include="test\mq_test.c" />
     <ClCompile Include="test\rtree_test.c" />
     <ClCompile Include="test\stdext_test.c" />
+    <ClCompile Include="test\strerr_test.c" />
     <ClCompile Include="test\strext_test.c" />
     <ClCompile Include="test\strings_test.c" />
     <ClCompile Include="test\thread_test.c" />
