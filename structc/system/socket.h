@@ -258,8 +258,15 @@ extern int socket_sendn(socket_t s, const void * buf, int sz);
 extern int socket_addr(const char * ip, uint16_t port, sockaddr_t * addr);
 
 //
-// socket_connecto      - connect 超时链接
+// socket_connecto      - connect 超时链接, 返回非阻塞 socket
 //
 extern int socket_connecto(socket_t s, const sockaddr_t * addr, int ms);
+
+//
+// socket_bind      - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
+// socket_listen    - 端口监听返回监听好的 socket fd.
+//
+extern socket_t socket_bind(const char * ip, uint16_t port, uint8_t protocol, int * family);
+extern socket_t socket_listen(const char * ip, uint16_t port, int backlog);
 
 #endif//_H_SOCKET
