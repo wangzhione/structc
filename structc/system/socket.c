@@ -86,7 +86,7 @@ socket_sendn(socket_t s, const void * buf, int sz) {
 // socket_addr - 通过 ip, port 构造 ipv4 结构
 //
 int 
-socket_addr(const char * ip, uint16_t port, sockaddr_t * addr) {
+socket_addr(const char * ip, uint16_t port, sockaddr_t addr) {
     addr->sin_family = AF_INET;
     addr->sin_port = htons(port);
     addr->sin_addr.s_addr = inet_addr(ip);
@@ -107,7 +107,7 @@ socket_addr(const char * ip, uint16_t port, sockaddr_t * addr) {
 // socket_connecto      - connect 超时链接, 返回非阻塞 socket
 //
 int
-socket_connecto(socket_t s, const sockaddr_t * addr, int ms) {
+socket_connecto(socket_t s, const sockaddr_t addr, int ms) {
     int n, r;
     struct timeval to;
     fd_set rset, wset, eset;
@@ -209,3 +209,45 @@ socket_listen(const char * ip, uint16_t port, int backlog) {
     }
     return fd;
 }
+
+//
+// socket_host - 通过 ip:port 串得到 socket addr 结构
+// host     : ip:port 串
+// addr     : 返回最终生成的地址
+// return   : >= EBase 表示成功
+//
+int 
+socket_host(const char * host, sockaddr_t addr) {
+    uint16_t port = 0;
+    char buf[BUFSIZ], * ip = buf;
+
+    if (!host || !*host || *host == ':')
+        strcpy(ip, "0.0.0.0");
+    else {
+        char c;
+        // 简单检查字符串是否合法
+        size_t n = strlen(host);
+        if (n >= BUFSIZ)
+            RETURN(EParam, "host err %s", host);
+
+        // 寻找分号
+        while ((c = *host++) != ':' && c)
+            *ip++ = c;
+        *ip = '\0';
+        if (c == ':') {
+            if (n > ip - buf + sizeof "65535")
+                RETURN(EParam, "host port err %s", host);
+            port = atoi(host);
+            if (port <= 1024)
+                RETURN(EParam, "host port err %s, %d", host, port);
+        }
+    }
+
+    // 开始构造 addr
+    if (NULL == addr) {
+        sockaddr_t nddr;
+        return socket_addr(ip, port, nddr);
+    }
+    return socket_addr(ip, port, addr);
+}
+

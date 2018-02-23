@@ -98,7 +98,7 @@ extern const char * strerr(int err);
 //
 // 通用 sockaddr_in ipv4 地址
 //
-typedef struct sockaddr_in sockaddr_t;
+typedef struct sockaddr_in sockaddr_t[1];
 
 //
 // socket_init - 初始化 socket 库初始化方法
@@ -212,7 +212,7 @@ inline int socket_set_sndtimeo(socket_t s, int ms) {
 }
 
 // socket_get_error - 得到当前socket error 值, 0 表示正确, 其它都是错误
-extern int socket_get_error(socket_t s) {
+inline int socket_get_error(socket_t s) {
     int err;
     socklen_t len = sizeof(err);
     int r = getsockopt(s, SOL_SOCKET, SO_ERROR, (void *)&err, &len);
@@ -221,24 +221,24 @@ extern int socket_get_error(socket_t s) {
 
 // socket_recvfrom  - recvfrom 接受函数
 // socket_sendto    - sendto 发送函数
-inline int socket_recvfrom(socket_t s, void * buf, int len, int flags, sockaddr_t * in) {
+inline int socket_recvfrom(socket_t s, void * buf, int len, int flags, sockaddr_t in) {
     socklen_t inlen = sizeof (sockaddr_t);
     return recvfrom(s, buf, len, flags, (struct sockaddr *)in, &inlen);
 }
 
-inline int socket_sendto(socket_t s, const void * buf, int len, int flags, const sockaddr_t * to) {
-    return sendto(s, buf, len, flags, (const struct sockaddr *)to, sizeof (sockaddr_t));
+inline int socket_sendto(socket_t s, const void * buf, int len, int flags, const sockaddr_t to) {
+    return sendto(s, buf, len, flags, (const struct sockaddr *)to, sizeof(sockaddr_t));
 }
 
 // socket_accept        - accept 链接函数
 // socket_connect       - connect 操作
-inline socket_t socket_accept(socket_t s, sockaddr_t * addr) {
+inline socket_t socket_accept(socket_t s, sockaddr_t addr) {
     socklen_t len = sizeof (sockaddr_t);
     return accept(s, (struct sockaddr *)addr, &len);
 }
 
-inline int socket_connect(socket_t s, const sockaddr_t * addr) {
-    return connect(s, (const struct sockaddr *)addr, sizeof(*addr));
+inline int socket_connect(socket_t s, const sockaddr_t addr) {
+    return connect(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
 }
 
 //
@@ -255,12 +255,12 @@ extern int socket_sendn(socket_t s, const void * buf, int sz);
 //
 // socket_addr - 通过 ip, port 构造 ipv4 结构
 //
-extern int socket_addr(const char * ip, uint16_t port, sockaddr_t * addr);
+extern int socket_addr(const char * ip, uint16_t port, sockaddr_t addr);
 
 //
 // socket_connecto      - connect 超时链接, 返回非阻塞 socket
 //
-extern int socket_connecto(socket_t s, const sockaddr_t * addr, int ms);
+extern int socket_connecto(socket_t s, const sockaddr_t addr, int ms);
 
 //
 // socket_bind      - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
@@ -268,5 +268,13 @@ extern int socket_connecto(socket_t s, const sockaddr_t * addr, int ms);
 //
 extern socket_t socket_bind(const char * ip, uint16_t port, uint8_t protocol, int * family);
 extern socket_t socket_listen(const char * ip, uint16_t port, int backlog);
+
+//
+// socket_host - 通过 ip:port 串得到 socket addr 结构
+// host     : ip:port 串
+// addr     : 返回最终生成的地址
+// return   : >= EBase 表示成功
+//
+extern int socket_host(const char * host, sockaddr_t addr);
 
 #endif//_H_SOCKET

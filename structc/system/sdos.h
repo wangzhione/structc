@@ -50,7 +50,7 @@
 // enum Elag int - 函数返回值全局状态码
 // >= 0 标识 Success 状态, < 0 标识 Error 状态
 //
-enum Elag {
+enum {
     SBase     = +0, // 基础正确类型
 
     EBase     = -1, // 错误基础类型

@@ -130,6 +130,7 @@
     <ClCompile Include="test\list_test.c" />
     <ClCompile Include="test\mq_test.c" />
     <ClCompile Include="test\rtree_test.c" />
+    <ClCompile Include="test\socket_test.c" />
     <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\strerr_test.c" />
     <ClCompile Include="test\strext_test.c" />

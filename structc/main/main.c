@@ -1,4 +1,5 @@
 ﻿#include <chead.h>
+#include <socket.h>
 
 //
 // main - 程序的总入口, 从扯开始
@@ -10,6 +11,7 @@ int main(int argc, char * argv[]) {
     //
     // 各种环境初始化内容
     // ... ...
+    socket_init();
 
     //
     // make D=-D_DEBUG
