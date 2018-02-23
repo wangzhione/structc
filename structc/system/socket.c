@@ -218,7 +218,7 @@ socket_listen(const char * ip, uint16_t port, int backlog) {
 //
 int 
 socket_host(const char * host, sockaddr_t addr) {
-    uint16_t port = 0;
+    int port = 0;
     char buf[BUFSIZ], * ip = buf;
 
     if (!host || !*host || *host == ':')
@@ -238,7 +238,8 @@ socket_host(const char * host, sockaddr_t addr) {
             if (n > ip - buf + sizeof "65535")
                 RETURN(EParam, "host port err %s", host);
             port = atoi(host);
-            if (port <= 1024)
+            // 有些常识数字, 不一定是魔法 ... :)
+            if (port <= 1024 || port > 65535)
                 RETURN(EParam, "host port err %s, %d", host, port);
         }
     }
@@ -246,8 +247,8 @@ socket_host(const char * host, sockaddr_t addr) {
     // 开始构造 addr
     if (NULL == addr) {
         sockaddr_t nddr;
-        return socket_addr(ip, port, nddr);
+        return socket_addr(ip, (uint16_t)port, nddr);
     }
-    return socket_addr(ip, port, addr);
+    return socket_addr(ip, (uint16_t)port, addr);
 }
 
