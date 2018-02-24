@@ -210,16 +210,10 @@ socket_listen(const char * ip, uint16_t port, int backlog) {
     return fd;
 }
 
-//
-// socket_host - 通过 ip:port 串得到 socket addr 结构
-// host     : ip:port 串
-// addr     : 返回最终生成的地址
-// return   : >= EBase 表示成功
-//
-int 
-socket_host(const char * host, sockaddr_t addr) {
+// host_parse - 解析 host 内容
+extern int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
     int port = 0;
-    char buf[BUFSIZ], * ip = buf;
+    char * st = ip;
 
     if (!host || !*host || *host == ':')
         strcpy(ip, "0.0.0.0");
@@ -235,7 +229,7 @@ socket_host(const char * host, sockaddr_t addr) {
             *ip++ = c;
         *ip = '\0';
         if (c == ':') {
-            if (n > ip - buf + sizeof "65535")
+            if (n > ip - st + sizeof "65535")
                 RETURN(EParam, "host port err %s", host);
             port = atoi(host);
             // 有些常识数字, 不一定是魔法 ... :)
@@ -243,6 +237,25 @@ socket_host(const char * host, sockaddr_t addr) {
                 RETURN(EParam, "host port err %s, %d", host, port);
         }
     }
+    *pprt = port;
+    return SBase;
+}
+
+#define HOST_PARSE(host)                    \
+uint16_t port;                              \
+char ip[BUFSIZ];                            \
+if (host_parse(host, ip, &port) < SBase)    \
+    return EParam;
+
+//
+// socket_host - 通过 ip:port 串得到 socket addr 结构
+// host     : ip:port 串
+// addr     : 返回最终生成的地址
+// return   : >= EBase 表示成功
+//
+int 
+socket_host(const char * host, sockaddr_t addr) {
+    HOST_PARSE(host);
 
     // 开始构造 addr
     if (NULL == addr) {
@@ -252,3 +265,77 @@ socket_host(const char * host, sockaddr_t addr) {
     return socket_addr(ip, (uint16_t)port, addr);
 }
 
+//
+// socket_tcp - 创建 TCP 详细套接字
+// host     : ip:port 串  
+// return   : 返回监听后套接字
+//
+socket_t 
+socket_tcp(const char * host) {
+    HOST_PARSE(host);
+    return socket_listen(ip, port, SOMAXCONN);
+}
+
+//
+// socket_udp - 创建 UDP 详细套接字
+// host     : ip:port 串  
+// return   : 返回绑定后套接字
+//
+socket_t 
+socket_udp(const char * host) {
+    HOST_PARSE(host);
+    return socket_bind(ip, port, IPPROTO_UDP, NULL);
+}
+
+//
+// socket_connects - 返回链接后的阻塞套接字
+// host     : ip:port 串  
+// return   : 返回链接后阻塞套接字
+//
+socket_t 
+socket_connects(const char * host) {
+    sockaddr_t addr;
+    socket_t s = socket_stream();
+    if (INVALID_SOCKET == s) {
+        RETURN(s, "socket_stream is error");
+    }
+
+    // 解析配置成功后尝试链接
+    if (socket_host(host, addr) < SBase)
+        goto _fail;
+    if (socket_connect(s, addr) < SBase)
+        goto _fail;
+
+    return s;
+_fail:
+    CERR("socket_connect error host = %s", host);
+    socket_close(s);
+    return INVALID_SOCKET;
+}
+
+//
+// socket_connectos - 返回链接后的非阻塞套接字
+// host     : ip:port 串  
+// ms       : 链接过程中毫秒数
+// return   : 返回链接后非阻塞套接字
+//
+socket_t 
+socket_connectos(const char * host, int ms) {
+    sockaddr_t addr;
+    socket_t s = socket_stream();
+    if (INVALID_SOCKET == s) {
+        RETURN(s, "socket_stream is error");
+    }
+
+    // 解析配置成功后尝试链接
+    if (socket_host(host, addr) < SBase)
+        goto _fail;
+    if (socket_connecto(s, addr, ms) < SBase)
+        goto _fail;
+
+    return s;
+_fail:
+    CERR("socket_connect error host = %s", host);
+    socket_close(s);
+    return INVALID_SOCKET;
+}

@@ -277,4 +277,33 @@ extern socket_t socket_listen(const char * ip, uint16_t port, int backlog);
 //
 extern int socket_host(const char * host, sockaddr_t addr);
 
+//
+// socket_tcp - 创建 TCP 详细套接字
+// host     : ip:port 串  
+// return   : 返回监听后套接字
+//
+extern socket_t socket_tcp(const char * host);
+
+//
+// socket_udp - 创建 UDP 详细套接字
+// host     : ip:port 串  
+// return   : 返回绑定后套接字
+//
+extern socket_t socket_udp(const char * host);
+
+//
+// socket_connects - 返回链接后的阻塞套接字
+// host     : ip:port 串  
+// return   : 返回链接后阻塞套接字
+//
+extern socket_t socket_connects(const char * host);
+
+//
+// socket_connectos - 返回链接后的非阻塞套接字
+// host     : ip:port 串  
+// ms       : 链接过程中毫秒数
+// return   : 返回链接后非阻塞套接字
+//
+extern socket_t socket_connectos(const char * host, int ms);
+
 #endif//_H_SOCKET
