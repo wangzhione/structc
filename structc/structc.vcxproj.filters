@@ -34,6 +34,9 @@
     <Filter Include="system\atom">
       <UniqueIdentifier>{03198923-4307-4de1-a539-a60b0b763a04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\poll">
+      <UniqueIdentifier>{3111d0ec-5876-4f07-b4bc-fc859bfb2b4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h">
@@ -126,6 +129,15 @@
     <ClInclude Include="system\socket.h">
       <Filter>system\inc</Filter>
     </ClInclude>
+    <ClInclude Include="system\spoll.h">
+      <Filter>system\poll</Filter>
+    </ClInclude>
+    <ClInclude Include="system\spoll$epoll.h">
+      <Filter>system\poll</Filter>
+    </ClInclude>
+    <ClInclude Include="system\spoll$select.h">
+      <Filter>system\poll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -216,6 +228,12 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="test\socket_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\spoll.c">
+      <Filter>system\poll</Filter>
+    </ClCompile>
+    <ClCompile Include="test\spoll_test.c">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

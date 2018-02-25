@@ -4,17 +4,20 @@
 #include <time.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <sys/types.h>
 
 #include <assext.h>
 #include <stdext.h>
 
-#ifdef __GUNC__
+#ifdef __GNUC__
 
 #include <netdb.h>
+#include <unistd.h>
 #include <sys/un.h>
 #include <sys/uio.h>
+#include <sys/time.h>
 #include <arpa/inet.h>
-#include <sys/select.h>
+#include <sys/socket.h>
 #include <netinet/tcp.h>
 #include <sys/resource.h>
 
