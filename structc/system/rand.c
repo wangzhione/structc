@@ -28,7 +28,7 @@ static void _rand_next(rand_t r) {
 //
 // rand_rand - 获取一个随机值
 // r        : 随机函数对象
-// return   : 返回生成的随机函数
+// return   : 返回 [0, INT32_MAX] 随机数
 //
 inline int32_t 
 rand_rand(rand_t r) {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -94,6 +94,7 @@
     <ClInclude Include="system\pthread\pthread.h" />
     <ClInclude Include="system\pthread\sched.h" />
     <ClInclude Include="system\pthread\semaphore.h" />
+    <ClInclude Include="system\rand.h" />
     <ClInclude Include="system\sdos.h" />
     <ClInclude Include="system\jemalloc\jemalloc.h" />
     <ClInclude Include="system\socket.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="struct\mq.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
+    <ClCompile Include="system\rand.c" />
     <ClCompile Include="system\socket.c" />
     <ClCompile Include="system\spoll.c" />
     <ClCompile Include="system\stderr.c" />

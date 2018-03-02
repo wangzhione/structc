@@ -15,13 +15,13 @@ struct rand {
 
 typedef struct rand rand_t[1];
 
-#define X0	            (0x330E)
-#define X1	            (0xABCD)
-#define X2	            (0x1234)
-#define A0	            (0xE66D)
-#define A1	            (0xDEEC)
-#define A2	            (0x0005)
-#define C	            (0x000B)
+#define X0              (0x330E)
+#define X1              (0xABCD)
+#define X2              (0x1234)
+#define A0              (0xE66D)
+#define A1              (0xDEEC)
+#define A2              (0x0005)
+#define C               (0x000B)
 
 #define N               (16)
 #define MASK            ((1 << N) - 1)
@@ -43,7 +43,7 @@ inline void rand_init(rand_t r, int64_t seed) {
 //
 // rand_rand - 获取一个随机值
 // r        : 随机函数对象
-// return   : 返回生成的随机函数
+// return   : 返回 [0, INT32_MAX] 随机数
 //
 extern int32_t rand_rand(rand_t r);
 

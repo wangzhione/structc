@@ -13,6 +13,8 @@ int main(int argc, char * argv[]) {
     // ... ...
     socket_init();
 
+    EXTERN_RUN(r_init);
+
     //
     // make D=-D_DEBUG
     // main_test 单元测试才会启动
