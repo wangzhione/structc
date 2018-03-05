@@ -138,6 +138,10 @@
     <ClInclude Include="system\spoll$select.h">
       <Filter>system\poll</Filter>
     </ClInclude>
+    <ClInclude Include="system\rand.h" />
+    <ClInclude Include="system\times.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -235,6 +239,10 @@
     </ClCompile>
     <ClCompile Include="test\spoll_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\rand.c" />
+    <ClCompile Include="system\times.c">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

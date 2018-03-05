@@ -105,6 +105,7 @@
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\strings.h" />
     <ClInclude Include="system\thread.h" />
+    <ClInclude Include="system\times.h" />
     <ClInclude Include="system\uv\tree.h" />
     <ClInclude Include="system\uv\uv-errno.h" />
     <ClInclude Include="system\uv\uv-threadpool.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="system\stderr.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strext.c" />
+    <ClCompile Include="system\times.c" />
     <ClCompile Include="test\array_test.c" />
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\dict_test.c" />
