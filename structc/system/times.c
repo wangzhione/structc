@@ -27,3 +27,35 @@ usleep(unsigned usec) {
 }
 
 #endif
+
+// times_tm - 从时间串中提取出来年月日时分秒
+extern bool times_tm(times_t tsr, struct tm * ptm) {
+    int c, num, * es, * py;
+    if ((!tsr) || !(c = *tsr) || c < '0' || c > '9')
+        return false;
+
+    num = 0;
+    es = &ptm->tm_sec;
+    py = &ptm->tm_year;
+    do {
+        if (c >= '0' && c <= '9') {
+            num = 10 * num + c - '0';
+            c = *++tsr;
+            continue;
+        }
+
+        *py-- = num;
+        num = 0;
+
+        // 去掉特殊字符, 一直找到下一个数字
+        while ((c = *++tsr) && (c < '0' || c > '9'))
+            ;
+    } while (c && py >= es);
+
+    // 解析成功返回 true, 否则 false
+    if (py == es) {
+        *es = num;
+        return true;
+    }
+    return false;
+}
