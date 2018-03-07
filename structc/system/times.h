@@ -70,10 +70,10 @@ inline time_t times(void) {
 // times_get - 解析时间串, 返回时间戳
 // tsr          : 时间串内容 
 // pt           : 返回得到的时间戳
-// otm          : 返回得到的时间结构体
+// pm           : 返回得到的时间结构体
 // return       : 返回 true 表示构造成功
 //
-extern bool times_get(times_t tsr, time_t * pt, struct tm * ptm);
+extern bool times_get(times_t tsr, time_t * pt, struct tm * pm);
 
 //
 // time_day - 判断时间戳是否是同一天
