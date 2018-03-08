@@ -76,6 +76,13 @@ inline time_t times(void) {
 extern bool times_get(times_t tsr, time_t * pt, struct tm * pm);
 
 //
+// time_get - 解析时间串, 返回时间戳
+// tsr          : 时间串内容  
+// return       : < 0 is error
+//
+extern time_t time_get(times_t tsr);
+
+//
 // time_day - 判断时间戳是否是同一天
 // n            : 第一个时间戳
 // t            : 第二个时间戳

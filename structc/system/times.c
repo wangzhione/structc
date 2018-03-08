@@ -1,4 +1,5 @@
 ﻿#include <times.h>
+#include <stdio.h>
 
 #ifdef _MSC_VER
 
@@ -76,8 +77,8 @@ times_get(times_t tsr, time_t * pt, struct tm * pm) {
         return false;
 
     // 得到时间戳, 失败返回false
-    m.tm_year -= 1900;
     m.tm_mon -= 1;
+    m.tm_year -= 1900;
     if ((t = mktime(&m)) < 0)
         return false;
 
@@ -85,4 +86,117 @@ times_get(times_t tsr, time_t * pt, struct tm * pm) {
     if (pt) *pt = t;
     if (pm) *pm = m;
     return true;
+}
+
+//
+// time_get - 解析时间串, 返回时间戳
+// tsr          : 时间串内容  
+// return       : < 0 is error
+//
+inline time_t 
+time_get(times_t tsr) {
+    struct tm m;
+    // 先高效解析出年月日时分秒
+    if (!times_tm(tsr, &m))
+        return -1;
+
+    // 得到时间戳, 失败返回false
+    m.tm_mon -= 1;
+    m.tm_year -= 1900;
+    return mktime(&m);
+}
+
+
+//
+// time_day - 判断时间戳是否是同一天
+// n            : 第一个时间戳
+// t            : 第二个时间戳
+// return       : true 表示同一天
+//
+inline bool 
+time_day(time_t n, time_t t) {
+    // China local 适用, 得到当前天数
+    // GMT [World] + 8 * 3600 = CST [China]
+    n = (n + 8UL * 3600) / (24 * 3600);
+    t = (t + 8UL * 3600) / (24 * 3600);
+    return n == t;
+}
+
+//
+// time_week - 判断时间戳是否是同一周
+// n            : 第一个时间戳
+// t            : 第二个时间戳
+// return       : true 表示同一周
+//
+bool 
+time_week(time_t n, time_t t) {
+    time_t p;
+    struct tm m;
+    // 得到最大时间, 保存在 n 中
+    if (n < t) {
+        p = n;
+        n = t;
+        t = p;
+    }
+
+    // 得到 n 表示的当前时间
+    localtime_r(&n, &m);
+    // 得到当前时间到周一起点的时间差
+    m.tm_wday = m.tm_wday ? m.tm_wday - 1 : 6;
+    p = m.tm_wday * 24 * 3600 + m.tm_hour * 3600 +
+        m.tm_min * 60 + m.tm_sec;
+
+    // [min, n], n = max(n, t) 表示在同一周内
+    return t >= n - p;
+}
+
+//
+// times_day - 判断时间串是否是同一天
+// ns           : 第一个时间串
+// ts           : 第二个时间串
+// return       : true 表示同一天
+//
+bool 
+times_day(times_t ns, times_t ts) {
+    time_t t, n = time_get(ns);
+    // 解析失败直接返回结果
+    if ( (n < 0) || ((t = time_get(ts)) < 0))
+        return false;
+    return time_day(n, t);
+}
+
+//
+// times_week - 判断时间串是否是同一周
+// ns           : 第一个时间串
+// ts           : 第二个时间串
+// return       : true 表示同一周
+//
+bool 
+times_week(times_t ns, times_t ts) {
+    time_t t, n = time_get(ns);
+    // 解析失败直接返回结果
+    if ( (n < 0) || ((t = time_get(ts)) < 0))
+        return false;
+    return time_week(n, t);
+}
+
+//
+// times_fmt - 通过 fmt 格式最终拼接一个字符串
+// fmt          : 必须包含 %04d %02d %02d %02d %02d %02d %03ld
+// buf          : 最终保存的内容
+// sz           : buf 长度
+// return       : 返回生成串长度
+//
+int 
+times_fmt(const char * fmt, char buf[], size_t sz) {
+    struct tm m;
+    struct timespec s;
+
+    timespec_get(&s, TIME_UTC);
+    localtime_r(&s.tv_sec, &m);
+
+    return snprintf(buf, sz, fmt,
+                    m.tm_year + 1900, m.tm_mon + 1, m.tm_mday,
+                    m.tm_hour, m.tm_min, m.tm_sec, 
+                    s.tv_nsec / 1000000);
 }
