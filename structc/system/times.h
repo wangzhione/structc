@@ -58,14 +58,6 @@ extern int usleep(unsigned usec);
 #define INT_TIMES (64)
 typedef char times_t[INT_TIMES];
 
-// 
-// times - 得到当前时间戳
-// return       : 得到当前时间戳
-//
-inline time_t times(void) {
-    return time(NULL);
-}
-
 //
 // times_get - 解析时间串, 返回时间戳
 // tsr          : 时间串内容 
@@ -78,7 +70,7 @@ extern bool times_get(times_t tsr, time_t * pt, struct tm * pm);
 //
 // time_get - 解析时间串, 返回时间戳
 // tsr          : 时间串内容  
-// return       : < 0 is error
+// return       : 0 is error
 //
 extern time_t time_get(times_t tsr);
 
@@ -89,6 +81,13 @@ extern time_t time_get(times_t tsr);
 // return       : true 表示同一天
 //
 extern bool time_day(time_t n, time_t t);
+
+//
+// time_now - 判断时间戳是否是今天
+// t            : 待判断的时间戳
+// return       : 返回当前时间戳, -1 is error
+//
+extern time_t time_now(time_t t);
 
 //
 // time_week - 判断时间戳是否是同一周

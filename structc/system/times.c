@@ -30,7 +30,7 @@ usleep(unsigned usec) {
 #endif
 
 // times_tm - 从时间串中提取出来年月日时分秒
-extern bool times_tm(times_t tsr, struct tm * pm) {
+bool times_tm(times_t tsr, struct tm * pm) {
     int c, num, * es, * py;
     if ((!tsr) || !(c = *tsr) || c < '0' || c > '9')
         return false;
@@ -46,18 +46,26 @@ extern bool times_tm(times_t tsr, struct tm * pm) {
         }
 
         *py-- = num;
+        if (py < es)
+            break;
+
+        // 去掉特殊字符, 重新开始
+        for (;;) {
+            if ((c = *++tsr) == '\0')
+                return false;
+            if (c >= '0' && c <= '9')
+                break;
+        }
         num = 0;
+    } while (c);
 
-        // 去掉特殊字符, 一直找到下一个数字
-        while ((c = *++tsr) && (c < '0' || c > '9'))
-            ;
-    } while (c && py >= es);
-    // 解析失败返回 false,
-    if (py != es)
-        return false;
-
-    *es = num;
-    return true;
+    // true : py < es || c == '\0' && py == es
+    if (py < es) return true;
+    if (py == es) {
+        *es = num;
+        return true;
+    }
+    return false;
 }
 
 //
@@ -120,6 +128,17 @@ time_day(time_t n, time_t t) {
     n = (n + 8UL * 3600) / (24 * 3600);
     t = (t + 8UL * 3600) / (24 * 3600);
     return n == t;
+}
+
+//
+// time_now - 判断时间戳是否是今天
+// t            : 待判断的时间戳
+// return       : 返回当前时间戳, -1 is error
+//
+inline time_t 
+time_now(time_t t) {
+    time_t n = time(NULL);
+    return time_day(n, t) ? n : -1;
 }
 
 //

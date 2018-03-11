@@ -145,6 +145,7 @@
     <ClCompile Include="test\strings_test.c" />
     <ClCompile Include="test\spoll_test.c" />
     <ClCompile Include="test\thread_test.c" />
+    <ClCompile Include="test\times_test.c" />
     <ClCompile Include="test\uv_timer_test.c" />
     <ClCompile Include="test\uv_love_test.c" />
     <ClCompile Include="test\uv_tty_test.c" />
