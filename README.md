@@ -29,11 +29,11 @@
 
 [structc 环境搭建](./structc/README.md)
 
-    - winds 双击
+    - Winds 双击
         - 目前只维护 x64 的 Debug 和 Release
         - Best New CL build
 
-    - linux 搞起
+    - Linux 搞起
         - Release : make
         - Clean   : make clean
         - Debug   : make D=-D_DEBUG
@@ -43,7 +43,71 @@
             - main_run.c 写业务代码
             - main_test.c 加 test目录下单测
         - test 目录
-            - *_test.c -> void *_test(void) { ... }        
+            - *_test.c -> void *_test(void) { ... }
+
+***
+
+### IDE 弱议
+
+    Winds 还是万年不变的 Visual Studio Best Version
+
+    Linux 抛砖引玉带大家配置哈 VS Code Best Version
+
+    0. 安装 C/C++ Microsoft 插件
+    
+    1. F1 -> Edit Configurations -> c_cpp_properties.json
+       Search Linux 部分添加如下内容
+```json
+            "name": "Linux",
+            "includePath": [
+                ...
+                "${workspaceRoot}/structc/base",
+                "${workspaceRoot}/structc/struct",
+                "${workspaceRoot}/structc/system",
+                "${workspaceRoot}"
+            ],
+            "defines": [
+                "__GNUC__",
+                "_DEBUG"
+            ],
+```
+    2. F5 -> launch.json
+       按照规律改 program 项目生成 和 preLaunchTask 前置任务 
+```json
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Outs/main.exe",
+
+            "preLaunchTask": "Debug",
+```
+    3. F5 -> tasks.json
+       建立下面任务, 目前只使用了 Debug
+```json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "make clean"
+        },
+        {
+            "label": "Debug",
+            "type": "shell",
+            "command": "make D=-D_DEBUG"
+        },
+        {
+            "label": "Release",
+            "type": "shell",
+            "command": "make"
+        }
+    ]
+}
+```
+    核心思路是基于 Makefile Debug 模式配置 VSCode C Studio.
+    此刻就可以 F5 F10 F11 愉快玩耍了. 
+    比 vi + gdb 好那么一丢丢 ~
 
 ***
 
