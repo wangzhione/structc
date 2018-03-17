@@ -1,41 +1,46 @@
 ﻿#ifndef _H_G2U8
 #define _H_G2U8
 
-#include <stddef.h>
-#include <stdbool.h>
+#include <stdext.h>
 
 //
-// g = gbk 是 ascii 扩展码, u8 = UTF-8
-// LEN(gbk) * 2 + 1 > LEN(utf8) >= LEN(gbk)
+// utf8 和 gbk 基础处理能力的库
+//
+// g = gbk 是 ascii 扩展码, u8 = gbk
+// 2 * LEN(g) + 1 > LEN(u8) >= LEN(g)
 //
 
 //
-// isu8 - 判断当前字符串是否是 utf-8 编码
-// buf      : 输入的串
-// sz       : 待检查串长度
-// return   : true 表示 utf-8 编码
+// isu8s - 判断字符串是否是utf8编码
+// s        : 输入的串
+// return   : true 表示 utf8 编码
 //
-extern bool isu8s(char buf[]);
-extern bool isu8(char buf[], size_t sz);
+extern bool isu8s(const char * s);
 
 //
-// g2u8 - gbk 串数组转成 utf-8 串数组
-// buf      : gbk 字符数组
-// out      : utf-8 保存的数组
-// sz       : buf 能够保存字符串容量
-// return   : void
+// u82gs - utf8 to gbk
+// s        : utf8 的 c 串
+// return   : malloc 后 gbk 串
 //
-extern void g2u8(char buf[], char out[]);
-extern void g2u8s(char buf[], size_t sz);
+extern char * u82gs(const char * s);
 
 //
-// g2u8 - utf-8 串数组转成 gbk 串数组
-// buf      : utf-8 字符数组
-// out      : gbk 保存的数组
-// sz       : buf 能够保存字符串容量
-// return   : void
+// g2u8s - gbk to utf8
+// s        : gbk 的 c 串
+// return   : malloc 后 utf8 串
 //
-extern void u82g(char buf[], char out[]);
-extern void u82gs(char buf[]);
+extern char * g2u8s(const char * s);
+
+//
+// isu8 - check is utf8
+// u82g - utf8 to gbk save d mem
+// g2u8 - gbk to utf8 save d mem by size n
+// d        : mem
+// n        : size
+// return   : void      
+//
+extern void u82g(char d[]);
+extern void g2u8(char d[], size_t n);
+extern bool isu8(const char d[], size_t n);
 
 #endif//_H_G2U8

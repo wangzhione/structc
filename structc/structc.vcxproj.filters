@@ -144,6 +144,9 @@
     <ClInclude Include="system\rand.h">
       <Filter>system\inc</Filter>
     </ClInclude>
+    <ClInclude Include="system\g2u8.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -250,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="test\times_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\g2u8.c">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
