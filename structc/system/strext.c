@@ -19,6 +19,25 @@ str_hash(const char * str) {
 }
 
 //
+// str_cpyn - tar 复制内容到 src 中
+// src      : 返回保存内容
+// tar      : 目标内容
+// n        : 最大容量
+// return   : 返回字符串长度
+//
+int 
+str_cpyn(char * src, const char * tar, size_t n) {
+    size_t i;
+    if (!src || !tar || n == 0)
+        return EBase;
+    for (i = 1; 
+        (i < n) && (*src++ = *tar++); ++i)
+        ;
+    if (i == n) *src = '\0';
+    return (int)i - 1;
+}
+
+//
 // str_cmpi - 字符串不区分大小写比较函数
 // ls       : 左串
 // rs       : 右串

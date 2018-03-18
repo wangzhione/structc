@@ -18,20 +18,6 @@
 extern bool isu8s(const char * s);
 
 //
-// u82gs - utf8 to gbk
-// s        : utf8 的 c 串
-// return   : malloc 后 gbk 串
-//
-extern char * u82gs(const char * s);
-
-//
-// g2u8s - gbk to utf8
-// s        : gbk 的 c 串
-// return   : malloc 后 utf8 串
-//
-extern char * g2u8s(const char * s);
-
-//
 // isu8 - check is utf8
 // u82g - utf8 to gbk save d mem
 // g2u8 - gbk to utf8 save d mem by size n

@@ -14,16 +14,7 @@ void g2u8_test(void) {
 
     // utf8 -> gbk 
     char * u8s = u8"你好吗, 😀";
-    puts(u8s);
-    char * gs = u82gs(u8s);
-    puts(gs);
-    char * n8s = g2u8s(gs);
-    free(gs);
-    puts(n8s);
-    if (strncmp(u8s, n8s, strlen(u8s))) {
-        puts("error parse ... ");
-    }
-    free(n8s);
+    printf("u8s -> %d\n", isu8s(u8s));
 
     puts("success");
 }

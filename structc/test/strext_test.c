@@ -1,4 +1,5 @@
 ﻿#include <chead.h>
+#include <g2u8.h>
 
 /*
  单元功能测试要求 : 
@@ -21,6 +22,10 @@ void strext_test(void) {
 	// 输出数据测试
 	char * txt = str_freads("README.md");
 	puts(txt);
+    u82g(txt);
+    // UTF-8 FILE with BOM
+    puts(txt + 2);
+    free(txt);
 
     // 开始字符串构建
     char * str = str_printf("你好吗 ? double = %0.4f\n", 1.2340);
@@ -37,4 +42,11 @@ void strext_test(void) {
 
     // 测试字符串匹配
     printf("str_cmpin = %d\n", str_cmpin("nUlL", "null;xxx", 4));
+
+    // 测试数据复制
+    char src[10] = "123456781";
+    char tar[11] = "1234567891";
+
+    int len = str_cpyn(src, tar, sizeof src);
+    printf("len = %d, src = %s\n", len, src);
 }

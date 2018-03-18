@@ -13209,7 +13209,7 @@ int u82ue(const char * u8s, size_t n, int * ue, int * len) {
 }
 
 // u82gn - utf8 转 gbk 算法实现
-void u82gn(const char * u8s, size_t n, char * gs) {
+size_t u82gn(const char * u8s, size_t n, char * gs) {
     int ue, len;
     unsigned gbk;
     size_t ui = 0, gi = 0;
@@ -13235,10 +13235,11 @@ void u82gn(const char * u8s, size_t n, char * gs) {
         ui += len;
     }
     gs[gi] = '\0';
+    return gi;
 }
 
 // g2u8n - gbk 转 utf8 算法实现
-void g2u8n(const char * gs, size_t n, char * u8s) {
+size_t g2u8n(const char * gs, size_t n, char * u8s) {
     unsigned u, c;
     size_t ui = 0, gi = 0;
 
@@ -13263,34 +13264,7 @@ void g2u8n(const char * gs, size_t n, char * u8s) {
         }
     }
     u8s[ui] = '\0';
-}
-
-//
-// u82gs - utf8 to gbk
-// s        : utf8 的 c 串
-// return   : malloc 后 gbk 串
-//
-inline char * 
-u82gs(const char * s) {
-    // len utf8 >= len gbk
-    size_t n = strlen(s);
-    char * gs = malloc(n + 1);
-    u82gn(s, n, gs); // convt
-    return gs;
-}
-
-//
-// g2u8s - gbk to utf8
-// s        : gbk 的 c 串
-// return   : malloc 后 utf8 串
-//
-inline char * 
-g2u8s(const char * s) {
-    // 2 * len gbk >= len utf8
-    size_t n = strlen(s);
-    char * u8s = malloc(2 * n + 1);
-    g2u8n(s, n, u8s);
-    return u8s;
+    return ui;
 }
 
 //
@@ -13301,19 +13275,27 @@ g2u8s(const char * s) {
 // n        : size
 // return   : void      
 //
-inline void 
+inline void
 u82g(char d[]) {
-    char * gs = u82gs(d);
-    strcpy(d, gs);
+    // len utf8 >= len gbk convt
+    size_t n = strlen(d);
+    char * gs = malloc(n + 1);
+    size_t m = u82gn(d, n, gs);
+    memcpy(d, gs, m + 1);
     free(gs);
 }
 
-inline void 
+inline void
 g2u8(char d[], size_t n) {
-    char * u8s = g2u8s(d);
-    assert(u8s && n > 0);
-    strncpy(d, u8s, n - 1);
-    d[n - 1] = '\0';
+    // 2 * len gbk >= len utf8
+    char * u8s = malloc(2 * n + 1);
+    size_t m = g2u8n(d, n, u8s);
+    if (m <= n)
+        memcpy(d, u8s, m + 1);
+    else {
+        memcpy(d, u8s, n - 1);
+        d[n - 1] = '\0';
+    }
     free(u8s);
 }
 
