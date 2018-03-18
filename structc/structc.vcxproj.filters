@@ -147,6 +147,9 @@
     <ClInclude Include="system\g2u8.h">
       <Filter>system\inc</Filter>
     </ClInclude>
+    <ClInclude Include="system\md5.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -258,6 +261,12 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="test\g2u8_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\md5.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\md5_test.c">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

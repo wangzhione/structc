@@ -92,6 +92,7 @@
     <ClInclude Include="system\atomic$cl.h" />
     <ClInclude Include="system\atomic.h" />
     <ClInclude Include="system\g2u8.h" />
+    <ClInclude Include="system\md5.h" />
     <ClInclude Include="system\pthread\pthread.h" />
     <ClInclude Include="system\pthread\sched.h" />
     <ClInclude Include="system\pthread\semaphore.h" />
@@ -126,6 +127,8 @@
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\g2u8.c" />
+    <ClCompile Include="system\md5.c" />
+    <ClCompile Include="system\md5_test.c" />
     <ClCompile Include="system\rand.c" />
     <ClCompile Include="system\socket.c" />
     <ClCompile Include="system\spoll.c" />

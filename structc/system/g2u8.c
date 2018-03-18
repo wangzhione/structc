@@ -1,5 +1,6 @@
 ﻿#include <g2u8.h>
-#include <assext.h>
+#include <string.h>
+#include <assert.h>
 
 //
 // isu8s - 判断字符串是否是utf8编码
