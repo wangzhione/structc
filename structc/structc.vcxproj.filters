@@ -257,6 +257,9 @@
     <ClCompile Include="system\g2u8.c">
       <Filter>system</Filter>
     </ClCompile>
+    <ClCompile Include="test\g2u8_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

@@ -1,4 +1,5 @@
 ﻿#include <g2u8.h>
+#include <assext.h>
 
 //
 // isu8s - 判断字符串是否是utf8编码
@@ -13153,3 +13154,199 @@ static unsigned _g2u8[] = {
         0,        0,        0,        0,        0,
 };
 
+// u82ue - utf8 串转成 unicode, 返回编码值和长度
+int u82ue(const char * u8s, size_t n, int * ue, int * len) {
+    char c = u8s[0];
+    if (       (c & 0xF8) == 0xF0) { // 4位
+        if ((n < 4) || 
+            (u8s[1] & 0xC0) != 0x80 || (u8s[2] & 0xC0) != 0x80 || (u8s[3] & 0xC0) != 0x80) {
+            // 编码字节长度不够
+            return -2;
+        }
+        *len = 4;
+        *ue = c & 0x07;
+
+        *ue <<= 6;
+        *ue |= u8s[1] & 0x3F;
+
+        *ue <<= 6;
+        *ue |= u8s[2] & 0x3F;
+
+        *ue <<= 6;
+        *ue |= u8s[3] & 0x3F;
+    } else if ((c & 0xF0) == 0xE0) { // 3位
+        if ((n < 3) || 
+            (u8s[1] & 0xC0) != 0x80 || (u8s[2] & 0xC0) != 0x80)
+            return -2;
+
+        *len = 3;
+        *ue = c & 0x0F;
+
+        *ue <<= 6;
+        *ue |= u8s[1] & 0x3F;
+
+        *ue <<= 6;
+        *ue |= u8s[2] & 0x3F;
+    } else if ((c & 0xE0) == 0xC0) { // 2位
+        if ((n < 2) || 
+            (u8s[1] & 0xC0) != 0x80) 
+            return -2;
+
+        *len = 2;
+        *ue = c & 0x1F;
+
+        *ue <<= 6;
+        *ue |= u8s[1] & 0x3F;
+    } else if ((c & 0x80) == 0x00) { // 1位
+        *len = 1;
+        *ue = c;
+    } else {
+        // 第一位编码不合法
+        return -1;
+    }
+
+    return 0;
+}
+
+// u82gn - utf8 转 gbk 算法实现
+void u82gn(const char * u8s, size_t n, char * gs) {
+    int ue, len;
+    unsigned gbk;
+    size_t ui = 0, gi = 0;
+
+    while (n > ui) {
+        //
+        // 对于错误编码, 跳过, 不做精细控制. 听之任之
+        //
+        if (u82ue(u8s + ui, n - ui, &ue, &len)) {
+            ++ui;
+            continue;
+        }
+
+        // 65535 以上编码, gbk 没有忽略
+        if (ue >= sizeof _ue2g / sizeof *_ue2g) {}
+        else {
+            gbk = _ue2g[ue];
+            if (len > 1)
+                gs[gi++] = gbk >> 8;
+            gs[gi++] = gbk & 0xFF;
+        }
+
+        ui += len;
+    }
+    gs[gi] = '\0';
+}
+
+// g2u8n - gbk 转 utf8 算法实现
+void g2u8n(const char * gs, size_t n, char * u8s) {
+    unsigned u, c;
+    size_t ui = 0, gi = 0;
+
+    while (n > gi) {
+        c = gs[gi++] & 0xFF;
+        if (c < 0x80)
+            u8s[ui++] = _g2u8[c];
+        else {
+            if (n < gi + 1)
+                break;
+
+            c <<= 8;
+            c |= gs[gi++] & 0xFF;
+            u = _g2u8[c];
+            if (u < 0xD192)
+                u8s[ui++] = u >> 8;
+            else {
+                u8s[ui++] = u >> 16;
+                u8s[ui++] = (u >> 8) & 0xFF;
+            }
+            u8s[ui++] = u & 0xFF;
+        }
+    }
+    u8s[ui] = '\0';
+}
+
+//
+// u82gs - utf8 to gbk
+// s        : utf8 的 c 串
+// return   : malloc 后 gbk 串
+//
+inline char * 
+u82gs(const char * s) {
+    // len utf8 >= len gbk
+    size_t n = strlen(s);
+    char * gs = malloc(n + 1);
+    u82gn(s, n, gs); // convt
+    return gs;
+}
+
+//
+// g2u8s - gbk to utf8
+// s        : gbk 的 c 串
+// return   : malloc 后 utf8 串
+//
+inline char * 
+g2u8s(const char * s) {
+    // 2 * len gbk >= len utf8
+    size_t n = strlen(s);
+    char * u8s = malloc(2 * n + 1);
+    g2u8n(s, n, u8s);
+    return u8s;
+}
+
+//
+// isu8 - check is utf8
+// u82g - utf8 to gbk save d mem
+// g2u8 - gbk to utf8 save d mem by size n
+// d        : mem
+// n        : size
+// return   : void      
+//
+inline void 
+u82g(char d[]) {
+    char * gs = u82gs(d);
+    strcpy(d, gs);
+    free(gs);
+}
+
+inline void 
+g2u8(char d[], size_t n) {
+    char * u8s = g2u8s(d);
+    assert(u8s && n > 0);
+    strncpy(d, u8s, n - 1);
+    d[n - 1] = '\0';
+    free(u8s);
+}
+
+bool 
+isu8(const char d[], size_t n) {
+    size_t i = 0;
+    bool ascii = true;
+    // byts 表示编码字节数, utf8 [1, 6]字节编码
+    unsigned char c, byts = 0;
+
+    while (i < n) {
+        c = d[i++];
+        // ascii 码最高位为0, 0xxx xxxx
+        if ((c & 0x80)) ascii = false;
+
+        // 计算字节数
+        if (0 == byts) {
+            if (c >= 0x80) {
+                if (c >= 0xFC && c <= 0xFD) byts = 6;
+                else if (c >= 0xF8) byts = 5;
+                else if (c >= 0xF0) byts = 4;
+                else if (c >= 0xE0) byts = 3;
+                else if (c >= 0xC0) byts = 2;
+                else return false; // 异常编码直接返回
+                --byts;
+            }
+        } else {
+            // 多字节的非首位字节, 应为 10xx xxxx
+            if ((c & 0xC0) != 0x80) return false;
+            // byts 来回变化, 最终必须为 0
+            --byts;
+        }
+    }
+
+    return !ascii && byts == 0;
+}

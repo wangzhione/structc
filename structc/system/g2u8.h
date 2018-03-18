@@ -6,8 +6,8 @@
 //
 // utf8 和 gbk 基础处理能力的库
 //
-// g = gbk 是 ascii 扩展码, u8 = gbk
-// 2 * LEN(g) + 1 > LEN(u8) >= LEN(g)
+// g = gbk 是 ascii 扩展码, u8 = utf8
+// 2 * LEN(g) >= LEN(u8) >= LEN(g)
 //
 
 //
