@@ -63,8 +63,7 @@
                 ...
                 "${workspaceRoot}/structc/base",
                 "${workspaceRoot}/structc/struct",
-                "${workspaceRoot}/structc/system",
-                "${workspaceRoot}"
+                "${workspaceRoot}/structc/system"
             ],
             "defines": [
                 "__GNUC__",
@@ -88,25 +87,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "clean",
-            "type": "shell",
-            "command": "make clean"
-        },
-        {
             "label": "Debug",
             "type": "shell",
             "command": "make D=-D_DEBUG"
-        },
-        {
-            "label": "Release",
-            "type": "shell",
-            "command": "make"
         }
     ]
 }
 ```
     核心思路是基于 Makefile Debug 模式配置 VSCode C Studio.
-    此刻就可以 F5 F10 F11 愉快玩耍了. 
+    此刻就可以在 main.c 入口出发, 开启 F5 F10 F11 玩耍之路.
+    
     比 vi + gdb 好那么一丢丢 ~
 
 ***
