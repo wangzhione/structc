@@ -37,7 +37,7 @@ TESTO   =   $(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 #
 CC      = gcc
 CFLAGS  = -g -O2 -Wall -Wno-unused-result
-LIB     = -lm -lpthread -l:libuv.a
+LIB     = -lm -lpthread -luv
 
 RHAD    = $(CC) $(CFLAGS) $(D)
 RTAL    = $(foreach v, $^, $(OBJP)$(v)) $(LIB)
@@ -83,6 +83,7 @@ $(OUTS):
 
 # 清除操作
 clean :
+	-rm -rf *core*
 	-rm -rf $(OUTS)
 	-rm -rf Debug Release logs x64
 	-rm -rf $(ROOT)/Debug $(ROOT)/logs $(ROOT)/Release $(ROOT)/x64

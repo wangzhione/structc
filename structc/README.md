@@ -25,16 +25,19 @@
 
         项目右击 -> [属性] -> [链接器] -> [输入]
 
-		libuv.lib
-		psapi.lib
-		user32.lib
-		shell32.lib
-		ws2_32.lib
-		userenv.lib
-		iphlpapi.lib
-		advapi32.lib
-		pthread_lib.lib
-		jemalloc-vc141-Release-static.lib
+        advapi32.lib
+        iphlpapi.lib
+        psapi.lib
+        shell32.lib
+        user32.lib
+        userenv.lib
+        ws2_32.lib
+
+        libuv.lib
+
+        pthread_lib.lib
+
+        jemalloc-vc141-Release-static.lib
 
         
     c). 添加包含目录
@@ -50,13 +53,18 @@
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
 
         _DEBUG
-        PTW32_STATIC_LIB
-        JEMALLOC_STATIC
-        JEMALLOC_EXPORT=
+
+        _LARGEFILE_SOURCE
+        _FILE_OFFSET_BITS=64
         WIN32_LEAN_AND_MEAN
         _CRT_SECURE_NO_WARNINGS
         _CRT_NONSTDC_NO_DEPRECATE
-        _WINSOCK_DEPRECATED_NO_WARNINGS
+        _WINSOCK_DEPRECATED_NO_WARNINGS    
+
+        PTW32_STATIC_LIB
+
+        JEMALLOC_STATIC
+        JEMALLOC_EXPORT=
 
         [Release]
         - _DEBUG
@@ -106,37 +114,35 @@ tar -jxvf jemalloc-5.0.1.tar.bz2
 cd jemalloc-5.0.1
 
 sh autogen.sh
-
 make -j4
-
 sudo make install
 sudo ldconfig
-cd ../
+
+cd
 rm -rf jemalloc-5.0.1 jemalloc-5.0.1.tar.bz2
 
 # libuv 安装
 cd
-wget https://github.com/libuv/libuv/archive/v1.18.0.tar.gz
-tar -zxvf v1.18.0.tar.gz
-cd libuv-1.18.0
+wget https://github.com/libuv/libuv/archive/v1.19.2.zip
+unzip v1.19.2.zip
+cd libuv-1.19.2
 
 sh autogen.sh
 ./configure
-
 make -j4
-
 sudo make install
 sudo ldconfig
-cd ../
-rm -rf libuv-1.18.0 v1.18.0.tar.gz
+
+cd
+rm -rf libuv-1.19.2 v1.19.2.zip
 ```
 
     b) 编译设置
 		
-       -static
-       -lm 
-	   -luv
-       -lpthread
+        -lm 
+        -lpthread
+
+        -luv        
 
     c) 踩坑
         
