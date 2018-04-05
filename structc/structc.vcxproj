@@ -133,7 +133,6 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\g2u8.c" />
     <ClCompile Include="system\md5.c" />
-    <ClCompile Include="system\md5_test.c" />
     <ClCompile Include="system\rand.c" />
     <ClCompile Include="system\socket.c" />
     <ClCompile Include="system\spoll.c" />
@@ -147,6 +146,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <ClCompile Include="test\g2u8_test.c" />
     <ClCompile Include="test\json_test.c" />
     <ClCompile Include="test\list_test.c" />
+    <ClCompile Include="test\md5_test.c" />
     <ClCompile Include="test\mq_test.c" />
     <ClCompile Include="test\rtree_test.c" />
     <ClCompile Include="test\socket_test.c" />

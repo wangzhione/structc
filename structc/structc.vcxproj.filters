@@ -266,11 +266,11 @@
     <ClCompile Include="system\md5.c">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="system\md5_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="main\main_init.c">
       <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="test\md5_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
