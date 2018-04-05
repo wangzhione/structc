@@ -1,6 +1,7 @@
 ﻿#ifndef _H_MD5
 #define _H_MD5
 
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>

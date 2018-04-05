@@ -1,6 +1,4 @@
 #include <md5.h>
-#include <stdio.h>
-
 //
 // md5(12345678,32) = 25d55ad283aa400af464c76d713c07ad
 // md5(12345678,16) = 83aa400af464c76d

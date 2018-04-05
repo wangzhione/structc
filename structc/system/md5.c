@@ -1,5 +1,4 @@
 ﻿#include <md5.h>
-#include <stdio.h>
 
 struct md5c {
     uint8_t  in[64];      /* Input data */
