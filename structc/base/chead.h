@@ -1,32 +1,30 @@
 ﻿#ifndef _H_CHEAD
 #define _H_CHEAD
 
-#include <sdos.h>
-#include <strext.h>
 #include <thread.h>
-
-//
-// LEN - 获取数组长度
-// arr : 数组名
-//
-#define LEN(arr) sizeof(arr)/sizeof(*(arr))
 
 //
 // STR - 添加双引号的宏 
 // v    : 待添加双引号的量
 //
-#define STR_(v) #v
-#define STR(v)	STR_(v)
+#define S_R(v) #v
+#define STR(v) S_R(v)
+
+//
+// LEN - 获取数组长度
+// arr : 数组名
+//
+#define LEN(a) sizeof(a)/sizeof(*(a))
 
 //
 // EXTERN_RUN - 简单的声明, 并立即使用的宏
 // ftest    : 需要执行的函数名称
 // ...      : 可变参数, 保留
 //
-#define EXTERN_RUN(ftest, ...)  \
-do {                            \
-    extern void ftest();        \
-    ftest (__VA_ARGS__);        \
+#define EXTERN_RUN(ftest, ...)                                          \
+do {                                                                    \
+    extern void ftest();                                                \
+    ftest (__VA_ARGS__);                                                \
 } while(0)
 
 //

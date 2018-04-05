@@ -6,12 +6,10 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#ifdef __GNUC__
-#   define PTHREAD_ERROR    (-1)
-#endif
-
 #ifdef _MSC_VER
 #   define PTHREAD_ERROR    ((pthread_t) { NULL, -1 })
+#else
+#   define PTHREAD_ERROR    (-1)
 #endif
 
 //
@@ -29,12 +27,12 @@ inline bool pthread_error(pthread_t tid) {
 // arg      : 运行参数
 // return   : 返回线程运行 id 
 //
-#define pthread_run(frun, arg) \
+#define pthread_run(frun, arg)                              \
 pthread_run_((node_f)(frun), (void *)(intptr_t)(arg))
 
 inline pthread_t pthread_run_(node_f frun, void * arg) {
     pthread_t tid;
-    if (pthread_create(&tid, NULL, (start_f)frun, arg) < 0) {
+    if (pthread_create(&tid, NULL, (start_f)frun, arg)) {
         CERR("pthread_create err %p, %p.", frun, arg);
         tid = PTHREAD_ERROR;
     }
@@ -56,7 +54,7 @@ inline void pthread_end(pthread_t tid) {
 // arg      : 运行参数
 // return   : 返回线程运行 id 
 // 
-#define pthread_async(frun, arg) \
+#define pthread_async(frun, arg)                            \
 pthread_async_((node_f)(frun), (void *)(intptr_t)(arg))
 
 inline pthread_t pthread_async_(node_f frun, void * arg) {
@@ -65,7 +63,7 @@ inline pthread_t pthread_async_(node_f frun, void * arg) {
 
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    if (pthread_create(&tid, &attr, (start_f)frun, arg) < 0) {
+    if (pthread_create(&tid, &attr, (start_f)frun, arg)) {
         CERR("pthread_create err %p, %p.", frun, arg);
         tid = PTHREAD_ERROR;
     }

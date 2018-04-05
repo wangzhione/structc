@@ -211,7 +211,7 @@ socket_listen(const char * ip, uint16_t port, int backlog) {
 }
 
 // host_parse - 解析 host 内容
-extern int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
+int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
     int port = 0;
     char * st = ip;
 
@@ -241,12 +241,6 @@ extern int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
     return SBase;
 }
 
-#define HOST_PARSE(host)                    \
-uint16_t port;                              \
-char ip[BUFSIZ];                            \
-if (host_parse(host, ip, &port) < SBase)    \
-    return EParam;
-
 //
 // socket_host - 通过 ip:port 串得到 socket addr 结构
 // host     : ip:port 串
@@ -255,7 +249,9 @@ if (host_parse(host, ip, &port) < SBase)    \
 //
 int 
 socket_host(const char * host, sockaddr_t addr) {
-    HOST_PARSE(host);
+    uint16_t port; char ip[BUFSIZ];
+    if (host_parse(host, ip, &port) < SBase)
+        return EParam;
 
     // 开始构造 addr
     if (NULL == addr) {
@@ -272,7 +268,9 @@ socket_host(const char * host, sockaddr_t addr) {
 //
 socket_t 
 socket_tcp(const char * host) {
-    HOST_PARSE(host);
+    uint16_t port; char ip[BUFSIZ];
+    if (host_parse(host, ip, &port) < SBase)
+        return EParam;
     return socket_listen(ip, port, SOMAXCONN);
 }
 
@@ -283,7 +281,9 @@ socket_tcp(const char * host) {
 //
 socket_t 
 socket_udp(const char * host) {
-    HOST_PARSE(host);
+    uint16_t port; char ip[BUFSIZ];
+    if (host_parse(host, ip, &port) < SBase)
+        return EParam;
     return socket_bind(ip, port, IPPROTO_UDP, NULL);
 }
 

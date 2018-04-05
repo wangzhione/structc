@@ -134,9 +134,9 @@ tstr_cstr(tstr_t tsr) {
 }
 
 // _tstr_printf : BUFSIZ 以下内存处理
-static int _tstr_printf(tstr_t tsr, const char * format, va_list arg) {
+static int _tstr_printf(tstr_t tsr, const char * fmt, va_list arg) {
     char buf[BUFSIZ];
-    int len = vsnprintf(buf, sizeof buf, format, arg);
+    int len = vsnprintf(buf, sizeof buf, fmt, arg);
     if (len < sizeof buf) {
         // 合法直接构建内存返回
         if (len > 0)
@@ -149,25 +149,25 @@ static int _tstr_printf(tstr_t tsr, const char * format, va_list arg) {
 //
 // tstr_printf - 参照 sprintf 填充方式写入内容
 // tsr      : tstr_t 串
-// format   : 待格式化的串
+// fmt      : 待格式化的串
 // ...      : 等待进入的变量
 // return   : 返回创建好的C字符串内容
 //
 char * 
-tstr_printf(tstr_t tsr, const char * format, ...) {
+tstr_printf(tstr_t tsr, const char * fmt, ...) {
     int cap;
     va_list arg;
-    va_start(arg, format);
+    va_start(arg, fmt);
 
     // 初步构建失败直接返回
-    cap = _tstr_printf(tsr, format, arg);
+    cap = _tstr_printf(tsr, fmt, arg);
     if (cap < BUFSIZ)
         return tsr->str;
     
     // 开始详细构建内存
     for (;;) {
         char * ret = malloc(cap <<= 1);
-        int len = vsnprintf(ret, cap, format, arg);
+        int len = vsnprintf(ret, cap, fmt, arg);
         // 失败的情况, 这里没有打印错误信息. 需要上层自己处理
         if (len < 0) {
             free(ret);

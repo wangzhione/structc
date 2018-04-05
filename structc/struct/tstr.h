@@ -14,13 +14,14 @@ struct tstr {
 typedef struct tstr * tstr_t;
 
 //
-// TSTR_CREATE - 栈上创建tstr_t结构
-// TSTR_DELETE - 释放栈上tstr_t结构
+// TSTR_CREATE - 栈上创建 tstr_t 结构
+// TSTR_DELETE - 释放栈上 tstr_t 结构
 // var  : 变量名
 //
-#define TSTR_CREATE(var) \
+#define TSTR_CREATE(var)                    \
 struct tstr var[1] = { { 0, 0, NULL } }
-#define TSTR_DELETE(var) \
+
+#define TSTR_DELETE(var)                    \
 free((var)->str)
 
 #define _STRUCT_TSTR
@@ -85,10 +86,10 @@ extern char * tstr_dupstr(tstr_t tsr);
 //
 // tstr_printf - 参照 sprintf 填充方式写入内容
 // tsr      : tstr_t 串
-// format   : 待格式化的串
+// fmt      : 待格式化的串
 // ...      : 等待进入的变量
 // return   : 返回创建好的c字符串内容
 //
-extern char * tstr_printf(tstr_t tsr, const char * format, ...);
+extern char * tstr_printf(tstr_t tsr, const char * fmt, ...);
 
 #endif//_H_TSTR

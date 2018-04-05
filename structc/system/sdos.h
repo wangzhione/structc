@@ -56,11 +56,11 @@ enum {
     EBase     = -1, // 错误基础类型
 
     EParam    = -2, // 输入参数错误
-    EAlloc    = -3, // 内存分配错误
-    EFd       = -4, // 文件打开失败
+    EFd       = -3, // 文件打开失败
+    EClose    = -4, // 文件操作关闭
+    EAlloc    = -5, // 内存分配错误
     ETout     = -5, // 操作超时错误
     EParse    = -6, // 协议解析错误
-    EClose    = -7, // 文件操作关闭
 };
 
 #endif//_H_ELAG

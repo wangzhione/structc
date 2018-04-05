@@ -13,26 +13,26 @@
 #include <assert.h>
 
 //
-// CERR - 打印错误信息, 添加了一些特有的宏操作
-// CERR_EXIT - 打印错误信息, 并直接exit
+// CERR - 打印错误信息
+// CERR_EXIT - 打印错误信息, 并 exit
 // CERR_IF - 条件判断异常退出的辅助宏
 //
-
 #ifndef CERR
-#define CERR(fmt, ...)                                                  \
-fprintf(stderr, "[%s:%s:%d][%d:%s]" fmt "\r\n",                         \
+
+#define CERR(fmt, ...)                                                   \
+fprintf(stderr, "[%s:%s:%d][%d:%s]" fmt "\n",                            \
     __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
+
 #endif//CERR
 
-#define CERR_EXIT(fmt, ...)     \
-do {                            \
-    CERR(fmt, ##__VA_ARGS__);   \
-    exit(EXIT_FAILURE);         \
+#define CERR_EXIT(fmt, ...)                                              \
+do {                                                                     \
+    CERR(fmt, ##__VA_ARGS__);                                            \
+    exit(EXIT_FAILURE);                                                  \
 } while(0)
 
-
-#define CERR_IF(cond)   \
-if ((cond))             \
+#define CERR_IF(cond)                                                    \
+if ((cond))                                                              \
     CERR_EXIT(#cond)
 
 //
@@ -56,17 +56,17 @@ RETURN(NIL, fmt, ##__VA_ARGS__)
  * 这里是一个 在 DEBUG 模式下的测试宏
  *
 
- * DEBUG_CODE({
- *	puts("debug start...");
+ * DCODE({
+ *	  puts("debug start...");
  * });
  */
-#ifndef DEBUG_CODE
+#ifndef DCODE
 # ifdef _DEBUG
-#	define DEBUG_CODE(code) \
+#	define DCODE(code) \
         do code while(0)
 # else
-#	define DEBUG_CODE(code) 
+#	define DCODE(code) 
 # endif	//	! _DEBUG
-#endif	//	! DEBUG_CODE
+#endif	//	! DCODE
 
 #endif//_H_ASSEXT

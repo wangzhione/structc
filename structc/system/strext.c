@@ -208,8 +208,8 @@ str_freads(const char * path) {
     return realloc(str, len + 1);
 }
 
-// _str_fwrite - 按照约定输出数据到文件中
-static int _str_fwrite(const char * p, const char * s, const char * m) {
+// str_fwrite - 按照约定输出数据到文件中
+int str_fwrite(const char * p, const char * s, const char * m) {
     int len;
     FILE * txt;
     if (!p || !*p || !s || !m)
@@ -233,7 +233,7 @@ static int _str_fwrite(const char * p, const char * s, const char * m) {
 //
 inline int 
 str_fwrites(const char * path, const char * str) {
-    return _str_fwrite(path, str, "wb");
+    return str_fwrite(path, str, "wb");
 }
 
 //
@@ -244,5 +244,5 @@ str_fwrites(const char * path, const char * str) {
 //
 inline int 
 str_fappends(const char * path, const char * str) {
-    return _str_fwrite(path, str, "ab");
+    return str_fwrite(path, str, "ab");
 }

@@ -54,7 +54,7 @@ all : main.exe
 #
 # 主运行程序main
 #
-main.exe : main.o main_run.o main_test.o librunc.a
+main.exe : main.o main_init.o main_test.o main_run.o librunc.a
 	$(RUN)
 
 #

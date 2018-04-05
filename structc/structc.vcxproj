@@ -121,6 +121,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c" />
+    <ClCompile Include="main\main_init.c" />
     <ClCompile Include="main\main_run.c" />
     <ClCompile Include="main\main_test.c" />
     <ClCompile Include="struct\array.c" />

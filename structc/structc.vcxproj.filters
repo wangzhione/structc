@@ -269,6 +269,9 @@
     <ClCompile Include="system\md5_test.c">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="main\main_init.c">
+      <Filter>main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
