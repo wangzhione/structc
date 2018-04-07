@@ -37,11 +37,14 @@
     <Filter Include="system\poll">
       <UniqueIdentifier>{3111d0ec-5876-4f07-b4bc-fc859bfb2b4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{2f9787ef-d54c-4767-9de2-597bbbf8883f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\inc">
+      <UniqueIdentifier>{ecfe5816-30c5-4220-81bd-b37214483220}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="base\chead.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="system\jemalloc\jemalloc.h">
       <Filter>system\jemalloc</Filter>
     </ClInclude>
@@ -149,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="system\md5.h">
       <Filter>system\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="base\config.h">
+      <Filter>base\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="base\chead.h">
+      <Filter>base\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,8 +281,14 @@
     <ClCompile Include="test\md5_test.c">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="base\config.c">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="config\config.json">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

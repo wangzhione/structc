@@ -1,4 +1,5 @@
 ﻿#include <chead.h>
+#include <config.h>
 
 //
 // main_run - 业务运行的主体
@@ -8,7 +9,11 @@
 //
 void main_run(int argc, char * argv[]) {
     //
-    // 开始你的表演 ... 
+    // .... ... .. . 开始你的表演
     //
+    struct config * conf = config_instance();
+
     fprintf(stderr, "I am here\n");
+
+    puts(conf->image);
 }

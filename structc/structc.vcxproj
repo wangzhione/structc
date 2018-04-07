@@ -82,6 +82,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
+    <ClInclude Include="base\config.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />
@@ -120,6 +121,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <ClInclude Include="system\uv\uv.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="base\config.c" />
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_init.c" />
     <ClCompile Include="main\main_run.c" />
@@ -162,6 +164,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <ClCompile Include="test\uv_tty_test.c" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="config\config.json" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
