@@ -53,5 +53,7 @@ config_init(const char * path) {
         *config_instance() = conf;
     }
 
+    json_delete(json);
+
     return true;
 }
