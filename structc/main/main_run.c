@@ -15,5 +15,6 @@ void main_run(int argc, char * argv[]) {
 
     fprintf(stderr, "I am here\n");
 
+    puts(conf->description);
     puts(conf->image);
 }

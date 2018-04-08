@@ -79,7 +79,7 @@ librunc.a : $(OBJO) $(TESTO)
 #
 $(OUTS):
 	-mkdir -p $(OBJP)
-
+	-cp -r $(ROOT)/config $(OUTS)/
 
 # 清除操作
 clean :
