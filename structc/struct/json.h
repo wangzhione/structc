@@ -9,23 +9,24 @@
 
 #ifndef _STRUCT_JSON
 
-#define JSON_NULL       (0u)
-#define JSON_TRUE       (1u)
-#define JSON_FALSE      (2u)
-#define JSON_NUMBER     (4u)
-#define JSON_STRING     (8u)
-#define JSON_OBJECT     (16u)
-#define JSON_ARRAY      (32u)
-#define JSON_CONST      (128u)
+#define JSON_NULL       (0u << 0)
+#define JSON_TRUE       (1u << 0)
+#define JSON_FALSE      (1u << 1)
+#define JSON_NUMBER     (1u << 2)
+#define JSON_STRING     (1u << 3)
+#define JSON_OBJECT     (1u << 4)
+#define JSON_ARRAY      (1u << 5)
+
+#define JSON_CONST      (1u << 7)
 
 struct json {
     unsigned char type;         // CJSON_NULL - JSON_ARRAY
-    struct json * next;         // type = OBJECT or ARRAY 结点采用链表链接
-    struct json * chid;         // type = OBJECT or ARRAY 时候 chid 结点就有数据
+    struct json * next;         // type & OBJECT or ARRAY 结点采用链表链接
+    struct json * chid;         // type & OBJECT or ARRAY 时候 chid 结点就有数据
 
     char * keys;                // json 结点的 key 名称串
     union {
-        char * vals;            // type == STRING 就是个 字符串
+        char * vals;            // type & STRING 就是个 字符串
         double vald;            // type == NUMBER 就是个 number
     };
 };
