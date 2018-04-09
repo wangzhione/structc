@@ -64,6 +64,7 @@ bool
 config_init(void) {
     char * paths[] = {
         "config/config.conf",
+        "../config/config.conf",
         "Outs/config/config.conf",
     };
 
