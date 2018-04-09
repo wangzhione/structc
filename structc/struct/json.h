@@ -9,14 +9,14 @@
 
 #ifndef _STRUCT_JSON
 
-#define JSON_NULL       (0u<<0)
-#define JSON_TRUE       (1u<<0)
-#define JSON_FALSE      (1u<<1)
-#define JSON_NUMBER     (1u<<2)
-#define JSON_STRING     (1u<<3)
-#define JSON_OBJECT     (1u<<4)
-#define JSON_ARRAY      (1u<<5)
-#define JSON_CONSTS     (1u<<6)
+#define JSON_NULL       (0u)
+#define JSON_TRUE       (1u)
+#define JSON_FALSE      (2u)
+#define JSON_NUMBER     (4u)
+#define JSON_STRING     (8u)
+#define JSON_OBJECT     (16u)
+#define JSON_ARRAY      (32u)
+#define JSON_CONST      (128u)
 
 struct json {
     unsigned char type;         // CJSON_NULL - JSON_ARRAY
@@ -45,9 +45,9 @@ typedef struct json * json_t;
 #define _STRUCT_JSON
 #endif//_STRUCT_JSON
 
-// json_consts - 获取一个 consts 字符串
-inline char * json_consts(json_t item) {
-    item->type &= JSON_CONSTS;
+// json_vals - 分离一个 json 字符串
+inline char * json_vals(json_t item) {
+    item->type &= JSON_CONST;
     return item->vals;
 }
 

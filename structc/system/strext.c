@@ -178,25 +178,37 @@ str_printf(const char * format, ...) {
 //
 char * 
 str_freads(const char * path) {
-    int err;
     size_t rn, cap, len;
     char * str, buf[BUFSIZ];
     FILE * txt = fopen(path, "rb");
     if (NULL == txt) return NULL;
 
-    // 分配内存
-    len = 0;
-    str = malloc(cap = BUFSIZ);
+    // 读取数据
+    rn = fread(buf, sizeof(char), BUFSIZ, txt);
+    if (rn == 0 || ferror(txt)) {
+        fclose(txt);
+        return NULL;
+    }
 
-    // 读取文件内容
+    // 直接分配内存足够直接返回内容
+    if (rn < BUFSIZ) {
+        str = malloc(rn + 1);
+        memcpy(str, buf, rn);
+        str[rn] = '\0';
+        return str;
+    }
+
+    str = malloc((cap = rn << 1));
+    memcpy(str, buf, len = rn);
     do {
         rn = fread(buf, sizeof(char), BUFSIZ, txt);
-        if ((err = ferror(txt))) {
-            free(str);
+        if (ferror(txt)) {
             fclose(txt);
+            free(str);
             return NULL;
         }
-        // 开始添加构建数据
+
+        // 填充数据
         if (len + rn >= cap)
             str = realloc(str, cap <<= 1);
         memcpy(str + len, buf, rn);

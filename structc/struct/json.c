@@ -12,7 +12,7 @@ json_delete(json_t c) {
         unsigned char t = c->type;
 
         free(c->keys);
-        if ((t & JSON_STRING) && !(t & JSON_CONSTS))
+        if ((t & JSON_STRING) && !(t & JSON_CONST))
             free(c->vals);
 
         // 子结点 继续递归删除
@@ -423,7 +423,7 @@ json_file(const char * path) {
     // 读取文件中内容, 并检查
     if (!path || !*path) return NULL;
     str = str_freads(path);
-    if (!str || !*str) return NULL;
+    if (!str) return NULL;
 
     // 返回解析结果
     c = json_create(str);
@@ -607,7 +607,7 @@ _print_value(json_t item, tstr_t p) {
     case JSON_TRUE  : out = tstr_expand(p, 5); strcpy(out, "true"); break;
     case JSON_FALSE : out = tstr_expand(p, 6); strcpy(out, "false"); break;
     case JSON_NUMBER: out = _print_number(item, p); break;
-    case JSON_STRING+JSON_CONSTS:
+    case JSON_STRING+JSON_CONST:
     case JSON_STRING: out = _print_string(item->vals, p); break;
     case JSON_OBJECT: out = _print_object(item, p); break;
     case JSON_ARRAY : out = _print_array(item, p); break;
@@ -653,7 +653,7 @@ json_new_arrays(unsigned char t, const void * arr, int n) {
         case JSON_TRUE  : m = json_new_bool(arr ? ((bool *)arr)[i] : true); break;
         case JSON_FALSE : m = json_new_bool(arr ? ((bool *)arr)[i] :false); break;
         case JSON_NUMBER: m = json_new_number(((double *)arr)[i]); break;
-        case JSON_STRING+JSON_CONSTS:
+        case JSON_STRING+JSON_CONST:
         case JSON_STRING: m = json_new_string(((char **)arr)[i]); break;
         default: return NULL;
         }
