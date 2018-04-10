@@ -65,7 +65,7 @@ RETURN(NIL, fmt, ##__VA_ARGS__)
 #	define DCODE(code) \
         do code while(0)
 # else
-#	define DCODE(code) 
+#   define DCODE(code) 
 # endif	//	! _DEBUG
 #endif	//	! DCODE
 

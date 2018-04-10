@@ -8,6 +8,7 @@ json_t field = json_object(json, #field);                               \
 if (NULL == field || field->type != JSON_STRING) {                      \
     RETURN(false, "json_object err field = %s, %p", #field, field);     \
 }                                                                       \
+free(conf->field);                                                      \
 conf->field = json_vals(field)
 
 // 解析内容, 并返回解析结果
@@ -24,8 +25,7 @@ static bool _config_parse(json_t json, struct config * conf) {
 // outf     : 返回的配置解析内容
 // return   : true 表示读取成功
 //
-extern bool 
-config_parse(const char * path, struct config * outf) {
+bool config_parse(const char * path, struct config * outf) {
     json_t json = json_file(path);    
     if (json) {
         // 解析 json 内容, 并返回详细配置内容

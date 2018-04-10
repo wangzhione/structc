@@ -1,10 +1,10 @@
-#ifndef _H_SPOLL
+ï»¿#ifndef _H_SPOLL
 #define _H_SPOLL
 
 #include <socket.h>
 
 //
-// ¶¨Òå²Ù×÷µÄÊÂ¼ş¼¯½á¹¹
+// å®šä¹‰æ“ä½œçš„äº‹ä»¶é›†ç»“æ„
 // event[INT_EVENT] -> event_t
 //
 struct event {
@@ -25,28 +25,28 @@ typedef struct event event_t[MAX_EVENT];
 #endif
 
 //
-// s_create     - ´´½¨Ò»¸ö poll Ä£ĞÍ
-// s_error      - true ±íÊ¾µ±Ç°´´½¨µÄ poll Ä£ĞÍÓĞÎÊÌâ
-// s_delete     - Ïú»ÙÒ»¸ö´´½¨µÄ poll Ä£ĞÍ
+// s_create     - åˆ›å»ºä¸€ä¸ª poll æ¨¡å‹
+// s_error      - true è¡¨ç¤ºå½“å‰åˆ›å»ºçš„ poll æ¨¡å‹æœ‰é—®é¢˜
+// s_delete     - é”€æ¯ä¸€ä¸ªåˆ›å»ºçš„ poll æ¨¡å‹
 //
 extern poll_t s_create(void);
 extern bool s_error(poll_t p);
 extern void s_delete(poll_t p);
 
 //
-// s_del        - É¾³ı1¼ì²âµÄ socket
-// s_add        - Ìí¼Ó¼à²âµÄ socket, ²¢ÉèÖÃ¶ÁÄ£Ê½, Ê§°Ü·µ»Ø true
-// s_write      - ĞŞ¸Äµ±Ç° socket, Í¨¹ı enable = true ÉèÖÃĞ´Ä£Ê½
+// s_del        - åˆ é™¤1æ£€æµ‹çš„ socket
+// s_add        - æ·»åŠ ç›‘æµ‹çš„ socket, å¹¶è®¾ç½®è¯»æ¨¡å¼, å¤±è´¥è¿”å› true
+// s_write      - ä¿®æ”¹å½“å‰ socket, é€šè¿‡ enable = true è®¾ç½®å†™æ¨¡å¼
 //
 extern void s_del(poll_t p, socket_t s);
 extern bool s_add(poll_t p, socket_t s, void * ud);
 extern void s_write(poll_t p, socket_t s, void * ud, bool enable);
 
 //
-// s_wait       - wait º¯Êı, µÈ´ı±ğÈË×ÔÍ¶ÂŞÍø
-// p        : poll Ä£ĞÍ
-// e        : ·µ»ØµÄ²Ù×÷ÊÂ¼ş¼¯
-// return   : ·µ»Ø´ı²Ù×÷ÊÂ¼ş³¤¶È, < 0 ±íÊ¾Ê§°Ü
+// s_wait       - wait å‡½æ•°, ç­‰å¾…åˆ«äººè‡ªæŠ•ç½—ç½‘
+// p        : poll æ¨¡å‹
+// e        : è¿”å›çš„æ“ä½œäº‹ä»¶é›†
+// return   : è¿”å›å¾…æ“ä½œäº‹ä»¶é•¿åº¦, < 0 è¡¨ç¤ºå¤±è´¥
 //
 extern int s_wait(poll_t p, event_t e);
 
