@@ -4,12 +4,13 @@
 
 // CONFIG_PARSE_JSON_STR - json field -> config field
 #define CONFIG_PARSE_JSON_STR(json, conf, field)                        \
-json_t field = json_object(json, #field);                               \
-if (NULL == field || field->type != JSON_STRING) {                      \
-    RETURN(false, "json_object err field = %s, %p", #field, field);     \
+json_t $##field = json_object(json, #field);                            \
+if (NULL == $##field || $##field->type != JSON_STRING) {                \
+    RETURN(false, "json_object err field = %s, %p", #field, $##field);  \
 }                                                                       \
 free(conf->field);                                                      \
-conf->field = json_vals(field)
+conf->field = json_vals($##field);                                      \
+os_cstr(conf->field)
 
 // 解析内容, 并返回解析结果
 static bool _config_parse(json_t json, struct config * conf) {
@@ -29,11 +30,9 @@ bool config_parse(const char * path, struct config * outf) {
     json_t json = json_file(path);    
     if (json) {
         // 解析 json 内容, 并返回详细配置内容
-        struct config conf;
-        if (!_config_parse(json, &conf)) {
+        if (!_config_parse(json, outf)) {
             RETURN(false, "_config_parse err path = %s", path);
         }
-        *outf = conf;
 
         json_delete(json);
         return true;

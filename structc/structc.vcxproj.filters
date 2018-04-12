@@ -287,7 +287,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
-    <None Include="config\config.json">
+    <None Include="config\config.conf">
       <Filter>config</Filter>
     </None>
   </ItemGroup>

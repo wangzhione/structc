@@ -164,7 +164,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <ClCompile Include="test\uv_tty_test.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\config.json" />
+    <None Include="config\config.conf" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

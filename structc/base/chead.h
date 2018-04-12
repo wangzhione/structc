@@ -1,6 +1,7 @@
 ﻿#ifndef _H_CHEAD
 #define _H_CHEAD
 
+#include <g2u8.h>
 #include <thread.h>
 
 //
@@ -52,5 +53,17 @@ do {                                                                    \
     double $e = (double)clock();                                        \
     printf(STR(ftest) " run time:%lfs.\n", ($e - $s) / CLOCKS_PER_SEC); \
 } while(0)
+
+//
+// os_cstr - 字符串串特殊处理, winds gbk, linux utf8
+// utf8s    : utf8s 串
+// return   : gbks 串内容
+//
+inline char * os_cstr(char utf8s[]) {
+    if (isu8s(utf8s)) {
+        u82g(utf8s);
+    }
+    return utf8s;
+}
 
 #endif//_H_CHEAD
