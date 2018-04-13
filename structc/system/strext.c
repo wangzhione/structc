@@ -79,21 +79,6 @@ str_cmpin(const char * ls, const char * rs, size_t n) {
 }
 
 //
-// str_dup - 字符串拷贝malloc函数, 需要自己free
-// str      : 待拷贝的串
-// return   : 返回拷贝后的串
-//
-char * 
-str_dup(const char * str) {
-    if (str) {
-        size_t len = strlen(str) + 1;
-        char * ssr = malloc(len * sizeof(char));
-        return memcpy(ssr, str, len);
-    }
-    return NULL;
-}
-
-//
 // str_trim - 去除字符数组前后控制字符
 // str      : 待操作的字符数组 \0 结尾
 // return   : 返回构建好字符数组首地址

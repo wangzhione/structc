@@ -15,6 +15,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <limits.h>
+#include <string.h>
 #include <stdbool.h>
 
 //
@@ -30,6 +31,13 @@ extern void free_(void * ptr);
 // return   : 返回可使用的内存地址.
 //
 extern void * malloc_(size_t size);
+
+//
+// strdup_ - strdup 包装函数
+// s        : '\0' 结尾 C 字符串
+// return   : 拷贝后新的 C 字符串
+//
+extern char * strdup_(const char * s);
 
 //
 // calloc_ - calloc 包装, 封装一些特殊业务
@@ -53,11 +61,13 @@ extern void * realloc_(void * ptr, size_t size);
 #if !defined(_NO_STDEXT_)
 
 #   undef  free
+#   undef  strdup
 #   undef  malloc
 #   undef  calloc
 #   undef  realloc
 
 #   define free    free_
+#   define strdup  strdup_
 #   define malloc  malloc_
 #   define calloc  calloc_
 #   define realloc realloc_

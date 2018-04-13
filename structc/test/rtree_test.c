@@ -9,7 +9,7 @@ struct names {
 
 static inline struct names * _names_new(char * name) {
     struct names * node = malloc(sizeof(struct names));
-    node->name = str_dup(name);
+    node->name = strdup(name);
     return node;
 }
 

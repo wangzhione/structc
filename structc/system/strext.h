@@ -7,7 +7,6 @@
  */
 
 #include <stdext.h>
-#include <string.h>
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
@@ -41,13 +40,6 @@ extern int str_cmpi(const char * ls, const char * rs);
 // return   : ls > rs 返回 > 0; ... < 0; ... =0
 //
 extern int str_cmpin(const char * ls, const char * rs, size_t n);
-
-//
-// str_dup - 字符串拷贝malloc函数, 需要自己free
-// str      : 待拷贝的串
-// return   : 返回拷贝后的串
-//
-extern char * str_dup(const char * str);
 
 //
 // str_trim - 去除字符数组前后控制字符

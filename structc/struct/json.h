@@ -152,7 +152,7 @@ inline json_t json_new_number(double v) {
 
 inline json_t json_new_string(const char * v) {
     json_t item = json_new_type(JSON_STRING);
-    item->vals = str_dup(v);
+    item->vals = strdup(v);
     return item;
 }
 

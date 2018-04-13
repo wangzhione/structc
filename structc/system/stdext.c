@@ -35,6 +35,20 @@ inline void * malloc_(size_t size) {
 }
 
 //
+// strdup_ - strdup 包装函数
+// s        : '\0' 结尾 C 字符串
+// return   : 拷贝后新的 C 字符串
+//
+inline char * strdup_(const char * s) {
+    if (s) {
+        size_t n = strlen(s) + 1;
+        char * r = malloc_(n * sizeof(char));
+        return memcpy(r, s, n);
+    }
+    return NULL;
+}
+
+//
 // calloc_ - calloc 包装, 封装一些特殊业务
 // num      : 数量
 // size     : 大小
