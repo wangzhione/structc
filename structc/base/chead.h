@@ -60,9 +60,11 @@ do {                                                                    \
 // return   : gbks 串内容
 //
 inline char * os_cstr(char utf8s[]) {
+#if defined(_MSC_VER)
     if (isu8s(utf8s)) {
         u82g(utf8s);
     }
+#endif
     return utf8s;
 }
 
