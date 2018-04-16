@@ -58,12 +58,12 @@ static void _love_init(struct love * love) {
 
     // 只对 tty 输出处理
     if (uv_guess_handle(1) != UV_TTY)
-        CERR_EXIT("uv_guess_handle(1) != UV_TTY!");
+        EXIT("uv_guess_handle(1) != UV_TTY!");
 
     // 获取当前屏幕宽高信息
     if (uv_tty_get_winsize(&love->tty, &love->width, &love->height)) {
         uv_tty_reset_mode();
-        CERR_EXIT("Could not get TTY information");
+        EXIT("Could not get TTY information");
     }
 
     // 设置具体内容

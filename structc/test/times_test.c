@@ -9,7 +9,7 @@ void times_test(void) {
     times_t nsr = "2018-03-11 19:35:58";
     time_t t = time_get(tsr);
     time_t n = time_get(nsr);
-    CERR_IF(t < 0 || n < 0);
+    IF(t < 0 || n < 0);
 
     time_t now = time_now(t);
     if (now < 0)

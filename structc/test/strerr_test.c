@@ -3,12 +3,12 @@
 #include <strext.h>
 
 //
-// ¸ù¾Ý winerror.h Éú³É´íÎóÐÅÏ¢µÄÄ£°å
-// ÊäÈëÎÄ¼þ : winerror.h.template
+// ï¿½ï¿½ï¿½ï¿½ winerror.h ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ä£ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ : winerror.h.template
 //
 
 //
-// Êä³öÎÄ¼þ : stderr.c.template
+// ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ : stderr.c.template
 //
 
 /*
@@ -46,7 +46,7 @@ static inline FILE * _out_top(void) {
     const char * opath = "stderr.c.template";
     FILE * out = fopen(opath, "wb");
     if (NULL == out) {
-        CERR_EXIT("foepn is err opath = %s", opath);
+        EXIT("foepn is err opath = %s", opath);
     }
 
     fputs(
@@ -93,7 +93,7 @@ static inline void _out_put(FILE * out, char buf[]) {
 }
 
 //
-// ¼Ù×°ÔÚÃæÏò¶ÔÏó
+// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 #define out_top()       \
 FILE * out = _out_top()
@@ -103,11 +103,11 @@ _out_low(out)
 _out_put(out, buf)
 
 //
-// ¿ªÊ¼¹¹ÔìÄÚÈÝ
+// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 void strerr_test(void) {
     const char * ipath = "winerror.h.template";
-    // ´ò¿ªÎÄ¼þ´¦Àí
+    // ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
     char * txt = str_freads(ipath);
     if (NULL == txt) {
         RETNIL("str_freads ipath err = %s", ipath);
@@ -116,7 +116,7 @@ void strerr_test(void) {
     out_top();
 
     /*
-     txt ÖÐÉ¸Ñ¡³öÏÂÃæÄÚÈÝ
+     txt ï¿½ï¿½É¸Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
      //
      // MessageId: ERROR_SUCCESS
@@ -129,7 +129,7 @@ void strerr_test(void) {
 
      */
 
-    // ¿ªÊ¼Æ¥Åä²éÕÒ
+    // ï¿½ï¿½Ê¼Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½
     int i;
     char buf[1024] = "    case ", c;
     const char * tems = txt;
@@ -138,24 +138,24 @@ void strerr_test(void) {
     int pre = 82, idx = (int)strlen(buf) - 1;
 
     while ((tems = strstr(tems, msgids)) != NULL) {
-        // ÕÒµ½ÄÚÈÝ¾Í¿ªÊ¼ÇåÏ´³ö MessageId ºÍ MessageText
+        // ï¿½Òµï¿½ï¿½ï¿½ï¿½Ý¾Í¿ï¿½Ê¼ï¿½ï¿½Ï´ï¿½ï¿½ MessageId ï¿½ï¿½ MessageText
         const char * strs = tems + cnt;
         
-        // ÏÈ»ñÈ¡ MessageId
+        // ï¿½È»ï¿½È¡ MessageId
         i = idx;
         while ((c = *strs++) != '\n') {
             if (c == ' ' || c == '(')
                 break;
             buf[++i] = c;
         }
-        // Çå³ý¶àÓà×Ö·û
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
         if (c == ' ' || c == '(') {
             while (*strs++ != '\n')
                 ;
-        } else if (buf[i] != '\r') // È¥³ý \r
+        } else if (buf[i] != '\r') // È¥ï¿½ï¿½ \r
             i++;
 
-        // ²åÈë¿Õ¸ñ¿ØÖÆ¶ÔÆë
+        // ï¿½ï¿½ï¿½ï¿½Õ¸ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½
         while (i < pre)
             buf[i++] = ' ';
         buf[i++] = ':';
@@ -169,12 +169,12 @@ void strerr_test(void) {
         buf[i++] = ' ';
         buf[i++] = '"';
 
-        // ÔÙ»ñÈ¡ MessageText
+        // ï¿½Ù»ï¿½È¡ MessageText
         
-        // step 1 µ½ :
+        // step 1 ï¿½ï¿½ :
         while (*strs++ != ':')
             ;
-        // step 2 Ìø¹ý '/' '\n' '\r' ' ' ÕÒµ½ÄÇ¸öÎ¨Ò»µÄ×Ö·û
+        // step 2 ï¿½ï¿½ï¿½ï¿½ '/' '\n' '\r' ' ' ï¿½Òµï¿½ï¿½Ç¸ï¿½Î¨Ò»ï¿½ï¿½ï¿½Ö·ï¿½
         do {
             c = *strs++;
             if (c == '{') {
@@ -196,7 +196,7 @@ void strerr_test(void) {
 
         } while (c == '\r' || c == '\n' || c == ' ' || c == '/');
 
-        // step 3 ¶ÁÈ¡µ½ \n
+        // step 3 ï¿½ï¿½È¡ï¿½ï¿½ \n
         buf[i] = c;
         while ((c = *strs++) != '\n') {
             if (c == '"' || c == '\\')
@@ -205,17 +205,17 @@ void strerr_test(void) {
                 buf[++i] = '%';
             buf[++i] = c;
         }
-        // È¥³ý \r
+        // È¥ï¿½ï¿½ \r
         if (buf[i] == '\r')
             --i;
 
         if (buf[i] == ',') {
-            // »¹ÓÐÒ»ÐÐ¼ÌÐø¶ÁÈ¡, Çå³ýµô²¿·ÖÄÚÈÝ
+            // ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½È¡, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             do {
                 c = *strs++;
             } while (c == '\r' || c == '\n' || c == ' ' || c == '/');
 
-            // ¼ÌÐø¶ÁÈ¡ÄÚÈÝ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
             while ((c = *strs++) != '\n') {
                 if (c == '"' || c == '\\')
                     buf[++i] = '\\';
@@ -223,12 +223,12 @@ void strerr_test(void) {
                     buf[++i] = '%';
                 buf[++i] = c;
             }
-            // È¥³ý \r
+            // È¥ï¿½ï¿½ \r
             if (buf[i] == '\r')
                 --i;
         }
 
-        // step 4 È¥³ý×îºóµÄ '.'
+        // step 4 È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '.'
         if (buf[i] != '.')
             ++i;
         buf[i++] = '"';
@@ -238,7 +238,7 @@ void strerr_test(void) {
 
         out_put(buf);
 
-        // ¿ªÊ¼¼ÌÐøÏÂÒ»ÂÖÑ­»·
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ­ï¿½ï¿½
         tems = strs;
     }
 
@@ -249,7 +249,7 @@ void strerr_test(void) {
 
 /*
 
-    ×îºóÉ¾³ýÏÂÃæÄÚÈÝ:
+    ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:
 
     case E_NOTIMPL      : return "Not implemented";
     case E_OUTOFMEMORY  : return "Ran out of memory";

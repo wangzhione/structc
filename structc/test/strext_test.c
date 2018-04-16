@@ -21,7 +21,7 @@ void strext_test(void) {
 
 	// 输出数据测试
 	char * txt = str_freads("README.md");
-    CERR_IF(txt == NULL);
+    IF(txt == NULL);
     puts(txt);
     u82g(txt);
     // UTF-8 FILE with BOM
