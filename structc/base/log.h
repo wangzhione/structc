@@ -4,7 +4,7 @@
 #include <times.h>
 
 //
-// 有些 朴实 error info debug printf log
+// 有些 朴实 log, 也许很快很安全 ~
 //
 #define LOG_ERROR(fmt, ...) LOG_PRINTF("[ERROR]", fmt, ##__VA_ARGS__)
 #define LOG_INFOS(fmt, ...) LOG_PRINTF("[INFOS]", fmt, ##__VA_ARGS__)
@@ -16,7 +16,7 @@
 
 //
 // LOG_PRINTF - 拼接构建输出的格式串,最后输出数据
-// pres     : 日志前缀串
+// pres     : 日志前缀串 必须 "" 包裹
 // fmt      : 自己要打印的串,必须是双引号包裹. 
 // return   : 返回待输出的串详细内容
 //
@@ -30,12 +30,5 @@ log_printf(pres "[%s:%s:%d]" fmt "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS
 // return   : void
 //
 void log_printf(const char * fmt, ...);
-
-//
-// log_init - !单例! 开启单机日志库
-// path     : 初始化日志系统文件名
-// return   : true 表示成功
-//
-extern bool log_init(const char * path);
 
 #endif//_H_LOG
