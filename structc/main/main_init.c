@@ -5,7 +5,9 @@
 //
 // STR_CONFIG_PATH - 配置文件路径
 // 
-#define STR_CONFIG_PATH    "config/config.conf"
+#define STR_CONFIG_PATH     "config/config.conf"
+#define STR_LOG_DIR         "logs"
+#define STR_LOG_PATH        STR_LOG_DIR "/structc.log"
 
 //
 // main_init - 各个模块初始化
@@ -18,4 +20,10 @@ void main_init(void) {
 
     // 初始化配置相关内容
     IF(!config_init(STR_CONFIG_PATH));
+
+    //
+    //  日志模块初始化
+    //
+    
+    EXTERN_RUN(log_init, STR_LOG_PATH);
 }

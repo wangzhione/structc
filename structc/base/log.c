@@ -27,5 +27,16 @@ void log_init(const char * path) {
 //
 void 
 log_printf(const char * fmt, ...) {
-    
+    va_list ap;
+    // 每条日志大小, 按照系统缓冲区走
+    char str[BUFSIZ];
+    int len = times_fmt("[" STR_TIMES "]", str, sizeof str);
+
+    // 日志内容填充
+    va_start(ap, fmt);
+    vsnprintf(str + len, sizeof str - len, fmt, ap);
+    va_end(ap);
+
+    // 数据写入到文件中
+    fputs(str, _og);
 }
