@@ -102,7 +102,6 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <ClInclude Include="system\pthread\sched.h" />
     <ClInclude Include="system\pthread\semaphore.h" />
     <ClInclude Include="system\rand.h" />
-    <ClInclude Include="system\sdos.h" />
     <ClInclude Include="system\jemalloc\jemalloc.h" />
     <ClInclude Include="system\socket.h" />
     <ClInclude Include="system\spoll$epoll.h" />

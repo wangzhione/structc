@@ -2,6 +2,7 @@
 #define _H_CHEAD
 
 #include <g2u8.h>
+#include <assext.h>
 #include <thread.h>
 
 //

@@ -1,5 +1,4 @@
-﻿#include <sdos.h>
-#include <ctype.h>
+﻿#include <ctype.h>
 #include <strext.h>
 
 //
@@ -29,7 +28,7 @@ int
 str_cpyn(char * src, const char * tar, size_t n) {
     size_t i;
     if (!src || !tar || n == 0)
-        return EBase;
+        return -2;
     for (i = 1; 
         (i < n) && (*src++ = *tar++); ++i)
         ;
@@ -210,11 +209,10 @@ int str_fwrite(const char * p, const char * s, const char * m) {
     int len;
     FILE * txt;
     if (!p || !*p || !s || !m)
-        return EParam;
-
+        return -2;
     // 打开文件, 写入消息, 关闭文件
-    if ((txt = fopen(p, m)) == NULL)
-        return EFd;
+    if (!(txt = fopen(p, m)))
+        return -3;
 
     len = fputs(s, txt);
     fclose(txt);

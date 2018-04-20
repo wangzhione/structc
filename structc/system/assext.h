@@ -5,12 +5,33 @@
 // assert.h 的扩展接口
 //
 
-#include <sdos.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
+#ifndef _H_ELAG
+#define _H_ELAG
+
+//
+// enum Elag int - 函数返回值全局状态码
+// >= 0 标识 Success 状态, < 0 标识 Error 状态
+//
+enum {
+    SBase     = +0, // 基础正确类型
+
+    EBase     = -1, // 错误基础类型
+
+    EParam    = -2, // 输入参数错误
+    EFd       = -3, // 文件打开失败
+    EClose    = -4, // 文件操作关闭
+    EAlloc    = -5, // 内存分配错误
+    ETout     = -5, // 操作超时错误
+    EParse    = -6, // 协议解析错误
+};
+
+#endif//_H_ELAG
 
 //
 // CERR - 打印错误信息
@@ -59,12 +80,11 @@ RETURN(NIL, fmt, ##__VA_ARGS__)
  * });
  */
 #ifndef DCODE
-# ifdef _DEBUG
-#	define DCODE(code) \
-        do code while(0)
-# else
-#   define DCODE(code) 
-# endif	//	! _DEBUG
+#   ifdef _DEBUG
+#       define DCODE(code)  do code while(0)
+#   else
+#       define DCODE(code)  
+#   endif //  ! _DEBUG
 #endif	//	! DCODE
 
 #endif//_H_ASSEXT

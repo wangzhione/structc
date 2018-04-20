@@ -60,9 +60,6 @@
     <ClInclude Include="system\assext.h">
       <Filter>system\inc</Filter>
     </ClInclude>
-    <ClInclude Include="system\sdos.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
     <ClInclude Include="system\stdext.h">
       <Filter>system\inc</Filter>
     </ClInclude>
