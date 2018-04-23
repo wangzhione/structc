@@ -305,12 +305,11 @@ socket_connects(const char * host) {
         goto _fail;
     if (socket_connect(s, addr) < SBase)
         goto _fail;
-
     return s;
+
 _fail:
-    CERR("socket_connect error host = %s", host);
     socket_close(s);
-    return INVALID_SOCKET;
+    RETURN(INVALID_SOCKET, "socket_connects host = %s", host);
 }
 
 //
@@ -332,10 +331,9 @@ socket_connectos(const char * host, int ms) {
         goto _fail;
     if (socket_connecto(s, addr, ms) < SBase)
         goto _fail;
-
     return s;
+    
 _fail:
-    CERR("socket_connect error host = %s", host);
     socket_close(s);
-    return INVALID_SOCKET;
+    RETURN(INVALID_SOCKET, "socket_connectos host = %s", host);
 }

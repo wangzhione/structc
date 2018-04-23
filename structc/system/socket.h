@@ -94,9 +94,7 @@ extern const char * strerr(int err);
 //
 typedef struct sockaddr_in sockaddr_t[1];
 
-//
 // socket_init - 初始化 socket 库初始化方法
-//
 inline void socket_init(void) {
 #ifdef _MSC_VER
     WSADATA wsad;
