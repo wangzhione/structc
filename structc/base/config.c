@@ -24,7 +24,7 @@ if (NULL == $##field || $##field->type != JSON_STRING) {                \
 }                                                                       \
 free(conf->field);                                                      \
 conf->field = json_vals($##field);                                      \
-os_cstr(conf->field)
+locals(conf->field)
 
 // config_parse - 解析内容, 并返回解析结果
 bool config_parse(json_t json, struct config * conf) {

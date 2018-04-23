@@ -4,9 +4,9 @@
 
 //
 // gettimeofday - Linux sys/time.h 中得到微秒时间实现
-// tv		:	返回结果包含秒数和微秒数
-// tz		:	包含的时区, winds 上这个变量没有作用
-// return	:   默认返回 0
+// tv       : 返回结果包含秒数和微秒数
+// tz       : 包含的时区, winds 上这个变量没有作用
+// return   : 默认返回 0
 //
 int 
 gettimeofday(struct timeval * tv, void * tz) {

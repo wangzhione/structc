@@ -29,11 +29,11 @@ typedef int socket_t;
 #define INVALID_SOCKET          (~0)
 #define SOCKET_ERROR            (-1)
 
-#ifndef EWOULDBOOK
-#define EWOULDBOOK              EAGAIN
-#endif
-
+//
+// On now linux EAGAIN and EWOULDBLOCK may be the same value 
+// 
 // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
+//
 #define ECONNECT                EINPROGRESS
 
 #endif
@@ -53,8 +53,6 @@ typedef int socket_t;
 #define EAGAIN                  WSAEWOULDBLOCK
 #undef	EINVAL
 #define EINVAL                  WSAEINVAL
-#undef	EWOULDBOCK
-#define EWOULDBOCK              WSAEINPROGRESS
 #undef	EINPROGRESS
 #define EINPROGRESS             WSAEINPROGRESS
 #undef	EMFILE
@@ -76,26 +74,19 @@ typedef int socklen_t;
 
 //
 // gettimeofday - Linux sys/time.h 中得到微秒时间实现
-// tv		:	返回结果包含秒数和微秒数
-// tz		:	包含的时区, winds 上这个变量没有作用
-// return	:   默认返回 0
+// tv       : 返回结果包含秒数和微秒数
+// tz       : 包含的时区, winds 上这个变量没有作用
+// return   : 默认返回 0
 //
 extern int gettimeofday(struct timeval * tv, void * tz);
 
 //
 // strerr - linux 上替代 strerror, winds 替代 FormatMessage 
-// error	: linux 是 errno, winds 可以是 WSAGetLastError() ... 
-// return	: system os 拔下来的提示常量字符串
+// error    : linux 是 errno, winds 可以是 WSAGetLastError() ... 
+// return   : system os 拔下来的提示常量字符串
 //
 extern const char * strerr(int err);
 
-#endif
-
-// EAGAIN and EWOULDBLOCK may be not the same value.
-#if (EAGAIN != EWOULDBOCK)
-#   define EWAGAIN EAGAIN : case EWOULDBOCK
-#else
-#   define EWAGAIN EAGAIN
 #endif
 
 //
