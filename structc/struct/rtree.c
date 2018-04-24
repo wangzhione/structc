@@ -259,8 +259,8 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
     rtree_set_black(tree->root);
 }
 
-// 插入时候构造一个新节点
-static inline struct $rtree * _rtree_new(rtree_t tree, void * pack) {
+// rtree_new - 插入时候构造一个新节点 | static 用于解决符号重定义
+static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
     struct $rtree * node = tree->fnew ? tree->fnew(pack) : pack;
     // 默认构建节点是红色的
     memset(node, 0, sizeof *node);
@@ -283,7 +283,7 @@ rtree_insert(rtree_t tree, void * pack) {
     x = tree->root;
     fcmp = tree->fcmp;
     // 1. 构造插入节点, 并设置节点的颜色为红色
-    node = _rtree_new(tree, pack);
+    node = rtree_new(tree, pack);
 
     // 2. 将红黑树当作一颗二叉查找树, 将节点添加到二叉查找树中. 默认 从小到大
     while (x) {

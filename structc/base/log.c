@@ -1,4 +1,4 @@
-#include <log.h>
+﻿#include <log.h>
 #include <stdio.h>
 #include <assert.h>
 #include <stdarg.h>

@@ -43,11 +43,11 @@
     c). 添加包含目录
         项目右击 -> [属性] -> [VC++ 目录] -> [包含目录]
 
-        $(ProjectDir)base			 -- 基于上面的基础核心模块
-        $(ProjectDir)struct			 -- 基础数据结构提供
-        $(ProjectDir)system			 -- 操作系统一些通用操作
-        $(ProjectDir)system/uv		 -- 网络IO操作, 内嵌libuv
-        $(ProjectDir)system/pthread  -- POSIX pthread 线程模型
+        $(ProjectDir)                   -- 基于上面的基础核心模块
+        $(ProjectDir)struct             -- 基础数据结构提供
+        $(ProjectDir)system             -- 操作系统一些通用操作
+        $(ProjectDir)system/uv          -- 网络IO操作, 内嵌libuv
+        $(ProjectDir)system/pthread     -- POSIX pthread 线程模型
 
     d). 添加预编译处理器
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
@@ -71,8 +71,9 @@
 
     e). 设置编译额外选项
         项目右击 -> [属性] -> [C/C++] -> [常规] -> [调试信息格式] -> [程序数据库 (/Zi)]
-        项目右击 -> [属性] -> [C/C++] -> [高级] -> [编译为] -> [编译为C代码/TC]
         项目右击 -> [属性] -> [C/C++] -> [代码生成] -> [运行库] -> [多线程/MT]
+        项目右击 -> [属性] -> [C/C++] -> [高级] -> [编译为] -> [编译为C代码/TC]
+        项目右击 -> [属性] -> [C/C++] -> [高级] -> [禁用特定警告] -> [4098]
         项目右击 -> [属性] -> [链接器] -> [常规] -> [启用增量链接] -> [否 (/INCREMENTAL:NO)]
         项目右击 -> [属性] -> [链接器] -> [系统] -> [子系统] -> [控制台]
         项目右击 -> [属性] -> [链接器] -> [命令行] -> /LTCG 

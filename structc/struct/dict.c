@@ -170,8 +170,7 @@ dict_set(dict_t d, const char * k, void * v) {
                     prev->next = pair->next;
 
                 // 销毁结点, 直接返回
-                keypair_delete(d->fdie, pair);
-                return;
+                return keypair_delete(d->fdie, pair);
             }
 
             // 更新结点

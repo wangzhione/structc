@@ -1,10 +1,10 @@
 ﻿#ifndef _H_CONFIG
 #define _H_CONFIG
 
-#include <stdbool.h>
+#include <chead.h>
 
 //
-// config 映射配置 config/config.json
+// config 映射配置 conf/config.json
 //
 struct config {
     char * description;
@@ -22,6 +22,6 @@ extern struct config * config_instance(void);
 // path     : 配置初始化路径
 // return   : true 表示解析成功
 //
-extern bool config_init(const char * path);
+bool config_init(const char * path);
 
 #endif//_H_CONFIG

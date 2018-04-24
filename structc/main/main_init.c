@@ -5,7 +5,7 @@
 //
 // STR_CONFIG_PATH - 配置文件路径
 // 
-#define STR_CONFIG_PATH     "config/config.conf"
+#define STR_CONFIG_PATH     "conf/config.conf"
 #define STR_LOG_DIR         "logs"
 #define STR_LOG_PATH        STR_LOG_DIR "/structc.log"
 

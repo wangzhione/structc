@@ -1,14 +1,14 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <assext.h>
 #include <strext.h>
 
 //
-// ���� winerror.h ���ɴ�����Ϣ��ģ��
-// �����ļ� : winerror.h.template
+// 分析 winerror.h
+// 输入 : winerror.h.template
 //
 
 //
-// ����ļ� : stderr.c.template
+// 输出 : stderr.c.template
 //
 
 /*
@@ -42,7 +42,7 @@ extern const char * strerr(int err) {
 
  */
 
-static inline FILE * _out_top(void) {
+inline FILE * out_top(void) {
     const char * opath = "stderr.c.template";
     FILE * out = fopen(opath, "wb");
     if (NULL == out) {
@@ -73,7 +73,7 @@ extern const char * strerr(int err) {\n\
     return out;
 }
 
-static inline void _out_low(FILE * out) {
+inline void out_low(FILE * out) {
     fputs(
 "    }\n\
 \n\
@@ -88,35 +88,25 @@ static inline void _out_low(FILE * out) {
     fclose(out);
 }
 
-static inline void _out_put(FILE * out, char buf[]) {
+inline void out_put(FILE * out, char buf[]) {
     fputs(buf, out);
 }
 
 //
-// ��װ���������
-//
-#define out_top()       \
-FILE * out = _out_top()
-#define out_low()       \
-_out_low(out)
-#define out_put(buf)    \
-_out_put(out, buf)
-
-//
-// ��ʼ��������
+// 详细 strerr 测试内容
 //
 void strerr_test(void) {
     const char * ipath = "winerror.h.template";
-    // ���ļ�����
+    // 读取文件内容
     char * txt = str_freads(ipath);
     if (NULL == txt) {
         RETNIL("str_freads ipath err = %s", ipath);
     }
 
-    out_top();
+    FILE * out = out_top();
 
     /*
-     txt ��ɸѡ����������
+     txt 分析模板
 
      //
      // MessageId: ERROR_SUCCESS
@@ -129,7 +119,6 @@ void strerr_test(void) {
 
      */
 
-    // ��ʼƥ�����
     int i;
     char buf[1024] = "    case ", c;
     const char * tems = txt;
@@ -138,24 +127,24 @@ void strerr_test(void) {
     int pre = 82, idx = (int)strlen(buf) - 1;
 
     while ((tems = strstr(tems, msgids)) != NULL) {
-        // �ҵ����ݾͿ�ʼ��ϴ�� MessageId �� MessageText
+        // 分析 MessageId 和 MessageText
         const char * strs = tems + cnt;
         
-        // �Ȼ�ȡ MessageId
+        // 分析 MessageId
         i = idx;
         while ((c = *strs++) != '\n') {
             if (c == ' ' || c == '(')
                 break;
             buf[++i] = c;
         }
-        // ��������ַ�
+
         if (c == ' ' || c == '(') {
             while (*strs++ != '\n')
                 ;
-        } else if (buf[i] != '\r') // ȥ�� \r
+        } else if (buf[i] != '\r') // 处理 \r
             i++;
 
-        // ����ո���ƶ���
+        // 插入部分 code
         while (i < pre)
             buf[i++] = ' ';
         buf[i++] = ':';
@@ -169,12 +158,12 @@ void strerr_test(void) {
         buf[i++] = ' ';
         buf[i++] = '"';
 
-        // �ٻ�ȡ MessageText
+        // 分析 MessageText
         
-        // step 1 �� :
+        // step 1 找到 :
         while (*strs++ != ':')
             ;
-        // step 2 ���� '/' '\n' '\r' ' ' �ҵ��Ǹ�Ψһ���ַ�
+        // step 2 找到 '/' '\n' '\r' ' ' 结尾部分
         do {
             c = *strs++;
             if (c == '{') {
@@ -196,7 +185,7 @@ void strerr_test(void) {
 
         } while (c == '\r' || c == '\n' || c == ' ' || c == '/');
 
-        // step 3 ��ȡ�� \n
+        // step 3 找到 \n
         buf[i] = c;
         while ((c = *strs++) != '\n') {
             if (c == '"' || c == '\\')
@@ -205,17 +194,15 @@ void strerr_test(void) {
                 buf[++i] = '%';
             buf[++i] = c;
         }
-        // ȥ�� \r
+        // 过滤 \r
         if (buf[i] == '\r')
             --i;
 
         if (buf[i] == ',') {
-            // ����һ�м�����ȡ, ����������
             do {
                 c = *strs++;
             } while (c == '\r' || c == '\n' || c == ' ' || c == '/');
 
-            // ������ȡ����
             while ((c = *strs++) != '\n') {
                 if (c == '"' || c == '\\')
                     buf[++i] = '\\';
@@ -223,12 +210,12 @@ void strerr_test(void) {
                     buf[++i] = '%';
                 buf[++i] = c;
             }
-            // ȥ�� \r
+            // 过滤 \r
             if (buf[i] == '\r')
                 --i;
         }
 
-        // step 4 ȥ������ '.'
+        // step 4 过滤 '.'
         if (buf[i] != '.')
             ++i;
         buf[i++] = '"';
@@ -236,20 +223,20 @@ void strerr_test(void) {
         buf[i++] = '\n';
         buf[i] = '\0';
 
-        out_put(buf);
+        out_put(out, buf);
 
-        // ��ʼ������һ��ѭ��
+        // 继续处理
         tems = strs;
     }
 
-    out_low();
+    out_low(out);
 
     free(txt);
 }
 
 /*
 
-    ���ɾ����������:
+    特殊情况处理
 
     case E_NOTIMPL      : return "Not implemented";
     case E_OUTOFMEMORY  : return "Ran out of memory";

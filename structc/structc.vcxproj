@@ -55,6 +55,7 @@
 WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
 ;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,6 +76,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
 ;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <Optimization>Full</Optimization>
+      <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -83,6 +85,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
     <ClInclude Include="base\config.h" />
+    <ClInclude Include="base\log.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />
@@ -121,6 +124,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\config.c" />
+    <ClCompile Include="base\log.c" />
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_init.c" />
     <ClCompile Include="main\main_run.c" />
@@ -163,7 +167,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <ClCompile Include="test\uv_tty_test.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\config.conf" />
+    <None Include="conf\config.conf" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

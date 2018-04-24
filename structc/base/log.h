@@ -1,4 +1,4 @@
-#ifndef _H_LOG
+﻿#ifndef _H_LOG
 #define _H_LOG
 
 #include <times.h>

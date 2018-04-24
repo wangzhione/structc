@@ -37,11 +37,11 @@
     <Filter Include="system\poll">
       <UniqueIdentifier>{3111d0ec-5876-4f07-b4bc-fc859bfb2b4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="config">
-      <UniqueIdentifier>{2f9787ef-d54c-4767-9de2-597bbbf8883f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="base\inc">
       <UniqueIdentifier>{ecfe5816-30c5-4220-81bd-b37214483220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="conf">
+      <UniqueIdentifier>{8bb4c897-cefd-486e-88a7-4e69672740ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +154,9 @@
       <Filter>base\inc</Filter>
     </ClInclude>
     <ClInclude Include="base\chead.h">
+      <Filter>base\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="base\log.h">
       <Filter>base\inc</Filter>
     </ClInclude>
   </ItemGroup>
@@ -281,11 +284,14 @@
     <ClCompile Include="base\config.c">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="base\log.c">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
-    <None Include="config\config.conf">
-      <Filter>config</Filter>
+    <None Include="conf\config.conf">
+      <Filter>conf</Filter>
     </None>
   </ItemGroup>
 </Project>
