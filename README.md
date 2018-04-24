@@ -87,9 +87,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "shell",
-            "label": "Debug",
-            "command": "make D=-D_DEBUG"
+            "type"    : "shell",
+            "label"   : "Debug",
+            "command" : "make D=-D_DEBUG"
         }
     ]
 }

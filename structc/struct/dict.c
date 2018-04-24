@@ -1,30 +1,6 @@
 ﻿#include <dict.h>
 #include <assert.h>
 
-struct keypair {
-    struct keypair * next;
-    unsigned hash;
-    void * val;
-    char key[];
-};
-
-// 销毁结点数据
-static inline void _keypair_delete(node_f fdie, struct keypair * pair) {
-    if (pair->val && fdie)
-        fdie(pair->val);
-    free(pair);
-}
-
-// 创建结点数据
-static inline struct keypair * _keypair_create(unsigned hash, void * v, const char * k) {
-    size_t len = strlen(k) + 1;
-    struct keypair * pair = malloc(sizeof(struct keypair) + len);
-    pair->hash = hash;
-    pair->val = v;
-    memcpy(pair->key, k, len);
-    return pair;
-}
-
 //
 // 质数表
 //
@@ -56,6 +32,30 @@ static const unsigned _primes[][2] = {
     { (1<<30)-1 ,  805306457 },
     { UINT_MAX  , 1610612741 },
 };
+
+struct keypair {
+    struct keypair * next;
+    unsigned hash;
+    void * val;
+    char key[];
+};
+
+// 销毁结点数据
+inline void keypair_delete(node_f fdie, struct keypair * pair) {
+    if (pair->val && fdie)
+        fdie(pair->val);
+    free(pair);
+}
+
+// 创建结点数据
+inline struct keypair * keypair_create(unsigned hash, void * v, const char * k) {
+    size_t len = strlen(k) + 1;
+    struct keypair * pair = malloc(sizeof(struct keypair) + len);
+    pair->hash = hash;
+    pair->val = v;
+    memcpy(pair->key, k, len);
+    return pair;
+}
 
 struct dict {
     node_f fdie;                // 结点注册的销毁函数
@@ -125,7 +125,7 @@ dict_delete(dict_t d) {
         struct keypair * pair = d->table[i];
         while (pair) {
             struct keypair * next = pair->next;
-            _keypair_delete(d->fdie, pair);
+            keypair_delete(d->fdie, pair);
             pair = next;
         }
     }
@@ -170,7 +170,7 @@ dict_set(dict_t d, const char * k, void * v) {
                     prev->next = pair->next;
 
                 // 销毁结点, 直接返回
-                _keypair_delete(d->fdie, pair);
+                keypair_delete(d->fdie, pair);
                 return;
             }
 
@@ -187,7 +187,7 @@ dict_set(dict_t d, const char * k, void * v) {
 
     // 没有找见设置操作, 直接插入数据
     if (NULL != v) {
-        pair = _keypair_create(hash, v, k);
+        pair = keypair_create(hash, v, k);
         pair->next = d->table[index];
         d->table[index] = pair;
         ++d->used;

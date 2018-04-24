@@ -21,7 +21,7 @@ inline void rtree_set_color(struct $rtree * r, int color) {
     r->parentc = (r->parentc & ~1) | (1 & color);
 }
 
-static inline int _rtree_default_cmp(const void * ln, const void * rn) {
+static inline int rtree_default_cmp(const void * ln, const void * rn) {
     return (int)((intptr_t)ln - (intptr_t)rn);
 }
 
@@ -36,7 +36,7 @@ inline rtree_t
 rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie) {
     rtree_t tree = malloc(sizeof *tree);
     tree->root = NULL;
-    tree->fcmp = fcmp ? fcmp : _rtree_default_cmp;
+    tree->fcmp = fcmp ? fcmp : rtree_default_cmp;
     tree->fnew = fnew;
     tree->fdie = fdie;
     return tree;

@@ -46,7 +46,7 @@ typedef struct json * json_t;
 #define _STRUCT_JSON
 #endif//_STRUCT_JSON
 
-// json_vals - 分离一个 json 字符串
+// json_vals - 分离出 json 字符串, 需要自行 free
 inline char * json_vals(json_t item) {
     item->type &= JSON_CONST;
     return item->vals;
