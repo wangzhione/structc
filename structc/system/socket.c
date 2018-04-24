@@ -31,28 +31,21 @@ gettimeofday(struct timeval * tv, void * tz) {
 #endif
 
 //
-// socket_recv      - socket 接受
 // socket_recvn     - socket 接受 sz 个字节
-// socket_send      - socket 发送
 // socket_sendn     - socket 发送 sz 个字节
 //
-int 
-socket_recv(socket_t s, void * buf, int sz) {
-    int r;
-    do {
-        r = recv(s, buf, sz, 0);
-    } while (errno == EINTR && r == SOCKET_ERROR);
-    return r;
-}
 
 int 
 socket_recvn(socket_t s, void * buf, int sz) {
     int r, n = sz;
     while (n > 0) {
-        r = socket_recv(s, buf, n);
+        r = recv(s, buf, n, 0);
         if (r == 0) break;
-        if (r == SOCKET_ERROR)
+        if (r == SOCKET_ERROR) {
+            if (errno == EINTR)
+                continue;
             return SOCKET_ERROR;
+        }
         n -= r;
         buf = (char *)buf + r;
     }
@@ -60,22 +53,16 @@ socket_recvn(socket_t s, void * buf, int sz) {
 }
 
 int 
-socket_send(socket_t s, const void * buf, int sz) {
-    int r;
-    do {
-        r = send(s, buf, sz, 0);
-    } while (errno == EINTR && r == SOCKET_ERROR);
-    return r;
-}
-
-int 
 socket_sendn(socket_t s, const void * buf, int sz) {
     int r, n = sz;
     while (n > 0) {
-        r = socket_send(s, buf, n);
+        r = send(s, buf, n, 0);
         if (r == 0) break;
-        if (r == SOCKET_ERROR)
+        if (r == SOCKET_ERROR) {
+            if (errno == EINTR)
+                continue;
             return SOCKET_ERROR;
+        }
         n -= r;
         buf = (char *)buf + r;
     }
@@ -160,43 +147,43 @@ socket_t
 socket_bind(const char * ip, uint16_t port, uint8_t protocol, int * family) {
     socket_t fd;
     char ports[sizeof "65535"];
-    struct addrinfo hints = { 0 };
-    struct addrinfo * addrs = NULL;
+    struct addrinfo hint = { 0 };
+    struct addrinfo * addr = NULL;
     if (NULL == ip || *ip == '\0')
         ip = "0.0.0.0"; // INADDR_ANY
 
     sprintf(ports, "%hu", port);
-    hints.ai_family = AF_UNSPEC;
+    hint.ai_family = AF_UNSPEC;
     if (protocol == IPPROTO_TCP)
-        hints.ai_socktype = SOCK_STREAM;
+        hint.ai_socktype = SOCK_STREAM;
     else {
         assert(protocol == IPPROTO_UDP);
-        hints.ai_socktype = SOCK_DGRAM;
+        hint.ai_socktype = SOCK_DGRAM;
     }
-    hints.ai_protocol = protocol;
+    hint.ai_protocol = protocol;
 
-    if (getaddrinfo(ip, ports, &hints, &addrs))
+    if (getaddrinfo(ip, ports, &hint, &addr))
         return INVALID_SOCKET;
 
-    fd = socket(addrs->ai_family, addrs->ai_socktype, 0);
+    fd = socket(addr->ai_family, addr->ai_socktype, 0);
     if (fd == INVALID_SOCKET)
         goto _fail;
     if (socket_set_reuseaddr(fd))
         goto _faed;
-    if (bind(fd, addrs->ai_addr, (int)addrs->ai_addrlen))
+    if (bind(fd, addr->ai_addr, (int)addr->ai_addrlen))
         goto _faed;
 
     // Success return ip family
     if (family)
-        *family = addrs->ai_family;
+        *family = addr->ai_family;
 
-    freeaddrinfo(addrs);
+    freeaddrinfo(addr);
     return fd;
 
 _faed:
     socket_close(fd);
 _fail:
-    freeaddrinfo(addrs);
+    freeaddrinfo(addr);
     return INVALID_SOCKET;
 }
 
