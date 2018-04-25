@@ -27,8 +27,6 @@ inline void cls(void) {
 
 #include <unistd.h>
 #include <termios.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 inline char * locals(char utf8s[]) {
     return utf8s;

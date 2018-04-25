@@ -16,7 +16,7 @@ int main(int argc, char * argv[]) {
     // make D=-D_DEBUG
     // main_test 单元测试才会启动
     //
-#if defined(_DEBUG)
+#ifdef _DEBUG
     EXTERN_RUN(main_test);
 #endif
 

@@ -1,4 +1,4 @@
-﻿#if defined(_WIN32)
+﻿#ifdef _WIN32
 
 #ifdef _MSC_VER
 #undef  FD_SETSIZE

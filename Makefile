@@ -14,7 +14,7 @@ DSTRUCT	    ?= struct
 DBASE 	    ?= base
 
 OUTS        ?= Outs
-DOBJ        ?= obj
+DOBJ        ?= Obj
 
 #
 # DIRS      : 所有可变编译文件目录

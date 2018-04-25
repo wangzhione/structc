@@ -8,7 +8,7 @@
 //
 #define LOG_ERROR(fmt, ...) LOG_PRINTF("[ERROR]", fmt, ##__VA_ARGS__)
 #define LOG_INFOS(fmt, ...) LOG_PRINTF("[INFOS]", fmt, ##__VA_ARGS__)
-#if defined(_DEBUG)
+#ifdef _DEBUG
 #define LOG_DEBUG(fmt, ...) LOG_PRINTF("[DEBUG]", fmt, ##__VA_ARGS__)
 #else
 #define LOG_DEBUG(fmt, ...) /*  (^_−)☆ */

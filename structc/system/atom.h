@@ -12,7 +12,7 @@
  */
 typedef volatile long atom_t;
 
-#if defined(__GNUC__)
+#ifdef __GNUC__
 
 #define atom_trylock(o)     (!__sync_lock_test_and_set(&(o), 1))
 
@@ -35,7 +35,7 @@ typedef volatile long atom_t;
 
 #endif
 
-#if defined(_MSC_VER)
+#ifdef _MSC_VER
 
 #include <intrin.h>
 #include <intrin0.h>
