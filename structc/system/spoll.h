@@ -18,10 +18,10 @@ struct event {
 
 typedef struct event event_t[MAX_EVENT];
 
-#ifdef _MSC_VER
-    typedef struct poll * poll_t;
-#else
+#if defined(__linux__)
     typedef int poll_t;
+#else
+    typedef struct poll * poll_t;
 #endif
 
 //

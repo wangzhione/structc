@@ -6,6 +6,7 @@
 //
 
 #include <stdint.h>
+#include <assert.h>
 
 struct rand {
     uint32_t x[3];
@@ -53,7 +54,16 @@ extern int32_t rand_rand(rand_t r);
 // r_rands - 得到 [min, max] 范围内随机数
 //
 extern int32_t r_rand(void);
-extern int64_t r_randk(void);
-extern int32_t r_rands(int32_t min, int32_t max);
+
+inline int64_t r_randk(void) {
+    uint64_t x = ((r_rand() << N) ^ r_rand()) & INT32_MAX;
+    uint64_t y = ((r_rand() << N) ^ r_rand()) & INT32_MAX;
+    return ((x << 2 * N) | y) & INT64_MAX;
+}
+
+inline int32_t r_rands(int32_t min, int32_t max) {
+    assert(max > min);
+    return r_rand() % (max - min + 1) + min;
+}
 
 #endif//_H_RAND

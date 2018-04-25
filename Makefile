@@ -78,8 +78,8 @@ librunc.a : $(OBJO) $(TESTO)
 # 程序的收尾工作,清除,目录构建						
 #
 $(OUTS):
-	-mkdir -p $(OBJP)
-	-cp -r $(ROOT)/config $(OUTS)/
+	mkdir -p $(OBJP)
+	cp -r $(ROOT)/conf $(OUTS)/
 
 # 清除操作
 clean :

@@ -12,7 +12,7 @@
 //
 
 /*
-#if defined(__GNUC__)
+#ifndef _MSC_VER
 
 #include <string.h>
 
@@ -20,9 +20,7 @@ extern inline const char * strerr(int err) {
     return strerror(err);
 }
 
-#endif
-
-#if defined(_MSC_VER)
+#else
 
 #include <winerror.h>
 
@@ -50,7 +48,7 @@ inline FILE * out_top(void) {
     }
 
     fputs(
-"#if defined(__GNUC__)\n\
+"#ifndef _MSC_VER\n\
 \n\
 #include <string.h>\n\
 \n\
@@ -58,9 +56,7 @@ extern inline const char * strerr(int err) {\n\
     return strerror(err);\n\
 }\n\
 \n\
-#endif\n\
-\n\
-#if defined(_MSC_VER)\n\
+#else\n\
 \n\
 #include <winerror.h>\n\
 \n\

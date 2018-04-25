@@ -1,7 +1,7 @@
 ﻿#if defined(_WIN32)
 
 #ifdef _MSC_VER
-#undef	FD_SETSIZE
+#undef  FD_SETSIZE
 #define FD_SETSIZE      (1024)
 #endif
 
@@ -26,18 +26,15 @@ struct poll {
 // s_error      - true 表示当前创建的 poll 模型有问题
 // s_delete     - 销毁一个创建的 poll 模型
 //
-inline poll_t 
-s_create(void) {
+inline poll_t s_create(void) {
     return calloc(1, sizeof(struct poll));
 }
 
-inline bool 
-s_error(poll_t p) {
+inline bool s_error(poll_t p) {
     return NULL == p;
 }
 
-inline void 
-s_delete(poll_t p) {
+inline void s_delete(poll_t p) {
     free(p);
 }
 
@@ -46,8 +43,7 @@ s_delete(poll_t p) {
 // s_add        - 添加监测的 socket, 并设置读模式, 失败返回 true
 // s_write      - 修改当前 socket, 通过 enable = true 设置写模式
 //
-void 
-s_del(poll_t p, socket_t s) {
+void s_del(poll_t p, socket_t s) {
     struct trigger * sr = p->trgs, * er = p->trgs + p->len;
     while (sr < er) {
         if (sr->fd == s) {
@@ -60,8 +56,7 @@ s_del(poll_t p, socket_t s) {
     }
 }
 
-bool 
-s_add(poll_t p, socket_t s, void * ud) {
+bool s_add(poll_t p, socket_t s, void * ud) {
     struct trigger * sr, * er;
 #ifdef _MSC_VER
     if (p->len >= FD_SETSIZE || s <= 0)
@@ -88,8 +83,7 @@ s_add(poll_t p, socket_t s, void * ud) {
     return false;
 }
 
-void 
-s_write(poll_t p, socket_t s, void * ud, bool enable) {
+void s_write(poll_t p, socket_t s, void * ud, bool enable) {
     struct trigger * sr = p->trgs, * er = p->trgs + p->len;
     while (sr < er) {
         if (sr->fd == s) {
@@ -107,8 +101,7 @@ s_write(poll_t p, socket_t s, void * ud, bool enable) {
 // e        : 返回的操作事件集
 // return   : 返回待操作事件长度, < 0 表示失败
 //
-int 
-s_wait(poll_t p, event_t e) {
+int s_wait(poll_t p, event_t e) {
     struct trigger * sr;
     socket_t fd, max = 0;
     socklen_t ren = sizeof(int);
@@ -130,7 +123,7 @@ s_wait(poll_t p, event_t e) {
 
     // wait for you ...
     n = select((int)max + 1, &p->rfds, &p->wfds, &p->efds, NULL);
-    if (n <= 0) RETURN(EBase, "select n = %d error", n);
+    if (n <= 0) RETURN(-1, "select n = %d error", n);
 
     for (c = i = 0; c < n && c < MAX_EVENT && i < len; ++i) {
         sr = p->trgs + i;

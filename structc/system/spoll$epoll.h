@@ -8,18 +8,15 @@
 // s_error      - true 表示当前创建的 poll 模型有问题
 // s_delete     - 销毁一个创建的 poll 模型
 //
-inline poll_t 
-s_create(void) {
+inline poll_t s_create(void) {
     return epoll_create1(EPOLL_CLOEXEC);
 }
 
-inline bool 
-s_error(poll_t p) {
-    return p < SBase;
+inline bool s_error(poll_t p) {
+    return p < 0;
 }
 
-inline void 
-s_delete(poll_t p) {
+inline void s_delete(poll_t p) {
     close(p);
 }
 
@@ -28,21 +25,18 @@ s_delete(poll_t p) {
 // s_add        - 添加监测的 socket, 并设置读模式, 失败返回 true
 // s_write      - 修改当前 socket, 通过 enable = true 设置写模式
 //
-inline void 
-s_del(poll_t p, socket_t s) {
+inline void s_del(poll_t p, socket_t s) {
     epoll_ctl(p, EPOLL_CTL_DEL, s, NULL);
 }
 
-inline bool 
-s_add(poll_t p, socket_t s, void * ud) {
+inline bool s_add(poll_t p, socket_t s, void * ud) {
     struct epoll_event ev;
     ev.events = EPOLLIN;
     ev.data.ptr = ud;
     return !!epoll_ctl(p, EPOLL_CTL_ADD, s, &ev);
 }
 
-inline void 
-s_write(poll_t p, socket_t s, void * ud, bool enable) {
+inline void s_write(poll_t p, socket_t s, void * ud, bool enable) {
     struct epoll_event ev;
     ev.events = EPOLLIN | (enable ? EPOLLOUT : 0);
     ev.data.ptr = ud;
@@ -55,12 +49,11 @@ s_write(poll_t p, socket_t s, void * ud, bool enable) {
 // e        : 返回的操作事件集
 // return   : 返回待操作事件长度, < 0 表示失败
 //
-int 
-s_wait(poll_t p, event_t e) {
+int s_wait(poll_t p, event_t e) {
     struct epoll_event v[MAX_EVENT];
-    int n = epoll_wait(p, v, sizeof(v) / sizeof(*v), -1);
+    int n = epoll_wait(p, v, sizeof v / sizeof *v, -1);
     if (n <= 0) {
-        RETURN(EBase, "epoll_wait n = %d error", n);
+        RETURN(-1, "epoll_wait n = %d error", n);
     }
 
     for (int i = 0; i < n; ++i) {
