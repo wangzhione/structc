@@ -159,6 +159,9 @@
     <ClInclude Include="base\log.h">
       <Filter>base\inc</Filter>
     </ClInclude>
+    <ClInclude Include="base\file.h">
+      <Filter>base\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">

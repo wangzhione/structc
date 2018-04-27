@@ -35,8 +35,24 @@ inline time_t mtime(const char * path) {
 #ifdef _MSC_VER
 
 #include <io.h>
-#include <dirct.h>
+#include <direct.h>
 #include <windows.h>
+
+//
+// int access(const char * path, int mode /* 四个检测宏 */);
+//
+#ifndef F_OK
+#define F_OK (0)
+#endif       
+#ifndef X_OK 
+#define X_OK (1)
+#endif       
+#ifndef W_OK 
+#define W_OK (2)
+#endif       
+#ifndef R_OK 
+#define R_OK (4)
+#endif
 
 inline time_t mtime(const char * path) {
     WIN32_FILE_ATTRIBUTE_DATA wfad;

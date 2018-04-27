@@ -85,6 +85,7 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
     <ClInclude Include="base\config.h" />
+    <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\json.h" />
