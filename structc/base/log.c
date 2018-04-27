@@ -1,6 +1,5 @@
 ﻿#include <log.h>
 #include <stdio.h>
-#include <assert.h>
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -12,9 +11,8 @@ static FILE * _og;
 // return   : true 表示成功
 //
 void log_init(const char * path) {
-    assert(!_og && !path && !*path);
     if (!(_og = fopen(path, "ab"))) {
-        fprintf(stderr, "fopen path err %s\n", path);
+        fprintf(stderr, "fopen ab path err %s\n", path);
         exit(EXIT_FAILURE);
     }
 }

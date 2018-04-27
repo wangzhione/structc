@@ -288,15 +288,12 @@ socket_connects(const char * host) {
     }
 
     // 解析配置成功后尝试链接
-    if (socket_host(host, addr) < SBase)
-        goto _fail;
-    if (socket_connect(s, addr) < SBase)
-        goto _fail;
-    return s;
+    if (socket_host(host, addr) >= SBase)
+        if (socket_connect(s, addr) >= SBase)
+            return s;
 
-_fail:
     socket_close(s);
-    RETURN(INVALID_SOCKET, "socket_connects host = %s", host);
+    RETURN(INVALID_SOCKET, "socket_connects %s", host);
 }
 
 //
@@ -314,13 +311,10 @@ socket_connectos(const char * host, int ms) {
     }
 
     // 解析配置成功后尝试链接
-    if (socket_host(host, addr) < SBase)
-        goto _fail;
-    if (socket_connecto(s, addr, ms) < SBase)
-        goto _fail;
-    return s;
-    
-_fail:
+    if (socket_host(host, addr) >= SBase)
+        if (socket_connecto(s, addr, ms) >= SBase)
+            return s;
+
     socket_close(s);
-    RETURN(INVALID_SOCKET, "socket_connectos host = %s", host);
+    RETURN(INVALID_SOCKET, "socket_connectos %s", host);
 }
