@@ -42,27 +42,27 @@ typedef volatile long atom_t;
 
 /* Interlocked intrinsic mapping for _nf/_acq/_rel */
 #if defined(_M_ARM) || defined(_M_ARM64)
-#define _ACQUIRE(x)	ATOMIC_CONCAT(x, _acq)
+#define _ACQUIRE(x) ATOMIC_CONCAT(x, _acq)
 #else /* defined(_M_ARM) || defined(_M_ARM64) */
-#define _ACQUIRE(x)	x
+#define _ACQUIRE(x) x
 #endif /* defined(_M_ARM) || defined(_M_ARM64) */
 
 #define atom_trylock(o)     (!_ACQUIRE(_interlockedbittestandset)(&(o), 0))
 
 #define atom_lock(o)        while(_ACQUIRE(_interlockedbittestandset)(&(o), 0))
 
-inline void _store_release(atom_t * tgt, int val) {
+inline void store_release(atom_t * x) {
     /* store _Value atomically with release memory order */
 #if defined(_M_ARM) || defined(_M_ARM64)
     __dmb(0xB /* _ARM_BARRIER_ISH or _ARM64_BARRIER_ISH*/);
-    __iso_volatile_store32((volatile int *)tgt, val);
+    __iso_volatile_store32((volatile int *)x, 0);
 #else
     _ReadWriteBarrier();
-    *tgt = val;
+    *x = 0;
 #endif
 }
 
-#define atom_unlock(o)      _store_release(&(o), 0)
+#define atom_unlock(o)      store_release(&(o))
 
 // v 和 a 都是 long 这样数据
 #define ATOM_ADD(v, a)      InterlockedAdd((volatile LONG *)&(v), (LONG)(a))
