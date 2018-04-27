@@ -38,20 +38,18 @@ inline time_t mtime(const char * path) {
 #include <direct.h>
 #include <windows.h>
 
-//
 // int access(const char * path, int mode /* 四个检测宏 */);
-//
 #ifndef F_OK
-#define F_OK (0)
+#   define  F_OK    (0)
 #endif       
 #ifndef X_OK 
-#define X_OK (1)
+#   define  X_OK    (1)
 #endif       
 #ifndef W_OK 
-#define W_OK (2)
+#   define  W_OK    (2)
 #endif       
 #ifndef R_OK 
-#define R_OK (4)
+#   define  R_OK    (4)
 #endif
 
 inline time_t mtime(const char * path) {
