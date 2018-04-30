@@ -62,6 +62,12 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
       <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PostBuildEvent>
+      <Command>echo begin init directory $(TargetDir)conf
+if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
+xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
+echo e n d init directory $(TargetDir)conf</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -81,6 +87,12 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
     <Link>
       <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo begin init directory $(TargetDir)conf
+if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
+xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
+echo e n d init directory $(TargetDir)conf</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
@@ -125,6 +137,8 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\config.c" />
+    <ClCompile Include="base\file.c" />
+    <ClCompile Include="base\file_test.c" />
     <ClCompile Include="base\log.c" />
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_init.c" />

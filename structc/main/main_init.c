@@ -7,7 +7,7 @@
 // 
 #define STR_CONFIG_PATH     "conf/config.conf"
 #define STR_LOG_DIR         "logs"
-#define STR_LOG_PATH        STR_LOG_DIR "/structc.log"
+#define STR_LOG_PATH        STR_LOG_DIR"/structc.log"
 
 //
 // main_init - 各个模块初始化
@@ -24,6 +24,6 @@ void main_init(void) {
     //
     //  日志模块初始化
     //
-    
+    mkdirs(STR_LOG_DIR);
     EXTERN_RUN(log_init, STR_LOG_PATH);
 }

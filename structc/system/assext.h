@@ -29,6 +29,7 @@ enum {
     EAlloc    = -5, // 内存分配错误
     ETout     = -5, // 操作超时错误
     EParse    = -6, // 协议解析错误
+    EACCESS   = -7, // 没有操作权限
 };
 
 #endif//_H_ELAG

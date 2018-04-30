@@ -1,7 +1,18 @@
 ﻿#ifndef _H_CONFIG
 #define _H_CONFIG
 
-#include <chead.h>
+#include <g2u8.h>
+#include <assext.h>
+
+// locals - 本地字符串特殊处理, winds 会把 utf8 转 gbk
+inline char * locals(char utf8s[]) {
+#ifdef _MSC_VER
+    if (isu8s(utf8s)) {
+        u82g(utf8s);
+    }
+#endif
+    return utf8s;
+}
 
 //
 // config 映射配置 conf/config.json

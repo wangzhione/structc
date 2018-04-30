@@ -77,6 +77,13 @@
         项目右击 -> [属性] -> [链接器] -> [常规] -> [启用增量链接] -> [否 (/INCREMENTAL:NO)]
         项目右击 -> [属性] -> [链接器] -> [系统] -> [子系统] -> [控制台]
         项目右击 -> [属性] -> [链接器] -> [命令行] -> /LTCG 
+        
+        项目右击 -> [生成事件] -> [后期生成事件] -> [命令行]
+
+        echo begin init directory $(TargetDir)conf
+        if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
+        xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
+        echo e n d init directory $(TargetDir)conf
 
         [Release]
         - [控制台]
