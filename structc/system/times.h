@@ -10,7 +10,7 @@
 // ~ 力求最小时间业务单元 ~ 
 //
 
-#ifdef __GUNC__
+#ifdef __GNUC__
 
 #include <unistd.h>
 #include <sys/time.h>

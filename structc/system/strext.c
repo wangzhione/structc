@@ -176,6 +176,7 @@ str_freads(const char * path) {
 
     // 直接分配内存足够直接返回内容
     if (rn < BUFSIZ) {
+        fclose(txt);
         str = malloc(rn + 1);
         memcpy(str, buf, rn);
         str[rn] = '\0';
@@ -200,6 +201,7 @@ str_freads(const char * path) {
     } while (rn == BUFSIZ);
 
     // 设置结尾, 并返回结果
+    fclose(txt);
     str[len] = '\0';
     return realloc(str, len + 1);
 }

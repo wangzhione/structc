@@ -10,8 +10,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#define STR_RMRF    "rm -rf '%s'"
-
 //
 // mkdir - 通用的单层目录创建函数宏, 等价于 mkdir path
 // path     : 目录路径加名称
@@ -40,8 +38,6 @@ inline time_t mtime(const char * path) {
 #include <direct.h>
 #include <windows.h>
 
-#define STR_RMRF    "rmdir /s /q \"%s\""
-
 // int access(const char * path, int mode /* 四个检测宏 */);
 #ifndef F_OK
 #   define  F_OK    (0)
@@ -67,26 +63,24 @@ inline time_t mtime(const char * path) {
 #endif
 
 //
+// removes - 删除非空目录 or 文件
+// path     : 文件全路径
+// return   : < 0 is error, >=0 is success
+//
+extern int removes(const char * path);
+
+//
 // mkdirs - 创建多级目录
 // path     : 目录路径
 // return   : < 0 is error, 0 is success
 //
 extern int mkdirs(const char * path);
 
-// removes - 删除非空目录 or 文件
-inline int removes(const char * path) {
-    char s[BUFSIZ];
-    // path 超过缓冲区长度, 返回异常
-    if (snprintf(s, sizeof s, STR_RMRF, path) == sizeof s) 
-        return -1;
-    return access(path, F_OK) ? 0 : -system(s);
-}
-
 //
 // :0 一个和程序同生存的配置文件动态刷新机制
 // file_f - 文件更新行为
 //
-typedef void (* file_f)(FILE * cnf, void * arg);
+typedef void (* file_f)(FILE * c, void * arg);
 
 //
 // file_set - 文件注册触发行为

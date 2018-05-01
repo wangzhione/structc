@@ -293,7 +293,7 @@
     <ClCompile Include="base\file.c">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="base\file_test.c">
+    <ClCompile Include="test\file_test.c">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

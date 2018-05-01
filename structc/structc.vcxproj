@@ -138,7 +138,6 @@ echo e n d init directory $(TargetDir)conf</Command>
   <ItemGroup>
     <ClCompile Include="base\config.c" />
     <ClCompile Include="base\file.c" />
-    <ClCompile Include="base\file_test.c" />
     <ClCompile Include="base\log.c" />
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_init.c" />
@@ -163,6 +162,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\array_test.c" />
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\dict_test.c" />
+    <ClCompile Include="test\file_test.c" />
     <ClCompile Include="test\g2u8_test.c" />
     <ClCompile Include="test\json_test.c" />
     <ClCompile Include="test\list_test.c" />
