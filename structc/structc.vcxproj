@@ -99,6 +99,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\config.h" />
     <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
+    <ClInclude Include="base\rwlock.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />
