@@ -85,5 +85,6 @@ $(OUTS):
 clean :
 	-rm -rf *core*
 	-rm -rf $(OUTS)
-	-rm -rf Debug Release logs x64
-	-rm -rf $(ROOT)/Debug $(ROOT)/logs $(ROOT)/Release $(ROOT)/x64
+	-rm -rf logs $(ROOT)/logs
+	-rm -rf Debug Release x64
+	-rm -rf $(ROOT)/Debug $(ROOT)/Release $(ROOT)/x64
