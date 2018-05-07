@@ -299,6 +299,9 @@
     <ClCompile Include="test\file_test.c">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="base\rwlock.c">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

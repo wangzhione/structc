@@ -2,8 +2,8 @@
 #define _H_CHEAD
 
 #include <file.h>
-#include <config.h>
 #include <thread.h>
+#include <config.h>
 
 #ifdef _MSC_VER
 

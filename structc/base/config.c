@@ -15,6 +15,16 @@ config_instance(void) {
     return &conf;
 }
 
+// locals - 本地字符串特殊处理, winds 会把 utf8 转 gbk
+inline char * locals(char utf8s[]) {
+#ifdef _MSC_VER
+    if (isu8s(utf8s)) {
+        u82g(utf8s);
+    }
+#endif
+    return utf8s;
+}
+
 // CONFIG_PARSE_JSON_STR - json field -> config field
 #define CONFIG_PARSE_JSON_STR(json, conf, field)                        \
 json_t $##field = json_object(json, #field);                            \
