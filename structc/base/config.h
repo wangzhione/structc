@@ -1,7 +1,7 @@
 ﻿#ifndef _H_CONFIG
 #define _H_CONFIG
 
-#include <g2u8.h>
+#include <utf8.h>
 #include <assext.h>
 
 //

@@ -144,9 +144,6 @@
     <ClInclude Include="system\rand.h">
       <Filter>system\inc</Filter>
     </ClInclude>
-    <ClInclude Include="system\g2u8.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
     <ClInclude Include="system\md5.h">
       <Filter>system\inc</Filter>
     </ClInclude>
@@ -164,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="base\rwlock.h">
       <Filter>base\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="system\pipe.h">
+      <Filter>system\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="system\utf8.h">
+      <Filter>system\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +275,6 @@
     <ClCompile Include="test\times_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="system\g2u8.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="test\g2u8_test.c">
       <Filter>test</Filter>
     </ClCompile>
@@ -301,6 +301,15 @@
     </ClCompile>
     <ClCompile Include="base\rwlock.c">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="system\utf8.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\pipe.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pipe_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

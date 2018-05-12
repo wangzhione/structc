@@ -1,5 +1,4 @@
 ﻿#include <chead.h>
-#include <g2u8.h>
 
 /*
  单元功能测试要求 : 

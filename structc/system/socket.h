@@ -21,20 +21,15 @@
 #include <netinet/tcp.h>
 #include <sys/resource.h>
 
-typedef int socket_t;
-
 //
 // This is used instead of -1, since the. by WinSock
-//
-#define INVALID_SOCKET          (~0)
-#define SOCKET_ERROR            (-1)
-
-//
 // On now linux EAGAIN and EWOULDBLOCK may be the same value 
-// 
 // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
 //
-#define ECONNECT                EINPROGRESS
+typedef int socket_t;
+
+#define INVALID_SOCKET          (~0)
+#define SOCKET_ERROR            (-1)
 
 // socket_init - 初始化 socket 库初始化方法
 inline void socket_init(void) {
@@ -80,13 +75,11 @@ inline int socket_set_nonblock(socket_t s) {
 #undef	EINVAL
 #define EINVAL                  WSAEINVAL
 #undef	EINPROGRESS
-#define EINPROGRESS             WSAEINPROGRESS
+#define EINPROGRESS             WSAEWOULDBLOCK
 #undef	EMFILE
 #define EMFILE                  WSAEMFILE
 #undef	ENFILE
 #define ENFILE                  WSAETOOMANYREFS
-
-#define ECONNECT                WSAEWOULDBLOCK
 
 /*
  * WinSock 2 extension -- manifest constants for shutdown()

@@ -109,7 +109,7 @@ socket_connecto(socket_t s, const sockaddr_t addr, int ms) {
     // 尝试连接, connect 返回 -1 并且 errno == EINPROGRESS 表示正在建立链接
     r = socket_connect(s, addr);
     // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
-    if (r >= SBase || errno != ECONNECT) 
+    if (r >= SBase || errno != EINPROGRESS) 
         return r;
 
     // 超时 timeout, 直接返回结果 EBase = -1 错误

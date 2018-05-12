@@ -1,4 +1,4 @@
-﻿#include <g2u8.h>
+﻿#include <utf8.h>
 #include <string.h>
 #include <assert.h>
 
@@ -13158,7 +13158,7 @@ static unsigned _g2u8[] = {
 // u82ue - utf8 串转成 unicode, 返回编码值和长度
 int u82ue(const char * u8s, size_t n, int * ue, int * len) {
     char c = u8s[0];
-    if (       (c & 0xF8) == 0xF0) { // 4位
+    if ((c & 0xF8) == 0xF0) { // 4位
         if ((n < 4) || 
             (u8s[1] & 0xC0) != 0x80 || (u8s[2] & 0xC0) != 0x80 || (u8s[3] & 0xC0) != 0x80) {
             // 编码字节长度不够

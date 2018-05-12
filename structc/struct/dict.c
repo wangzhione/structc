@@ -2,9 +2,9 @@
 #include <assert.h>
 
 //
-// 质数表
+// primes - 质数表
 //
-static const unsigned _primes[][2] = {
+const unsigned primes[][2] = {
     { (1<<6)-1  ,         53 },
     { (1<<7)-1  ,         97 },
     { (1<<8)-1  ,        193 },
@@ -69,12 +69,12 @@ static void _dict_resize(struct dict * d) {
     struct keypair ** table;
     unsigned used = d->used;
 
-    if (used < _primes[d->idx][0])
+    if (used < primes[d->idx][0])
         return;
     
     // 构造新的内存布局大小
-    size = _primes[d->idx][1];
-    prime = _primes[++d->idx][1];
+    size = primes[d->idx][1];
+    prime = primes[++d->idx][1];
     table = calloc(prime, sizeof(struct keypair *));
 
     // 开始转移数据
@@ -96,22 +96,6 @@ static void _dict_resize(struct dict * d) {
 }
 
 //
-// dict_create - 字典创建
-// fdie     : v 销毁函数
-// return   : dict_t
-//
-inline dict_t 
-dict_create(node_f fdie) {
-    struct dict * d = malloc(sizeof(struct dict));
-    unsigned size = _primes[d->idx = 0][1];
-    d->used = 0;
-    d->fdie = fdie;
-    // 默认构建的第一个素数表 index = 0
-    d->table = calloc(size, sizeof(struct keypair *));
-    return d;
-}
-
-//
 // dict_delete - 字典销毁
 // d        : dict_create 创建的字典对象
 // return   : void 
@@ -120,7 +104,7 @@ void
 dict_delete(dict_t d) {
     unsigned i, size;
     if (NULL == d) return;
-    size = _primes[d->idx][1];
+    size = primes[d->idx][1];
     for (i = 0; i < size; ++i) {
         struct keypair * pair = d->table[i];
         while (pair) {
@@ -131,6 +115,47 @@ dict_delete(dict_t d) {
     }
     free(d->table);
     free(d);
+}
+
+//
+// dict_create - 字典创建
+// fdie     : v 销毁函数
+// return   : dict_t
+//
+inline dict_t 
+dict_create(node_f fdie) {
+    struct dict * d = malloc(sizeof(struct dict));
+    unsigned size = primes[d->idx = 0][1];
+    d->used = 0;
+    d->fdie = fdie;
+    // 默认构建的第一个素数表 index = 0
+    d->table = calloc(size, sizeof(struct keypair *));
+    return d;
+}
+
+//
+// dict_get - 获取字典中对映的 v
+// d        : dict_create 创建的字典对象
+// k        : 查找的 key 
+// return   : 查找的 v, NULL 表示没有
+//
+void * 
+dict_get(dict_t d, const char * k) {
+    unsigned hash, index;
+    struct keypair * pair;
+    assert(NULL != d && k != NULL);
+
+    hash = str_hash(k);
+    index = hash % primes[d->idx][1];
+    pair = d->table[index];
+
+    while (pair) {
+        if (!strcmp(pair->key, k))
+            return pair->val;
+        pair = pair->next;
+    }
+
+    return NULL;
 }
 
 //
@@ -151,7 +176,7 @@ dict_set(dict_t d, const char * k, void * v) {
 
     // 开始寻找数据
     hash = str_hash(k);
-    index = hash % _primes[d->idx][1];
+    index = hash % primes[d->idx][1];
     pair = d->table[index];
     prev = NULL;
 
@@ -191,29 +216,4 @@ dict_set(dict_t d, const char * k, void * v) {
         d->table[index] = pair;
         ++d->used;
     }
-}
-
-//
-// dict_get - 获取字典中对映的 v
-// d        : dict_create 创建的字典对象
-// k        : 查找的 key 
-// return   : 查找的 v, NULL 表示没有
-//
-void * 
-dict_get(dict_t d, const char * k) {
-    unsigned hash, index;
-    struct keypair * pair;
-    assert(NULL != d && k != NULL);
-
-    hash = str_hash(k);
-    index = hash % _primes[d->idx][1];
-    pair = d->table[index];
-
-    while (pair) {
-        if (!strcmp(pair->key, k))
-            return pair->val;
-        pair = pair->next;
-    }
-
-    return NULL;
 }

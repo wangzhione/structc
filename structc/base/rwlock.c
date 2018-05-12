@@ -26,15 +26,3 @@ rwlock_wlock(struct rwlock * lock) {
     while (lock->rlock)
         atom_sync();
 }
-
-// unlock write lock
-inline void 
-rwlock_unwlock(struct rwlock * lock) {
-    atom_unlock(lock->wlock);
-}
-
-// unlock read lock
-inline void 
-rwlock_unrlock(struct rwlock * lock) {
-    ATOM_DEC(lock->rlock);
-}

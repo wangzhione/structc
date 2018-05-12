@@ -1,4 +1,4 @@
-﻿#include <g2u8.h>
+﻿#include <utf8.h>
 #include <strext.h>
 
 // g2u8_test gbk utf 编码测试
