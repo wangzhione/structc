@@ -275,9 +275,6 @@
     <ClCompile Include="test\times_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="test\g2u8_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="system\md5.c">
       <Filter>system</Filter>
     </ClCompile>
@@ -309,6 +306,9 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="test\pipe_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\utf8_test.c">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

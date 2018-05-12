@@ -34,7 +34,7 @@ pipe(socket_t pipefd[2]) {
     // 通过 accept 通信避免一些意外
     pipefd[1] = socket_accept(s, name);
     socket_close(s);
-    return pipefd[1] == INVALID_SOCKET ? -1 : 0; 
+    return pipefd[1] != INVALID_SOCKET ? 0 : -1; 
 }
 
 //
@@ -45,7 +45,7 @@ pipe(socket_t pipefd[2]) {
 inline int 
 pipe_open(pipe_t ch) {
     SECURITY_ATTRIBUTES sa = { sizeof(SECURITY_ATTRIBUTES), NULL, TRUE };
-    return CreatePipe(&ch->recv, &ch->send, &sa, 0) ? -1 : 0;
+    return CreatePipe(&ch->recv, &ch->send, &sa, 0) ? 0 : -1;
 }
 
 // pipe_recv - 管道阻塞接收, PIPE_SIZE 4K 内原子交换
@@ -91,7 +91,7 @@ pipe_recv(pipe_t ch, void * buf, int sz) {
 
 inline int 
 pipe_send(pipe_t ch, const void * buf, int sz) {
-    return (int)write(ch->recv, buf, sz);
+    return (int)write(ch->send, buf, sz);
 }
 
 #endif

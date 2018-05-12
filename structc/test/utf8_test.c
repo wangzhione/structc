@@ -1,8 +1,8 @@
 ﻿#include <utf8.h>
 #include <strext.h>
 
-// g2u8_test gbk utf 编码测试
-void g2u8_test(void) {
+// utf8_test gbk utf 编码测试
+void utf8_test(void) {
     // name 地址足够大
     char name[BUFSIZ] = "孩子 - http://music.163.com/m/song?id=536890393&userid=16529894";
 

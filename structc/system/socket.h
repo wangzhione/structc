@@ -57,6 +57,16 @@ inline int socket_set_nonblock(socket_t s) {
     return fcntl(s, F_SETFL, mode | O_NONBLOCK);
 }
 
+// socket_recv      - 读取数据
+// socket_send      - 写入数据
+inline int socket_recv(socket_t s, void * buf, int sz) {
+    return (int)read(s, buf, sz);
+}
+
+inline int socket_send(socket_t s, const void * buf, int sz) {
+    return (int)write(s, buf, sz);
+}
+
 #endif
 
 #ifdef _MSC_VER
@@ -129,6 +139,16 @@ inline int socket_set_nonblock(socket_t s) {
     return ioctlsocket(s, FIONBIO, &mode);
 }
 
+// socket_recv      - 读取数据
+// socket_send      - 写入数据
+inline int socket_recv(socket_t s, void * buf, int sz) {
+    return sz > 0 ? recv(s, buf, sz, 0) : 0;
+}
+
+inline int socket_send(socket_t s, const void * buf, int sz) {
+    return send(s, buf, sz, 0);
+}
+
 #endif
 
 //
@@ -186,16 +206,6 @@ inline int socket_get_error(socket_t s) {
     socklen_t len = sizeof(err);
     int r = getsockopt(s, SOL_SOCKET, SO_ERROR, (void *)&err, &len);
     return r < 0 ? errno : err;
-}
-
-// socket_recv      - 读取数据
-// socket_send      - 写入数据
-inline int socket_recv(socket_t s, void * buf, int sz) {
-    return sz > 0 ? recv(s, buf, sz, 0) : 0;
-}
-
-inline int socket_send(socket_t s, const void * buf, int sz) {
-    return send(s, buf, sz, 0);
 }
 
 // socket_recvfrom  - recvfrom 接受函数
