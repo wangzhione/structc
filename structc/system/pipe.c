@@ -34,7 +34,9 @@ pipe(socket_t pipefd[2]) {
     // 通过 accept 通信避免一些意外
     pipefd[1] = socket_accept(s, name);
     socket_close(s);
-    return pipefd[1] != INVALID_SOCKET ? 0 : -1; 
+    if (pipefd[1] == INVALID_SOCKET) 
+        return socket_close(pipefd[0]), -1;
+    return 0;
 }
 
 //
