@@ -103,7 +103,6 @@ str_trim(char str[]) {
     return s == str ? str : memmove(str, s, e - s + 2);
 }
 
-
 // _str_printf : 成功直接返回
 static char * _str_printf(const char * format, va_list arg) {
     char buf[BUFSIZ];

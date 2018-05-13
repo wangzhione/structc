@@ -50,7 +50,7 @@ pipe_open(pipe_t ch) {
     return CreatePipe(&ch->recv, &ch->send, &sa, 0) ? 0 : -1;
 }
 
-// pipe_recv - 管道阻塞接收, PIPE_SIZE 4K 内原子交换
+// pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
 // pipe_send - 管道阻塞发送, 
 inline int 
 pipe_recv(pipe_t ch, void * buf, int sz) {
