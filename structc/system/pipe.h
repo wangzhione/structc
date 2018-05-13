@@ -43,7 +43,7 @@ inline void pipe_close(pipe_t ch) {
 //
 extern int pipe_open(pipe_t ch);
 
-// pipe_recv - 管道阻塞接收, PIPE_SIZE 4K 内原子交换
+// pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
 // pipe_send - 管道阻塞发送, 
 extern int pipe_recv(pipe_t ch, void * buf, int sz);
 extern int pipe_send(pipe_t ch, const void * buf, int sz);
