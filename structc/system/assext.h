@@ -29,7 +29,7 @@ enum {
     EAlloc    = -5, // 内存分配错误
     ETout     = -5, // 操作超时错误
     EParse    = -6, // 协议解析错误
-    EACCESS   = -7, // 没有操作权限
+    EAccess   = -7, // 没有操作权限
 };
 
 #endif//_H_ELAG
@@ -62,15 +62,18 @@ if ((cond)) EXIT(#cond)
 // ...		: fmt中对应的参数
 // return	: val
 // 
-#define NIL
-#define RETURN(val, fmt, ...)   \
-do {                            \
-    CERR(fmt, ##__VA_ARGS__);   \
-    return val;                 \
+#define RETURN(val, fmt, ...)       \
+do {                                \
+    CERR(fmt, ##__VA_ARGS__);       \
+    return val;                     \
 } while(0)
 
-#define RETNIL(fmt, ...)        \
+#define NIL
+#define RETNIL(fmt, ...)            \
 RETURN(NIL, fmt, ##__VA_ARGS__)
+
+#define RETNUL(fmt, ...)            \
+RETURN(NULL, fmt, ##__VA_ARGS__)
 
 /*
  * 这里是一个 在 DEBUG 模式下的测试宏
