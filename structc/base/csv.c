@@ -2,19 +2,17 @@
 
 // _csv_parse - 解析 csv 文件内容, 构建一个合法串
 static int _csv_parse(char * str, int * pr, int * pc) {
-    int c, rnt, cnt;
+    int c, n, rnt = 0, cnt = 0;
     char * tar = str, * s = str;
-
-    for (rnt = cnt = 0; (c = *tar) != '\0'; ++tar) {
+    while ((c = *tar++) != '\0') {
         // csv 内容解析, 状态机切换
         switch (c) {
         case '"' : // 双引号包裹的特殊字符处理
             while ((c = *tar++) != '\0') {
                 if ('"' == c) {
-                    int n = *tar;
                     // 有效字符再次压入栈, 顺带去掉多余 " 字符
-                    if (n != '\0') goto _faid;
-                    if (n != '"') break;
+                    if ((n = *tar) != '"') 
+                        break;
                     ++tar;
                 }
                 // 添加得到的字符
@@ -31,7 +29,7 @@ static int _csv_parse(char * str, int * pr, int * pc) {
         }
     }
     // CRLF 处理
-    if (str != s && tar[-1] != '\n') {
+    if (str != s && tar[-2] != '\n') {
         *s++ = '\0'; ++cnt; ++rnt;
     }
 
