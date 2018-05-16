@@ -184,7 +184,7 @@ static const char * _parse_string(json_t item, const char * str) {
         // transcode UTF16 to UTF8. See RFC2781 and RFC3629
         case 'u': {
             // first bytes of UTF8 encoding for a given length in bytes
-            static const unsigned char _marks[] = { 0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
+            static const unsigned char marks[] = { 0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
             unsigned oc, uc = _parse_hex4(ptr + 1);
             // check for invalid
             if ((ptr += 4) >= etr) goto _fail;
@@ -227,10 +227,9 @@ static const char * _parse_string(json_t item, const char * str) {
             // 10xxxxxx
             case 2: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6;
             // depending on the length in bytes this determines the encoding ofthe first UTF8 byte
-            case 1: *--ntr = ((uc | _marks[len]));
+            case 1: *--ntr = ((uc | marks[len]));
             }
             ntr += len;
-
             break;
         }
         default : *ntr++ = c;
@@ -499,8 +498,7 @@ static char * _print_string(char * str, tstr_t p) {
         switch (c) {
         case '\b': case '\t': case '\n':
         case '\f': case '\r':
-        case '"': case '\\':
-            ++len; break;
+        case '\\': case '"': ++len; break;
         default:
             if (c < 32) {
                 // UTF-16 escape sequence uXXXX
