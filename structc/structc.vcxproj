@@ -97,6 +97,7 @@ echo e n d init directory $(TargetDir)conf</Command>
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
     <ClInclude Include="base\config.h" />
+    <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
     <ClInclude Include="base\rwlock.h" />
@@ -139,6 +140,7 @@ echo e n d init directory $(TargetDir)conf</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\config.c" />
+    <ClCompile Include="base\csv.c" />
     <ClCompile Include="base\file.c" />
     <ClCompile Include="base\log.c" />
     <ClCompile Include="base\rwlock.c" />

@@ -1,4 +1,4 @@
-#include <csv.h>
+﻿#include <csv.h>
 
 // _csv_parse - 解析 csv 文件内容, 构建一个合法串
 static int _csv_parse(char * str, int * pr, int * pc) {
@@ -82,7 +82,7 @@ csv_create(const char * path) {
     csv_t csv;
     char * str = str_freads(path);
     if (NULL == str) {
-        RETUUL("str_freads path = %s is error!", path);
+        RETNUL("str_freads path = %s is error!", path);
     }
 
     // 如果解析 csv 文件内容失败直接返回

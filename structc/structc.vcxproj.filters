@@ -168,6 +168,9 @@
     <ClInclude Include="system\utf8.h">
       <Filter>system\inc</Filter>
     </ClInclude>
+    <ClInclude Include="base\csv.h">
+      <Filter>base\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -310,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="test\utf8_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="base\csv.c">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

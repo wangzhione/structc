@@ -2,7 +2,7 @@
 #include <atom.h>
 
 // 初始化队列的大小, 必须是 2 的幂
-#define _INT_MQ     (1<<6)
+#define INT_MQ     (1<<6)
 
 //
 // pop empty  <=> tail == -1 ( head == 0 )
@@ -20,15 +20,15 @@ struct mq {
 
 //
 // mq_create - 消息队列创建
-// return	: 创建好的消息队列
+// return   : 创建好的消息队列
 //
 inline mq_t 
 mq_create(void) {
     struct mq * q = malloc(sizeof(struct mq));
     q->head = 0;
     q->tail = -1;
-    q->size = _INT_MQ;
-    q->queue = malloc(sizeof(void *) * q->size);
+    q->size = INT_MQ;
+    q->queue = malloc(sizeof(void *) * INT_MQ);
 
     q->lock = 0;
     q->fee = false;
@@ -37,9 +37,9 @@ mq_create(void) {
 
 //
 // mq_delete - 消息队列销毁
-// q		: 消息队列对象
-// fdie		: 删除 push 进来的结点
-// return	: void
+// q        : 消息队列对象
+// fdie     : 删除 push 进来的结点
+// return   : void
 //
 void 
 mq_delete(mq_t q, node_f fdie) {
@@ -82,9 +82,9 @@ static void _mq_expand(struct mq * q) {
 
 //
 // mq_push - 消息队列中压入数据
-// q		: 消息队列对象
-// m		: 压入的消息
-// return	: void
+// q        : 消息队列对象
+// m        : 压入的消息
+// return   : void
 // 
 void 
 mq_push(mq_t q, void * m) {
@@ -107,8 +107,8 @@ mq_push(mq_t q, void * m) {
 
 //
 // mq_pop - 消息队列中弹出消息,并返回数据
-// q		: 消息队列对象
-// return	: 返回队列尾巴, 队列 empty时候, 返回NULL
+// q        : 消息队列对象
+// return   : 返回队列尾巴, 队列 empty时候, 返回NULL
 //
 void * 
 mq_pop(mq_t q) {
@@ -122,8 +122,8 @@ mq_pop(mq_t q) {
         if (q->tail != q->head)
             q->head = (q->head + 1) & (q->size - 1);
         else {
-            q->tail = -1;
             q->head = 0; // empty 情况, 重置 tail and head
+            q->tail = -1;
         }
     }
     atom_unlock(q->lock);
@@ -133,8 +133,8 @@ mq_pop(mq_t q) {
 
 //
 // mq_len - 消息队列的长度
-// q		: 消息队列对象
-// return	: 返回消息队列长度
+// q        : 消息队列对象
+// return   : 返回消息队列长度
 // 
 int 
 mq_len(mq_t q) {
