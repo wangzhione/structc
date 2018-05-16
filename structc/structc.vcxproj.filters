@@ -43,6 +43,9 @@
     <Filter Include="conf">
       <UniqueIdentifier>{8bb4c897-cefd-486e-88a7-4e69672740ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test\conf">
+      <UniqueIdentifier>{2df4e18f-58e4-47dc-8d7c-1e25e963ec09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\jemalloc\jemalloc.h">
@@ -170,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="base\csv.h">
       <Filter>base\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\q.h">
+      <Filter>struct\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

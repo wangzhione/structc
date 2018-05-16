@@ -79,7 +79,9 @@ librunc.a : $(OBJO) $(TESTO)
 #
 $(OUTS):
 	mkdir -p $(OBJP)
-	cp -r $(ROOT)/conf $(OUTS)/
+	mkdir -p $@/$(DTEST)
+	cp -r $(ROOT)/conf $@
+	cp -r $(ROOT)/$(DTEST)/conf $@/$(DTEST)
 
 # 清除操作
 clean :

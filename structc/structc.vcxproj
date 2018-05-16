@@ -66,6 +66,9 @@ WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
       <Command>echo begin init directory $(TargetDir)conf
 if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
 xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
+if not exist  $(TargetDir)test mkdir $(TargetDir)test
+if not exist  $(TargetDir)test\conf mkdir $(TargetDir)test\conf
+xcopy /D /S /E /Y $(ProjectDir)test\conf $(TargetDir)test\conf
 echo e n d init directory $(TargetDir)conf</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -106,6 +109,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="struct\dict.h" />
     <ClInclude Include="struct\list.h" />
     <ClInclude Include="struct\mq.h" />
+    <ClInclude Include="struct\q.h" />
     <ClInclude Include="struct\rtree.h" />
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\tstr.h" />
