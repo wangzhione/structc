@@ -19,8 +19,8 @@ struct mq {
 };
 
 //
-// mq_create - 消息队列创建
-// return   : 创建好的消息队列
+// mq_create - 消息队列对象创建
+// return   : 消息队列对象
 //
 inline mq_t 
 mq_create(void) {
@@ -108,7 +108,7 @@ mq_push(mq_t q, void * m) {
 //
 // mq_pop - 消息队列中弹出消息,并返回数据
 // q        : 消息队列对象
-// return   : 返回队列尾巴, 队列 empty时候, 返回NULL
+// return   : 返回队列尾巴, 队列 empty 时候, 返回 NULL
 //
 void * 
 mq_pop(mq_t q) {
