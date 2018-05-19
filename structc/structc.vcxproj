@@ -99,7 +99,7 @@ echo e n d init directory $(TargetDir)conf</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base\chead.h" />
-    <ClInclude Include="base\config.h" />
+    <ClInclude Include="base\conf.h" />
     <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
@@ -143,7 +143,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\uv\uv.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="base\config.c" />
+    <ClCompile Include="base\conf.c" />
     <ClCompile Include="base\csv.c" />
     <ClCompile Include="base\file.c" />
     <ClCompile Include="base\log.c" />
@@ -193,7 +193,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\uv_tty_test.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="conf\config.conf" />
+    <None Include="conf\conf.conf" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

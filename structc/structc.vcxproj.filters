@@ -150,9 +150,6 @@
     <ClInclude Include="system\md5.h">
       <Filter>system\inc</Filter>
     </ClInclude>
-    <ClInclude Include="base\config.h">
-      <Filter>base\inc</Filter>
-    </ClInclude>
     <ClInclude Include="base\chead.h">
       <Filter>base\inc</Filter>
     </ClInclude>
@@ -176,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="struct\q.h">
       <Filter>struct\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="base\conf.h">
+      <Filter>base\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,9 +293,6 @@
     <ClCompile Include="test\md5_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="base\config.c">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="base\log.c">
       <Filter>base</Filter>
     </ClCompile>
@@ -323,10 +320,13 @@
     <ClCompile Include="base\csv.c">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="base\conf.c">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
-    <None Include="conf\config.conf">
+    <None Include="conf\conf.conf">
       <Filter>conf</Filter>
     </None>
   </ItemGroup>
