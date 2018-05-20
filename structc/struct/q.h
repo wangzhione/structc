@@ -35,7 +35,7 @@ inline void q_init(q_t q) {
 // fdie     : 删除 push 进来的结点
 // return   : void
 //
-static void q_delete(q_t q, node_f fdie) {
+inline void q_delete(q_t q, node_f fdie) {
     // 销毁所有对象
     if (q->tail >= 0 && fdie) {
         for (;;) {
@@ -50,7 +50,7 @@ static void q_delete(q_t q, node_f fdie) {
 }
 
 // add two cap memory, memory is do not have assert
-static void q_expand(q_t q) {
+inline void q_expand(q_t q) {
     int i, size = q->size << 1;
     void ** nq = malloc(sizeof(void *) * size);
     for (i = 0; i < q->size; ++i)
@@ -70,7 +70,7 @@ static void q_expand(q_t q) {
 // m      : 压入消息
 // return : void
 // 
-static void q_push(q_t q, void * m) {
+inline void q_push(q_t q, void * m) {
     int tail = (q->tail + 1) & (q->size - 1);
     // 队列 full 直接扩容
     if (tail == q->head && q->tail >= 0)
@@ -85,7 +85,7 @@ static void q_push(q_t q, void * m) {
 // q      : 队列对象
 // return : 返回队列尾巴, 队列 empty, 返回 NULL
 //
-static void * q_pop(q_t q) {
+inline void * q_pop(q_t q) {
     void * m = NULL;
     if (q->tail >= 0) {
         m = q->queue[q->head];

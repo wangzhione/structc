@@ -5,7 +5,7 @@
 
 //
 // free_ - free 包装函数
-// ptr      : 通过下面函数分配的内存, 必须通过这个函数销毁
+// ptr      : 分配的内存事后必须通过这个函数销毁
 // return   : void
 //
 inline void free_(void * ptr) {

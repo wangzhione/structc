@@ -73,6 +73,53 @@ mkdirs(const char * path) {
     return mkdir(path) ? -1 : 0;
 }
 
+//
+// mkfdir - 通过文件路径创建目录
+// path     : 文件路径
+// return   : < 0 is error, 0 is success
+//
+int 
+mkfdir(const char * path) {
+    char c, * p, * s;
+    const char * sir;
+    if (!path) return -2;
+
+    for (sir = path; (c = *sir) != '\0'; ++sir)
+        if (c == '/' || c == '\\')
+            break;
+    if (c == '\0') return -1;
+
+    // 复制地址地址并构建
+    s = p = strdup(path);
+    p[sir-path] = '\0';
+
+    while ((c = *++p) != '\0') {
+        if (c == '/' || c == '\\') {
+            *p = '\0';
+
+            if (access(s, F_OK)) {
+                // 文件不存在, 开始创建, 创建失败直接返回错误
+                if (mkdir(s)) {
+                    free(s);
+                    return -1;
+                }
+            }
+
+            *p = c;
+        }
+    }
+
+    // 一定不是 / or \\ 结尾直接, 构建返回
+    if (access(s, F_OK)) {
+        if (mkdir(s)) {
+            free(s);
+            return -1;
+        }
+    }
+    free(s);
+    return 0;
+}
+
 struct file {
     time_t last;            // 文件最后修改时间点
     char * path;            // 文件全路径

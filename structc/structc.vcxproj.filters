@@ -227,9 +227,6 @@
     <ClCompile Include="test\rtree_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="system\stdext.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="test\atom_test.c">
       <Filter>test</Filter>
     </ClCompile>
@@ -238,9 +235,6 @@
     </ClCompile>
     <ClCompile Include="test\dict_test.c">
       <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="struct\mq.c">
-      <Filter>struct</Filter>
     </ClCompile>
     <ClCompile Include="test\mq_test.c">
       <Filter>test</Filter>
@@ -322,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="base\conf.c">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="system\stdext.c">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

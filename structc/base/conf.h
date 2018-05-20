@@ -5,7 +5,7 @@
 #include <assext.h>
 
 //
-// config 映射配置 conf/config.json
+// config 映射配置
 //
 struct conf {
     char * description;

@@ -1,7 +1,13 @@
 ﻿#ifndef _H_MQ
 #define _H_MQ
 
-#include <struct.h>
+#include <q.h>
+#include <atom.h>
+
+struct mq {
+    q_t q;             // 队列
+    atom_t lock;       // 原子锁
+};
 
 typedef struct mq * mq_t;
 
@@ -9,15 +15,24 @@ typedef struct mq * mq_t;
 // mq_create - 消息队列对象创建
 // return   : 消息队列对象
 //
-extern mq_t mq_create(void);
+inline mq_t mq_create(void) {
+    struct mq * q = malloc(sizeof(struct mq));
+    q_init(q->q);
+    q->lock = 0;
+    return q;
+}
 
 //
-// mq_delete - 消息队列销毁
+// mq_delete - 消息队列销毁, 需要自行控制删除逻辑
 // q        : 消息队列对象
 // fdie     : 删除 push 进来的结点
 // return   : void
 //
-extern void mq_delete(mq_t q, node_f fdie);
+inline void mq_delete(mq_t q, node_f fdie) {
+    // 销毁所有对象
+    q_delete(q->q, fdie);
+    free(q);
+}
 
 //
 // mq_push - 消息队列中压入数据
@@ -25,20 +40,44 @@ extern void mq_delete(mq_t q, node_f fdie);
 // m        : 压入的消息
 // return   : void
 // 
-extern void mq_push(mq_t q, void * m);
+inline void mq_push(mq_t q, void * m) {
+    atom_lock(q->lock);
+    q_push(q->q, m);
+    atom_unlock(q->lock);
+}
 
 //
 // mq_pop - 消息队列中弹出消息,并返回数据
 // q        : 消息队列对象
 // return   : 返回队列尾巴, 队列 empty 时候, 返回 NULL
 //
-extern void * mq_pop(mq_t q);
+inline void * mq_pop(mq_t q) {
+    atom_lock(q->lock);
+    void * m = q_pop(q->q);
+    atom_unlock(q->lock);
+    return m;
+}
 
 //
 // mq_len - 消息队列的长度
 // q        : 消息队列对象
 // return   : 返回消息队列长度
 // 
-extern int mq_len(mq_t q);
+inline int mq_len(mq_t q) {
+    int head, tail, size;
+    atom_lock(q->lock);
+    if ((tail = q->q->tail) == -1) {
+        atom_unlock(q->lock);
+        return 0;
+    }
+
+    head = q->q->head;
+    size = q->q->size;
+    atom_unlock(q->lock);
+
+    // 计算当前时间中内存队列的大小
+    tail -= head - 1;
+    return tail > 0 ? tail : tail + size;
+}
 
 #endif//_H_MQ

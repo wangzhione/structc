@@ -77,6 +77,13 @@ extern int removes(const char * path);
 extern int mkdirs(const char * path);
 
 //
+// mkfdir - 通过文件路径创建目录
+// path     : 文件路径
+// return   : < 0 is error, 0 is success
+//
+extern int mkfdir(const char * path);
+
+//
 // :0 一个和程序同生存的配置文件动态刷新机制
 // file_f - 文件更新行为
 //

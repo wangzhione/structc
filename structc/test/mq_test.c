@@ -1,8 +1,9 @@
 ﻿#include <mq.h>
 
 static void _echo(void * node) {
-    static int _idx;
-    printf("%d -> %s\n", ++_idx, (char *)node);
+    static int idx;
+
+    printf("%d -> %s\n", ++idx, (char *)node);
 }
 
 // 消息队列测试

@@ -20,7 +20,7 @@
 
 //
 // free_ - free 包装函数
-// ptr      : 通过下面函数分配的内存, 必须通过这个函数销毁
+// ptr      : 分配的内存事后必须通过这个函数销毁
 // return   : void
 //
 extern void free_(void * ptr);
@@ -56,7 +56,7 @@ extern void * calloc_(size_t num, size_t size);
 extern void * realloc_(void * ptr, size_t size);
 
 //
-// 开启全局配置 free / malloc 功能
+// 开启全局 free / malloc 配置
 //
 #if !defined(_NO_STDEXT_)
 
@@ -80,8 +80,7 @@ extern void * realloc_(void * ptr, size_t size);
 #define _H_SDOS
 
 // 
-// :) 
-// 莫名的伤感起来 ~  
+// :) 莫名的伤感起来 ~  
 // _MSC_VER -> Winds CL
 // __GNUC__ -> Linux GCC
 //

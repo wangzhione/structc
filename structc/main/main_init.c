@@ -9,30 +9,6 @@
 #define STR_LOG_PATH        "logs/structc.log"
 
 //
-// mkfdir - 通过文件路径创建目录
-// path     : 文件路径
-// return   : < 0 is error, 0 is success
-//
-int mkfdir(const char * path) {
-    int c;
-    char * dir;
-    const char * sir;
-    if (!path) return EParam;
-
-    for (sir = path; (c = *sir) != '\0'; ++sir)
-        if (c == '/' || c == '\\')
-            break;
-    if (c == '\0') return SBase;
-
-    // 复制地址地址并构建
-    dir = strdup(path);
-    dir[sir-path] = '\0';
-    c = mkdirs(dir);
-    free(dir);
-    return c;
-}
-
-//
 // main_init - 各个模块初始化
 // return   : void
 //

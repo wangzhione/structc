@@ -13,10 +13,12 @@
 typedef ptrdiff_t ssize_t;
 #endif
 
-#if defined(_M_X64) || defined(__x86_64__) || defined(_M_ARM64)
-#   define LG_SIZEOF_PTR 3
-#else
-#   define LG_SIZEOF_PTR 2
+#ifndef LG_SIZEOF_PTR
+#   if defined(_M_X64) || defined(__x86_64__) || defined(_M_ARM64)
+#       define LG_SIZEOF_PTR 3
+#   else
+#       define LG_SIZEOF_PTR 2
+#   endif
 #endif
 
 /*
