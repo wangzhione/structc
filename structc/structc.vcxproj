@@ -158,7 +158,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\pipe.c" />
-    <ClCompile Include="system\rwlock.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\utf8.c" />
     <ClCompile Include="system\md5.c" />

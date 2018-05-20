@@ -317,9 +317,6 @@
     <ClCompile Include="system\stdext.c">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="system\rwlock.c">
-      <Filter>system\atom</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
