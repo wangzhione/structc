@@ -69,9 +69,6 @@
     <ClInclude Include="system\strext.h">
       <Filter>system\inc</Filter>
     </ClInclude>
-    <ClInclude Include="system\strings.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
     <ClInclude Include="system\uv\tree.h">
       <Filter>system\uv</Filter>
     </ClInclude>
@@ -159,9 +156,6 @@
     <ClInclude Include="base\file.h">
       <Filter>base\inc</Filter>
     </ClInclude>
-    <ClInclude Include="base\rwlock.h">
-      <Filter>base\inc</Filter>
-    </ClInclude>
     <ClInclude Include="system\pipe.h">
       <Filter>system\inc</Filter>
     </ClInclude>
@@ -176,6 +170,12 @@
     </ClInclude>
     <ClInclude Include="base\conf.h">
       <Filter>base\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="system\rwlock.h">
+      <Filter>system\atom</Filter>
+    </ClInclude>
+    <ClInclude Include="system\jemalloc\strings.h">
+      <Filter>system\jemalloc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +296,6 @@
     <ClCompile Include="test\file_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="base\rwlock.c">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="system\utf8.c">
       <Filter>system</Filter>
     </ClCompile>
@@ -319,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="system\stdext.c">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\rwlock.c">
+      <Filter>system\atom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

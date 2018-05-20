@@ -82,7 +82,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 #include <limits.h>
-#include <strings.h>
+#include "strings.h"
 
 #define JEMALLOC_VERSION "5.0.1-0-g896ed3a8b3f41998d4fb4d625d30ac63ef2d51fb"
 #define JEMALLOC_VERSION_MAJOR 5

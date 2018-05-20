@@ -1,6 +1,6 @@
 ﻿#include <stdio.h>
 #include <limits.h>
-#include <strings.h>
+#include <jemalloc/strings.h>
 
 //
 // good hash table primes

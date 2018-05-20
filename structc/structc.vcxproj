@@ -103,7 +103,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
-    <ClInclude Include="base\rwlock.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />
@@ -118,6 +117,8 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\atomic$c11.h" />
     <ClInclude Include="system\atomic$cl.h" />
     <ClInclude Include="system\atomic.h" />
+    <ClInclude Include="system\jemalloc\strings.h" />
+    <ClInclude Include="system\rwlock.h" />
     <ClInclude Include="system\utf8.h" />
     <ClInclude Include="system\md5.h" />
     <ClInclude Include="system\pipe.h" />
@@ -132,7 +133,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\spoll.h" />
     <ClInclude Include="system\stdext.h" />
     <ClInclude Include="system\strext.h" />
-    <ClInclude Include="system\strings.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
     <ClInclude Include="system\uv\tree.h" />
@@ -147,7 +147,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="base\csv.c" />
     <ClCompile Include="base\file.c" />
     <ClCompile Include="base\log.c" />
-    <ClCompile Include="base\rwlock.c" />
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_init.c" />
     <ClCompile Include="main\main_run.c" />
@@ -159,6 +158,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\pipe.c" />
+    <ClCompile Include="system\rwlock.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\utf8.c" />
     <ClCompile Include="system\md5.c" />
