@@ -19,12 +19,6 @@
     <Filter Include="system\jemalloc">
       <UniqueIdentifier>{e2b35c38-8fb0-4365-a5a3-537d8199b169}</UniqueIdentifier>
     </Filter>
-    <Filter Include="struct\inc">
-      <UniqueIdentifier>{7cbc6383-ad28-4243-986b-c8a3a1999628}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\inc">
-      <UniqueIdentifier>{bb07773a-ee1a-4ff0-a766-5a101f818e44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="system\uv">
       <UniqueIdentifier>{bb1acb3a-45f0-400a-a376-36c43777209f}</UniqueIdentifier>
     </Filter>
@@ -37,9 +31,6 @@
     <Filter Include="system\poll">
       <UniqueIdentifier>{3111d0ec-5876-4f07-b4bc-fc859bfb2b4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="base\inc">
-      <UniqueIdentifier>{ecfe5816-30c5-4220-81bd-b37214483220}</UniqueIdentifier>
-    </Filter>
     <Filter Include="conf">
       <UniqueIdentifier>{8bb4c897-cefd-486e-88a7-4e69672740ed}</UniqueIdentifier>
     </Filter>
@@ -50,24 +41,6 @@
   <ItemGroup>
     <ClInclude Include="system\jemalloc\jemalloc.h">
       <Filter>system\jemalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\tstr.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\list.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\struct.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\assext.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\stdext.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\strext.h">
-      <Filter>system\inc</Filter>
     </ClInclude>
     <ClInclude Include="system\uv\tree.h">
       <Filter>system\uv</Filter>
@@ -96,12 +69,6 @@
     <ClInclude Include="system\pthread\semaphore.h">
       <Filter>system\pthread</Filter>
     </ClInclude>
-    <ClInclude Include="system\thread.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\rtree.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
     <ClInclude Include="system\atom.h">
       <Filter>system\atom</Filter>
     </ClInclude>
@@ -114,21 +81,6 @@
     <ClInclude Include="system\atomic.h">
       <Filter>system\atom</Filter>
     </ClInclude>
-    <ClInclude Include="struct\dict.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\mq.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\array.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\json.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\socket.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
     <ClInclude Include="system\spoll.h">
       <Filter>system\poll</Filter>
     </ClInclude>
@@ -138,44 +90,83 @@
     <ClInclude Include="system\spoll$select.h">
       <Filter>system\poll</Filter>
     </ClInclude>
-    <ClInclude Include="system\times.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\rand.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\md5.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="base\chead.h">
-      <Filter>base\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="base\log.h">
-      <Filter>base\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="base\file.h">
-      <Filter>base\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\pipe.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\utf8.h">
-      <Filter>system\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="base\csv.h">
-      <Filter>base\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="struct\q.h">
-      <Filter>struct\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="base\conf.h">
-      <Filter>base\inc</Filter>
-    </ClInclude>
     <ClInclude Include="system\rwlock.h">
       <Filter>system\atom</Filter>
     </ClInclude>
     <ClInclude Include="system\jemalloc\strings.h">
       <Filter>system\jemalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="base\log.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\chead.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\conf.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\csv.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\file.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\array.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\dict.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\json.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\list.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\mq.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\q.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\rtree.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\struct.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\tstr.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="system\assext.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\md5.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\pipe.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\rand.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\socket.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\stdext.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\strext.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\thread.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\times.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\utf8.h">
+      <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +307,9 @@
     </ClCompile>
     <ClCompile Include="system\stdext.c">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\rwlock.c">
+      <Filter>system\atom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
