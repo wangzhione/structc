@@ -93,9 +93,6 @@
     <ClInclude Include="system\rwlock.h">
       <Filter>system\atom</Filter>
     </ClInclude>
-    <ClInclude Include="system\jemalloc\strings.h">
-      <Filter>system\jemalloc</Filter>
-    </ClInclude>
     <ClInclude Include="base\log.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -166,6 +163,9 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="system\utf8.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\strings.h">
       <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>

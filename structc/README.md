@@ -119,9 +119,9 @@ sudo apt install gcc gdb autogen autoconf
 
 # jemalloc 安装
 cd
-wget https://github.com/jemalloc/jemalloc/releases/download/5.0.1/jemalloc-5.0.1.tar.bz2
-tar -jxvf jemalloc-5.0.1.tar.bz2
-cd jemalloc-5.0.1
+wget https://github.com/jemalloc/jemalloc/releases/download/5.1.0/jemalloc-5.1.0.tar.bz2
+tar -jxvf jemalloc-5.1.0.tar.bz2
+cd jemalloc-5.1.0
 
 sh autogen.sh
 make -j4
@@ -129,13 +129,13 @@ sudo make install
 sudo ldconfig
 
 cd
-rm -rf jemalloc-5.0.1 jemalloc-5.0.1.tar.bz2
+rm -rf jemalloc-5.1.0 jemalloc-5.1.0.tar.bz2
 
 # libuv 安装
 cd
-wget https://github.com/libuv/libuv/archive/v1.19.2.zip
-unzip v1.19.2.zip
-cd libuv-1.19.2
+wget https://github.com/libuv/libuv/archive/v1.20.3.zip
+unzip v1.20.3.zip
+cd libuv-1.20.3
 
 sh autogen.sh
 ./configure
@@ -144,7 +144,7 @@ sudo make install
 sudo ldconfig
 
 cd
-rm -rf libuv-1.19.2 v1.19.2.zip
+rm -rf libuv-1.20.3 v1.20.3.zip
 ```
 
     b) 编译设置

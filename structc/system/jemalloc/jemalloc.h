@@ -78,18 +78,18 @@ extern "C" {
 #  define je_xallocx je_xallocx
 #endif
 
-#include <limits.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <stdbool.h>
-#include "strings.h"
+#include <stdint.h>
+#include <limits.h>
+#include <strings.h>
 
-#define JEMALLOC_VERSION "5.0.1-0-g896ed3a8b3f41998d4fb4d625d30ac63ef2d51fb"
-#define JEMALLOC_VERSION_MAJOR 5
+#define JEMALLOC_VERSION "0.0.0-0-g0000000000000000000000000000000000000000"
+#define JEMALLOC_VERSION_MAJOR 0
 #define JEMALLOC_VERSION_MINOR 0
-#define JEMALLOC_VERSION_BUGFIX 1
+#define JEMALLOC_VERSION_BUGFIX 0
 #define JEMALLOC_VERSION_NREV 0
-#define JEMALLOC_VERSION_GID "896ed3a8b3f41998d4fb4d625d30ac63ef2d51fb"
+#define JEMALLOC_VERSION_GID "0000000000000000000000000000000000000000"
 
 #define MALLOCX_LG_ALIGN(la)	((int)(la))
 #if LG_SIZEOF_PTR == 2
