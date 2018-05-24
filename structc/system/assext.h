@@ -46,13 +46,13 @@ fprintf(stderr, "[%s:%s:%d][%d:%s]" fmt "\n",                            \
 
 #endif//CERR
 
-#define EXIT(fmt, ...)                                              \
+#define EXIT(fmt, ...)                                                   \
 do {                                                                     \
     CERR(fmt, ##__VA_ARGS__);                                            \
     exit(EXIT_FAILURE);                                                  \
 } while(0)
 
-#define IF(cond)                                                    \
+#define IF(cond)                                                         \
 if ((cond)) EXIT(#cond)
 
 //
