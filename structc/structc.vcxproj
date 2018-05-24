@@ -148,6 +148,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="base\csv.c" />
     <ClCompile Include="base\file.c" />
     <ClCompile Include="base\log.c" />
+    <ClCompile Include="base\url.c" />
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\main_init.c" />
     <ClCompile Include="main\main_run.c" />

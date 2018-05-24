@@ -314,6 +314,9 @@
     <ClCompile Include="system\rwlock.c">
       <Filter>system\atom</Filter>
     </ClCompile>
+    <ClCompile Include="base\url.c">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

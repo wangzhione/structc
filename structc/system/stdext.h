@@ -8,6 +8,7 @@
 //
 
 #include <math.h>
+#include <ctype.h>
 #include <float.h>
 #include <stdio.h>
 #include <stdarg.h>
