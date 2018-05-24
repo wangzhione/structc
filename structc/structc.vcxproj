@@ -14,7 +14,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7AF90DF5-D476-46BF-BCE5-CFEDD20E3F4F}</ProjectGuid>
     <RootNamespace>structc</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -103,6 +103,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
+    <ClInclude Include="base\url.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />

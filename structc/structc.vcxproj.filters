@@ -168,6 +168,9 @@
     <ClInclude Include="system\strings.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="base\url.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">

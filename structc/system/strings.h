@@ -51,4 +51,4 @@ static __forceinline int ffs(int x) {
 
 #endif
 
-#endif//!_H_STRINGS
+#endif//_H_STRINGS
