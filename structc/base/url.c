@@ -12,10 +12,10 @@ url_encode(const char * s, int len, int * nen) {
     register uint8_t c;
     uint8_t * to, * start;
     const uint8_t * from, * end;
-    static const uint8_t * const encode = (uint8_t *)"0123456789ABCDEF";
+    static uint8_t encode[] = "0123456789ABCDEF";
 
     if (!s || !*s || len <= 0) {
-        if (!nen) *nen = 0;
+        if (nen) *nen = 0;
         return NULL;
     }
 
@@ -47,7 +47,7 @@ url_encode(const char * s, int len, int * nen) {
     *to = '\0';
 
     // 返回结果
-    if (!nen) *nen = (int)(to - start);
+    if (nen) *nen = (int)(to - start);
     return (char *)start;
 }
 

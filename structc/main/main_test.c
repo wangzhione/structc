@@ -24,5 +24,5 @@ void main_test(void) {
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(mq_test);
+    EXTERN_RUN(url_test);
 }
