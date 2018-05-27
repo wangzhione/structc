@@ -80,18 +80,18 @@ mkdirs(const char * path) {
 //
 int 
 mkfdir(const char * path) {
+    const char * r;
     char c, * p, * s;
-    const char * sir;
     if (!path) return -2;
 
-    for (sir = path; (c = *sir) != '\0'; ++sir)
-        if (c == '/' || c == '\\')
+    for (r = path + strlen(path); r >= path; --r)
+        if ((c = *r) == '/' || c == '\\')
             break;
-    if (c == '\0') return -1;
+    if (r < path) return -1;
 
     // 复制地址地址并构建
     s = p = strdup(path);
-    p[sir-path] = '\0';
+    p[r - path] = '\0';
 
     while ((c = *++p) != '\0') {
         if (c == '/' || c == '\\') {
@@ -118,6 +118,29 @@ mkfdir(const char * path) {
     }
     free(s);
     return 0;
+}
+
+//
+// getawd - 得到程序所在目录绝对路径会带上 \\ or /
+// buf      : 存储地址
+// size     : 存储大小
+// return   : NULL is error or buf is success
+//
+char * 
+getawd(char * buf, size_t size) {
+    int r;
+#ifdef _MSC_VER
+    r = (int)GetModuleFileName(NULL, buf, (DWORD)size);
+    if (r <= 0 || r >= size)
+        return NULL;
+    strrchr(buf, '\\')[1] = '\0';
+#else
+    r = (int)readlink("/proc/self/exe", buf, size);
+    if (r < 0 || r >= size)
+        return NULL;
+    strrchr(buf, '/')[1] = '\0';
+#endif
+    return buf;
 }
 
 struct file {

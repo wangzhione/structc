@@ -13,16 +13,19 @@
 // return   : void
 //
 void main_init(void) {
+    char r[BUFSIZ];
     socket_init();
 
     EXTERN_RUN(r_init);
 
     // 初始化配置相关内容
-    IF(!conf_init(STR_CONF_PATH));
+    strcat(getawd(r, sizeof r), STR_CONF_PATH);
+    IF(!conf_init(r));
 
     //
     //  日志模块初始化
     //
-    mkfdir(STR_LOG_PATH);
-    EXTERN_RUN(log_init, STR_LOG_PATH);
+    strcat(getawd(r, sizeof r), STR_LOG_PATH);
+    mkfdir(r);
+    EXTERN_RUN(log_init, r);
 }

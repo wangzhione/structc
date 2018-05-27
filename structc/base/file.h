@@ -84,6 +84,14 @@ extern int mkdirs(const char * path);
 extern int mkfdir(const char * path);
 
 //
+// getawd - 得到程序所在目录绝对路径会带上 \\ or /
+// buf      : 存储地址
+// size     : 存储大小
+// return   : NULL is error or buf is success
+//
+extern char * getawd(char * buf, size_t size);
+
+//
 // :0 一个和程序同生存的配置文件动态刷新机制
 // file_f - 文件更新行为
 //
