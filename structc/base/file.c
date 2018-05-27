@@ -128,18 +128,25 @@ mkfdir(const char * path) {
 //
 char * 
 getawd(char * buf, size_t size) {
-    int r;
-#ifdef _MSC_VER
-    r = (int)GetModuleFileName(NULL, buf, (DWORD)size);
+    char * tail;
+
+#ifndef getawe
+#   ifdef _MSC_VER
+#       define getawe(b, s)    (int)GetModuleFileName(NULL, b, (DWORD)s);
+#   else
+#       define getawe(b, s)    (int)readlink("/proc/self/exe", b, s);
+#   endif
+#endif
+
+    int r = getawe(buf, size);
     if (r <= 0 || r >= size)
         return NULL;
-    strrchr(buf, '\\')[1] = '\0';
-#else
-    r = (int)readlink("/proc/self/exe", buf, size);
-    if (r < 0 || r >= size)
-        return NULL;
-    strrchr(buf, '/')[1] = '\0';
-#endif
+
+    for (tail = buf + r - 1; tail > buf; --tail)
+        if ((r = *tail) == '/' || r == '\\')
+            break;
+    // believe  getawe return
+    tail[1] = '\0';
     return buf;
 }
 
