@@ -145,7 +145,7 @@ getawd(char * buf, size_t size) {
     for (tail = buf + r - 1; tail > buf; --tail)
         if ((r = *tail) == '/' || r == '\\')
             break;
-    // believe  getawe return
+    // believe getawe return
     tail[1] = '\0';
     return buf;
 }
