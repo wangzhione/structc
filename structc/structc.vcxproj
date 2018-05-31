@@ -103,6 +103,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
+    <ClInclude Include="base\timer.h" />
     <ClInclude Include="base\url.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\json.h" />

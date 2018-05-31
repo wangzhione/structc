@@ -171,6 +171,9 @@
     <ClInclude Include="base\url.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="base\timer.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">

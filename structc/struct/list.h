@@ -33,9 +33,8 @@ typedef struct {
 // fget     : 获取数据方法
 // return   : 创建好的链表对象
 //
-#define list_create(fadd, fget) \
+#define list_create(fadd, fget)                         \
 list_create_((icmp_f)fadd, (icmp_f)fget)
-
 inline list_t list_create_(icmp_f fadd, icmp_f fget) {
     list_t list = malloc(sizeof *list);
     list->root = NULL;
@@ -58,9 +57,8 @@ extern void list_delete(list_t list);
 // left     : 待查找的结点内容 
 // return   : 查找到的节点, NULL 表示没有查到
 //
-#define list_get(list, left) \
+#define list_get(list, left)                            \
 list_get_(list, (const void *)(intptr_t)left)
-
 extern void * list_get_(list_t list, const void * left);
 
 //
@@ -69,9 +67,8 @@ extern void * list_get_(list_t list, const void * left);
 // left     : 待查找的结点内容 
 // return   : 查找到的节点, NULL 表示没有查到 
 //
-#define list_pop(list, left) \
+#define list_pop(list, left)                            \
 list_pop_(list, (const void *)(intptr_t)left)
-
 extern void * list_pop_(list_t list, const void * left);
 
 //
@@ -88,9 +85,8 @@ extern void list_add(list_t list, void * left);
 // feach    : 处理每个结点行为函数
 // return   : void
 //
-#define list_each(list, feach) \
+#define list_each(list, feach)                          \
 list_each_(list, (node_f)feach)
-
 extern void list_each_(list_t list, node_f feach);
 
 #endif//_H_LIST

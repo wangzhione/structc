@@ -32,9 +32,8 @@ typedef struct {
 // fdie     : 结点销毁函数
 // return   : 返回构建红黑树
 //
-#define rtree_create(fcmp, fnew, fdie) \
+#define rtree_create(fcmp, fnew, fdie)                              \
 rtree_create_((icmp_f)(fcmp), (vnew_f)(fnew), (node_f)(fdie))
-
 extern rtree_t rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie);
 
 //

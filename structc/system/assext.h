@@ -78,7 +78,6 @@ RETURN(NULL, fmt, ##__VA_ARGS__)
 /*
  * 这里是一个 在 DEBUG 模式下的测试宏
  *
-
  * DCODE({
  *	  puts("debug start...");
  * });

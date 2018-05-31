@@ -20,7 +20,7 @@
 // fmt      : 自己要打印的串,必须是双引号包裹. 
 // return   : 返回待输出的串详细内容
 //
-#define LOG_PRINTF(pres, fmt, ...) \
+#define LOG_PRINTF(pres, fmt, ...)                                                  \
 log_printf(pres "[%s:%s:%d]" fmt "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 //

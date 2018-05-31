@@ -35,7 +35,6 @@ inline void pthread_end(pthread_t tid) {
 // 
 #define pthread_async(frun, arg)                            \
 pthread_async_((node_f)(frun), (void *)(intptr_t)(arg))
-
 inline int pthread_async_(node_f frun, void * arg) {
     int ret;
     pthread_t tid;
