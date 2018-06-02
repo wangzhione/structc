@@ -47,7 +47,7 @@ inline void timer_list_run(struct timer_list * list) {
     struct timer_node * node;
     atom_lock(list->lock);
     node = list->list;
-    list->list = list_next(list);
+    list->list = list_next(node);
     atom_unlock(list->lock);
 
     node->ftimer(node->arg);
@@ -110,6 +110,29 @@ static void _list_loop(struct timer_list * list) {
 //
 int 
 timer_add_(int tvl, node_f ftimer, void * arg) {
+    int id;
+    struct timer_node * node;
+    if (tvl <= 0) {
+        ftimer(arg);
+        return 0;
+    }
 
-    return 0;
+    node = timer_node_new(tvl, ftimer, arg);
+    id = node->id;
+    atom_lock(_imer.lock);
+
+    list_add(_imer.list, timer_node_cmp_time, node);
+
+    // 判断是否需要开启新的线程
+    if (!_imer.status) {
+        if (!pthread_async(_list_loop, &_imer))
+            _imer.status = true;
+        else {
+            free(node);
+            id = -1;
+        } 
+    }
+
+    atom_unlock(_imer.lock);
+    return id;
 }
