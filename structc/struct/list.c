@@ -1,13 +1,6 @@
 ﻿#include <list.h>
 
 //
-// list_next - 获取结点n的下一个结点.
-// n        : 当前结点
-//
-#undef  list_next
-#define list_next(n) ((struct $list *)(n))->next
-
-//
 // list_delete - 链表数据销毁操作
 // pist     : 指向基础的链表结构
 // fdie     : 链表中删除数据执行的方法
@@ -78,6 +71,13 @@ list_pop_(void ** pist, icmp_f fget, const void * left) {
 
     return NULL;
 }
+
+//
+// list_next - 获取结点n的下一个结点.
+// n        : 当前结点
+//
+#undef  list_next
+#define list_next(n) ((struct $list *)(n))->next
 
 //
 // list_add - 链表中添加数据, 从小到大 fadd(left, ) <= 0

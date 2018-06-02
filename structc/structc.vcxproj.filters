@@ -323,7 +323,9 @@
     <ClCompile Include="test\url_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="base\timer.c" />
+    <ClCompile Include="base\timer.c">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
