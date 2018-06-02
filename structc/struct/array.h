@@ -29,7 +29,7 @@ struct array var[1] = { {               \
 } }
 
 #define ARRAY_DELETE(var)               \
-free(var->as)
+free((var)->as)
 
 //
 // array_create - 返回创建动态数组对象

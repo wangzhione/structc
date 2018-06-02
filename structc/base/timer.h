@@ -1,8 +1,8 @@
 ﻿#ifndef _H_TIMER
 #define _H_TIMER
 
+#include <list.h>
 #include <times.h>
-#include <struct.h>
 
 //
 // timer_del - 删除定时器事件
