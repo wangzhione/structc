@@ -329,6 +329,9 @@
     <ClCompile Include="test\timer_test.c">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="struct\q.c">
+      <Filter>struct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

@@ -159,6 +159,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="struct\json.c" />
     <ClCompile Include="struct\dict.c" />
     <ClCompile Include="struct\list.c" />
+    <ClCompile Include="struct\q.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\pipe.c" />
