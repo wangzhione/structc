@@ -30,6 +30,19 @@ inline void q_init(q_t q) {
 }
 
 //
+// q_swap - q swap
+// r      : q one
+// w      : q two
+// return : void
+//
+inline void q_swap(q_t r, q_t w) {
+    q_t q;
+    q[0] = r[0];
+    r[0] = w[0];
+    w[0] = q[0];
+}
+
+//
 // q_pop - 队列中弹出消息,并返回数据
 // q      : 队列对象
 // return : 返回队列尾巴, 队列 empty, 返回 NULL

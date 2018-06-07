@@ -103,6 +103,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />
     <ClInclude Include="base\log.h" />
+    <ClInclude Include="base\loop.h" />
     <ClInclude Include="base\timer.h" />
     <ClInclude Include="base\url.h" />
     <ClInclude Include="struct\array.h" />
@@ -149,6 +150,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="base\csv.c" />
     <ClCompile Include="base\file.c" />
     <ClCompile Include="base\log.c" />
+    <ClCompile Include="base\loop.c" />
     <ClCompile Include="base\timer.c" />
     <ClCompile Include="base\url.c" />
     <ClCompile Include="main\main.c" />
