@@ -13,25 +13,34 @@ struct loop {
     volatile bool wait; // true 线程空闲等待
 };
 
+// run - 消息处理行为
+inline static run(loop_t p, void * m) {
+    // 开始处理消息
+    p->frun(m);
+    p->fdie(m);
+}
+
 // 轮询器执行的循环体
-static void _loop(struct loop * p) {
+static void _loop(loop_t p) {
     while (p->loop) {
         void * m = q_pop(p->rq);
-        if (NULL == m) {
-            atom_lock(p->lock);
-            q_swap(p->rq, p->wq);
-            atom_unlock(p->lock);
-            m = q_pop(p->rq);
+        if (m) {
+            run(p, m);
+            continue;
         }
 
-        // 仍然没有数据, 开始睡眠
-        if (NULL == m) {
+        // read q <- write q
+        atom_lock(p->lock);
+        q_swap(p->rq, p->wq);
+        atom_unlock(p->lock);
+
+        m = q_pop(p->rq);
+        if (m) 
+            run(p, m);
+        else {
+            // 仍然没有数据, 开始睡眠
             p->wait = true;
             sem_wait(&p->block);
-        } else {
-            // 开始处理消息
-            p->frun(m);
-            p->fdie(m);
         }
     }
 }
@@ -44,10 +53,10 @@ static void _loop(struct loop * p) {
 //
 inline loop_t 
 loop_create_(node_f frun, node_f fdie) {
-    struct loop * p = malloc(sizeof(struct loop));
+    loop_t p = malloc(sizeof(struct loop));
+    p->lock = 0;
     q_init(p->rq);
     q_init(p->wq);
-    p->lock = 0;
     p->frun = frun;
     p->fdie = fdie;
     p->loop = true;
