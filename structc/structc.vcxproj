@@ -179,6 +179,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\dict_test.c" />
     <ClCompile Include="test\file_test.c" />
+    <ClCompile Include="test\loop_test.c" />
     <ClCompile Include="test\timer_test.c" />
     <ClCompile Include="test\url_test.c" />
     <ClCompile Include="test\utf8_test.c" />

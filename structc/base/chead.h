@@ -3,6 +3,7 @@
 
 #include <file.h>
 #include <conf.h>
+#include <times.h>
 #include <thread.h>
 
 #ifdef _MSC_VER

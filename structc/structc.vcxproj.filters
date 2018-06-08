@@ -338,6 +338,9 @@
     <ClCompile Include="base\loop.c">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="test\loop_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

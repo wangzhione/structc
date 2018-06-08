@@ -39,7 +39,7 @@ static void _socket_server(void) {
     if (INVALID_SOCKET == s)
         RETNIL("socket_tcp err host = %s", host);
 
-    if (pthread_run(&tid, _socket_run, s)) {
+    if (pthread_run(tid, _socket_run, s)) {
         socket_close(s);
         RETNIL("pthread_run is error");
     }

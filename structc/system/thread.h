@@ -13,7 +13,7 @@
 // return   : 返回线程构建结果, 0 is success
 //
 #define pthread_run(id, frun, arg)                                  \
-pthread_run_((id), (node_f)(frun), (void *)(intptr_t)(arg))
+pthread_run_(&(id), (node_f)(frun), (void *)(intptr_t)(arg))
 inline int pthread_run_(pthread_t * id, node_f frun, void * arg) {
     return pthread_create(id, NULL, (start_f)frun, arg);
 }
