@@ -12,18 +12,7 @@ struct mq {
 typedef struct mq * mq_t;
 
 //
-// mq_create - 消息队列对象创建
-// return   : 消息队列对象
-//
-inline mq_t mq_create(void) {
-    struct mq * q = malloc(sizeof(struct mq));
-    q_init(q->q);
-    q->lock = 0;
-    return q;
-}
-
-//
-// mq_delete - 消息队列销毁, 需要自行控制删除逻辑
+// mq_delete - 消息队列销毁, 自行控制删除逻辑
 // q        : 消息队列对象
 // fdie     : 删除 push 进来的结点
 // return   : void
@@ -35,21 +24,20 @@ inline void mq_delete(mq_t q, node_f fdie) {
 }
 
 //
-// mq_push - 消息队列中压入数据
-// q        : 消息队列对象
-// m        : 压入的消息
-// return   : void
-// 
-inline void mq_push(mq_t q, void * m) {
-    atom_lock(q->lock);
-    q_push(q->q, m);
-    atom_unlock(q->lock);
+// mq_create - 消息队列创建
+// return   : 消息队列对象
+//
+inline mq_t mq_create(void) {
+    struct mq * q = malloc(sizeof(struct mq));
+    q_init(q->q);
+    q->lock = 0;
+    return q;
 }
 
 //
-// mq_pop - 消息队列中弹出消息,并返回数据
+// mq_pop - 消息队列中弹出消息, 并返回数据
 // q        : 消息队列对象
-// return   : 返回队列尾巴, 队列 empty 时候, 返回 NULL
+// return   : 返回队列尾巴, mq empty return NULL
 //
 inline void * mq_pop(mq_t q) {
     atom_lock(q->lock);
@@ -59,10 +47,22 @@ inline void * mq_pop(mq_t q) {
 }
 
 //
+// mq_push - 消息队列中压入数据
+// q        : 消息队列对象
+// m        : 压入的消息
+// return   : void
+//
+inline void mq_push(mq_t q, void * m) {
+    atom_lock(q->lock);
+    q_push(q->q, m);
+    atom_unlock(q->lock);
+}
+
+//
 // mq_len - 消息队列的长度
 // q        : 消息队列对象
 // return   : 返回消息队列长度
-// 
+//
 inline int mq_len(mq_t q) {
     int head, tail, size;
     atom_lock(q->lock);

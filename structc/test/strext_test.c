@@ -1,4 +1,4 @@
-﻿#include <chead.h>
+﻿#include <head.h>
 
 /*
  单元功能测试要求 : 
@@ -7,7 +7,7 @@
  {接口}.h -> {接口}_test.c -> void {接口}_test(void) { ... }
 
  调用规律 :
- chead.h :: TEST_FUNC({接口}_test) 放入 structc.c :: test_structc 
+ head.h :: TEST_FUNC({接口}_test) 放入 structc.c :: test_structc 
 
  */
 

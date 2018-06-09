@@ -20,15 +20,15 @@ typedef struct array * array_t;
 // ARRAY_DELETE - 销毁栈上面动态数组对象
 // var      : 创建动态数组对象名字
 //
-#define ARRAY_CREATE(type, var)         \
-struct array var[1] = { {               \
-    sizeof(type),                       \
-    UINT_AINIT,                         \
-    0,                                  \
-    malloc(sizeof(type) * UINT_AINIT)   \
+#define ARRAY_CREATE(type, var)             \
+struct array var[1] = { {                   \
+    sizeof(type),                           \
+    UINT_AINIT,                             \
+    0,                                      \
+    malloc(sizeof(type) * UINT_AINIT)       \
 } }
 
-#define ARRAY_DELETE(var)               \
+#define ARRAY_DELETE(var)                   \
 free((var)->as)
 
 //

@@ -13274,7 +13274,7 @@ size_t g2u8n(const char * gs, size_t n, char * u8s) {
 // g2u8 - gbk to utf8 save d mem by size n
 // d        : mem
 // n        : size
-// return   : void      
+// return   : void
 //
 inline void
 u82g(char d[]) {

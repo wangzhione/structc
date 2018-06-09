@@ -96,9 +96,6 @@
     <ClInclude Include="base\log.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="base\chead.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="base\conf.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -175,6 +172,9 @@
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="base\loop.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\head.h">
       <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>

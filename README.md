@@ -2,15 +2,16 @@
 
     目的 : 构建一个稍微通用点的 c 结构体基础库
     方式 : 基于注册
-    适用 : 用 c 从零开始搭建项目的人群, 或者激励自己真的想看看基础的同学
+    适用 : c 从开始搭建项目的人群, 或者有点喜欢 C
 
-## 好像才刚开始 ~
+### 好像才刚开始 ~
 
 -- [May You Walk In Sunshine](https://music.163.com/#/song?id=19146621)
 
-    核心围绕: 
-        mq.h        队列
-        dict.h      字典
+    核心围绕:
+        q.h         队  列
+        mq.h        原子 q
+        dict.h      字  典
         tstr.h      字符串
         list.h      单链表
         rtree.h     红黑树
@@ -22,6 +23,46 @@
     来协助我们搭建多线程 C 项目, 提供底层数据结构或额外组件的支持 ...
 
     ...
+
+**代码风格, 希望最贴近原生 api :-**
+
+```C
+#include <pthread.h>
+#include <semaphore.h>
+
+//
+// node_f - 销毁当前对象节点
+//  : void list_die(void * node); 
+//
+typedef void (* node_f)(void * node);
+
+//
+// start_f - pthread create func
+//  : int * run(int * arg)
+//
+typedef void * (* start_f)(void * arg);
+
+//
+// pthread_async - 异步启动分离线程
+// frun     : 运行的主体
+// arg      : 运行参数
+// return   : 返回 0 is success
+// 
+#define pthread_async(frun, arg)                                    \
+pthread_async_((node_f)(frun), (void *)(intptr_t)(arg))
+inline int pthread_async_(node_f frun, void * arg) {
+    int ret;
+    pthread_t tid;
+    pthread_attr_t attr;
+
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    ret = pthread_create(&tid, &attr, (start_f)frun, arg);
+    pthread_attr_destroy(&attr);
+
+    return ret;
+}
+```
 
 ***
 
@@ -38,7 +79,7 @@
         - Clean   : make clean
         - Debug   : make D=-D_DEBUG
 
-    - 工程目录简讲
+    - 工程目录述
         - main 目录
             - main_run.c 写业务代码
             - main_test.c 加 test目录下单测
@@ -101,7 +142,7 @@
 
 ***
 
-#### ~ * ~ 写个好手 ...
+### ~ * ~ 写个好手 ...
 
     为要寻一个明星
     - 徐志摩 

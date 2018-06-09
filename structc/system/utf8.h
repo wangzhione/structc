@@ -23,7 +23,7 @@ extern bool isu8s(const char * s);
 // g2u8 - gbk to utf8 save d mem by size n
 // d        : mem
 // n        : size
-// return   : void      
+// return   : void
 //
 extern void u82g(char d[]);
 extern void g2u8(char d[], size_t n);

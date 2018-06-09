@@ -4,15 +4,12 @@
 #include <times.h>
 
 //
-// 有些 朴实 log, 也许很快很安全 ~
+// log_printf - 具体输出日志内容
+// fmt      : 必须双引号包裹起来的串
+// ...      : 对映fmt参数
+// return   : void
 //
-#define LOG_ERROR(fmt, ...) LOG_PRINTF("[ERROR]", fmt, ##__VA_ARGS__)
-#define LOG_INFOS(fmt, ...) LOG_PRINTF("[INFOS]", fmt, ##__VA_ARGS__)
-#ifdef _DEBUG
-#define LOG_DEBUG(fmt, ...) LOG_PRINTF("[DEBUG]", fmt, ##__VA_ARGS__)
-#else
-#define LOG_DEBUG(fmt, ...) /*  (^_−)☆ */
-#endif
+void log_printf(const char * fmt, ...);
 
 //
 // LOG_PRINTF - 拼接构建输出的格式串,最后输出数据
@@ -24,11 +21,14 @@
 log_printf(pres "[%s:%s:%d]" fmt "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 //
-// log_printf - 具体输出日志内容
-// fmt      : 必须双引号包裹起来的串
-// ...      : 对映fmt参数
-// return   : void
+// 有些 朴实 log, 也许很快很安全 ~
 //
-void log_printf(const char * fmt, ...);
+#define LOG_ERROR(fmt, ...) LOG_PRINTF("[ERROR]", fmt, ##__VA_ARGS__)
+#define LOG_INFOS(fmt, ...) LOG_PRINTF("[INFOS]", fmt, ##__VA_ARGS__)
+#ifdef _DEBUG
+#define LOG_DEBUG(fmt, ...) LOG_PRINTF("[DEBUG]", fmt, ##__VA_ARGS__)
+#else
+#define LOG_DEBUG(fmt, ...) /*  (^_−)☆ */
+#endif
 
 #endif//_H_LOG

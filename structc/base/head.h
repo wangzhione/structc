@@ -1,8 +1,8 @@
-﻿#ifndef _H_CHEAD
-#define _H_CHEAD
+﻿#ifndef _H_HEAD
+#define _H_HEAD
 
-#include <file.h>
 #include <conf.h>
+#include <file.h>
 #include <times.h>
 #include <thread.h>
 
@@ -108,4 +108,4 @@ do {                                                                \
     printf("test code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);    \
 } while (0)
 
-#endif//_H_CHEAD
+#endif//_H_HEAD

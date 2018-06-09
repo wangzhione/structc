@@ -98,7 +98,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="base\chead.h" />
+    <ClInclude Include="base\head.h" />
     <ClInclude Include="base\conf.h" />
     <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />

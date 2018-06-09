@@ -1,6 +1,7 @@
 ﻿# structc 项目构建说明
 
-    作者 : csharpwz@outlook.com
+    作者 : 喜欢兰花山丘
+    邮箱 : csharpwz@outlook.com
 
 ***
 
@@ -10,9 +11,8 @@
 
 ## 0. 存在合理性
 
-    a). 条理清晰的让 C 去提供服务
-    b). 减少开发成本, 用 winds 测试, linux 发布
-    c). 平台采用 x64 下 winds DEBUG, linux release
+    a). 条理清晰的让 C 去提供服务, 减少开发成本
+    b). 平台采用 x64 下 winds DEBUG, linux release
 
 ## 1. winds 部署
 
@@ -148,11 +148,11 @@ rm -rf libuv-1.20.3 v1.20.3.zip
 ```
 
     b) 编译设置
-		
-        -lm 
+
+        -lm
         -lpthread
 
-        -luv        
+        -luv
 
     c) 踩坑
         

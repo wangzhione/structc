@@ -21,6 +21,46 @@ inline static run(loop_t p, void * m) {
     p->fdie(m);
 }
 
+//
+// loop_delete - 轮询对象销毁
+// p        : 轮询对象
+// return   : void
+//
+void 
+loop_delete(loop_t p) {
+    //
+    // delete 执行必须在 push 之后, C 代码是在刀剑上跳舞 ~ 
+    //
+    if (p) {
+        p->loop = false;
+        sem_post(&p->block);
+        // 等待线程结束, 然后退出
+        pthread_end(p->id);
+        sem_destroy(&p->block);
+        q_delete(p->rq, p->fdie);
+        q_delete(p->wq, p->fdie);
+        free(p);
+    }
+}
+
+//
+// loop_push - 消息压入轮询器
+// p        : 轮询对象
+// m        : 消息
+// return   : void
+//
+void 
+loop_push(loop_t p, void * m) {
+    assert(p && m);
+    atom_lock(p->lock);
+    q_push(p->rq, m);
+    atom_unlock(p->lock);
+    if (p->wait) {
+        p->wait = false;
+        sem_post(&p->block);
+    }
+}
+
 // 轮询器执行的循环体
 static void _loop(loop_t p) {
     while (p->loop) {
@@ -71,44 +111,4 @@ loop_create_(node_f frun, node_f fdie) {
         free(p); p = NULL;
     }
     return p;
-}
-
-//
-// loop_push - 消息压入轮询器
-// p        : 轮询对象
-// m        : 消息
-// return   : void
-//
-void 
-loop_push(loop_t p, void * m) {
-    assert(p && m);
-    atom_lock(p->lock);
-    q_push(p->rq, m);
-    atom_unlock(p->lock);
-    if (p->wait) {
-        p->wait = false;
-        sem_post(&p->block);
-    }
-}
-
-//
-// loop_delete - 轮询对象销毁
-// p        : 轮询对象
-// return   : void
-//
-void 
-loop_delete(loop_t p) {
-    //
-    // delete 执行必须在 push 之后, C 代码是在刀剑上跳舞 ~ 
-    //
-    if (p) {
-        p->loop = false;
-        sem_post(&p->block);
-        // 等待线程结束, 然后退出
-        pthread_end(p->id);
-        sem_destroy(&p->block);
-        q_delete(p->rq, p->fdie);
-        q_delete(p->wq, p->fdie);
-        free(p);
-    }
 }

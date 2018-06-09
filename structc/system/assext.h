@@ -34,6 +34,21 @@ enum {
 
 #endif//_H_ELAG
 
+/*
+* 这里是一个 在 DEBUG 模式下的测试宏
+*
+* DCODE({
+*	  puts("debug start...");
+* });
+*/
+#ifndef DCODE
+#   ifdef _DEBUG
+#       define DCODE(code)  do code while(0)
+#   else
+#       define DCODE(code)  
+#   endif //  ! _DEBUG
+#endif  //  ! DCODE
+
 //
 // CERR - 打印错误信息
 // EXIT - 打印错误信息, 并 exit
@@ -62,32 +77,17 @@ if ((cond)) EXIT(#cond)
 // ...      : fmt中对应的参数
 // return   : val
 // 
-#define RETURN(val, fmt, ...)       \
-do {                                \
-    CERR(fmt, ##__VA_ARGS__);       \
-    return val;                     \
+#define RETURN(val, fmt, ...)                                           \
+do {                                                                    \
+    CERR(fmt, ##__VA_ARGS__);                                           \
+    return val;                                                         \
 } while(0)
 
 #define NIL
-#define RETNIL(fmt, ...)            \
-RETURN(NIL, fmt, ##__VA_ARGS__)
+#define RETNIL(fmt, ...)                                                \
+RETURN(NIL , fmt, ##__VA_ARGS__)
 
-#define RETNUL(fmt, ...)            \
+#define RETNUL(fmt, ...)                                                \
 RETURN(NULL, fmt, ##__VA_ARGS__)
-
-/*
- * 这里是一个 在 DEBUG 模式下的测试宏
- *
- * DCODE({
- *	  puts("debug start...");
- * });
- */
-#ifndef DCODE
-#   ifdef _DEBUG
-#       define DCODE(code)  do code while(0)
-#   else
-#       define DCODE(code)  
-#   endif //  ! _DEBUG
-#endif	//	! DCODE
 
 #endif//_H_ASSEXT

@@ -21,7 +21,7 @@ typedef volatile long atom_t;
 #define atom_unlock(o)      __sync_lock_release(&(o))
 
 // 保证代码不乱序
-#define atom_sync()         __sync_synchronize()
+#define ATOM_SYNC()         __sync_synchronize()
 
 // v += a ; return v;
 #define ATOM_ADD(v, a)      __sync_add_and_fetch(&(v), (a))
@@ -68,7 +68,7 @@ inline void store_release(atom_t * x) {
 #define atom_unlock(o)      store_release(&(o))
 
 // 保证代码不乱序优化后执行
-#define atom_sync()         MemoryBarrier()
+#define ATOM_SYNC()         MemoryBarrier()
 
 // v 和 a 都是 long 这样数据
 #define ATOM_ADD(v, a)      InterlockedAdd((volatile LONG *)&(v), (LONG)(a))
