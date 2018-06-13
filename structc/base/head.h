@@ -3,6 +3,7 @@
 
 #include <conf.h>
 #include <file.h>
+#include <check.h>
 #include <times.h>
 #include <thread.h>
 
