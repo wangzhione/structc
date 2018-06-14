@@ -11,9 +11,9 @@
 extern bool is_ip(const char * ips);
 
 //
-// is_email - 判断是否是 mail
-// mail      : email 串
-// return   : true 是合法 mail
+// is_email - 判断是否是邮箱
+// mail     : email 串 
+// return   : true is email
 //
 extern bool is_email(const char * mail);
 

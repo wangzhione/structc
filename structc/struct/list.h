@@ -27,7 +27,7 @@ struct $list {
 // return   : void
 //
 #define list_delete(list, fdie)                                         \
-list_delete_(&(list), (node_f)(fdie))
+list_delete_((void **)&(list), (node_f)(fdie))
 extern void list_delete_(void ** pist, node_f fdie);
 
 //
@@ -50,7 +50,7 @@ extern void * list_get_(void * list, icmp_f fget, const void * left);
 // return   : 查找到的节点, NULL 表示没有查到 
 //
 #define list_pop(list, fget, left)                                      \
-list_pop_(&(list), (icmp_f)(fget), (const void *)(intptr_t)(left))
+list_pop_((void **)&(list), (icmp_f)(fget), (const void *)(intptr_t)(left))
 extern void * list_pop_(void ** pist, icmp_f fget, const void * left);
 
 //
@@ -62,7 +62,7 @@ extern void * list_pop_(void ** pist, icmp_f fget, const void * left);
 // return   : void
 //
 #define list_add(list, fadd, left)                                      \
-list_add_(&(list), (icmp_f)(fadd), (void *)(intptr_t)(left))
+list_add_((void **)&(list), (icmp_f)(fadd), (void *)(intptr_t)(left))
 extern void list_add_(void ** pist, icmp_f fadd, void * left);
 
 //

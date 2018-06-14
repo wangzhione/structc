@@ -15,7 +15,7 @@ struct loop {
 };
 
 // run - 消息处理行为
-inline static run(loop_t p, void * m) {
+inline static void run(loop_t p, void * m) {
     // 开始处理消息
     p->frun(m);
     p->fdie(m);
