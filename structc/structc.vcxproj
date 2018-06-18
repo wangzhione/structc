@@ -98,6 +98,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="base\check.h" />
     <ClInclude Include="base\head.h" />
     <ClInclude Include="base\conf.h" />
     <ClInclude Include="base\csv.h" />
@@ -146,6 +147,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\uv\uv.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="base\check.c" />
     <ClCompile Include="base\conf.c" />
     <ClCompile Include="base\csv.c" />
     <ClCompile Include="base\file.c" />

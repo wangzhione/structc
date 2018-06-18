@@ -22,10 +22,10 @@ DOBJ        ?= Obj
 # SRCC      : 所有 .c 文件
 #
 DIRS    =   $(DSYSTEM) $(DSTRUCT) $(DBASE)
-IINC    =   $(foreach v, $(DIRS), -I$(ROOT)/$(v))
-SRCC    =   $(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST), $(ROOT)/$(v)/*.c))
+IINC    =   $(foreach v,$(DIRS),-I$(ROOT)/$(v))
+SRCC    =   $(wildcard $(foreach v,$(DMAIN) $(DIRS) $(DTEST),$(ROOT)/$(v)/*.c))
 
-OBJC    =   $(wildcard $(foreach v, $(DIRS), $(ROOT)/$(v)/*.c))
+OBJC    =   $(wildcard $(foreach v,$(DIRS),$(ROOT)/$(v)/*.c))
 OBJO    =   $(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
 OBJP    =   $(OUTS)/$(DOBJ)/
 
@@ -45,7 +45,7 @@ RUNO    = $(RHAD) $(IINC) -c -o $(OBJP)$@ $<
 RUN     = $(RHAD) $(IINC) -o $(OUTS)/$@ $(RTAL)
 
 #
-# 具体的产品生产								
+# 具体的产品生产
 #
 .PHONY : all clean
 
@@ -54,7 +54,7 @@ all : main.exe
 #
 # 主运行程序main
 #
-main.exe : main.o main_init.o main_test.o main_run.o librunc.a
+main.exe : main.o main_init.o main_test.o main_run.o structc.a
 	$(RUN)
 
 #
@@ -68,14 +68,14 @@ endef
 $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 
 #
-# 生成 librunc.a 静态库, 方便处理所有问题
+# 生成 structc.a 静态库, 方便处理所有问题
 #
-librunc.a : $(OBJO) $(TESTO)
+structc.a : $(OBJO) $(TESTO)
 	$(RHAD) -c -o $(OBJP)stdext.o $(ROOT)/$(DSYSTEM)/stdext.c -DJEMALLOC_NO_DEMANGLE -l:libjemalloc.a
-	ar cr $(OBJP)$@ $(foreach v, $^, $(OBJP)$(v))
+	ar cr $(OBJP)$@ $(foreach v,$^,$(OBJP)$(v))
 
 #
-# 程序的收尾工作,清除,目录构建						
+# 程序的收尾工作,清除,目录构建
 #
 $(OUTS):
 	mkdir -p $(OBJP)
