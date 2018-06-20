@@ -347,6 +347,9 @@
     <ClCompile Include="base\check.c">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="test\reuseport_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

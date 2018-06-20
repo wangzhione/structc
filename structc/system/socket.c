@@ -140,11 +140,11 @@ socket_connecto(socket_t s, const sockaddr_t addr, int ms) {
 }
 
 //
-// socket_bind      - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
-// socket_listen    - 端口监听返回监听好的 socket fd.
+// socket_binds     - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
+// socket_listens   - 端口监听返回监听好的 socket fd.
 //
 socket_t 
-socket_bind(const char * ip, uint16_t port, uint8_t protocol, int * family) {
+socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family) {
     socket_t fd;
     char ports[sizeof "65535"];
     struct addrinfo hint = { 0 };
@@ -176,7 +176,6 @@ socket_bind(const char * ip, uint16_t port, uint8_t protocol, int * family) {
     // Success return ip family
     if (family)
         *family = addr->ai_family;
-
     freeaddrinfo(addr);
     return fd;
 
@@ -188,8 +187,8 @@ _fail:
 }
 
 socket_t 
-socket_listen(const char * ip, uint16_t port, int backlog) {
-    socket_t fd = socket_bind(ip, port, IPPROTO_TCP, NULL);
+socket_listens(const char * ip, uint16_t port, int backlog) {
+    socket_t fd = socket_binds(ip, port, IPPROTO_TCP, NULL);
     if (INVALID_SOCKET != fd && listen(fd, backlog)) {
         socket_close(fd);
         return INVALID_SOCKET;
@@ -258,7 +257,7 @@ socket_tcp(const char * host) {
     uint16_t port; char ip[BUFSIZ];
     if (host_parse(host, ip, &port) < SBase)
         return EParam;
-    return socket_listen(ip, port, SOMAXCONN);
+    return socket_listens(ip, port, SOMAXCONN);
 }
 
 //
@@ -271,7 +270,7 @@ socket_udp(const char * host) {
     uint16_t port; char ip[BUFSIZ];
     if (host_parse(host, ip, &port) < SBase)
         return EParam;
-    return socket_bind(ip, port, IPPROTO_UDP, NULL);
+    return socket_binds(ip, port, IPPROTO_UDP, NULL);
 }
 
 //

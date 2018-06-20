@@ -80,15 +80,15 @@ inline int socket_send(socket_t s, const void * buf, int sz) {
 
 #undef  EINTR
 #define EINTR                   WSAEINTR
-#undef	EAGAIN
+#undef  EAGAIN
 #define EAGAIN                  WSAEWOULDBLOCK
-#undef	EINVAL
+#undef  EINVAL
 #define EINVAL                  WSAEINVAL
-#undef	EINPROGRESS
+#undef  EINPROGRESS
 #define EINPROGRESS             WSAEWOULDBLOCK
-#undef	EMFILE
+#undef  EMFILE
 #define EMFILE                  WSAEMFILE
-#undef	ENFILE
+#undef  ENFILE
 #define ENFILE                  WSAETOOMANYREFS
 
 /*
@@ -174,7 +174,14 @@ inline int socket_set_enable(socket_t s, int optname) {
 }
 
 inline int socket_set_reuseaddr(socket_t s) {
-    return socket_set_enable(s, SO_REUSEADDR);
+    int r = socket_set_enable(s, SO_REUSEADDR);
+#ifdef SO_REUSEPORT
+    if (!r) {
+        // Linux set SO_REUSEPORT
+        r = socket_set_enable(s, SO_REUSEPORT);
+    }
+#endif
+    return r;
 }
 
 inline int socket_set_keepalive(socket_t s) {
@@ -219,8 +226,18 @@ inline int socket_sendto(socket_t s, const void * buf, int len, int flags, const
     return sendto(s, buf, len, flags, (const struct sockaddr *)to, sizeof(sockaddr_t));
 }
 
-// socket_accept        - accept 链接函数
-// socket_connect       - connect 操作
+// socket_bind          - bind    绑定函数
+// socket_listen        - listen  监听函数
+// socket_accept        - accept  等接函数
+// socket_connect       - connect 链接函数
+inline int socket_bind(socket_t s, const sockaddr_t addr) {
+    return bind(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
+}
+
+inline int socket_listen(socket_t s) {
+    return listen(s, SOMAXCONN);
+}
+
 inline socket_t socket_accept(socket_t s, sockaddr_t addr) {
     socklen_t len = sizeof (sockaddr_t);
     return accept(s, (struct sockaddr *)addr, &len);
@@ -248,11 +265,11 @@ extern int socket_addr(const char * ip, uint16_t port, sockaddr_t addr);
 extern int socket_connecto(socket_t s, const sockaddr_t addr, int ms);
 
 //
-// socket_bind      - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
-// socket_listen    - 端口监听返回监听好的 socket fd.
+// socket_binds     - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
+// socket_listens   - 端口监听返回监听好的 socket fd.
 //
-extern socket_t socket_bind(const char * ip, uint16_t port, uint8_t protocol, int * family);
-extern socket_t socket_listen(const char * ip, uint16_t port, int backlog);
+extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
+extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
 
 //
 // socket_host - 通过 ip:port 串得到 socket addr 结构
