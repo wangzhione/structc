@@ -22,12 +22,6 @@ typedef void * (* vnew_f)();
 typedef void (* node_f)(void * node);
 
 //
-// start_f - pthread create func
-//  : int * run(int * arg)
-//
-typedef void * (* start_f)(void * arg);
-
-//
 // each_f - each 循环操作, arg 外部参数, node 是内部结点
 //  : int dict_echo(struct dict * node, void * arg) { return 0; }
 //

@@ -6,6 +6,12 @@
 #include <semaphore.h>
 
 //
+// start_f - pthread create func
+//  : int * run(int * arg)
+//
+typedef void * (* start_f)(void * arg);
+
+//
 // pthread_run - 异步启动线程
 // id       : &tid 线程id地址
 // frun     : 运行的主体
