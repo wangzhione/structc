@@ -22,10 +22,10 @@ DOBJ        ?= Obj
 # SRCC      : 所有 .c 文件
 #
 DIRS    =   $(DSYSTEM) $(DSTRUCT) $(DBASE)
-IINC    =   $(foreach v,$(DIRS),-I$(ROOT)/$(v))
-SRCC    =   $(wildcard $(foreach v,$(DMAIN) $(DIRS) $(DTEST),$(ROOT)/$(v)/*.c))
+IINC    =   $(foreach v, $(DIRS),-I$(ROOT)/$(v))
+SRCC    =   $(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST),$(ROOT)/$(v)/*.c))
 
-OBJC    =   $(wildcard $(foreach v,$(DIRS),$(ROOT)/$(v)/*.c))
+OBJC    =   $(wildcard $(foreach v, $(DIRS),$(ROOT)/$(v)/*.c))
 OBJO    =   $(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
 OBJP    =   $(OUTS)/$(DOBJ)/
 
@@ -40,7 +40,7 @@ CFLAGS  = -g -O2 -Wall -Wno-unused-result
 LIB     = -lm -lpthread -luv
 
 RHAD    = $(CC) $(CFLAGS) $(D)
-RTAL    = $(foreach v, $^, $(OBJP)$(v)) $(LIB)
+RTAL    = $(foreach v, $^,$(OBJP)$(v)) $(LIB)
 RUNO    = $(RHAD) $(IINC) -c -o $(OBJP)$@ $<
 RUN     = $(RHAD) $(IINC) -o $(OUTS)/$@ $(RTAL)
 
