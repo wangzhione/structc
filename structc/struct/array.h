@@ -13,13 +13,12 @@ struct array {
 // 定义动态数组类型
 typedef struct array * array_t;
 
-#define UINT_AINIT      (1u<<5)         // 数组初始化默认大小
-
 //
 // ARRAY_CREATE - 栈上面创建动态数组对象
 // ARRAY_DELETE - 销毁栈上面动态数组对象
 // var      : 创建动态数组对象名字
-//
+//UINT_AINIT    - 数组初始化默认大小
+#define UINT_AINIT      (1u<<5)
 #define ARRAY_CREATE(type, var)             \
 struct array var[1] = { {                   \
     sizeof(type),                           \

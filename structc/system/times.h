@@ -123,13 +123,22 @@ extern bool times_week(times_t ns, times_t ts);
 int times_fmt(const char * fmt, char buf[], size_t sz);
 
 //
-// times_str - 得到毫秒串 [2016-07-10 22:38:34 500]
+// times_buf - 存储毫秒串 "2016-07-10 22:38:34 500"
 // osr          : 返回生成串
 // return       : 返回生成串长度
-//
 #define STR_TIMES "%04d-%02d-%02d %02d:%02d:%02d %03ld"
-inline int times_str(times_t osr) {
+inline int times_buf(times_t osr) {
     return times_fmt(STR_TIMES, osr, sizeof(times_t));
+}
+
+//
+// times_str - 得到毫秒串
+// osr          : 返回生成串
+// return       : 返回生成串
+//
+inline char * times_str(times_t osr) {
+    times_buf(osr);
+    return osr;
 }
 
 #endif//_H_TIMES

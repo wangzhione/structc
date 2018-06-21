@@ -15,16 +15,10 @@ void reuseport_test(void) {
         IF(pthread_async(accept_example, i));
     }
 
-    msleep(1000);
-    
+    msleep(609);
+
     // main accept block
     accept_example(0);
-}
-
-// times_buf - 时间串缓存
-inline char * times_buf(times_t v) {
-    times_str(v);
-    return v;
 }
 
 // accept_example - SO_REUSEPORT accept example 
@@ -38,11 +32,7 @@ accept_example(int id) {
     IF(socket_set_reuseaddr(s));
 
     // 构造地址
-    sockaddr_t addr = {{
-        AF_INET,
-        htons(UINT_PORT),
-        { INADDR_ANY },
-    }};
+    sockaddr_t addr = {{ AF_INET, htons(UINT_PORT) }};
 
     // 绑定地址
     IF(socket_bind(s, addr));
@@ -55,7 +45,7 @@ accept_example(int id) {
         times_t v;
         sockaddr_t cddr;
 
-        printf("[%2d] accept start ... %s\n", id, times_buf(v));
+        printf("[%2d] accept start ... %s\n", id, times_str(v));
         socket_t c = socket_accept(s, cddr);
         if (s == INVALID_SOCKET) {
             CERR("accept s = %lld is error", (int64_t)s);
@@ -65,7 +55,7 @@ accept_example(int id) {
         // 连接成功打印链接消息
         printf("[%2d] [%s:%d] accept success ... %s\n", id,
                inet_ntoa(cddr->sin_addr), ntohs(cddr->sin_port),
-               times_buf(v));
+               times_str(v));
 
         socket_close(c);
     }

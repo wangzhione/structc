@@ -3,9 +3,6 @@
 
 #include <struct.h>
 
-// INT_Q - 队列初始大小, 必须是 2 的幂
-#define INT_Q     (1<<6)
-
 //
 // pop empty  <=> tail == -1 ( head == 0 )
 // push full  <=> head == tail + 1
@@ -21,7 +18,8 @@ typedef struct q {
 // q_init - 初始化
 // q      : 队列对象
 // return : void
-//
+// INT_Q  - 队列初始大小, 必须是 2 的幂
+#define INT_Q     (1<<6)
 inline void q_init(q_t q) {
     q->head = 0;
     q->tail = -1;
