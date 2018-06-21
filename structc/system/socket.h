@@ -259,6 +259,11 @@ extern int socket_sendn(socket_t s, const void * buf, int sz);
 //
 extern int socket_addr(const char * ip, uint16_t port, sockaddr_t addr);
 
+// socket_pton - 返回 ip 串
+inline char * socket_pton(sockaddr_t addr, char ip[INET_ADDRSTRLEN]) {
+    return inet_ntop(AF_INET, &addr->sin_addr, ip, INET_ADDRSTRLEN);
+}
+
 //
 // socket_connecto      - connect 超时链接, 返回非阻塞 socket
 //

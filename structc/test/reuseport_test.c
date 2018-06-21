@@ -53,8 +53,9 @@ accept_example(int id) {
         }
 
         // 连接成功打印链接消息
+        char ip[INET_ADDRSTRLEN];
         printf("[%2d] [%s:%d] accept success ... %s\n", id,
-               inet_ntoa(cddr->sin_addr), ntohs(cddr->sin_port),
+               socket_pton(cddr, ip), ntohs(cddr->sin_port),
                times_str(v));
 
         socket_close(c);
