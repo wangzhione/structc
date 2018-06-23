@@ -66,6 +66,7 @@ extern void * realloc_(void * ptr, size_t size);
 // _MSC_VER -> Winds CL
 // __GNUC__ -> Linux GCC
 #ifdef __GNUC__
+
 #   if defined(__x86_64__)
 #       define ISX64
 #   endif
@@ -75,6 +76,7 @@ extern void * realloc_(void * ptr, size_t size);
 #   if defined(__BIG_ENDIAN__) || defined(__BIG_ENDIAN_BITFIELD)
 #       define ISBENIAN
 #   endif
+
 #elif  _MSC_VER
 //
 // CPU 检测 : x64 or x86

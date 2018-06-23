@@ -242,9 +242,9 @@ socket_host(const char * host, sockaddr_t addr) {
     // 开始构造 addr
     if (NULL == addr) {
         sockaddr_t nddr;
-        return socket_addr(ip, (uint16_t)port, nddr);
+        return socket_addr(ip, port, nddr);
     }
-    return socket_addr(ip, (uint16_t)port, addr);
+    return socket_addr(ip, port, addr);
 }
 
 //

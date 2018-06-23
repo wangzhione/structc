@@ -226,6 +226,13 @@ inline int socket_sendto(socket_t s, const void * buf, int len, int flags, const
     return sendto(s, buf, len, flags, (const struct sockaddr *)to, sizeof(sockaddr_t));
 }
 
+//
+// socket_recvn     - socket 接受 sz 个字节
+// socket_sendn     - socket 发送 sz 个字节
+//
+extern int socket_recvn(socket_t s, void * buf, int sz);
+extern int socket_sendn(socket_t s, const void * buf, int sz);
+
 // socket_bind          - bind    绑定函数
 // socket_listen        - listen  监听函数
 // socket_accept        - accept  等接函数
@@ -247,22 +254,6 @@ inline int socket_connect(socket_t s, const sockaddr_t addr) {
     return connect(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
 }
 
-//
-// socket_recvn     - socket 接受 sz 个字节
-// socket_sendn     - socket 发送 sz 个字节
-//
-extern int socket_recvn(socket_t s, void * buf, int sz);
-extern int socket_sendn(socket_t s, const void * buf, int sz);
-
-//
-// socket_addr -socket_recv 通过 ip, port 构造 ipv4 结构
-//
-extern int socket_addr(const char * ip, uint16_t port, sockaddr_t addr);
-
-// socket_pton - 返回 ip 串
-inline char * socket_pton(sockaddr_t addr, char ip[INET_ADDRSTRLEN]) {
-    return inet_ntop(AF_INET, &addr->sin_addr, ip, INET_ADDRSTRLEN);
-}
 
 //
 // socket_connecto      - connect 超时链接, 返回非阻塞 socket
@@ -275,6 +266,17 @@ extern int socket_connecto(socket_t s, const sockaddr_t addr, int ms);
 //
 extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
 extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
+
+
+//
+// socket_addr -socket_recv 通过 ip, port 构造 ipv4 结构
+//
+extern int socket_addr(const char * ip, uint16_t port, sockaddr_t addr);
+
+// socket_pton - 返回 ip 串
+inline char * socket_pton(sockaddr_t addr, char ip[INET_ADDRSTRLEN]) {
+    return (char *)inet_ntop(AF_INET, &addr->sin_addr, ip, INET_ADDRSTRLEN);
+}
 
 //
 // socket_host - 通过 ip:port 串得到 socket addr 结构

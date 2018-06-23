@@ -1,7 +1,7 @@
 ﻿#include <check.h>
 
 //
-// is_ip - 判断是否是 ip
+// is_ip - 判断是否是 ipv4
 // ips      : ip 串
 // return   : true 是合法 ip
 //
@@ -44,13 +44,11 @@ is_ip(const char * ips) {
     return false;
 }
 
-#define INT_EMAIL (255)
-
 //
 // is_email - 判断是否是邮箱
 // mail     : email 串 
 // return   : true is email
-//
+#define INT_EMAIL (255)
 bool 
 is_email(const char * mail) {
     //

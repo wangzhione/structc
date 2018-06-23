@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 //
-// is_ip - 判断是否是 ip
+// is_ip - 判断是否是 ipv4
 // ips      : ip 串
 // return   : true 是合法 ip
 //
