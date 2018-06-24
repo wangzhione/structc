@@ -1,5 +1,5 @@
 ﻿#include <uv.h>
-#include <assext.h>
+#include <struct.h>
 
 // 继承 uv_timer_t 结构
 struct gravity {
@@ -15,7 +15,7 @@ struct gravity {
 };
 
 // _update - 更新图片内容
-static void _update(struct gravity * grav) {
+void update(struct gravity * grav) {
     char data[BUFSIZ];
     uv_buf_t buf;
     buf.base = data;
@@ -73,7 +73,7 @@ void uv_timer_test(void) {
     // 启动 timer 刷新屏幕信息
     grav.msg = u8"我不甘心 ~";
     uv_timer_init(loop, &grav.tick);
-    uv_timer_start(&grav.tick, (uv_timer_cb)_update, 200, 200);
+    uv_timer_start(&grav.tick, (uv_timer_cb)update, 200, 200);
     
     uv_run(loop, UV_RUN_DEFAULT);
 }

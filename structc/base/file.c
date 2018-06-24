@@ -1,6 +1,5 @@
 ﻿#include <file.h>
 #include <atom.h>
-#include <assext.h>
 
 //
 // removes - 删除非空目录 or 文件

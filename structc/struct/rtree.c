@@ -39,6 +39,7 @@ rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie) {
     tree->fcmp = fcmp ? fcmp : rtree_default_cmp;
     tree->fnew = fnew;
     tree->fdie = fdie;
+    tree->fget = NULL;
     return tree;
 }
 
@@ -260,7 +261,7 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
 }
 
 // rtree_new - 插入时候构造一个新节点 | static 用于解决符号重定义
-static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
+inline static struct $rtree * rtree_new(rtree_t tree, void * pack) {
     struct $rtree * node = tree->fnew ? tree->fnew(pack) : pack;
     // 默认构建节点是红色的
     memset(node, 0, sizeof *node);
@@ -386,8 +387,7 @@ static void _rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtre
             }
         }
     }
-    if (node)
-        rtree_set_black(node);
+    if (node) rtree_set_black(node);
 }
 
 //

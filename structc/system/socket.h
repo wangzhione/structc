@@ -6,8 +6,7 @@
 #include <signal.h>
 #include <sys/types.h>
 
-#include <assext.h>
-#include <stdext.h>
+#include <struct.h>
 
 #ifdef __GNUC__
 

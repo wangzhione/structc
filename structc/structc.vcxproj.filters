@@ -132,9 +132,6 @@
     <ClInclude Include="struct\tstr.h">
       <Filter>struct</Filter>
     </ClInclude>
-    <ClInclude Include="system\assext.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="system\md5.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -257,9 +254,6 @@
     <ClCompile Include="test\strerr_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="system\stderr.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="system\socket.c">
       <Filter>system</Filter>
     </ClCompile>
@@ -349,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="test\reuseport_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\strerr.c">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

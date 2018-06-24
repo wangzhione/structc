@@ -2,7 +2,6 @@
 #define _H_CONF
 
 #include <utf8.h>
-#include <assext.h>
 
 //
 // config 映射配置

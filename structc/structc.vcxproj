@@ -116,7 +116,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="struct\rtree.h" />
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\tstr.h" />
-    <ClInclude Include="system\assext.h" />
     <ClInclude Include="system\atom.h" />
     <ClInclude Include="system\atomic$c11.h" />
     <ClInclude Include="system\atomic$cl.h" />
@@ -169,12 +168,12 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="system\pipe.c" />
     <ClCompile Include="system\rwlock.c" />
     <ClCompile Include="system\stdext.c" />
+    <ClCompile Include="system\strerr.c" />
     <ClCompile Include="system\utf8.c" />
     <ClCompile Include="system\md5.c" />
     <ClCompile Include="system\rand.c" />
     <ClCompile Include="system\socket.c" />
     <ClCompile Include="system\spoll.c" />
-    <ClCompile Include="system\stderr.c" />
     <ClCompile Include="system\strext.c" />
     <ClCompile Include="system\times.c" />
     <ClCompile Include="test\array_test.c" />

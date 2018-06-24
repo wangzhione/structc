@@ -1,7 +1,7 @@
 ﻿#ifndef _H_G2U8
 #define _H_G2U8
 
-#include <stdext.h>
+#include <struct.h>
 
 //
 // utf8 和 gbk 基础处理能力的库
