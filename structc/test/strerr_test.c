@@ -1,6 +1,4 @@
-﻿#include <stdio.h>
-#include <assext.h>
-#include <strext.h>
+﻿#include <struct.h>
 
 //
 // 分析 winerror.h

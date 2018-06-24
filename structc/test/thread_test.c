@@ -1,5 +1,4 @@
-﻿#include <assext.h>
-#include <thread.h>
+﻿#include <thread.h>
 
 static void _heoo(int cnt) {
     for (int i = 0; i < cnt; ++i) {
