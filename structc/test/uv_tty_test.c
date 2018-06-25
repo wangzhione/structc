@@ -1,6 +1,7 @@
 ﻿#include <uv.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //
 // 测试 libuv tty 操作控制台

@@ -48,7 +48,7 @@ accept_example(int id) {
         printf("[%2d] accept start ... %s\n", id, times_str(v));
         socket_t c = socket_accept(s, cddr);
         if (s == INVALID_SOCKET) {
-            CERR("accept s = %lld is error", (int64_t)s);
+            CERR("accept s = %lld is error", (long long)s);
             break;
         }
 
