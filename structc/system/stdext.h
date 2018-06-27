@@ -54,10 +54,9 @@
 #endif
 
 //
-// _NO_STDEXT_ 用于关闭全局 free / malloc 配置
+// OFF_ALLOC 关闭全局 free / malloc 配置
 //
-#ifndef _NO_STDEXT_
-#define _NO_STDEXT_
+#ifndef OFF_ALLOC
 
 #   undef  free
 #   undef  strdup
@@ -71,11 +70,11 @@
 #   define calloc  calloc_
 #   define realloc realloc_
 
-#endif
+#endif//OFF_ALLOC
 
 //
 // free_ - free 包装函数
-// ptr      : 分配的内存事后必须通过这个函数销毁
+// ptr      : 内存首地址
 // return   : void
 //
 extern void free_(void * ptr);
@@ -104,7 +103,7 @@ extern void * calloc_(size_t num, size_t size);
 
 //
 // realloc_ - realoc 包装函数, 封装一些特殊业务
-// ptr      : 重新分配的内存首地址, NULL 等同于 malloc
+// ptr      : 内存首地址, NULL 等同于 malloc
 // size     : 重新分配的内存大小
 // return   : 返回重新分配好的新地址内容
 //

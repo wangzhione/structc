@@ -264,8 +264,7 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
 inline static struct $rtree * rtree_new(rtree_t tree, void * pack) {
     struct $rtree * node = tree->fnew ? tree->fnew(pack) : pack;
     // 默认构建节点是红色的
-    memset(node, 0, sizeof *node);
-    return node;
+    return  memset(node, 0, sizeof *node);
 }
 
 //

@@ -7,7 +7,7 @@
 // c json fast parse, type is all design
 //
 
-#ifndef _STRUCT_JSON
+#ifndef JSON_NULL
 
 #define JSON_NULL       (0u << 0)
 #define JSON_TRUE       (1u << 0)
@@ -43,8 +43,7 @@ typedef struct json * json_t;
 //
 #define json_vali(item) ((int)(item)->vald)
 
-#define _STRUCT_JSON
-#endif//_STRUCT_JSON
+#endif//JSON_NULL
 
 // json_vals - 分离出 json 字符串, 需要自行 free
 inline char * json_vals(json_t item) {

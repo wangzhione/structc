@@ -3,7 +3,7 @@
 
 #include <strext.h>
 
-#ifndef _STRUCT_TSTR
+#ifndef TSTR_CREATE
 
 struct tstr {
     size_t len;   // 长度
@@ -24,8 +24,7 @@ struct tstr var[1] = { { 0, 0, NULL } }
 #define TSTR_DELETE(var)                                    \
 free((var)->str)
 
-#define _STRUCT_TSTR
-#endif//_STRUCT_TSTR
+#endif//TSTR_CREATE
 
 //
 // tstr_delete - tstr_t 释放函数
