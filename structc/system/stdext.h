@@ -18,6 +18,7 @@
 #include <limits.h>
 #include <string.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 //
 // :) 莫名的伤感起来 ~ 
