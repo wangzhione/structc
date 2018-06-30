@@ -9,19 +9,19 @@
 // 
 char * 
 url_encode(const char * s, int len, int * nen) {
-    register uint8_t c;
-    uint8_t * to, * start;
-    const uint8_t * from, * end;
-    static uint8_t encode[] = "0123456789ABCDEF";
+    register unsigned char c;
+    unsigned char * to, * start;
+    const unsigned char * from, * end;
+    static unsigned char encode[] = "0123456789ABCDEF";
 
     if (!s || !*s || len <= 0) {
         if (nen) *nen = 0;
         return NULL;
     }
 
-    from = (uint8_t *)s;
-    end = (uint8_t *)s + len;
-    start = to = calloc(3 * len + 1, sizeof(uint8_t));
+    from = (unsigned char *)s;
+    end = (unsigned char *)s + len;
+    start = to = calloc(3 * len + 1, sizeof(unsigned char));
 
     while (from < end) {
         c = *from++;

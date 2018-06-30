@@ -1,29 +1,13 @@
-﻿#ifndef _H_STDEXIT
-#define _H_STDEXIT
+﻿#ifndef _H_ALLOC
+#define _H_ALLOC
 
 //
-// stdxxx.h 扩展库
-// 
 // 核心功能 : 高效内存分配模型
-//
-
-#include <math.h>
-#include <ctype.h>
-#include <float.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <stddef.h>
-#include <limits.h>
-#include <string.h>
-#include <stdbool.h>
-#include <inttypes.h>
 
-//
 // :) 莫名的伤感起来 ~ 
-// _MSC_VER -> Winds CL
-// __GNUC__ -> Linux GCC
+// _MSC_VER => Winds CL
+// __GNUC__ => Linux GCC
 //
 #ifdef _MSC_VER
 //

@@ -9,6 +9,7 @@
  */
 
 #include <struct.h>
+#include <strext.h>
 
 typedef struct {   // struct in heap
     int    rlen;   // 数据行数, 索引 [0, rlen)

@@ -2,6 +2,10 @@
 #define _H_JSON
 
 #include <tstr.h>
+#include <math.h>
+#include <float.h>
+#include <limits.h>
+#include <stdbool.h>
 
 //
 // c json fast parse, type is all design

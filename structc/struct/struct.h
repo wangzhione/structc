@@ -1,9 +1,21 @@
 ﻿#ifndef _H_STRUCT
 #define _H_STRUCT
 
+#include <math.h>
+#include <alloc.h>
+#include <ctype.h>
+#include <float.h>
+#include <stdio.h>
 #include <errno.h>
 #include <assert.h>
-#include <strext.h>
+#include <stdarg.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <inttypes.h>
 
 //
 // enum Elag int - 函数返回值全局状态码
@@ -53,6 +65,12 @@ typedef void * (* vnew_f)();
 //  : void list_die(void * node); 
 //
 typedef void (* node_f)(void * node);
+
+//
+// start_f - pthread create func
+//  : int * run(int * arg)
+//
+typedef void * (* start_f)(void * arg);
 
 //
 // each_f - each 循环操作, arg 外部参数, node 是内部结点

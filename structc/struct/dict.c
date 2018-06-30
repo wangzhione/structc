@@ -1,5 +1,4 @@
 ﻿#include <dict.h>
-#include <assert.h>
 
 //
 // primes - 质数表

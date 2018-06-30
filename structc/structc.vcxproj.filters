@@ -144,9 +144,6 @@
     <ClInclude Include="system\socket.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="system\stdext.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="system\strext.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -177,6 +174,9 @@
     <ClInclude Include="base\check.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="system\alloc.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -189,9 +189,6 @@
       <Filter>main</Filter>
     </ClCompile>
     <ClCompile Include="test\strext_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\stdext_test.c">
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="struct\list.c">
@@ -311,9 +308,6 @@
     <ClCompile Include="base\conf.c">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="system\stdext.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="system\rwlock.c">
       <Filter>system\atom</Filter>
     </ClCompile>
@@ -346,6 +340,12 @@
     </ClCompile>
     <ClCompile Include="system\strerr.c">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\alloc.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="test\alloc_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

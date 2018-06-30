@@ -1,6 +1,8 @@
 ﻿#define OFF_ALLOC
-#include "stdext.h"
-
+#include "alloc.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <jemalloc/jemalloc.h>
 
 //
@@ -15,9 +17,7 @@ inline void free_(void * ptr) {
 // 简单内存不足检测处理
 inline void * mcheck(void * ptr, size_t size) {
     if (NULL == ptr) {
-        fprintf(stderr, 
-            "out of memory trying to allocate <%p, %zu>\n",
-            ptr, size);
+        fprintf(stderr, "out of memory trying to allocate %zu\n", size);
         fflush(stderr);
         abort();
     }
@@ -42,8 +42,8 @@ inline void * malloc_(size_t size) {
 inline char * strdup_(const char * s) {
     if (s) {
         size_t n = strlen(s) + 1;
-        char * r = malloc_(n * sizeof(char));
-        return memcpy(r, s, n);
+        char * ptr = malloc_(n);
+        return memcpy(ptr, s, n);
     }
     return NULL;
 }

@@ -134,7 +134,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\spoll$epoll.h" />
     <ClInclude Include="system\spoll$select.h" />
     <ClInclude Include="system\spoll.h" />
-    <ClInclude Include="system\stdext.h" />
+    <ClInclude Include="system\alloc.h" />
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
@@ -167,7 +167,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="struct\tstr.c" />
     <ClCompile Include="system\pipe.c" />
     <ClCompile Include="system\rwlock.c" />
-    <ClCompile Include="system\stdext.c" />
+    <ClCompile Include="system\alloc.c" />
     <ClCompile Include="system\strerr.c" />
     <ClCompile Include="system\utf8.c" />
     <ClCompile Include="system\md5.c" />
@@ -192,7 +192,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\pipe_test.c" />
     <ClCompile Include="test\rtree_test.c" />
     <ClCompile Include="test\socket_test.c" />
-    <ClCompile Include="test\stdext_test.c" />
+    <ClCompile Include="test\alloc_test.c" />
     <ClCompile Include="test\strerr_test.c" />
     <ClCompile Include="test\strext_test.c" />
     <ClCompile Include="test\strings_test.c" />

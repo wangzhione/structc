@@ -1,7 +1,8 @@
 ﻿#ifndef _H_URL
 #define _H_URL
 
-#include <stdext.h>
+#include <alloc.h>
+#include <ctype.h>
 
 //
 // URL编码做了如下操作： 

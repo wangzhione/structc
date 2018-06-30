@@ -1,4 +1,5 @@
 ﻿#include <struct.h>
+#include <strext.h>
 
 //
 // 分析 winerror.h

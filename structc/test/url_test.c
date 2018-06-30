@@ -1,4 +1,6 @@
 ﻿#include <url.h>
+#include <stdio.h>
+#include <string.h>
 
 // url_test - url 测试
 void url_test(void) {

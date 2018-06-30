@@ -70,7 +70,7 @@ $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 # 生成 structc.a 静态库, 方便处理所有问题
 #
 structc.a : $(OBJO) $(TESTO) main.o main_init.o main_run.o main_test.o
-	$(RHAD) -c -o $(DOBJ)/stdext.o $(DSYSTEM)/stdext.c -DJEMALLOC_NO_DEMANGLE -l:libjemalloc.a
+	$(RHAD) -c -o $(DOBJ)/alloc.o $(DSYSTEM)/alloc.c -DJEMALLOC_NO_DEMANGLE -l:libjemalloc.a
 	ar cr $(DOBJ)/$@ $(DOBJ)/*.o
 
 #

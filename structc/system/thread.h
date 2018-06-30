@@ -6,10 +6,13 @@
 #include <semaphore.h>
 
 //
-// start_f - pthread create func
-//  : int * run(int * arg)
+// pthread_end - 等待启动线程结束
+// tid      : 线程id
+// return   : void
 //
-typedef void * (* start_f)(void * arg);
+inline void pthread_end(pthread_t tid) {
+    pthread_join(tid, NULL);
+}
 
 //
 // pthread_run - 异步启动线程
@@ -22,15 +25,6 @@ typedef void * (* start_f)(void * arg);
 pthread_run_(&(id), (node_f)(frun), (void *)(intptr_t)(arg))
 inline int pthread_run_(pthread_t * id, node_f frun, void * arg) {
     return pthread_create(id, NULL, (start_f)frun, arg);
-}
-
-//
-// pthread_end - 等待启动线程结束
-// tid      : 线程id
-// return   : void
-//
-inline void pthread_end(pthread_t tid) {
-    pthread_join(tid, NULL);
 }
 
 //

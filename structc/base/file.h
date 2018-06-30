@@ -2,6 +2,7 @@
 #define _H_FILE
 
 #include <struct.h>
+#include <strext.h>
 
 #ifdef __GNUC__
 
