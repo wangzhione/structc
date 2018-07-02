@@ -5,7 +5,7 @@
 // 核心功能 : 高效内存分配模型
 #include <stddef.h>
 
-// :) 莫名的伤感起来 ~ 
+// :) 莫名有些伤感 ~ 
 // _MSC_VER => Winds CL
 // __GNUC__ => Linux GCC
 //

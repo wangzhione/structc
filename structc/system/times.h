@@ -34,7 +34,6 @@ inline void msleep(int ms) {
     Sleep(ms);
 }
 
-
 //
 // localtime_r - 安全的得到当前时间结构体
 // timep        : 输入的时间戳指针
