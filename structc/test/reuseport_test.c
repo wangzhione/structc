@@ -29,7 +29,7 @@ accept_example(int id) {
     IF(s == INVALID_SOCKET);
 
     // 开启地址复用
-    IF(socket_set_reuseaddr(s));
+    IF(socket_set_reuse(s));
 
     // 构造地址
     sockaddr_t addr = {{ AF_INET, htons(UINT_PORT) }};

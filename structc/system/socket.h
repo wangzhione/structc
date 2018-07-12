@@ -91,6 +91,8 @@ inline int socket_send(socket_t s, const void * buf, int sz) {
 #define SHUT_WR                 SD_SEND
 #define SHUT_RDWR               SD_BOTH
 
+#define SO_REUSEPORT            SO_REUSEADDR
+
 typedef SOCKET socket_t;
 typedef int socklen_t;
 
@@ -159,22 +161,15 @@ inline socket_t socket_stream(void) {
     return socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 }
 
-// socket_set_reuseaddr - 开启地址复用
+// socket_set_reuse - 开启端口和地址复用
 // socket_set_keepalive - 开启心跳包检测, 默认2h 5次
 inline int socket_set_enable(socket_t s, int optname) {
     int ov = 1;
     return setsockopt(s, SOL_SOCKET, optname, (void *)&ov, sizeof ov);
 }
 
-inline int socket_set_reuseaddr(socket_t s) {
-    int r = socket_set_enable(s, SO_REUSEADDR);
-#ifdef SO_REUSEPORT
-    if (!r) {
-        // Linux set SO_REUSEPORT
-        r = socket_set_enable(s, SO_REUSEPORT);
-    }
-#endif
-    return r;
+inline int socket_set_reuse(socket_t s) {
+    return socket_set_enable(s, SO_REUSEPORT);
 }
 
 inline int socket_set_keepalive(socket_t s) {

@@ -168,7 +168,7 @@ socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family) {
     fd = socket(addr->ai_family, addr->ai_socktype, 0);
     if (fd == INVALID_SOCKET)
         goto _fail;
-    if (socket_set_reuseaddr(fd))
+    if (socket_set_reuse(fd))
         goto _faed;
     if (bind(fd, addr->ai_addr, (int)addr->ai_addrlen))
         goto _faed;
