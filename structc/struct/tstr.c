@@ -1,7 +1,7 @@
 ﻿#include <tstr.h>
 
 // INT_TSTR - 字符串构建的初始化大小
-#define INT_TSTR  (1<<7)
+#define INT_TSTR  (1<<8)
 
 //
 // tstr_expand - 为当前字符串扩容, 属于低级api
@@ -134,7 +134,7 @@ tstr_popup(tstr_t tsr, size_t len) {
 }
 
 // tstr_vprintf - BUFSIZ 以下内存处理
-inline static int tstr_vprintf(tstr_t tsr, const char * fmt, va_list arg) {
+static int tstr_vprintf(tstr_t tsr, const char * fmt, va_list arg) {
     char buf[BUFSIZ];
     int len = vsnprintf(buf, sizeof buf, fmt, arg);
     if (len < sizeof buf) {
@@ -142,6 +142,7 @@ inline static int tstr_vprintf(tstr_t tsr, const char * fmt, va_list arg) {
         if (len > 0)
             tstr_appendn(tsr, buf, len);
         tstr_cstr(tsr);
+        va_end(arg);
     }
     return len;
 }
@@ -155,7 +156,7 @@ inline static int tstr_vprintf(tstr_t tsr, const char * fmt, va_list arg) {
 //
 char * 
 tstr_printf(tstr_t tsr, const char * fmt, ...) {
-    int cap;
+    int n, cap;
     va_list arg;
     va_start(arg, fmt);
 
@@ -165,24 +166,15 @@ tstr_printf(tstr_t tsr, const char * fmt, ...) {
         return tsr->str;
     
     // 开始详细构建内存
-    for (;;) {
+    do {
         char * ret = malloc(cap <<= 1);
-        int len = vsnprintf(ret, cap, fmt, arg);
-        // 失败的情况, 这里没有打印错误信息. 需要上层自己处理
-        if (len < 0) {
-            free(ret);
-            break;
-        }
-
-        // 成功情况, 插入内存数据
-        if (len < cap) {
-            tstr_appendn(tsr, ret, len);
-            break;
-        }
-
-        // 重新构建内存
+        n = vsnprintf(ret, cap, fmt, arg);
+        // 内存足够就开始填充, 以备结束
+        if (n < cap && n > 0)
+            tstr_appendn(tsr, ret, n);
         free(ret);
-    }
+    } while (n < cap);
 
+    va_end(arg);
     return tstr_cstr(tsr);
 }
