@@ -54,13 +54,13 @@
       <PreprocessorDefinitions>_DEBUG;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;
 WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
 ;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/LTCG /IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>echo begin init directory $(TargetDir)conf

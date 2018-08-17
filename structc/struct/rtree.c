@@ -44,11 +44,11 @@ rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie) {
 }
 
 // 详细删除操作, 存在爆栈风险
-static void _rtree_delete(struct $rtree * root, node_f fdie) {
+static void rtree_root(struct $rtree * root, node_f fdie) {
     if (root->left)
-        _rtree_delete(root->left, fdie);
+        rtree_root(root->left, fdie);
     if (root->right)
-        _rtree_delete(root->right, fdie);
+        rtree_root(root->right, fdie);
     fdie(root);
 }
 
@@ -61,8 +61,7 @@ inline void
 rtree_delete(rtree_t tree) {
     if (NULL == tree) return;
     if (tree->root && tree->fdie)
-        _rtree_delete(tree->root, tree->fdie);
-
+        rtree_root(tree->root, tree->fdie);
     tree->root = NULL;
     free(tree);
 }
@@ -119,7 +118,7 @@ rtree_search(rtree_t tree, void * pack) {
  *    ly   ry                     lx  ly  
  *
  */
-static void _rtree_left_rotate(rtree_t tree, struct $rtree * x) {
+static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
     // 设置 [x] 的右孩子为 [y]
     struct $rtree * y = x->right;
     struct $rtree * xparent = rtree_parent(x);
@@ -161,7 +160,7 @@ static void _rtree_left_rotate(rtree_t tree, struct $rtree * x) {
  *      lx  rx                                rx  ry
  * 
  */
-static void _rtree_right_rotate(rtree_t tree, struct $rtree * y) {
+static void rtree_right_rotate(rtree_t tree, struct $rtree * y) {
     // 设置 [x] 是当前节点的左孩子。
     struct $rtree * x = y->left;
     struct $rtree * yparent = rtree_parent(y);
@@ -199,7 +198,7 @@ static void _rtree_right_rotate(rtree_t tree, struct $rtree * y) {
  *     tree 红黑树的根
  *     node 插入的结点        // 对应 <<算法导论>> 中的 z
  */
-static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
+static void rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
     struct $rtree * parent, * gparent, * uncle;
 
     // 若 [父节点] 存在，并且 [父节点] 的颜色是红色
@@ -220,7 +219,7 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
 
             // Case 2 条件: 叔叔是黑色, 且当前节点是右孩子
             if (parent->right == node) {
-                _rtree_left_rotate(tree, parent);
+                rtree_left_rotate(tree, parent);
                 uncle = parent;
                 parent = node;
                 node = uncle;
@@ -229,7 +228,7 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
             // Case 3 条件: 叔叔是黑色, 且当前节点是左孩子
             rtree_set_black(parent);
             rtree_set_red(gparent);
-            _rtree_right_rotate(tree, gparent);
+            rtree_right_rotate(tree, gparent);
         } else { // 若 [z的父节点] 是 [z的祖父节点的右孩子]
             // Case 1 条件: 叔叔节点是红色
             uncle = gparent->left;
@@ -243,7 +242,7 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
 
             // Case 2 条件: 叔叔是黑色, 且当前节点是左孩子
             if (parent->left == node) {
-                _rtree_right_rotate(tree, parent);
+                rtree_right_rotate(tree, parent);
                 uncle = parent;
                 parent = node;
                 node = uncle;
@@ -252,7 +251,7 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
             // Case 3 条件: 叔叔是黑色, 且当前节点是右孩子
             rtree_set_black(parent);
             rtree_set_red(gparent);
-            _rtree_left_rotate(tree, gparent);
+            rtree_left_rotate(tree, gparent);
         }
     }
 
@@ -261,7 +260,7 @@ static void _rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
 }
 
 // rtree_new - 插入时候构造一个新节点 | static 用于解决符号重定义
-inline static struct $rtree * rtree_new(rtree_t tree, void * pack) {
+static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
     struct $rtree * node = tree->fnew ? tree->fnew(pack) : pack;
     // 默认构建节点是红色的
     return  memset(node, 0, sizeof *node);
@@ -305,7 +304,7 @@ rtree_insert(rtree_t tree, void * pack) {
     }
 
     // 3. 将它重新修正为一颗二叉查找树
-    _rtree_insert_fixup(tree, node);
+    rtree_insert_fixup(tree, node);
 }
 
 /*
@@ -318,7 +317,7 @@ rtree_insert(rtree_t tree, void * pack) {
  *     tree 红黑树的根
  *     node 待修正的节点
  */
-static void _rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtree * parent) {
+static void rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtree * parent) {
     struct $rtree * other;
 
     while ((!node || rtree_is_black(node)) && node != tree->root) {
@@ -328,7 +327,7 @@ static void _rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtre
                 // Case 1: x的兄弟 w 是红色的  
                 rtree_set_black(other);
                 rtree_set_red(parent);
-                _rtree_left_rotate(tree, parent);
+                rtree_left_rotate(tree, parent);
                 other = parent->right;
             }
             if ((!other->left || rtree_is_black(other->left)) &&
@@ -342,14 +341,14 @@ static void _rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtre
                     // Case 3: x的兄弟 w 是黑色的, 并且 w的左孩子是红色, 右孩子为黑色  
                     rtree_set_black(other->left);
                     rtree_set_red(other);
-                    _rtree_right_rotate(tree, other);
+                    rtree_right_rotate(tree, other);
                     other = parent->right;
                 }
                 // Case 4: x的兄弟 w 是黑色的, 并且 w的右孩子是红色的, 左孩子任意颜色
                 rtree_set_color(other, rtree_color(parent));
                 rtree_set_black(parent);
                 rtree_set_black(other->right);
-                _rtree_left_rotate(tree, parent);
+                rtree_left_rotate(tree, parent);
                 node = tree->root;
                 break;
             }
@@ -359,7 +358,7 @@ static void _rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtre
                 // Case 1: x 的兄弟 w 是红色的  
                 rtree_set_black(other);
                 rtree_set_red(parent);
-                _rtree_right_rotate(tree, parent);
+                rtree_right_rotate(tree, parent);
                 other = parent->left;
             }
             if ((!other->left || rtree_is_black(other->left)) &&
@@ -373,14 +372,14 @@ static void _rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtre
                     // Case 3: x的兄弟 w 是黑色的, 并且 w的左孩子是红色, 右孩子为黑色
                     rtree_set_black(other->right);
                     rtree_set_red(other);
-                    _rtree_left_rotate(tree, other);
+                    rtree_left_rotate(tree, other);
                     other = parent->left;
                 }
                 // Case 4: x的兄弟 w 是黑色的, 并且 w的右孩子是红色的, 左孩子任意颜色.
                 rtree_set_color(other, rtree_color(parent));
                 rtree_set_black(parent);
                 rtree_set_black(other->left);
-                _rtree_right_rotate(tree, parent);
+                rtree_right_rotate(tree, parent);
                 node = tree->root;
                 break;
             }
@@ -446,7 +445,7 @@ rtree_remove(rtree_t tree, void * pack) {
         replace->left = node->left;
         rtree_set_parent(node->left, replace);
 
-        goto _ret;
+        goto ret_out;
     }
 
     if (NULL != node->left)
@@ -471,9 +470,9 @@ rtree_remove(rtree_t tree, void * pack) {
             parent->right = child;
     }
 
-_ret:
+ret_out:
     if (color) // 黑色结点重新调整关系, 并销毁节点操作
-        _rtree_remove_fixup(tree, child, parent);
+        rtree_remove_fixup(tree, child, parent);
     if (tree->fdie)
         tree->fdie(node);
 }
