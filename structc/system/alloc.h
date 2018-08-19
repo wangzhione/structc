@@ -1,11 +1,9 @@
 ﻿#ifndef _H_ALLOC
 #define _H_ALLOC
 
-//
-// 核心功能 : 高效内存分配模型
 #include <stddef.h>
 
-// :) 莫名有些伤感 ~ 
+// :) 高效内存分配, 莫名有些伤感 ~
 // _MSC_VER => Winds CL
 // __GNUC__ => Linux GCC
 //
@@ -24,7 +22,9 @@
 #   if defined(_M_PPC)
 #       define ISBENIAN
 #   endif
+
 #elif  __GNUC__
+
 #   if defined(__x86_64__)
 #       define ISX64
 #   endif
@@ -34,6 +34,7 @@
 #   if defined(__BIG_ENDIAN__) || defined(__BIG_ENDIAN_BITFIELD)
 #       define ISBENIAN
 #   endif
+
 #else
 #   error BUILD (￣︶￣) S
 #endif

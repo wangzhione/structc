@@ -15,7 +15,7 @@ inline void free_(void * ptr) {
 }
 
 // 简单内存不足检测处理
-inline void * mcheck(void * ptr, size_t size) {
+static inline void * mcheck(void * ptr, size_t size) {
     if (NULL == ptr) {
         fprintf(stderr, "out of memory trying to allocate %zu\n", size);
         fflush(stderr);
