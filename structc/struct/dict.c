@@ -63,7 +63,7 @@ struct dict {
     struct keypair ** table;    // size = primes[idx][0]
 };
 
-static void _dict_resize(struct dict * d) {
+static void dict_resize(struct dict * d) {
     unsigned size, prime, i;
     struct keypair ** table;
     unsigned used = d->used;
@@ -171,7 +171,7 @@ dict_set(dict_t d, const char * k, void * v) {
     assert(NULL != d && k != NULL);
 
     // 检查一下内存, 看是否要扩充
-    _dict_resize(d);
+    dict_resize(d);
 
     // 开始寻找数据
     hash = str_hash(k);

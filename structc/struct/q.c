@@ -22,7 +22,7 @@ q_delete(q_t q, node_f fdie) {
 }
 
 // add two cap memory, memory is do not have assert
-inline static void q_expand(q_t q) {
+static void q_expand(q_t q) {
     int i, size = q->size << 1;
     void ** nq = malloc(sizeof(void *) * size);
     for (i = 0; i < q->size; ++i)
