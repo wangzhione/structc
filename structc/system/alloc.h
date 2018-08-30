@@ -1,7 +1,8 @@
 ﻿#ifndef _H_ALLOC
 #define _H_ALLOC
 
-#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 // :) 高效内存分配, 莫名有些伤感 ~
 // _MSC_VER => Winds CL

@@ -10,9 +10,6 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <stdint.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <inttypes.h>
@@ -34,12 +31,12 @@ enum {
     EAccess   = -7, // 没有操作权限
 };
 
-/*
- * 这里是在 DEBUG 模式下的测试宏
- * DCODE({
- *     puts("debug start...");
- * });
- */
+//
+// DCODE - DEBUG 模式下的测试宏
+// DCODE({
+//     puts("debug start...");
+// });
+//
 #ifndef DCODE
 #   ifdef _DEBUG
 #       define DCODE(code)  do code while(0)

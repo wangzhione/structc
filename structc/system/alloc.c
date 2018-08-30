@@ -1,8 +1,8 @@
-﻿#define OFF_ALLOC
+﻿#include <stdio.h>
+
+#define OFF_ALLOC
 #include "alloc.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 #include <jemalloc/jemalloc.h>
 
 //
