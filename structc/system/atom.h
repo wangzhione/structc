@@ -3,14 +3,21 @@
 
 #include "atomic.h"
 
-/*
- * atom_t 自旋锁类型
- * atom_t o = 0 or static atom_t _m;
- * atom_lock(o); 
- * - One Man RPG
- * atom_unlock(o);
- */
+//
+// atom_t 自旋锁类型
+// [static] atom_t o = 0;
+//   atom_lock(o);
+//  - One Man RPG
+// atom_unlock(o);
+//
 typedef volatile long atom_t;
+
+// atom_acquire - 维护优化后读写代码不在其前
+#define atom_acquire()      atomic_fence(ATOMIC_ACQUIRE)
+// atom_release - 维护优化后读写代码不在其后
+#define atom_release()      atomic_fence(ATOMIC_RELEASE)
+// atom_seq_cst - 维护优化后读写代码前后不动
+#define atom_seq_cst()      atomic_fence(ATOMIC_SEQ_CST)
 
 #ifdef __GNUC__
 
@@ -20,21 +27,21 @@ typedef volatile long atom_t;
 
 #define atom_unlock(o)      __sync_lock_release(&(o))
 
-// 保证代码不乱序
-#define ATOM_SYNC()         __sync_synchronize()
+// 内存屏障, 维持代码顺序
+#define atom_sync()         __sync_synchronize()
 
 // v += a ; return v;
-#define ATOM_ADD(v, a)      __sync_add_and_fetch(&(v), (a))
+#define atom_add(v, a)      __sync_add_and_fetch(&(v), (a))
 // type tmp = v ; v = a; return tmp;
-#define ATOM_SET(v, a)      __sync_lock_test_and_set(&(v), (a))
+#define atom_set(v, a)      __sync_lock_test_and_set(&(v), (a))
 // v &= a; return v;
-#define ATOM_AND(v, a)      __sync_and_and_fetch(&(v), (a))
+#define atom_and(v, a)      __sync_and_and_fetch(&(v), (a))
 // return ++v;
-#define ATOM_INC(v)         __sync_add_and_fetch(&(v), 1)
+#define atom_inc(v)         __sync_add_and_fetch(&(v), 1)
 // return --v;
-#define ATOM_DEC(v)         __sync_sub_and_fetch(&(v), 1)
+#define atom_dec(v)         __sync_sub_and_fetch(&(v), 1)
 // bool b = v == c; b ? v=a : ; return b;
-#define ATOM_CAS(v, c, a)   __sync_bool_compare_and_swap(&(v), (c), (a))
+#define atom_cas(v, c, a)   __sync_bool_compare_and_swap(&(v), (c), (a))
 
 #endif
 
@@ -67,23 +74,23 @@ inline void store_release(atom_t * x) {
 
 #define atom_unlock(o)      store_release(&(o))
 
-// 保证代码不乱序优化后执行
-#define ATOM_SYNC()         MemoryBarrier()
+// 保证代码优化后不乱序执行
+#define atom_sync()         MemoryBarrier()
 
 // v 和 a 都是 long 这样数据
-#define ATOM_ADD(v, a)      InterlockedAdd((volatile LONG *)&(v), (LONG)(a))
-#define ATOM_SET(v, a)      InterlockedExchange((volatile LONG *)&(v), (LONG)(a))
-#define ATOM_AND(v, a)      InterlockedAnd((volatile LONG *)&(v), (LONG)(a))
-#define ATOM_INC(v)         InterlockedIncrement((volatile LONG *)&(v))
-#define ATOM_DEC(v)         InterlockedDecrement((volatile LONG *)&(v))
+#define atom_add(v, a)      InterlockedAdd((volatile LONG *)&(v), (LONG)(a))
+#define atom_set(v, a)      InterlockedExchange((volatile LONG *)&(v), (LONG)(a))
+#define atom_and(v, a)      InterlockedAnd((volatile LONG *)&(v), (LONG)(a))
+#define atom_inc(v)         InterlockedIncrement((volatile LONG *)&(v))
+#define atom_dec(v)         InterlockedDecrement((volatile LONG *)&(v))
 //
 // 对于 InterlockedCompareExchange(v, c, a) 等价于下面
 // long tmp = v ; v == a ? v = c : ; return tmp;
 //
-// 咱们的 ATOM_CAS(v, c, a) 等价于下面
+// 咱们的 atom_cas(v, c, a) 等价于下面
 // long tmp = v ; v == c ? v = a : ; return tmp;
 //
-#define ATOM_CAS(v, c, a)   ((LONG)(c) == InterlockedCompareExchange((volatile LONG *)&(v), (LONG)(a), (LONG)(c)))
+#define atom_cas(v, c, a)   ((LONG)(c) == InterlockedCompareExchange((volatile LONG *)&(v), (LONG)(a), (LONG)(c)))
 
 #endif
 

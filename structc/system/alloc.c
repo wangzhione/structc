@@ -25,7 +25,7 @@ static inline void * mcheck(void * ptr, size_t size) {
 }
 
 //
-// malloc_ - malloc 包装, 封装一些业务特性代码
+// malloc_ - malloc 包装, 封装一些特殊业务
 // size     : 分配的内存字节
 // return   : 返回可使用的内存地址.
 //

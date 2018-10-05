@@ -1,4 +1,4 @@
-﻿#include <times.h>
+﻿#include "times.h"
 #include <stdio.h>
 
 #ifdef _MSC_VER
@@ -6,9 +6,9 @@
 //
 // usleep - 微秒级别等待函数
 // usec         : 等待的微秒
-// return       : 0 on success.  On error, -1 is returned.
+// return       : 0 on success. On error, -1 is returned.
 //
-int 
+int
 usleep(unsigned usec) {
     int rt = -1;
     // Convert to 100 nanosecond interval, negative value indicates relative time
@@ -30,18 +30,18 @@ usleep(unsigned usec) {
 #endif
 
 // times_tm - 从时间串中提取出来年月日时分秒
-bool times_tm(times_t tsr, struct tm * pm) {
-    int c, num, * es, * py;
-    if ((!tsr) || !(c = *tsr) || c < '0' || c > '9')
+bool times_tm(times_t ns, struct tm * om) {
+    int c, num, *es, *py;
+    if ((!ns) || !(c = *ns) || c < '0' || c > '9')
         return false;
 
     num = 0;
-    es = &pm->tm_sec;
-    py = &pm->tm_year;
+    es = &om->tm_sec;
+    py = &om->tm_year;
     do {
         if (c >= '0' && c <= '9') {
             num = 10 * num + c - '0';
-            c = *++tsr;
+            c = *++ns;
             continue;
         }
 
@@ -51,7 +51,7 @@ bool times_tm(times_t tsr, struct tm * pm) {
 
         // 去掉特殊字符, 重新开始
         for (;;) {
-            if ((c = *++tsr) == '\0')
+            if ((c = *++ns) == '\0')
                 return false;
             if (c >= '0' && c <= '9')
                 break;
@@ -70,18 +70,18 @@ bool times_tm(times_t tsr, struct tm * pm) {
 
 //
 // times_get - 解析时间串, 返回时间戳
-// tsr          : 时间串内容 
-// pt           : 返回得到的时间戳
-// pm           : 返回得到的时间结构体
+// ns           : 时间串内容 
+// ot           : 返回得到的时间戳
+// om           : 返回得到的时间结构体
 // return       : 返回 true 表示构造成功
 //
-bool 
-times_get(times_t tsr, time_t * pt, struct tm * pm) {
+bool
+times_get(times_t ns, time_t * ot, struct tm * om) {
     time_t t;
     struct tm m;
 
     // 先高效解析出年月日时分秒
-    if (!times_tm(tsr, &m))
+    if (!times_tm(ns, &m))
         return false;
 
     // 得到时间戳, 失败返回false
@@ -91,23 +91,22 @@ times_get(times_t tsr, time_t * pt, struct tm * pm) {
         return false;
 
     // 返回最终结果
-    if (pt) *pt = t;
-    if (pm) *pm = m;
+    if (ot) *ot = t;
+    if (om) *om = m;
     return true;
 }
 
 //
 // time_get - 解析时间串, 返回时间戳
-// tsr          : 时间串内容  
+// ns           : 时间串内容  
 // return       : < 0 is error
 //
-inline time_t 
-time_get(times_t tsr) {
+inline time_t
+time_get(times_t ns) {
     struct tm m;
     // 先高效解析出年月日时分秒
-    if (!times_tm(tsr, &m))
+    if (!times_tm(ns, &m))
         return -1;
-
     // 得到时间戳, 失败返回false
     m.tm_mon -= 1;
     m.tm_year -= 1900;
@@ -121,7 +120,7 @@ time_get(times_t tsr) {
 // t            : 第二个时间戳
 // return       : true 表示同一天
 //
-inline bool 
+inline bool
 time_day(time_t n, time_t t) {
     // China local 适用, 得到当前天数
     // GMT [World] + 8 * 3600 = CST [China]
@@ -133,9 +132,9 @@ time_day(time_t n, time_t t) {
 //
 // time_now - 判断时间戳是否是今天
 // t            : 待判断的时间戳
-// return       : 返回当前时间戳, -1 is error
+// return       : 返回当前时间戳, < 0 is error
 //
-inline time_t 
+inline time_t
 time_now(time_t t) {
     time_t n = time(NULL);
     return time_day(n, t) ? n : -1;
@@ -147,15 +146,13 @@ time_now(time_t t) {
 // t            : 第二个时间戳
 // return       : true 表示同一周
 //
-bool 
+bool
 time_week(time_t n, time_t t) {
     time_t p;
     struct tm m;
-    // 得到最大时间, 保存在 n 中
+    // 获取最大时间存在 n 中
     if (n < t) {
-        p = n;
-        n = t;
-        t = p;
+        p = n; n = t; t = p;
     }
 
     // 得到 n 表示的当前时间
@@ -175,11 +172,11 @@ time_week(time_t n, time_t t) {
 // ts           : 第二个时间串
 // return       : true 表示同一天
 //
-bool 
+bool
 times_day(times_t ns, times_t ts) {
     time_t t, n = time_get(ns);
     // 解析失败直接返回结果
-    if ( (n < 0) || ((t = time_get(ts)) < 0))
+    if ((n < 0) || ((t = time_get(ts)) < 0))
         return false;
     return time_day(n, t);
 }
@@ -190,32 +187,32 @@ times_day(times_t ns, times_t ts) {
 // ts           : 第二个时间串
 // return       : true 表示同一周
 //
-bool 
+bool
 times_week(times_t ns, times_t ts) {
     time_t t, n = time_get(ns);
     // 解析失败直接返回结果
-    if ( (n < 0) || ((t = time_get(ts)) < 0))
+    if ((n < 0) || ((t = time_get(ts)) < 0))
         return false;
     return time_week(n, t);
 }
 
 //
 // times_fmt - 通过 fmt 格式最终拼接一个字符串
-// fmt          : 必须包含 %04d %02d %02d %02d %02d %02d %03ld
-// buf          : 最终保存的内容
+// fmt          : 必须包含 %04d %02d %02d %02d %02d %02d %03d
+// out          : 最终保存的内容
 // sz           : buf 长度
 // return       : 返回生成串长度
 //
-int 
-times_fmt(const char * fmt, char buf[], size_t sz) {
+int
+times_fmt(const char * fmt, char out[], size_t sz) {
     struct tm m;
     struct timespec s;
 
     timespec_get(&s, TIME_UTC);
     localtime_r(&s.tv_sec, &m);
 
-    return snprintf(buf, sz, fmt,
+    return snprintf(out, sz, fmt,
                     m.tm_year + 1900, m.tm_mon + 1, m.tm_mday,
-                    m.tm_hour, m.tm_min, m.tm_sec, 
-                    s.tv_nsec / 1000000);
+                    m.tm_hour, m.tm_min, m.tm_sec,
+                    (int)s.tv_nsec / 1000000);
 }

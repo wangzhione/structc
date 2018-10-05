@@ -5,11 +5,9 @@
 #include <stdbool.h>
 
 //
-// 1s = 1000ms  = 1000000us  = 1000000000ns
-// 1秒  1000毫秒  1000000微秒  1000000000纳秒
 // ~ 力求最小时间业务单元 ~ 
+// 1s(秒) = 1000ms(毫秒) = 1000000us(微秒) = 1000000000ns(纳秒)
 //
-
 #ifdef __GNUC__
 
 #include <unistd.h>
@@ -59,19 +57,19 @@ typedef char times_t[INT_TIMES];
 
 //
 // times_get - 解析时间串, 返回时间戳
-// tsr          : 时间串内容 
-// pt           : 返回得到的时间戳
-// pm           : 返回得到的时间结构体
+// ns           : 时间串内容 
+// ot           : 返回得到的时间戳
+// om           : 返回得到的时间结构体
 // return       : 返回 true 表示构造成功
 //
-extern bool times_get(times_t tsr, time_t * pt, struct tm * pm);
+extern bool times_get(times_t ns, time_t * ot, struct tm * om);
 
 //
 // time_get - 解析时间串, 返回时间戳
-// tsr          : 时间串内容  
-// return       : 0 is error
+// ns           : 时间串内容  
+// return       : < 0 is error
 //
-extern time_t time_get(times_t tsr);
+extern time_t time_get(times_t ns);
 
 //
 // time_day - 判断时间戳是否是同一天
@@ -84,7 +82,7 @@ extern bool time_day(time_t n, time_t t);
 //
 // time_now - 判断时间戳是否是今天
 // t            : 待判断的时间戳
-// return       : 返回当前时间戳, -1 is error
+// return       : 返回当前时间戳, < 0 is error
 //
 extern time_t time_now(time_t t);
 
@@ -115,29 +113,29 @@ extern bool times_week(times_t ns, times_t ts);
 //
 // times_fmt - 通过 fmt 格式最终拼接一个字符串
 // fmt          : 必须包含 %04d %02d %02d %02d %02d %02d %03ld
-// buf          : 最终保存的内容
+// out          : 最终保存的内容
 // sz           : buf 长度
 // return       : 返回生成串长度
 //
-int times_fmt(const char * fmt, char buf[], size_t sz);
+int times_fmt(const char * fmt, char out[], size_t sz);
 
 //
 // times_buf - 存储毫秒串 "2016-07-10 22:38:34 500"
-// osr          : 返回生成串
+// ns           : 返回生成串
 // return       : 返回生成串长度
-#define STR_TIMES "%04d-%02d-%02d %02d:%02d:%02d %03ld"
-inline int times_buf(times_t osr) {
-    return times_fmt(STR_TIMES, osr, sizeof(times_t));
+#define STR_TIMES "%04d-%02d-%02d %02d:%02d:%02d %03d"
+inline int times_buf(times_t ns) {
+    return times_fmt(STR_TIMES, ns, sizeof(times_t));
 }
 
 //
 // times_str - 得到毫秒串
-// osr          : 返回生成串
+// ns           : 返回生成串
 // return       : 返回生成串
 //
-inline char * times_str(times_t osr) {
-    times_buf(osr);
-    return osr;
+inline char * times_str(times_t ns) {
+    times_buf(ns);
+    return ns;
 }
 
 #endif//_H_TIMES

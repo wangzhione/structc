@@ -74,7 +74,7 @@ timer_del(int id) {
 // timer_node_new - timer_node 定时器结点构建
 inline static struct timer_node * timer_node_new(int s, node_f ftimer, void * arg) {
     struct timer_node * node = malloc(sizeof(struct timer_node));
-    node->id = ATOM_INC(_imer.id);
+    node->id = atom_inc(_imer.id);
     node->arg = arg;
     node->ftimer = ftimer;
     timespec_get(&node->tc, TIME_UTC);

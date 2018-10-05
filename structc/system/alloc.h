@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// :) 高效内存分配, 莫名有些伤感 ~
-// _MSC_VER => Winds CL
-// __GNUC__ => Linux GCC
+// :) 高效内存分配, 莫名伤感 ~
+// _MSC_VER -> Winds CL
+// __GNUC__ -> Linux GCC
 //
 #ifdef _MSC_VER
 //
@@ -18,7 +18,7 @@
 #   endif
 //
 // _M_PPC 为 PowerPC 平台定义, 现在已不支持
-// so Winds 可以认为都是小端平台
+// so winds 可以认为都是小端平台
 //
 #   if defined(_M_PPC)
 #       define ISBENIAN
@@ -40,21 +40,20 @@
 #   error BUILD (￣︶￣) S
 #endif
 
-//
-// OFF_ALLOC 关闭全局 free / malloc 配置
-//
+// OFF_ALLOC - 关闭全局 free / malloc 配置
 #ifndef OFF_ALLOC
 
 #   undef  free
-#   undef  strdup
-#   undef  malloc
-#   undef  calloc
-#   undef  realloc
-
 #   define free    free_
+
+#   undef  strdup
 #   define strdup  strdup_
+
+#   undef  malloc
 #   define malloc  malloc_
+#   undef  calloc
 #   define calloc  calloc_
+#   undef  realloc
 #   define realloc realloc_
 
 #endif//OFF_ALLOC
@@ -67,7 +66,7 @@
 extern void free_(void * ptr);
 
 //
-// malloc_ - malloc 包装, 封装一些业务特性代码
+// malloc_ - malloc 包装, 封装一些特殊业务
 // size     : 分配的内存字节
 // return   : 返回可使用的内存地址.
 //
