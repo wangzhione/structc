@@ -1,7 +1,7 @@
 ﻿#ifndef _H_LOG
 #define _H_LOG
 
-#include <times.h>
+#include "times.h"
 
 //
 // log_printf - 具体输出日志内容

@@ -1,4 +1,4 @@
-﻿#include <head.h>
+﻿#include "head.h"
 
 //
 // TEST - 用于单元测试函数, 执行并输出运行时间
@@ -11,7 +11,7 @@ do {                                                               \
     clock_t $s = clock();                                          \
     ftest (##__VA_ARGS__);                                         \
     double $e = (double)clock();                                   \
-    printf(STR(ftest) " run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC); \
+    printf(STR(ftest)" run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);  \
 } while(0)
 
 

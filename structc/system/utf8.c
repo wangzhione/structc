@@ -1,4 +1,4 @@
-﻿#include <utf8.h>
+﻿#include "utf8.h"
 
 //
 // isu8s - 判断字符串是否是utf8编码
@@ -38,7 +38,7 @@ isu8s(const char * s) {
 }
 
 // unicode to gbk 编码映射集合
-static unsigned _ue2g[] = {
+static unsigned unicode_gbk[] = {
         0,        1,        2,        3,        4,        5,        6,        7,        8,        9,
        10,       11,       12,       13,       14,       15,       16,       17,       18,       19,
        20,       21,       22,       23,       24,       25,       26,       27,       28,       29,
@@ -6596,7 +6596,7 @@ static unsigned _ue2g[] = {
 };
 
 // gbk to utf8 编码映射集合
-static unsigned _g2u8[] = {
+static unsigned gbk_utf8[] = {
         0,        1,        2,        3,        4,        5,        6,        7,        8,        9,
        10,       11,       12,       13,       14,       15,       16,       17,       18,       19,
        20,       21,       22,       23,       24,       25,       26,       27,       28,       29,
@@ -13223,9 +13223,9 @@ size_t u82gn(const char * u8s, size_t n, char * gs) {
         }
 
         // 65535 以上编码, gbk 没有忽略
-        if (ue >= sizeof _ue2g / sizeof *_ue2g) {}
+        if (ue >= sizeof unicode_gbk / sizeof *unicode_gbk) {}
         else {
-            gbk = _ue2g[ue];
+            gbk = unicode_gbk[ue];
             if (len > 1)
                 gs[gi++] = gbk >> 8;
             gs[gi++] = gbk & 0xFF;
@@ -13245,14 +13245,14 @@ size_t g2u8n(const char * gs, size_t n, char * u8s) {
     while (n > gi) {
         c = gs[gi++] & 0xFF;
         if (c < 0x80)
-            u8s[ui++] = _g2u8[c];
+            u8s[ui++] = gbk_utf8[c];
         else {
             if (n < gi + 1)
                 break;
 
             c <<= 8;
             c |= gs[gi++] & 0xFF;
-            u = _g2u8[c];
+            u = gbk_utf8[c];
             if (u < 0xD192)
                 u8s[ui++] = u >> 8;
             else {

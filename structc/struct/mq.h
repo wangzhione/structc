@@ -1,8 +1,8 @@
 ﻿#ifndef _H_MQ
 #define _H_MQ
 
-#include <q.h>
-#include <atom.h>
+#include "q.h"
+#include "atom.h"
 
 struct mq {
     q_t q;             // 队列

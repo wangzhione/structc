@@ -1,7 +1,7 @@
 ﻿#ifndef _H_Q
 #define _H_Q
 
-#include <struct.h>
+#include "struct.h"
 
 //
 // pop empty  <=> tail == -1 ( head == 0 )

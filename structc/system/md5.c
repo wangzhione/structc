@@ -1,4 +1,4 @@
-﻿#include <md5.h>
+﻿#include "md5.h"
 
 struct md5c {
     uint8_t  in[64];      /* Input data */
@@ -56,19 +56,19 @@ struct md5c {
 #define MD5_S44 21
 
 /* Basic MD5 step. MD5_Transform buf based on in */
-extern void md5_transform (struct md5c * ctx, const uint32_t * in) {
+extern void md5_transform(struct md5c * ctx, const uint32_t * in) {
     uint32_t a = ctx->a, b = ctx->b, c = ctx->c, d = ctx->d;
 
     /* Round 1 */
-    MD5_FF ( a, b, c, d, in[ 0], MD5_S11, 3614090360u); /* 1 */
-    MD5_FF ( d, a, b, c, in[ 1], MD5_S12, 3905402710u); /* 2 */
-    MD5_FF ( c, d, a, b, in[ 2], MD5_S13,  606105819u); /* 3 */
-    MD5_FF ( b, c, d, a, in[ 3], MD5_S14, 3250441966u); /* 4 */
-    MD5_FF ( a, b, c, d, in[ 4], MD5_S11, 4118548399u); /* 5 */
-    MD5_FF ( d, a, b, c, in[ 5], MD5_S12, 1200080426u); /* 6 */
-    MD5_FF ( c, d, a, b, in[ 6], MD5_S13, 2821735955u); /* 7 */
-    MD5_FF ( b, c, d, a, in[ 7], MD5_S14, 4249261313u); /* 8 */
-    MD5_FF ( a, b, c, d, in[ 8], MD5_S11, 1770035416u); /* 9 */
+    MD5_FF ( a, b, c, d, in[ 0], MD5_S11, 3614090360u); /*  1 */
+    MD5_FF ( d, a, b, c, in[ 1], MD5_S12, 3905402710u); /*  2 */
+    MD5_FF ( c, d, a, b, in[ 2], MD5_S13,  606105819u); /*  3 */
+    MD5_FF ( b, c, d, a, in[ 3], MD5_S14, 3250441966u); /*  4 */
+    MD5_FF ( a, b, c, d, in[ 4], MD5_S11, 4118548399u); /*  5 */
+    MD5_FF ( d, a, b, c, in[ 5], MD5_S12, 1200080426u); /*  6 */
+    MD5_FF ( c, d, a, b, in[ 6], MD5_S13, 2821735955u); /*  7 */
+    MD5_FF ( b, c, d, a, in[ 7], MD5_S14, 4249261313u); /*  8 */
+    MD5_FF ( a, b, c, d, in[ 8], MD5_S11, 1770035416u); /*  9 */
     MD5_FF ( d, a, b, c, in[ 9], MD5_S12, 2336552879u); /* 10 */
     MD5_FF ( c, d, a, b, in[10], MD5_S13, 4294925233u); /* 11 */
     MD5_FF ( b, c, d, a, in[11], MD5_S14, 2304563134u); /* 12 */
@@ -135,7 +135,7 @@ extern void md5_transform (struct md5c * ctx, const uint32_t * in) {
 }
 
 // Set pseudoRandomNumber to zero for RFC MD5 implementation
-extern inline void md5_init (struct md5c * ctx) {
+extern inline void md5_init(struct md5c * ctx) {
     ctx->nl = ctx->nh = 0;
 
     /* Load magic initialization constants */
@@ -145,7 +145,7 @@ extern inline void md5_init (struct md5c * ctx) {
     ctx->d = 0x10325476;
 }
 
-extern void md5_update (struct md5c * ctx, const void * buf, size_t n) {
+extern void md5_update(struct md5c * ctx, const void * buf, size_t n) {
     uint32_t in[16];
     uint32_t i, ii, mdi;
     uint32_t len = (uint32_t)n;

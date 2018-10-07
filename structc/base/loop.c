@@ -1,4 +1,4 @@
-﻿#include <loop.h>
+﻿#include "loop.h"
 #include <assert.h>
 
 // loop 轮询器结构
@@ -15,7 +15,7 @@ struct loop {
 };
 
 // run - 消息处理行为
-inline static void run(loop_t p, void * m) {
+inline void run(loop_t p, void * m) {
     // 开始处理消息
     p->frun(m);
     p->fdie(m);
@@ -62,7 +62,7 @@ loop_push(loop_t p, void * m) {
 }
 
 // 轮询器执行的循环体
-static void _loop(loop_t p) {
+static void loop_run(loop_t p) {
     while (p->loop) {
         void * m = q_pop(p->rq);
         if (m) {
@@ -76,8 +76,7 @@ static void _loop(loop_t p) {
         atom_unlock(p->lock);
 
         m = q_pop(p->rq);
-        if (m) 
-            run(p, m);
+        if (m) run(p, m);
         else {
             // 仍然没有数据, 开始睡眠
             p->wait = true;
@@ -100,11 +99,10 @@ loop_create_(node_f frun, node_f fdie) {
     q_init(p->wq);
     p->frun = frun;
     p->fdie = fdie;
-    p->loop = true;
-    p->wait = true;
+    p->wait = p->loop = true;
     // 初始化 POSIX 信号量, 进程内线程共享, 初始值 0
     sem_init(&p->block, 0, 0);
-    if (pthread_run(p->id, _loop, p)) {
+    if (pthread_run(p->id, loop_run, p)) {
         sem_destroy(&p->block);
         free(p->rq->queue);
         free(p->wq->queue);

@@ -1,7 +1,7 @@
 ﻿#ifndef _H_ARRAY
 #define _H_ARRAY
 
-#include <struct.h>
+#include "struct.h"
 
 struct array {
     unsigned alloc;     // 数组中元素大小

@@ -1,7 +1,7 @@
 ﻿#ifndef _H_JSON
 #define _H_JSON
 
-#include <tstr.h>
+#include "tstr.h"
 #include <math.h>
 #include <float.h>
 #include <limits.h>

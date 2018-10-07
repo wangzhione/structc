@@ -1,5 +1,5 @@
-﻿#include <file.h>
-#include <atom.h>
+﻿#include "file.h"
+#include "atom.h"
 
 //
 // removes - 删除非空目录 or 文件
@@ -163,10 +163,10 @@ struct file {
 static struct files {
     atom_t lock;            // 当前对象原子锁
     struct file * head;     // 当前文件对象集
-} _s;
+} f_s;
 
 // files add 
-static void _add(const char * p, unsigned h, file_f func, void * arg) {
+static void f_s_add(const char * p, unsigned h, file_f func, void * arg) {
     struct file * fu;
     if (mtime(p) == -1) {
         RETNIL("mtime error p = %s", p);
@@ -180,15 +180,15 @@ static void _add(const char * p, unsigned h, file_f func, void * arg) {
     fu->arg = arg;
 
     // 直接插入到头结点部分
-    atom_lock(_s.lock);
-    fu->next = _s.head;
-    _s.head = fu;
-    atom_unlock(_s.lock);
+    atom_lock(f_s.lock);
+    fu->next = f_s.head;
+    f_s.head = fu;
+    atom_unlock(f_s.lock);
 }
 
 // files get 
-static struct file * _get(const char * p, unsigned * r) {
-    struct file * fu = _s.head;
+static struct file * f_s_get(const char * p, unsigned * r) {
+    struct file * fu = f_s.head;
     unsigned h = *r = str_hash(p);
 
     while (fu) {
@@ -211,15 +211,15 @@ void
 file_set(const char * path, file_f func, void * arg) {
     unsigned h;
     assert(path && *path);
-    struct file * fu = _get(path, &h);
+    struct file * fu = f_s_get(path, &h);
     if (NULL == fu)
-        _add(path, h, func, arg);
+        f_s_add(path, h, func, arg);
     else {
-        atom_lock(_s.lock);
+        atom_lock(f_s.lock);
         fu->last = -1;
         fu->func = func;
         fu->arg = arg;
-        atom_unlock(_s.lock);
+        atom_unlock(f_s.lock);
     }
 }
 
@@ -230,16 +230,16 @@ file_set(const char * path, file_f func, void * arg) {
 void 
 file_update(void) {
     struct file * fu;
-    atom_lock(_s.lock);
+    atom_lock(f_s.lock);
 
-    fu = _s.head;
+    fu = f_s.head;
     while (fu) {
         struct file * next = fu->next;
 
         if (NULL == fu->func) {
             // 删除的是头结点
-            if (_s.head == fu)
-                _s.head = next;
+            if (f_s.head == fu)
+                f_s.head = next;
 
             free(fu->path);
             free(fu);
@@ -259,5 +259,5 @@ file_update(void) {
 
         fu = next;
     }
-    atom_unlock(_s.lock);
+    atom_unlock(f_s.lock);
 }

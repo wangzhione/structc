@@ -1,4 +1,4 @@
-﻿#include <rtree.h>
+﻿#include "rtree.h"
 
 //
 // struct $rtree 结构辅助操作宏
@@ -21,7 +21,7 @@ inline void rtree_set_color(struct $rtree * r, int color) {
     r->parentc = (r->parentc & ~1) | (1 & color);
 }
 
-static inline int rtree_default_cmp(const void * ln, const void * rn) {
+inline static int rtree_default_cmp(const void * ln, const void * rn) {
     return (int)((intptr_t)ln - (intptr_t)rn);
 }
 

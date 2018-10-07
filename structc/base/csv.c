@@ -1,7 +1,7 @@
-﻿#include <csv.h>
+﻿#include "csv.h"
 
-// _csv_parse - 解析 csv 文件内容, 构建一个合法串
-static int _csv_parse(char * str, int * pr, int * pc) {
+// csv_check - 解析和检查 csv 文件内容, 返回构造的合法串
+static int csv_check(char * str, int * pr, int * pc) {
     int c, n, rnt = 0, cnt = 0;
     char * tar = str, * s = str;
     while ((c = *tar++) != '\0') {
@@ -20,7 +20,7 @@ static int _csv_parse(char * str, int * pr, int * pc) {
             }
             // 继续判断,只有是 c == '"' 才会继续, 否则都是异常
             if (c != '"') 
-                goto _faid;
+                goto err_faid;
             break;
         case ',' : *s++ = '\0'; ++cnt; break;
         case '\r': break;
@@ -35,13 +35,12 @@ static int _csv_parse(char * str, int * pr, int * pc) {
 
     // 检查, 行列个数是否正常
     if (rnt == 0 || cnt % rnt) {
-    _faid:
+err_faid:
         RETURN(-1, "csv parse error %d, %d, %d.", c, rnt, cnt);
     }
 
     // 返回最终内容
-    *pr = rnt; 
-    *pc = cnt;
+    *pr = rnt; *pc = cnt;
     return (int)(s - str);
 }
 
@@ -50,7 +49,7 @@ csv_t csv_parse(char * s) {
     csv_t csv;
     char * str;
     int diff, rnt, cnt;
-    if ((diff = _csv_parse(s, &rnt, &cnt)) < 0)
+    if ((diff = csv_check(s, &rnt, &cnt)) < 0)
         return NULL;
     
     // 分配最终内存

@@ -1,6 +1,6 @@
 ﻿#ifdef __linux__
 
-#include <spoll.h>
+#include "spoll.h"
 #include <sys/epoll.h>
 
 //

@@ -1,7 +1,7 @@
 ﻿#ifndef _H_LIST
 #define _H_LIST
 
-#include <struct.h>
+#include "struct.h"
 
 //
 // list.h 通用的单链表库

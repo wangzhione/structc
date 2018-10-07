@@ -1,4 +1,4 @@
-﻿#include <dict.h>
+﻿#include "dict.h"
 
 //
 // primes - 质数表

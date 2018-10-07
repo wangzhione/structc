@@ -1,8 +1,8 @@
 ﻿#ifndef _H_DICT
 #define _H_DICT
 
-#include <struct.h>
-#include <strext.h>
+#include "struct.h"
+#include "strext.h"
 
 //
 // dict_t : C 字符串为 k 的字典结构

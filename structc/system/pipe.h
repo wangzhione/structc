@@ -1,7 +1,7 @@
 ﻿#ifndef _H_PIPE
 #define _H_PIPE
 
-#include <socket.h>
+#include "socket.h"
 
 #ifdef _MSC_VER
 

@@ -5,7 +5,7 @@
 #define FD_SETSIZE      (1024)
 #endif
 
-#include <spoll.h>
+#include "spoll.h"
 
 struct trigger {
     void * ud;

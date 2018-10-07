@@ -1,4 +1,4 @@
-﻿#include <tstr.h>
+﻿#include "tstr.h"
 
 // INT_TSTR - 字符串构建的初始化大小
 #define INT_TSTR  (1<<8)
@@ -42,16 +42,14 @@ tstr_delete(tstr_t tsr) {
 inline tstr_t 
 tstr_create(const char * str, size_t len) {
     tstr_t tsr = calloc(1, sizeof(struct tstr));
-    if (str && len > 0)
-        tstr_appendn(tsr, str, len);
+    if (str && len) tstr_appendn(tsr, str, len);
     return tsr;
 }
 
 inline tstr_t 
 tstr_creates(const char * str) {
     tstr_t tsr = calloc(1, sizeof(struct tstr));
-    if (str)
-        tstr_appends(tsr, str);
+    if (str) tstr_appends(tsr, str);
     return tsr;
 }
 

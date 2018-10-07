@@ -1,8 +1,8 @@
 ﻿#ifndef _H_FILE
 #define _H_FILE
 
-#include <struct.h>
-#include <strext.h>
+#include "struct.h"
+#include "strext.h"
 
 #ifdef __GNUC__
 

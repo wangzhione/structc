@@ -1,7 +1,7 @@
 ﻿#ifndef _H_RTREE
 #define _H_RTREE
 
-#include <struct.h>
+#include "struct.h"
 
 //
 // 红黑树通用结构, 需要将 $RTREE 放在结构开头部位

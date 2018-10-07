@@ -1,4 +1,4 @@
-﻿#include <rand.h>
+﻿#include "rand.h"
 #include <time.h>
 
 #define CARRY(x, y)     ((x + y) > MASK) // 二者和是否进位, 基于 16位
@@ -38,11 +38,11 @@ rand_rand(rand_t r) {
 //
 // 我 - 想赢, 因为不甘心 :0
 //
-static rand_t _r = { { { X0, X1, X2 }, { A0, A1, A2 }, C } };
+static rand_t r_r = { { { X0, X1, X2 }, { A0, A1, A2 }, C } };
 
 // EXTERN_RUN(r_init) 启动初始化
 extern inline void r_init(void) {
-    rand_init(_r, time(NULL));
+    rand_init(r_r, time(NULL));
 }
 
 //
@@ -52,5 +52,5 @@ extern inline void r_init(void) {
 //
 inline int32_t 
 r_rand(void) {
-    return rand_rand(_r);
+    return rand_rand(r_r);
 }

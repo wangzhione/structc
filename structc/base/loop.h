@@ -1,9 +1,9 @@
 ﻿#ifndef _H_LOOP
 #define _H_LOOP
 
-#include <q.h>
-#include <atom.h>
-#include <thread.h>
+#include "q.h"
+#include "atom.h"
+#include "thread.h"
 
 typedef struct loop * loop_t;
 

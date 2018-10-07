@@ -1,7 +1,7 @@
 ﻿#ifndef _H_SPOLL
 #define _H_SPOLL
 
-#include <socket.h>
+#include "socket.h"
 
 //
 // 定义操作的事件集结构

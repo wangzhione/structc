@@ -1,4 +1,4 @@
-﻿#include <q.h>
+﻿#include "q.h"
 
 //
 // q_delete - 队列销毁

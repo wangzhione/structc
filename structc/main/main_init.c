@@ -1,5 +1,5 @@
-﻿#include <head.h>
-#include <socket.h>
+﻿#include "head.h"
+#include "socket.h"
 
 //
 // STR_CONF_PATH - 配置文件路径

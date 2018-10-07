@@ -1,4 +1,4 @@
-﻿#include <strext.h>
+﻿#include "strext.h"
 
 //
 // str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
@@ -103,7 +103,7 @@ str_trim(char str[]) {
 }
 
 // _str_printf : 成功直接返回
-static char * _str_printf(const char * format, va_list arg) {
+static char * str_vprintf(const char * format, va_list arg) {
     char buf[BUFSIZ];
     int len = vsnprintf(buf, sizeof buf, format, arg);
     if (len < sizeof buf) {
@@ -127,7 +127,7 @@ str_printf(const char * format, ...) {
     va_start(arg, format);
 
     // BUFSIZ 以下内存直接分配
-    ret = _str_printf(format, arg);
+    ret = str_vprintf(format, arg);
     if (ret != NULL)
         return ret;
 
@@ -205,7 +205,7 @@ str_freads(const char * path) {
 }
 
 // str_fwrite - 按照约定输出数据到文件中
-int str_fwrite(const char * p, const char * s, const char * m) {
+static int str_fwrite(const char * p, const char * s, const char * m) {
     int len;
     FILE * txt;
     if (!p || !*p || !s || !m)

@@ -1,4 +1,4 @@
-﻿#include <head.h>
+﻿#include "head.h"
 
 //
 // main - 程序的总入口, 从扯开始

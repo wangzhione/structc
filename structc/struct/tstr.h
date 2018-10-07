@@ -1,7 +1,7 @@
 ﻿#ifndef _H_TSTR
 #define _H_TSTR
 
-#include <strext.h>
+#include "strext.h"
 
 #ifndef TSTR_CREATE
 

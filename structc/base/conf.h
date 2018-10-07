@@ -1,7 +1,7 @@
 ﻿#ifndef _H_CONF
 #define _H_CONF
 
-#include <utf8.h>
+#include "utf8.h"
 
 //
 // config 映射配置

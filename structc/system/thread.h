@@ -1,7 +1,7 @@
 ﻿#ifndef _H_THREAD
 #define _H_THREAD
 
-#include <struct.h>
+#include "struct.h"
 #include <pthread.h>
 #include <semaphore.h>
 

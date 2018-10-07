@@ -8,8 +8,8 @@
  * 3. 字段都可以被双引号包裹, 有回车换行符双引号或者逗号, 那必须包裹
  */
 
-#include <struct.h>
-#include <strext.h>
+#include "struct.h"
+#include "strext.h"
 
 typedef struct {   // struct in heap
     int    rlen;   // 数据行数, 索引 [0, rlen)

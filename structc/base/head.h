@@ -1,11 +1,11 @@
 ﻿#ifndef _H_HEAD
 #define _H_HEAD
 
-#include <conf.h>
-#include <file.h>
-#include <check.h>
-#include <times.h>
-#include <thread.h>
+#include "conf.h"
+#include "file.h"
+#include "check.h"
+#include "times.h"
+#include "thread.h"
 
 #ifdef _MSC_VER
 

@@ -1,15 +1,15 @@
-﻿#include <atom.h>
-#include <timer.h>
-#include <thread.h>
+﻿#include "atom.h"
+#include "timer.h"
+#include "thread.h"
 
 // timer_node 定时器结点
 struct timer_node {
     $LIST
 
-    int id;             // 定时器 id
-    void * arg;         // 执行函数参数
-    node_f ftimer;      // 执行的函数事件
-    struct timespec tc; // 运行的具体时间
+    int id;            // 定时器 id
+    void * arg;        // 执行函数参数
+    node_f ftimer;     // 执行的函数事件
+    struct timespec t; // 运行的具体时间
 };
 
 // timer_node id compare
@@ -21,9 +21,9 @@ inline static int timer_node_cmp_id(int id,
 // timer_node time compare 比较
 inline static int timer_node_cmp_time(const struct timer_node * l, 
                                       const struct timer_node * r) {
-    if (l->tc.tv_sec != r->tc.tv_sec)
-        return (int)(l->tc.tv_sec - r->tc.tv_sec);
-    return (int)(l->tc.tv_nsec - r->tc.tv_nsec);
+    if (l->t.tv_sec != r->t.tv_sec)
+        return (int)(l->t.tv_sec - r->t.tv_sec);
+    return (int)(l->t.tv_nsec - r->t.tv_nsec);
 }
 
 // timer_list 链表对象管理器
@@ -36,7 +36,7 @@ struct timer_list {
 
 // timer_list_sus - 得到等待的微秒事件, <= 0 表示可以执行
 inline int timer_list_sus(struct timer_list * list) {
-    struct timespec * v = &list->list->tc, t[1];
+    struct timespec * v = &list->list->t, t[1];
     timespec_get(t, TIME_UTC);
     return (int)((v->tv_sec - t->tv_sec) * 1000000 + 
         (v->tv_nsec - t->tv_nsec) / 1000);
@@ -55,7 +55,7 @@ inline void timer_list_run(struct timer_list * list) {
 }
 
 // 定时器管理单例对象
-static struct timer_list _imer;
+static struct timer_list timer;
 
 //
 // timer_del - 删除定时器事件
@@ -64,28 +64,28 @@ static struct timer_list _imer;
 //
 inline void 
 timer_del(int id) {
-    if (_imer.list) {
-        atom_lock(_imer.lock);
-        free(list_pop(_imer.list, timer_node_cmp_id, id));
-        atom_unlock(_imer.lock);
+    if (timer.list) {
+        atom_lock(timer.lock);
+        free(list_pop(timer.list, timer_node_cmp_id, id));
+        atom_unlock(timer.lock);
     }
 }
 
 // timer_node_new - timer_node 定时器结点构建
 inline static struct timer_node * timer_node_new(int s, node_f ftimer, void * arg) {
     struct timer_node * node = malloc(sizeof(struct timer_node));
-    node->id = atom_inc(_imer.id);
+    node->id = atom_inc(timer.id);
     node->arg = arg;
     node->ftimer = ftimer;
-    timespec_get(&node->tc, TIME_UTC);
-    node->tc.tv_sec += s / 1000;
+    timespec_get(&node->t, TIME_UTC);
+    node->t.tv_sec += s / 1000;
     // nano second
-    node->tc.tv_nsec += (s % 1000) * 1000000;
+    node->t.tv_nsec += (s % 1000) * 1000000;
     return node;
 }
 
 // 运行的主 loop, 基于 timer 管理器 
-static void _list_loop(struct timer_list * list) {
+static void timer_run(struct timer_list * list) {
     // 正常轮循, 检查时间
     while (list->list) {
         int sus = timer_list_sus(list);
@@ -119,20 +119,20 @@ timer_add_(int tvl, node_f ftimer, void * arg) {
 
     node = timer_node_new(tvl, ftimer, arg);
     id = node->id;
-    atom_lock(_imer.lock);
+    atom_lock(timer.lock);
 
-    list_add(_imer.list, timer_node_cmp_time, node);
+    list_add(timer.list, timer_node_cmp_time, node);
 
     // 判断是否需要开启新的线程
-    if (!_imer.status) {
-        if (!pthread_async(_list_loop, &_imer))
-            _imer.status = true;
+    if (!timer.status) {
+        if (!pthread_async(timer_run, &timer))
+            timer.status = true;
         else {
             free(node);
             id = -1;
         } 
     }
 
-    atom_unlock(_imer.lock);
+    atom_unlock(timer.lock);
     return id;
 }
