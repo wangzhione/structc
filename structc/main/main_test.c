@@ -5,13 +5,13 @@
 // ftest    : 需要执行的测试函数名称
 // ...      : 可变参数, 保留
 //
-#define TEST(ftest, ...)                                           \
-do {                                                               \
-    extern void ftest();                                           \
-    clock_t $s = clock();                                          \
-    ftest (##__VA_ARGS__);                                         \
-    double $e = (double)clock();                                   \
-    printf(STR(ftest)" run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);  \
+#define TEST(ftest, ...)                                         \
+do {                                                             \
+    extern void ftest();                                         \
+    clock_t $s = clock();                                        \
+    ftest (##__VA_ARGS__);                                       \
+    double $e = (double)clock();                                 \
+    printf(STR(ftest)" run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);\
 } while(0)
 
 
@@ -24,5 +24,5 @@ void main_test(void) {
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(reuseport_test);
+    EXTERN_RUN(uv_tty_test);
 }

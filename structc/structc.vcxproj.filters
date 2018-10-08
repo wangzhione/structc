@@ -16,15 +16,6 @@
     <Filter Include="main">
       <UniqueIdentifier>{d6c6f9d9-5d79-493e-9bd4-a09f60462e35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\jemalloc">
-      <UniqueIdentifier>{e2b35c38-8fb0-4365-a5a3-537d8199b169}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\uv">
-      <UniqueIdentifier>{bb1acb3a-45f0-400a-a376-36c43777209f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\pthread">
-      <UniqueIdentifier>{f3c1c5a2-98b0-46b1-b5c5-05a6fd58f55b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="system\atom">
       <UniqueIdentifier>{03198923-4307-4de1-a539-a60b0b763a04}</UniqueIdentifier>
     </Filter>
@@ -37,23 +28,8 @@
     <Filter Include="test\conf">
       <UniqueIdentifier>{2df4e18f-58e4-47dc-8d7c-1e25e963ec09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\uv\uv">
-      <UniqueIdentifier>{ce7feaf4-e779-4bbd-966b-4470c3df0191}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="system\jemalloc\jemalloc.h">
-      <Filter>system\jemalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\pthread\pthread.h">
-      <Filter>system\pthread</Filter>
-    </ClInclude>
-    <ClInclude Include="system\pthread\sched.h">
-      <Filter>system\pthread</Filter>
-    </ClInclude>
-    <ClInclude Include="system\pthread\semaphore.h">
-      <Filter>system\pthread</Filter>
-    </ClInclude>
     <ClInclude Include="system\atom.h">
       <Filter>system\atom</Filter>
     </ClInclude>
@@ -161,24 +137,6 @@
     </ClInclude>
     <ClInclude Include="system\alloc.h">
       <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv.h">
-      <Filter>system\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv\errno.h">
-      <Filter>system\uv\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv\threadpool.h">
-      <Filter>system\uv\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv\tree.h">
-      <Filter>system\uv\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv\version.h">
-      <Filter>system\uv\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv\win.h">
-      <Filter>system\uv\uv</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

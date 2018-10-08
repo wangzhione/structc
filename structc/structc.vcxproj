@@ -38,11 +38,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDIr)system/uv;$(ProjectDIr)system/pthread;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(SolutionDir)extern;$(IncludePath)</IncludePath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(ProjectDir)system/uv;$(ProjectDir)system/pthread;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(SolutionDir)extern;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -51,9 +51,7 @@
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;
-WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
-;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -80,9 +78,7 @@ echo e n d init directory $(TargetDir)conf</Command>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
       <CompileAs>CompileAsC</CompileAs>
-      <PreprocessorDefinitions>_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;
-WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS
-;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <Optimization>Full</Optimization>
       <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -125,11 +121,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\utf8.h" />
     <ClInclude Include="system\md5.h" />
     <ClInclude Include="system\pipe.h" />
-    <ClInclude Include="system\pthread\pthread.h" />
-    <ClInclude Include="system\pthread\sched.h" />
-    <ClInclude Include="system\pthread\semaphore.h" />
     <ClInclude Include="system\rand.h" />
-    <ClInclude Include="system\jemalloc\jemalloc.h" />
     <ClInclude Include="system\socket.h" />
     <ClInclude Include="system\spoll$epoll.h" />
     <ClInclude Include="system\spoll$select.h" />
@@ -138,12 +130,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
-    <ClInclude Include="system\uv\uv.h" />
-    <ClInclude Include="system\uv\uv\errno.h" />
-    <ClInclude Include="system\uv\uv\threadpool.h" />
-    <ClInclude Include="system\uv\uv\tree.h" />
-    <ClInclude Include="system\uv\uv\version.h" />
-    <ClInclude Include="system\uv\uv\win.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\check.c" />

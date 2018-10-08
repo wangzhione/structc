@@ -1,42 +1,5 @@
 ﻿#include "utf8.h"
 
-//
-// isu8s - 判断字符串是否是utf8编码
-// s        : 输入的串
-// return   : true 表示 utf8 编码
-//
-bool 
-isu8s(const char * s) {
-    bool ascii = true;
-    // byts 表示编码字节数, utf8 [1, 6]字节编码
-    unsigned char c, byts = 0;
-
-    while ((c = *s++)) {
-        // ascii 码最高位为0, 0xxx xxxx
-        if ((c & 0x80)) ascii = false;
-
-        // 计算字节数
-        if (0 == byts) {
-            if (c >= 0x80) {
-                if (c >= 0xFC && c <= 0xFD) byts = 6;
-                else if (c >= 0xF8) byts = 5;
-                else if (c >= 0xF0) byts = 4;
-                else if (c >= 0xE0) byts = 3;
-                else if (c >= 0xC0) byts = 2;
-                else return false; // 异常编码直接返回
-                --byts;
-            }
-        } else {
-            // 多字节的非首位字节, 应为 10xx xxxx
-            if ((c & 0xC0) != 0x80) return false;
-            // byts 来回变化, 最终必须为 0
-            --byts;
-        }
-    }
-
-    return !ascii && byts == 0;
-}
-
 // unicode to gbk 编码映射集合
 static unsigned unicode_gbk[] = {
         0,        1,        2,        3,        4,        5,        6,        7,        8,        9,
@@ -13267,7 +13230,6 @@ size_t g2u8n(const char * gs, size_t n, char * u8s) {
 }
 
 //
-// isu8 - check is utf8
 // u82g - utf8 to gbk save d mem
 // g2u8 - gbk to utf8 save d mem by size n
 // d        : mem
@@ -13298,6 +13260,49 @@ g2u8(char d[], size_t n) {
     free(u8s);
 }
 
+//
+// isu8s - 判断字符串是否是utf8编码
+// s        : 输入的串
+// return   : true 表示 utf8 编码
+//
+bool 
+isu8s(const char * s) {
+    bool ascii = true;
+    // byts 表示编码字节数, utf8 [1, 6]字节编码
+    unsigned char c, byts = 0;
+
+    while ((c = *s++)) {
+        // ascii 码最高位为0, 0xxx xxxx
+        if ((c & 0x80)) ascii = false;
+
+        // 计算字节数
+        if (0 == byts) {
+            if (c >= 0x80) {
+                if (c >= 0xFC && c <= 0xFD) byts = 6;
+                else if (c >= 0xF8) byts = 5;
+                else if (c >= 0xF0) byts = 4;
+                else if (c >= 0xE0) byts = 3;
+                else if (c >= 0xC0) byts = 2;
+                else return false; // 异常编码直接返回
+                --byts;
+            }
+        } else {
+            // 多字节的非首位字节, 应为 10xx xxxx
+            if ((c & 0xC0) != 0x80) return false;
+            // byts 来回变化, 最终必须为 0
+            --byts;
+        }
+    }
+
+    return !ascii && byts == 0;
+}
+
+//
+// isu8 - check is utf8
+// d        : mem
+// n        : size
+// return   : true 表示 utf8 编码
+//
 bool 
 isu8(const char d[], size_t n) {
     size_t i = 0;

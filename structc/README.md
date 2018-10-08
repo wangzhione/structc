@@ -24,29 +24,25 @@
 
         项目右击 -> [属性] -> [链接器] -> [输入]
 
-        advapi32.lib
-        iphlpapi.lib
-        psapi.lib
-        shell32.lib
-        user32.lib
-        userenv.lib
-        ws2_32.lib
-
         libuv.lib
-
+        psapi.lib
+        user32.lib
+        shell32.lib
+        ws2_32.lib
+        userenv.lib
+        iphlpapi.lib
+        advapi32.lib
         pthread_lib.lib
-
         jemalloc-vc141-Release-static.lib
 
         
     c). 添加包含目录
         项目右击 -> [属性] -> [VC++ 目录] -> [包含目录]
 
-        $(ProjectDir)                   -- 基于上面的基础核心模块
+        $(ProjectDir)                   -- 基础核心模块
         $(ProjectDir)struct             -- 基础数据结构提供
         $(ProjectDir)system             -- 操作系统一些通用操作
-        $(ProjectDir)system/uv          -- 网络IO操作, 内嵌libuv
-        $(ProjectDir)system/pthread     -- POSIX pthread 线程模型
+        $(SolutionDir)extern            -- 引入的外部库文件路径
 
     d). 添加预编译处理器
         项目右击 -> [属性] -> [C/C++]-> [预处理器] -> [预处理器定义]
@@ -109,7 +105,7 @@
 
 ## 2. linux 部署
 
-    不妨采用Best New Ubuntu x64 GCC环境搭建
+    不妨采用 Best New Ubuntu x64 GCC 环境搭建
 
     a) 依赖安装
 
@@ -133,9 +129,9 @@ rm -rf jemalloc-5.1.0 jemalloc-5.1.0.tar.bz2
 
 # libuv 安装
 cd
-wget https://github.com/libuv/libuv/archive/v1.20.3.zip
-unzip v1.20.3.zip
-cd libuv-1.20.3
+wget https://github.com/libuv/libuv/archive/v1.23.1.zip
+unzip v1.23.1.zip
+cd libuv-1.23.1
 
 sh autogen.sh
 ./configure
@@ -144,7 +140,7 @@ sudo make install
 sudo ldconfig
 
 cd
-rm -rf libuv-1.20.3 v1.20.3.zip
+rm -rf libuv-1.23.1 v1.23.1.zip
 ```
 
     b) 编译设置

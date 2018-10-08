@@ -72,7 +72,7 @@ inline int pthread_async_(node_f frun, void * arg) {
 
     - Winds 双击
         - 目前只维护 x64 的 Debug 和 Release
-        - Best New CL build
+        - Best New CL Build
 
     - Linux 搞起
         - Release : make

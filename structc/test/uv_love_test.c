@@ -14,7 +14,7 @@ struct love {
     int len;
 };
 
-static char * _figure[] = {
+static char * figure[] = {
     u8"  背影 :- 汪国真\n",
     u8"  \n",
     u8"  背影\n",
@@ -38,16 +38,16 @@ static char * _figure[] = {
     u8"  更让人记得清\n"
 };
 
-// _love_stty : 内部发送消息
-static inline void _love_stty(struct love * love, const char * msg) {
+// love_stty : 内部发送消息
+static inline void love_stty(struct love * love, const char * msg) {
     uv_buf_t buf;
     buf.base = (char *)msg;
     buf.len = (int)strlen(buf.base);
     uv_try_write((uv_stream_t *)&love->tty, &buf, 1);
 }
 
-// _love_init : 初始化当前 tty 结构
-static void _love_init(struct love * love) {
+// love_init : 初始化当前 tty 结构
+static void love_init(struct love * love) {
     uv_loop_t * loop = uv_default_loop();
     memset(love, 0, sizeof *love);
 
@@ -66,34 +66,34 @@ static void _love_init(struct love * love) {
     }
 
     // 设置具体内容
-    love->msgs = _figure;
-    love->len = LEN(_figure);
+    love->msgs = figure;
+    love->len = LEN(figure);
 
     // 初始化定时器
     uv_timer_init(loop, &love->tick);
 }
 
-// _love_screem : 屏幕绘制内容
-static void _love_screem(struct love * love) {
+// love_screem : 屏幕绘制内容
+static void love_screem(struct love * love) {
     char buf[BUFSIZ];
     int cnt = love->pos < love->len ? love->pos : love->len;
 
     // 重置索引位置
     int idx = love->height - love->pos;
     snprintf(buf, LEN(buf), "\033[2J\033[H\033[%dB", idx);
-    _love_stty(love, buf);
+    love_stty(love, buf);
 
     // 全部显示
     for (idx = 0; idx < cnt; idx++)
-        _love_stty(love, love->msgs[idx]);
+        love_stty(love, love->msgs[idx]);
 }
 
 // _update - 更新刷新事件
-static void _love_update(struct love * love) {
+static void love_update(struct love * love) {
     ++love->pos;
 
     // 开始绘制内容
-    _love_screem(love);
+    love_screem(love);
 
     // 运行结束直接返回
     if (love->pos >= love->height) {
@@ -108,10 +108,10 @@ static void _love_update(struct love * love) {
 //
 void uv_love_test(void) {
     struct love love;
-    _love_init(&love);
+    love_init(&love);
 
     // 开始初始化, 定时器刷新事件
-    uv_timer_start(&love.tick, (uv_timer_cb)_love_update, 200, 200);
+    uv_timer_start(&love.tick, (uv_timer_cb)love_update, 200, 200);
 
     // 事件启动起来
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);

@@ -91,22 +91,22 @@ inline uint32_t ntoh(uint32_t x) {
 // ftest    : 需要执行的函数名称
 // ...      : 可变参数, 保留
 //
-#define EXTERN_RUN(ftest, ...)                                      \
-do {                                                                \
-    extern void ftest();                                            \
-    ftest (__VA_ARGS__);                                            \
+#define EXTERN_RUN(ftest, ...)                                  \
+do {                                                            \
+    extern void ftest();                                        \
+    ftest (__VA_ARGS__);                                        \
 } while(0)
 
 //
-// TEST_CODE - 测试代码块, 并输出简单时间信息
+// TEST_RUN - 测试代码块, 并输出简单时间信息
 // code : { ... } 包裹的代码块
 //
-#define TEST_CODE(code)                                             \
-do {                                                                \
-    clock_t $s = clock();                                           \
-    code                                                            \
-    double $e = (double)clock();                                    \
-    printf("test code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);    \
+#define TEST_RUN(code)                                          \
+do {                                                            \
+    clock_t $s = clock();                                       \
+    code                                                        \
+    double $e = (double)clock();                                \
+    printf("test code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);\
 } while (0)
 
 #endif//_H_HEAD
