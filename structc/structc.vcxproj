@@ -138,12 +138,12 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
-    <ClInclude Include="system\uv\tree.h" />
-    <ClInclude Include="system\uv\uv-errno.h" />
-    <ClInclude Include="system\uv\uv-threadpool.h" />
-    <ClInclude Include="system\uv\uv-version.h" />
-    <ClInclude Include="system\uv\uv-win.h" />
     <ClInclude Include="system\uv\uv.h" />
+    <ClInclude Include="system\uv\uv\errno.h" />
+    <ClInclude Include="system\uv\uv\threadpool.h" />
+    <ClInclude Include="system\uv\uv\tree.h" />
+    <ClInclude Include="system\uv\uv\version.h" />
+    <ClInclude Include="system\uv\uv\win.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\check.c" />

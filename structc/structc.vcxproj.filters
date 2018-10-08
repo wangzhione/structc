@@ -37,28 +37,13 @@
     <Filter Include="test\conf">
       <UniqueIdentifier>{2df4e18f-58e4-47dc-8d7c-1e25e963ec09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\uv\uv">
+      <UniqueIdentifier>{ce7feaf4-e779-4bbd-966b-4470c3df0191}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\jemalloc\jemalloc.h">
       <Filter>system\jemalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\tree.h">
-      <Filter>system\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv.h">
-      <Filter>system\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv-errno.h">
-      <Filter>system\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv-threadpool.h">
-      <Filter>system\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv-version.h">
-      <Filter>system\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="system\uv\uv-win.h">
-      <Filter>system\uv</Filter>
     </ClInclude>
     <ClInclude Include="system\pthread\pthread.h">
       <Filter>system\pthread</Filter>
@@ -176,6 +161,24 @@
     </ClInclude>
     <ClInclude Include="system\alloc.h">
       <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv.h">
+      <Filter>system\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv\errno.h">
+      <Filter>system\uv\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv\threadpool.h">
+      <Filter>system\uv\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv\tree.h">
+      <Filter>system\uv\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv\version.h">
+      <Filter>system\uv\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="system\uv\uv\win.h">
+      <Filter>system\uv\uv</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
