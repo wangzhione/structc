@@ -1,4 +1,5 @@
 # Ignore the uploaded folders
+Out/
 logs/
 Outs/
 Output/

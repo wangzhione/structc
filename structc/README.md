@@ -144,6 +144,9 @@ sudo make install
 sudo ldconfig
 
 cd
+#
+# 注意 uv 头文件, 全部导入到系统 include 目录下面
+#
 rm -rf libuv-1.23.1 v1.23.1.zip
 ```
 
@@ -153,13 +156,3 @@ rm -rf libuv-1.23.1 v1.23.1.zip
         -lpthread
 
         -luv
-
-    c) 踩坑
-        
-        gcc -I 会诱发 stdext.o 没有嵌入 jemalloc 相关代码, 使用下面方式
-
-```bash
-gcc -g -O2 -Wall -Wno-unused-result -c stdext.c -DJEMALLOC_NO_DEMANGLE -l:libjemalloc.a
-```
-
-        解决编译无法内嵌 jemalloc 问题!

@@ -3,6 +3,7 @@
 #define OFF_ALLOC
 #include "alloc.h"
 
+#define JEMALLOC_NO_DEMANGLE
 #include <jemalloc/jemalloc.h>
 
 //

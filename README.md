@@ -1,8 +1,8 @@
 # C STRUCT 基础库
 
-    目的 : 构建一个稍微通用点的 c 结构体基础库
+    背景 : 构建稍微通用点的 C 结构基础库
     方式 : 基于注册
-    适用 : c 从开始搭建项目的人群, 或者有点喜欢 C
+    适用 : 开始搭建项目的人群, 且有点喜欢 C
 
 ### 好像才刚开始 ~
 
@@ -15,10 +15,10 @@
         rtree.h     红黑树
         array.h     动态数组
 
-    总的目标:
+    总的设计:
         json 串, 原子锁, ...
     
-    来协助我们搭建多线程 C 项目, 提供底层数据结构或额外组件的支持 ...
+    来协助我们搭建 C 项目, 提供底层数据结构和额外组件的支持 ...
 
     ...
 
@@ -96,6 +96,7 @@ inline int pthread_async_(node_f frun, void * arg) {
     
     1. F1 -> Edit Configurations -> c_cpp_properties.json
        Search Linux 部分添加如下内容
+
 ```json
             "name": "Linux",
             "includePath": [
@@ -110,7 +111,8 @@ inline int pthread_async_(node_f frun, void * arg) {
             ],
 ```
     2. F5 -> launch.json
-       按照规律改 program 项目生成 和 preLaunchTask 前置任务 
+       按照规律改 program 项目生成 和 preLaunchTask 前置任务
+
 ```json
             "name": "(gdb) Launch",
             "type": "cppdbg",
@@ -119,8 +121,10 @@ inline int pthread_async_(node_f frun, void * arg) {
 
             "preLaunchTask": "Debug",
 ```
+
     3. F5 -> tasks.json
        建立下面任务, 目前只使用了 Debug
+
 ```json
 {
     "version": "2.0.0",
@@ -133,10 +137,11 @@ inline int pthread_async_(node_f frun, void * arg) {
     ]
 }
 ```
+
     核心思路是基于 Makefile Debug 模式配置 VSCode C Studio.
     此刻就可以在 main.c 入口出发, 开启 F5 F10 F11 玩耍之路.
     
-    比 vi + gdb 好那么一丢丢 ~
+    比 gcc + gdb + vi 好那么一丢丢 ~
 
 ***
 

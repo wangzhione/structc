@@ -13,23 +13,23 @@ DSYSTEM     ?= $(ROOT)/system
 DSTRUCT	    ?= $(ROOT)/struct
 DBASE 	    ?= $(ROOT)/base
 
-OUTS        ?= Outs
-DOBJ        ?= $(OUTS)/Obj
+DOUT        ?= Out
+DOBJ        ?= $(DOUT)/Obj
 
 #
 # DIRS      : 所有可变编译文件目录
 # IINC      : -I 需要导入的 include 目录
 # SRCC      : 所有 .c 文件
 #
-DIRS     =   $(DSYSTEM) $(DSTRUCT) $(DBASE)
-IINC     =   $(foreach v, $(DIRS),-I$(v))
-SRCC     =   $(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST),$(v)/*.c))
+DIRS      = $(DSYSTEM) $(DSTRUCT) $(DBASE)
+IINC      = $(foreach v, $(DIRS),-I$(v))
+SRCC      = $(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST),$(v)/*.c))
 
-OBJC     =   $(wildcard $(foreach v, $(DIRS),$(v)/*.c))
-OBJO     =   $(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
+OBJC      = $(wildcard $(foreach v, $(DIRS),$(v)/*.c))
+OBJO      = $(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
 
-TESTC    =   $(wildcard $(DTEST)/*.c)
-TESTO    =   $(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
+TESTC     = $(wildcard $(DTEST)/*.c)
+TESTO     = $(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 
 #
 # 全局编译的设置
@@ -41,7 +41,7 @@ LIB      = -lm -lpthread -luv
 RHAD     = $(CC) $(CFLAGS) $(D)
 RTAL     = $(foreach v, $^,$(DOBJ)/$(v)) $(LIB)
 RUNO     = $(RHAD) $(IINC) -c -o $(DOBJ)/$@ $<
-RUN      = $(RHAD) $(IINC) -o $(OUTS)/$@ $(RTAL)
+RUN      = $(RHAD) $(IINC) -o $(DOUT)/$@ $(RTAL)
 
 #
 # 具体的产品生产
@@ -60,7 +60,7 @@ main.exe : structc.a
 # 循环产生 -> 所有 - 链接文件 *.o
 #
 define CALL_RUNO
-$(notdir $(basename $(1))).o : $(1) | $$(OUTS)
+$(notdir $(basename $(1))).o : $(1) | $$(DOUT)
 	$$(RUNO)
 endef
 
@@ -70,13 +70,12 @@ $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 # 生成 structc.a 静态库, 方便处理所有问题
 #
 structc.a : $(OBJO) $(TESTO) main.o main_init.o main_run.o main_test.o
-	$(RHAD) -c -o $(DOBJ)/alloc.o $(DSYSTEM)/alloc.c -DJEMALLOC_NO_DEMANGLE -l:libjemalloc.a
 	ar cr $(DOBJ)/$@ $(DOBJ)/*.o
 
 #
 # 程序的收尾工作,清除,目录构建
 #
-$(OUTS):
+$(DOUT):
 	mkdir -p $(DOBJ)
 	mkdir -p $@/test
 	-cp -r $(ROOT)/conf $@
@@ -85,7 +84,7 @@ $(OUTS):
 # 清除操作
 clean :
 	-rm -rf *core*
-	-rm -rf $(OUTS)
+	-rm -rf $(DOUT)
 	-rm -rf logs $(ROOT)/logs
 	-rm -rf Debug Release x64
 	-rm -rf $(ROOT)/Debug $(ROOT)/Release $(ROOT)/x64

@@ -1,24 +1,20 @@
-#include <array.h>
+ï»¿#include <array.h>
 
 //
 // array test
 //
 void array_test(void) {
-    // ¹¹½¨Ò»¸öÔÚÕ»ÉÏµÄ¶¯Ì¬Êı×é
+    // æ„å»ºä¸€ä¸ªåœ¨æ ˆä¸Šçš„åŠ¨æ€æ•°ç»„
     ARRAY_CREATE(double, as);
 
-    // ¿ªÊ¼´¦ÀíÊı¾İ
+    // å¼€å§‹å¤„ç†æ•°æ®
     *(double *)array_push(as) = 1.1234;
-
     *(double *)array_push(as) = 2.2345;
-
     *(double *)array_push(as) = 4.9876;
 
-    // Êä³öÊı¾İ
+    // è¾“å‡ºæ•°æ®
     printf("a = %lf\n", *(double *)array_pop(as));
-
     printf("a = %lf\n", *(double *)array_pop(as));
-
     printf("a = %lf\n", *(double *)array_pop(as));
 
     ARRAY_DELETE(as);
