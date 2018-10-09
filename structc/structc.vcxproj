@@ -40,9 +40,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(SolutionDir)extern;$(IncludePath)</IncludePath>
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(SolutionDir)extern;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)base;$(ProjectDir)struct;$(ProjectDir)system;$(SolutionDir)extern;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)extern;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
