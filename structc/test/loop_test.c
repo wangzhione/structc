@@ -10,7 +10,7 @@ inline static void run(char * msg) {
 }
 
 // 需要处理的函数操作, 写数据进去
-static void _run_write(loop_t s) {
+static void run_write(loop_t s) {
     int i;
     char * msg;
 
@@ -42,7 +42,7 @@ void loop_test(void) {
     loop_t s = loop_create(run, free);
 
     // 线程开启, 跑起来测试
-    IF(pthread_run(id, _run_write, s));
+    IF(pthread_run(id, run_write, s));
     // 线程等待
     pthread_end(id);
 

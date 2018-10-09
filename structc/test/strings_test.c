@@ -33,7 +33,7 @@
 // 2^29     2^30	0.000011	805306457
 // 2^30     2^31	0.000000	1610612741
 
-static const unsigned _primes[][2] = {
+static const unsigned primes[][2] = {
     { (2^6 )-1,         53 },
     { (2^7 )-1,         97 },
     { (2^8 )-1,        193 },
@@ -81,8 +81,8 @@ void strings_test(void) {
     unsigned used = (2^6)-1;
     unsigned pidx = 0;
 
-    unsigned benc = _primes[pidx][0];
-    unsigned size = _primes[pidx][1];
+    unsigned benc = primes[pidx][0];
+    unsigned size = primes[pidx][1];
 
     printf("used = %u, pidx = %u, benc = %u, size = %u\n", 
         used, pidx, benc, size);
@@ -90,8 +90,8 @@ void strings_test(void) {
     if (++used > benc) {
         // 开始重新扩容
         ++pidx;
-        benc = _primes[pidx][0];
-        size = _primes[pidx][1];
+        benc = primes[pidx][0];
+        size = primes[pidx][1];
     }
 
     printf("used = %u, pidx = %u, benc = %u, size = %u\n", 

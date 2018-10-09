@@ -106,8 +106,8 @@ inline int pthread_async_(node_f frun, void * arg) {
                 "${workspaceRoot}/structc/system"
             ],
             "defines": [
-                "__GNUC__",
-                "_DEBUG"
+                "_DEBUG",
+                "__GNUC__"
             ],
 ```
     2. F5 -> launch.json
@@ -117,7 +117,7 @@ inline int pthread_async_(node_f frun, void * arg) {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Outs/main.exe",
+            "program": "${workspaceFolder}/Out/main.exe",
 
             "preLaunchTask": "Debug",
 ```

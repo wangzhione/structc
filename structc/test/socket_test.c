@@ -1,12 +1,12 @@
 ﻿#include <socket.h>
 #include <thread.h>
 
-#define _STR_HOST "127.0.0.1:19527"
+#define STR_HOST "127.0.0.1:19527"
 
-static void _socket_run(socket_t s) {
+static void socket_run(socket_t s) {
     int r, num;
     sockaddr_t addr;
-    const char * cots = _STR_HOST;
+    const char * cots = STR_HOST;
     int sz = (int)strlen(cots);
 
     // 开始处理每个监听
@@ -32,24 +32,24 @@ static void _socket_run(socket_t s) {
 }
 
 // 创建一个服务器监听资源
-static void _socket_server(void) {
+static void socket_server(void) {
     pthread_t tid;
-    const char * host = _STR_HOST;
+    const char * host = STR_HOST;
     socket_t s = socket_tcp(host);
     if (INVALID_SOCKET == s)
         RETNIL("socket_tcp err host = %s", host);
 
-    if (pthread_run(tid, _socket_run, s)) {
+    if (pthread_run(tid, socket_run, s)) {
         socket_close(s);
         RETNIL("pthread_run is error");
     }
 }
 
 // 开始尝试链接
-static int _socket_client(int idx) {
+static int socket_client(int idx) {
     int r;
     char buf[BUFSIZ];
-    const char * host = _STR_HOST;
+    const char * host = STR_HOST;
     socket_t c = socket_connects(host);
     if (INVALID_SOCKET == c)
         return EBase;
@@ -75,7 +75,7 @@ void socket_test(void) {
     sockaddr_t addr;
     const char * host;
 
-    r = socket_host(host = _STR_HOST, addr);
+    r = socket_host(host = STR_HOST, addr);
     if (r < SBase)
         RETNIL("socket_host is err %s", host);
 
@@ -84,11 +84,11 @@ void socket_test(void) {
         addr->sin_family, addr->sin_port);
 
     // 开启 server 
-    _socket_server();
+    socket_server();
 
     // 开始 client 
     for (i = 1; ; ++i) {
-        r = _socket_client(i);
+        r = socket_client(i);
         if (r < SBase)
             break;
     }

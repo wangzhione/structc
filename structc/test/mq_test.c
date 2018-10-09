@@ -1,6 +1,6 @@
 ﻿#include <mq.h>
 
-static void _echo(void * node) {
+static void echo(void * node) {
     static int idx;
 
     printf("%d -> %s\n", ++idx, (char *)node);
@@ -21,5 +21,5 @@ void mq_test(void) {
     else
         printf("mq_pop = %s\n", n);
 
-    mq_delete(q, _echo);
+    mq_delete(q, echo);
 }
