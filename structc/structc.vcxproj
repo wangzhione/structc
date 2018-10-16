@@ -181,7 +181,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\rtree_test.c" />
     <ClCompile Include="test\socket_test.c" />
     <ClCompile Include="test\alloc_test.c" />
-    <ClCompile Include="test\strerr_test.c" />
     <ClCompile Include="test\strext_test.c" />
     <ClCompile Include="test\strings_test.c" />
     <ClCompile Include="test\spoll_test.c" />

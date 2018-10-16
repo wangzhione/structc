@@ -209,9 +209,6 @@
     <ClCompile Include="test\json_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="test\strerr_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="system\socket.c">
       <Filter>system</Filter>
     </ClCompile>
