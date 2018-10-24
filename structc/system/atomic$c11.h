@@ -1,4 +1,4 @@
-﻿#if defined(__GNUC__) && !defined(_H_ATOMIC$C11)
+﻿#if !defined(_H_ATOMIC$C11) && defined(__GNUC__)
 #define _H_ATOMIC$C11
 
 #include <stdatomic.h>

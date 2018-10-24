@@ -1,4 +1,4 @@
-﻿#if defined(_MSC_VER) && !defined(_H_ATOMIC$CL)
+﻿#if !defined(_H_ATOMIC$CL) && defined(_MSC_VER)
 #define _H_ATOMIC$CL
 
 #include <windows.h>
