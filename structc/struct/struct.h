@@ -62,7 +62,7 @@ typedef void * (* vnew_f)();
 
 //
 // node_f - 销毁当前对象节点
-//  : void list_die(void * node); 
+//  : void list_die(void * node)
 //
 typedef void (* node_f)(void * node);
 
