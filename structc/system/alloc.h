@@ -17,8 +17,7 @@
 #       define ISX64
 #   endif
 //
-// _M_PPC 为 PowerPC 平台定义, 现在已不支持
-// so winds 可以认为都是小端平台
+// _M_PPC 为 PowerPC 平台定义, 现在已不支持 so winds 默认都是小端平台
 //
 #   if defined(_M_PPC)
 #       define ISBENIAN

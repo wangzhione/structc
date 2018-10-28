@@ -74,7 +74,7 @@ typedef void * (* start_f)(void * arg);
 
 //
 // each_f - each 循环操作, arg 外部参数, node 是内部结点
-//  : int dict_echo(struct dict * node, void * arg) { return 0; }
+//  : int echo(void * node, void * arg) { return 0; }
 //
 typedef int (* each_f)(void * node, void * arg);
 
