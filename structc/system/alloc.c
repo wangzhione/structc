@@ -16,9 +16,9 @@ inline void free_(void * ptr) {
 }
 
 // 简单内存不足检测处理
-static inline void * mcheck(void * ptr, size_t size) {
+static inline void * check(void * ptr, size_t size) {
     if (NULL == ptr) {
-        fprintf(stderr, "out of memory trying to allocate %zu\n", size);
+        fprintf(stderr, "check memory collapse %zu\n", size);
         fflush(stderr);
         abort();
     }
@@ -32,7 +32,7 @@ static inline void * mcheck(void * ptr, size_t size) {
 //
 inline void * malloc_(size_t size) {
     void * ptr = je_malloc(size);
-    return mcheck(ptr, size);
+    return check(ptr, size);
 }
 
 //
@@ -57,7 +57,7 @@ inline char * strdup_(const char * s) {
 //
 inline void * calloc_(size_t num, size_t size) {
     void * ptr = je_calloc(num, size);
-    return mcheck(ptr, size);
+    return check(ptr, size);
 }
 
 //
@@ -68,5 +68,5 @@ inline void * calloc_(size_t num, size_t size) {
 //
 inline void * realloc_(void * ptr, size_t size) {
     void * ntr = je_realloc(ptr, size);
-    return mcheck(ntr, size);
+    return check(ntr, size);
 }
