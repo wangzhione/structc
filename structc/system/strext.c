@@ -1,9 +1,9 @@
 ﻿#include "strext.h"
 
 //
-// str_hash - Brian Kernighan与 Dennis Ritchie 简便快捷的 hash算法
+// str_hash - Brian Kernighan 与 Dennis Ritchie hash 算法
 // str      : 字符串内容
-// return   : 返回计算后的hash值
+// return   : 返回计算后的 hash 值
 //
 unsigned 
 str_hash(const char * str) {
@@ -115,7 +115,7 @@ static char * str_vprintf(const char * format, va_list arg) {
 
 //
 // str_printf - 字符串构建函数
-// format   : 构建格式参照pritnf
+// format   : 构建格式参照 pritnf
 // ...      : 参数集
 // return   : char * 堆上内存
 //
@@ -154,9 +154,9 @@ str_printf(const char * format, ...) {
 }
 
 //
-// str_freads - 简单的文件读取类,会读取完毕这个文件内容返回, 需要自己free
+// str_freads - 读取完整个文件内容返回, 需要事后 free
 // path     : 文件路径
-// return   : 创建好的字符串内容, 返回NULL表示读取失败
+// return   : 文件内容字符串, NULL 表示读取失败
 //
 char * 
 str_freads(const char * path) {
@@ -221,9 +221,9 @@ static int str_fwrite(const char * p, const char * s, const char * m) {
 }
 
 //
-// str_fwrites - 将c串str覆盖写入到path路径的文件中
+// str_fwrites - 将 C 串 str 覆盖写到 path 文件中
 // path     : 文件路径
-// str      : c的串内容
+// str      : C 串内容
 // return   : >=0 is success, < 0 is error
 //
 inline int 
@@ -232,9 +232,9 @@ str_fwrites(const char * path, const char * str) {
 }
 
 //
-// str_fappends - 将c串str写入到path路径的文件中末尾
+// str_fappends - 将 C 串 str 追加写到 path 文件末尾
 // path     : 文件路径
-// str      : c的串内容
+// str      : C 串内容
 // return   : >=0 is success, < 0 is error
 //
 inline int 
