@@ -54,7 +54,7 @@ extern char * str_trim(char str[]);
 
 //
 // str_printf - 字符串构建函数
-// format   : 构建格式参照 pritnf
+// format   : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存
 //

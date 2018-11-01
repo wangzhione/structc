@@ -26,8 +26,7 @@ str_hash(const char * str) {
 int 
 str_cpyn(char * src, const char * tar, size_t n) {
     size_t i;
-    if (!src || !tar || n == 0)
-        return -2;
+    if (!src || !tar || !n) return -2;
     for (i = 1; 
         (i < n) && (*src++ = *tar++); ++i)
         ;
@@ -65,7 +64,7 @@ str_cmpi(const char * ls, const char * rs) {
 int 
 str_cmpin(const char * ls, const char * rs, size_t n) {
     int l, r;
-    if (!ls || !rs || n < 1) return (int)(ls - rs);
+    if (!ls || !rs || !n) return (int)(ls - rs);
 
     do {
         if ((l = *ls++) >= 'A' && l <= 'Z')
@@ -102,27 +101,27 @@ str_trim(char str[]) {
     return s == str ? str : memmove(str, s, e - s + 2);
 }
 
-// _str_printf : 成功直接返回
+// str_vprintf - 成功直接返回
 static char * str_vprintf(const char * format, va_list arg) {
     char buf[BUFSIZ];
-    int len = vsnprintf(buf, sizeof buf, format, arg);
-    if (len < sizeof buf) {
-        char * ret = malloc(len + 1);
-        return memcpy(ret, buf, len + 1);
+    int n = vsnprintf(buf, sizeof buf, format, arg);
+    if (n < sizeof buf) {
+        char * ret = malloc(n + 1);
+        return memcpy(ret, buf, n + 1);
     }
     return NULL;
 }
 
 //
 // str_printf - 字符串构建函数
-// format   : 构建格式参照 pritnf
+// format   : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存
 //
 char * 
 str_printf(const char * format, ...) {
     char * ret;
-    int len, cap;
+    int n, cap;
     va_list arg;
     va_start(arg, format);
 
@@ -134,15 +133,15 @@ str_printf(const char * format, ...) {
     cap = BUFSIZ << 1;
     for (;;) {
         ret = malloc(cap);
-        len = vsnprintf(ret, cap, format, arg);
+        n = vsnprintf(ret, cap, format, arg);
         // 失败的情况
-        if (len < 0) {
+        if (n < 0) {
             free(ret);
             return NULL;
         }
 
         // 成功情况
-        if (len < cap)
+        if (n < cap)
             break;
 
         // 内存不足的情况
@@ -150,7 +149,7 @@ str_printf(const char * format, ...) {
         cap <<= 1;
     }
 
-    return realloc(ret, len + 1);
+    return realloc(ret, n + 1);
 }
 
 //
@@ -160,31 +159,31 @@ str_printf(const char * format, ...) {
 //
 char * 
 str_freads(const char * path) {
-    size_t rn, cap, len;
+    size_t n, cap, len;
     char * str, buf[BUFSIZ];
     FILE * txt = fopen(path, "rb");
     if (NULL == txt) return NULL;
 
     // 读取数据
-    rn = fread(buf, sizeof(char), BUFSIZ, txt);
-    if (rn == 0 || ferror(txt)) {
+    n = fread(buf, sizeof(char), BUFSIZ, txt);
+    if (n == 0 || ferror(txt)) {
         fclose(txt);
         return NULL;
     }
 
     // 直接分配内存足够直接返回内容
-    if (rn < BUFSIZ) {
+    if (n < BUFSIZ) {
         fclose(txt);
-        str = malloc(rn + 1);
-        memcpy(str, buf, rn);
-        str[rn] = '\0';
+        str = malloc(n + 1);
+        memcpy(str, buf, n);
+        str[n] = '\0';
         return str;
     }
 
-    str = malloc((cap = rn << 1));
-    memcpy(str, buf, len = rn);
+    str = malloc((cap = n << 1));
+    memcpy(str, buf, len = n);
     do {
-        rn = fread(buf, sizeof(char), BUFSIZ, txt);
+        n = fread(buf, sizeof(char), BUFSIZ, txt);
         if (ferror(txt)) {
             fclose(txt);
             free(str);
@@ -192,11 +191,11 @@ str_freads(const char * path) {
         }
 
         // 填充数据
-        if (len + rn >= cap)
+        if (len + n >= cap)
             str = realloc(str, cap <<= 1);
-        memcpy(str + len, buf, rn);
-        len += rn;
-    } while (rn == BUFSIZ);
+        memcpy(str + len, buf, n);
+        len += n;
+    } while (n == BUFSIZ);
 
     // 设置结尾, 并返回结果
     fclose(txt);
