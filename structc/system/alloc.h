@@ -39,6 +39,25 @@
 #   error BUILD (￣︶￣) S
 #endif
 
+//
+// enum Flag int - 函数返回值全局状态码
+// >= 0 标识 Success 状态, < 0 标识 Error 状态
+//
+enum {
+    SBase       =  +0, // 正确基础类型
+
+    EBase       =  -1, // 错误基础类型
+    EParam      =  -2, // 输入参数错误
+    EFd         =  -3, // 文件打开失败
+    EClose      =  -4, // 文件操作关闭
+    EAccess     =  -5, // 没有操作权限
+    EAlloc      =  -6, // 内存操作错误
+    EParse      =  -7, // 协议解析错误
+    ESmall      =  -8, // 过小基础错误
+    EBig        =  -9, // 过大基础错误
+    ETimeout    = -10, // 操作超时错误
+};
+
 // OFF_ALLOC - 关闭全局 free / malloc 配置
 #ifndef OFF_ALLOC
 

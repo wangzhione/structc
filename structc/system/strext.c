@@ -26,7 +26,7 @@ str_hash(const char * str) {
 int 
 str_cpyn(char * src, const char * tar, size_t n) {
     size_t i;
-    if (!src || !tar || !n) return -2;
+    if (!src || !tar || !n) return EParam;
     for (i = 1; 
         (i < n) && (*src++ = *tar++); ++i)
         ;
@@ -208,10 +208,10 @@ static int str_fwrite(const char * p, const char * s, const char * m) {
     int len;
     FILE * txt;
     if (!p || !*p || !s || !m)
-        return -2;
+        return EParam;
     // 打开文件, 写入消息, 关闭文件
     if (!(txt = fopen(p, m)))
-        return -3;
+        return EFd;
 
     len = fputs(s, txt);
     fclose(txt);
