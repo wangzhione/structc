@@ -92,19 +92,19 @@ typedef SOCKET socket_t;
 typedef int socklen_t;
 
 //
+// strerr - linux 替代 strerror, winds 替代 FormatMessage 
+// err      : linux 是 errno, winds 可以是 WSAGetLastError() ... 
+// return   : system os 拔下来的提示常量字符串集合
+//
+extern const char * strerr(int err);
+
+//
 // gettimeofday - Linux sys/time.h 中得到微秒时间实现
 // tv       : 返回结果包含秒数和微秒数
 // tz       : 包含的时区, winds 上这个变量没有作用
 // return   : 默认返回 0
 //
 extern int gettimeofday(struct timeval * tv, void * tz);
-
-//
-// strerr - linux 上替代 strerror, winds 替代 FormatMessage 
-// error    : linux 是 errno, winds 可以是 WSAGetLastError() ... 
-// return   : system os 拔下来的提示常量字符串
-//
-extern const char * strerr(int err);
 
 // socket_init - 初始化 socket 库初始化方法
 inline void socket_init(void) {

@@ -106,7 +106,7 @@ array_idx(array_t a, void * elem) {
 inline void 
 array_swap(array_t a, array_t b) {
     struct array t = *a;
-    *a = *b;
+    *a = *b; 
     *b = t;
 }
 
@@ -124,21 +124,18 @@ array_sort(array_t a, icmp_f fcmp) {
 }
 
 //
-// array_each - 动态数组遍历函数, 利于测试
+// array_each - 动态数组循环遍历
 // a        : 动态数组
-// func     : 执行每个结点函数 typedef int (* each_f)(void * node, void * arg);
+// func     : 循环执行每个结点函数
 // return   : >= 0 表示成功, < 0 表示失败
 //
 int 
 array_each(array_t a, each_f func, void * arg) {
-    int ret;
-    char * s, * e;
-
     assert(NULL != a && func != NULL);
-    s = a->as;
-    e = s + a->alloc * a->len;
+    char * s = a->as;
+    char * e = s + a->alloc * a->len;
     while (s < e) {
-        ret = func(s, arg);
+        int ret = func(s, arg);
         if (ret < 0)
             return ret;
         s += a->alloc;

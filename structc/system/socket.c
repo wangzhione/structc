@@ -296,7 +296,7 @@ static int socket_connecto(socket_t s, const sockaddr_t addr, int ms) {
     if (FD_ISSET(s, &eset) || n == 2) {
         socklen_t len = sizeof n;
         // 只要最后没有 error 那就 链接成功
-        if (!getsockopt(s, SOL_SOCKET, SO_ERROR, (char *)&n, &len) && !n)
+        if (!getsockopt(s, SOL_SOCKET, SO_ERROR, (void *)&n, &len) && !n)
             r = SBase;
     }
     socket_set_block(s);
@@ -314,7 +314,7 @@ socket_connectos(const char * host, int ms) {
     sockaddr_t addr;
     socket_t s = socket_stream();
     if (INVALID_SOCKET == s) {
-        RETURN(s, "socket_stream is error");
+        RETURN(INVALID_SOCKET, "socket_stream is error");
     }
 
     // 解析配置成功后尝试链接

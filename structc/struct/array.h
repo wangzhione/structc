@@ -59,9 +59,9 @@ extern void * array_push(array_t a);
 extern void * array_pop(array_t a);
 
 //
-// array_each - 动态数组遍历函数, 利于测试
+// array_each - 动态数组循环遍历
 // a        : 动态数组
-// func     : 执行每个结点函数 typedef int (* each_f)(void * node, void * arg);
+// func     : 循环执行每个结点函数
 // return   : >= 0 表示成功, < 0 表示失败
 //
 int array_each(array_t a, each_f func, void * arg);

@@ -2,9 +2,10 @@
 #define _H_RAND
 
 //
-// 线程安全的跨平台的 rand 库
+// 线程安全的 rand 库, by redis
 //
 
+#include <time.h>
 #include <stdint.h>
 #include <assert.h>
 

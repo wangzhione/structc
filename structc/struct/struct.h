@@ -16,21 +16,7 @@
 #include <inttypes.h>
 
 //
-// DCODE - DEBUG 模式下的测试宏
-// DCODE({
-//     puts("debug start...");
-// });
-//
-#ifndef DCODE
-#   ifdef _DEBUG
-#       define DCODE(code)  do code while(0)
-#   else
-#       define DCODE(code)  
-#   endif //  ! _DEBUG
-#endif  //  ! DCODE
-
-//
-// icmp_f - 比较行为的类型
+// icmp_f - 比较行为 > 0 or = 0  or < 0
 //  : int add_cmp(const void * now, const void * node)
 //
 typedef int (* icmp_f)();
@@ -54,10 +40,24 @@ typedef void (* node_f)(void * node);
 typedef void * (* start_f)(void * arg);
 
 //
-// each_f - each 循环操作, arg 外部参数, node 是内部结点
+// each_f - 循环操作, arg 外部参数, node 是内部结点
 //  : int echo(void * node, void * arg) { return 0; }
 //
 typedef int (* each_f)(void * node, void * arg);
+
+//
+// DCODE - DEBUG 模式下的测试宏
+// DCODE({
+//     puts("debug start...");
+// });
+//
+#ifndef DCODE
+#   ifdef _DEBUG
+#       define DCODE(code)  do code while(0)
+#   else
+#       define DCODE(code)  
+#   endif //  ! _DEBUG
+#endif  //  ! DCODE
 
 //
 // CERR - 打印错误信息
@@ -79,7 +79,7 @@ if ((cond)) EXIT(#cond)
 
 //
 // RETURN - 打印错误信息, 并 return 返回指定结果
-// val      : return的东西, 当需要 return void; 时候填 ',' 就过 or NIL
+// val      : return 的东西, 当需要 return void; 时候填 , 就过 or NIL
 // fmt      : 双引号包裹的格式化字符串
 // ...      : fmt中对应的参数
 // return   : val
