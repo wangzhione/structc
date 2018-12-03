@@ -117,7 +117,7 @@ array_swap(array_t a, array_t b) {
 // return   : void
 //
 inline void 
-array_sort(array_t a, icmp_f fcmp) {
+array_sort(array_t a, cmp_f fcmp) {
     assert(NULL != a && a->len && fcmp != NULL);
     qsort(a->as, a->len, a->alloc, 
         (int (*)(const void *, const void *))fcmp);

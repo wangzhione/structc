@@ -33,7 +33,7 @@ inline static int rtree_default_cmp(const void * ln, const void * rn) {
 // return   : 返回构建红黑树
 //
 inline rtree_t 
-rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie) {
+rtree_create_(cmp_f fcmp, new_f fnew, node_f fdie) {
     rtree_t tree = malloc(sizeof *tree);
     tree->root = NULL;
     tree->fcmp = fcmp ? fcmp : rtree_default_cmp;
@@ -73,7 +73,7 @@ rtree_delete(rtree_t tree) {
 //
 void * 
 rtree_search(rtree_t tree, void * pack) {
-    icmp_f fcmp;
+    cmp_f fcmp;
     struct $rtree * node;
     if (!tree) return NULL;
 
@@ -274,7 +274,7 @@ static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
 //
 void 
 rtree_insert(rtree_t tree, void * pack) {
-    icmp_f fcmp;
+    cmp_f fcmp;
     struct $rtree * node, * x, * y;
     if (!tree || !pack) return;
     

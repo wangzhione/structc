@@ -61,7 +61,7 @@ void rtree_test(void) {
     rtree_insert(names, "追求");
 
     // 继续查找
-    names->fget = (icmp_f)names_get;
+    names->fget = (cmp_f)names_get;
     name = rtree_search(names, "追求");
     IF(NULL == name);
     printf("get->name: %p | %s\n", name, name->name);

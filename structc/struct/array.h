@@ -103,6 +103,6 @@ extern void array_swap(array_t a, array_t b);
 // fcmp     : 数组元素的比较函数
 // return   : void
 //
-extern void array_sort(array_t a, icmp_f fcmp);
+extern void array_sort(array_t a, cmp_f fcmp);
 
 #endif//_H_ARRAY

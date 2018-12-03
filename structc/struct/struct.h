@@ -16,32 +16,32 @@
 #include <inttypes.h>
 
 //
-// icmp_f - 比较行为 > 0 or = 0  or < 0
-//  : int add_cmp(const void * now, const void * node)
+// cmp_f - 比较行为 > 0 or = 0  or < 0
+// : int add_cmp(const void * now, const void * node)
 //
-typedef int (* icmp_f)();
+typedef int (* cmp_f)();
 
 //
-// vnew_f - 根据规则构建对象
-//  : void * rtree_new(void * node)
+// new_f - 构建行为
+// : void * rtree_new(void * node)
 //
-typedef void * (* vnew_f)();
+typedef void * (* new_f)();
 
 //
-// node_f - 销毁当前对象节点
-//  : void list_die(void * node)
+// node_f - 销毁行为
+// : void list_die(void * node)
 //
 typedef void (* node_f)(void * node);
 
 //
 // start_f - pthread create func
-//  : int * run(int * arg)
+// : int * run(int * arg)
 //
 typedef void * (* start_f)(void * arg);
 
 //
-// each_f - 循环操作, arg 外部参数, node 是内部结点
-//  : int echo(void * node, void * arg) { return 0; }
+// each_f - 遍历行为, arg 外部参数, node 是内部结点
+// : int echo(void * node, void * arg) { return 0; }
 //
 typedef int (* each_f)(void * node, void * arg);
 

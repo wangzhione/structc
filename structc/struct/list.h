@@ -38,8 +38,8 @@ extern void list_delete_(void ** pist, node_f fdie);
 // return   : 查找到的节点, NULL 表示没有查到
 //
 #define list_get(list, fget, left)                                      \
-list_get_((list), (icmp_f)(fget), (const void *)(intptr_t)(left))
-extern void * list_get_(void * list, icmp_f fget, const void * left);
+list_get_((list), (cmp_f)(fget), (const void *)(intptr_t)(left))
+extern void * list_get_(void * list, cmp_f fget, const void * left);
 
 //
 // list_pop - 匹配弹出链表中指定值
@@ -50,8 +50,8 @@ extern void * list_get_(void * list, icmp_f fget, const void * left);
 // return   : 查找到的节点, NULL 表示没有查到 
 //
 #define list_pop(list, fget, left)                                      \
-list_pop_((void **)&(list), (icmp_f)(fget), (const void *)(intptr_t)(left))
-extern void * list_pop_(void ** pist, icmp_f fget, const void * left);
+list_pop_((void **)&(list), (cmp_f)(fget), (const void *)(intptr_t)(left))
+extern void * list_pop_(void ** pist, cmp_f fget, const void * left);
 
 //
 // list_add - 链表中添加数据, 从小到大 fadd(left, ) <= 0
@@ -62,8 +62,8 @@ extern void * list_pop_(void ** pist, icmp_f fget, const void * left);
 // return   : void
 //
 #define list_add(list, fadd, left)                                      \
-list_add_((void **)&(list), (icmp_f)(fadd), (void *)(intptr_t)(left))
-extern void list_add_(void ** pist, icmp_f fadd, void * left);
+list_add_((void **)&(list), (cmp_f)(fadd), (void *)(intptr_t)(left))
+extern void list_add_(void ** pist, cmp_f fadd, void * left);
 
 //
 // list_each - 链表循环处理函数, 仅仅测试而已

@@ -28,7 +28,7 @@ list_delete_(void ** pist, node_f fdie) {
 // return   : 查找到的节点, NULL 表示没有查到
 //
 void * 
-list_get_(void * list, icmp_f fget, const void * left) {
+list_get_(void * list, cmp_f fget, const void * left) {
     if (fget) {
         struct $list * head = list;
         while (head) {
@@ -48,7 +48,7 @@ list_get_(void * list, icmp_f fget, const void * left) {
 // return   : 查找到的节点, NULL 表示没有查到 
 //
 void * 
-list_pop_(void ** pist, icmp_f fget, const void * left) {
+list_pop_(void ** pist, cmp_f fget, const void * left) {
     struct $list * head, * next;
     if (!pist || fget)
         return NULL;
@@ -87,7 +87,7 @@ list_pop_(void ** pist, icmp_f fget, const void * left) {
 // return   : void
 //
 void 
-list_add_(void ** pist, icmp_f fadd, void * left) {
+list_add_(void ** pist, cmp_f fadd, void * left) {
     struct $list * head;
     if (!pist || !fadd || !left)
         return;

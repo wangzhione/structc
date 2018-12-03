@@ -18,11 +18,11 @@ struct $rtree {
 typedef struct {
     struct $rtree * root;
 
-    icmp_f fcmp;
-    vnew_f fnew;
+    cmp_f fcmp;
+    new_f fnew;
     node_f fdie;
 
-    icmp_f fget;
+    cmp_f fget;
 } * rtree_t;
 
 //
@@ -33,8 +33,8 @@ typedef struct {
 // return   : 返回构建红黑树
 //
 #define rtree_create(fcmp, fnew, fdie)                              \
-rtree_create_((icmp_f)(fcmp), (vnew_f)(fnew), (node_f)(fdie))
-extern rtree_t rtree_create_(icmp_f fcmp, vnew_f fnew, node_f fdie);
+rtree_create_((cmp_f)(fcmp), (new_f)(fnew), (node_f)(fdie))
+extern rtree_t rtree_create_(cmp_f fcmp, new_f fnew, node_f fdie);
 
 //
 // rtree_delete - 红黑树销毁函数
