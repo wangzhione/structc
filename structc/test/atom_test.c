@@ -1,10 +1,9 @@
 ﻿#include <atom.h>
 #include <stdio.h>
+#include <limits.h>
 #include <assert.h>
 
-//
-// 为 atom.h 写的单元测试
-//
+// atom_test - 为 atom.h 写的单元测试
 void atom_test(void) {
     char * some_ptr = "Hello, 世界";
     atomic_p_t atomic_ptr_to_int;
@@ -26,4 +25,12 @@ void atom_test(void) {
     }
 
     printf("atom_t o -> %ld\n", o);
+
+    int id = INT_MAX;
+    int now = atom_inc(id);
+    now = atom_inc(id);
+    printf("id = %d, now = %d\n", id, now);
+    if (now < 0)
+        now = atom_and(id, INT_MAX);
+    printf("id = %d, now = %d\n", id, now);
 }

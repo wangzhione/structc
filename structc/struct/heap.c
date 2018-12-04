@@ -93,17 +93,22 @@ heap_insert(heap_t h, void * node) {
 //
 // heap_remove - 堆删除数据
 // h        : 堆对象
-// node     : 操作对象
+// arg      : 操作参数
+// fcmp     : 比较行为, 规则 fcmp() == 0
 // return   : 找到的堆节点
 //
 void * 
-heap_remove(heap_t h, void * node) {
+heap_remove(heap_t h, void * arg, cmp_f fcmp) {
     if (h == NULL || h->len <= 0)
         return NULL;
 
     // 开始查找这个节点
-    for (unsigned i = 0; i < h->len; ++i) {
-        if (h->fcmp(h->data[i], node) == 0) {
+    unsigned i = 0;
+    fcmp = fcmp ? fcmp : h->fcmp;
+    do {
+        void * node = h->data[i];
+        if (fcmp(node, arg) == 0) {
+            // 找到节点开始走删除操作
             if (--h->len > 0 && h->len != i) {
                 // 尾巴节点和待删除节点比较
                 int ret = h->fcmp(h->data[h->len], node);
@@ -120,7 +125,7 @@ heap_remove(heap_t h, void * node) {
 
             return node;
         }
-    }
+    } while (++i < h->len);
 
     return NULL;
 }

@@ -13,13 +13,13 @@ extern void timer_del(int id);
 
 //
 // timer_add - 添加定时器事件
-// tvl      : 执行间隔(毫秒), <= 0 表示立即执行
+// ms      : 执行间隔(毫秒), <= 0 表示立即执行
 // ftimer   : 定时器行为
 // arg      : 定时器参数
 // return   : 返回定时器 id
 //
-#define timer_add(tvl, ftimer, arg)                         \
-timer_add_(tvl, (node_f)ftimer, (void *)(intptr_t)arg)
-extern int timer_add_(int tvl, node_f ftimer, void * arg);
+#define timer_add(ms, ftimer, arg)                          \
+timer_add_(ms, (node_f)ftimer, (void *)(intptr_t)arg)
+extern int timer_add_(int ms, node_f ftimer, void * arg);
 
 #endif//_H_TIMER

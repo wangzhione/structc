@@ -80,7 +80,7 @@ inline void store_release(atom_t * x) {
 // v 和 a 都是 long 这样数据
 #define atom_add(v, a)      InterlockedAdd((volatile LONG *)&(v), (LONG)(a))
 #define atom_set(v, a)      InterlockedExchange((volatile LONG *)&(v), (LONG)(a))
-#define atom_and(v, a)      InterlockedAnd((volatile LONG *)&(v), (LONG)(a))
+#define atom_and(v, a)      (InterlockedAnd((volatile LONG *)&(v), (LONG)(a)), (LONG)(v))
 #define atom_inc(v)         InterlockedIncrement((volatile LONG *)&(v))
 #define atom_dec(v)         InterlockedDecrement((volatile LONG *)&(v))
 //

@@ -13,13 +13,13 @@ struct timer_node {
 };
 
 // timer_node id compare
-inline static int timer_node_cmp_id(int id, 
+inline static int timer_node_id_cmp(int id, 
                                     const struct timer_node * r) {
     return id - r->id;
 }
 
 // timer_node time compare 比较
-inline static int timer_node_cmp_time(const struct timer_node * l, 
+inline static int timer_node_time_cmp(const struct timer_node * l, 
                                       const struct timer_node * r) {
     if (l->t.tv_sec != r->t.tv_sec)
         return (int)(l->t.tv_sec - r->t.tv_sec);
@@ -66,15 +66,17 @@ inline void
 timer_del(int id) {
     if (timer.list) {
         atom_lock(timer.lock);
-        free(list_pop(timer.list, timer_node_cmp_id, id));
+        free(list_pop(timer.list, timer_node_id_cmp, id));
         atom_unlock(timer.lock);
     }
 }
 
 // timer_node_new - timer_node 定时器结点构建
-inline static struct timer_node * timer_node_new(int s, node_f ftimer, void * arg) {
+static struct timer_node * timer_node_new(int s, node_f ftimer, void * arg) {
     struct timer_node * node = malloc(sizeof(struct timer_node));
     node->id = atom_inc(timer.id);
+    if (node->id < 0)
+        node->id = atom_and(timer.id, INT_MAX);
     node->arg = arg;
     node->ftimer = ftimer;
     timespec_get(&node->t, TIME_UTC);
@@ -121,7 +123,7 @@ timer_add_(int tvl, node_f ftimer, void * arg) {
     id = node->id;
     atom_lock(timer.lock);
 
-    list_add(timer.list, timer_node_cmp_time, node);
+    list_add(timer.list, timer_node_time_cmp, node);
 
     // 判断是否需要开启新的线程
     if (!timer.status) {
