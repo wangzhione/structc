@@ -13,7 +13,7 @@ extern void timer_del(int id);
 
 //
 // timer_add - 添加定时器事件
-// ms      : 执行间隔(毫秒), <= 0 表示立即执行
+// ms       : 执行间隔(毫秒), <= 0 表示立即执行
 // ftimer   : 定时器行为
 // arg      : 定时器参数
 // return   : 返回定时器 id

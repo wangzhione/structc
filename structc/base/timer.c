@@ -2,10 +2,9 @@
 #include "timer.h"
 #include "thread.h"
 
-// timer_node 定时器结点
+// timer_node 定时器节点
 struct timer_node {
-    $LIST
-
+$LIST
     int id;            // 定时器 id
     void * arg;        // 执行函数参数
     node_f ftimer;     // 执行的函数事件
@@ -105,21 +104,21 @@ static void timer_run(struct timer_list * list) {
 
 //
 // timer_add - 添加定时器事件
-// tvl      : 执行间隔(毫秒), <= 0 表示立即执行
+// ms       : 执行间隔(毫秒), <= 0 表示立即执行
 // ftimer   : 定时器行为
 // arg      : 定时器参数
 // return   : 返回定时器 id
 //
 int 
-timer_add_(int tvl, node_f ftimer, void * arg) {
+timer_add_(int ms, node_f ftimer, void * arg) {
     int id;
     struct timer_node * node;
-    if (tvl <= 0) {
+    if (ms <= 0) {
         ftimer(arg);
         return 0;
     }
 
-    node = timer_node_new(tvl, ftimer, arg);
+    node = timer_node_new(ms, ftimer, arg);
     id = node->id;
     atom_lock(timer.lock);
 
@@ -132,7 +131,7 @@ timer_add_(int tvl, node_f ftimer, void * arg) {
         else {
             free(node);
             id = -1;
-        } 
+        }
     }
 
     atom_unlock(timer.lock);

@@ -107,7 +107,7 @@ heap_remove(heap_t h, void * arg, cmp_f fcmp) {
     fcmp = fcmp ? fcmp : h->fcmp;
     do {
         void * node = h->data[i];
-        if (fcmp(node, arg) == 0) {
+        if (fcmp(arg, node) == 0) {
             // 找到节点开始走删除操作
             if (--h->len > 0 && h->len != i) {
                 // 尾巴节点和待删除节点比较
