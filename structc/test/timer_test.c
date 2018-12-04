@@ -4,8 +4,7 @@
 // one 简单数据打印
 inline static void one(void * arg) {
     times_t str;
-    static int m;
-    times_str(str);
+    static int m; times_str(str);
     printf("%p | %d => %s\n", arg, ++m, str);
 }
 
@@ -23,10 +22,10 @@ void timer_test(void) {
     timer_add(4000, one, 3);
 
     // 测试一个连环施法
-    int id = timer_add(1000, two, 4);
+    int id = timer_add(6000, two, 4);
     IF(id < 0);
 
     // 等待 5 秒后关闭 上面永久的定时器事件
-    msleep(10000);
+    msleep(5000);
     timer_del(id);
 }

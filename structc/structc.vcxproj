@@ -106,6 +106,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\timer.h" />
     <ClInclude Include="base\url.h" />
     <ClInclude Include="struct\array.h" />
+    <ClInclude Include="struct\heap.h" />
     <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />
     <ClInclude Include="struct\list.h" />
@@ -146,6 +147,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="main\main_run.c" />
     <ClCompile Include="main\main_test.c" />
     <ClCompile Include="struct\array.c" />
+    <ClCompile Include="struct\heap.c" />
     <ClCompile Include="struct\json.c" />
     <ClCompile Include="struct\dict.c" />
     <ClCompile Include="struct\list.c" />

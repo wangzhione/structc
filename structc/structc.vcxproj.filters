@@ -135,6 +135,9 @@
     <ClInclude Include="system\alloc.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="struct\heap.h">
+      <Filter>struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -301,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="test\alloc_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\heap.c">
+      <Filter>struct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
