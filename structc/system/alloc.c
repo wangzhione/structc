@@ -6,16 +6,7 @@
 #define JEMALLOC_NO_DEMANGLE
 #include <jemalloc/jemalloc.h>
 
-//
-// free_ - free 包装函数
-// ptr      : 内存首地址
-// return   : void
-//
-inline void free_(void * ptr) {
-    je_free(ptr);
-}
-
-// 简单内存不足检测处理
+// check - 内存检测并处理
 static inline void * check(void * ptr, size_t size) {
     if (NULL == ptr) {
         fprintf(stderr, "check memory collapse %zu\n", size);
@@ -26,9 +17,18 @@ static inline void * check(void * ptr, size_t size) {
 }
 
 //
-// malloc_ - malloc 包装, 封装一些特殊业务
+// free_ - free 包装函数
+// ptr      : 内存首地址
+// return   : void
+//
+inline void free_(void * ptr) {
+    je_free(ptr);
+}
+
+//
+// malloc_ - malloc 包装函数
 // size     : 分配的内存字节
-// return   : 返回可使用的内存地址.
+// return   : 返回可使用的内存地址
 //
 inline void * malloc_(size_t size) {
     void * ptr = je_malloc(size);
@@ -50,10 +50,10 @@ inline char * strdup_(const char * s) {
 }
 
 //
-// calloc_ - calloc 包装, 封装一些特殊业务
+// calloc_ - calloc 包装函数
 // num      : 数量
 // size     : 大小
-// return   : 返回可用内存地址, 并且置0
+// return   : 返回可用内存地址, 并置 0
 //
 inline void * calloc_(size_t num, size_t size) {
     void * ptr = je_calloc(num, size);
@@ -61,10 +61,10 @@ inline void * calloc_(size_t num, size_t size) {
 }
 
 //
-// realloc_ - realoc 包装函数, 封装一些特殊业务
-// ptr      : 内存首地址, NULL 等同于 malloc
+// realloc_ - realoc 包装函数
+// ptr      : 首地址, NULL 等同于 malloc
 // size     : 重新分配的内存大小
-// return   : 返回重新分配好的新地址内容
+// return   : 返回重新分配的新地址
 //
 inline void * realloc_(void * ptr, size_t size) {
     void * ntr = je_realloc(ptr, size);

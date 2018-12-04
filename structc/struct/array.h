@@ -4,20 +4,20 @@
 #include "struct.h"
 
 struct array {
-    unsigned alloc;     // 数组中元素大小
-    unsigned size;      // 当前数组的容量
-    unsigned len;       // 当前数组的长度
-    void *   as;        // 数组存储首地址
+    unsigned size;      // 元素大小
+    unsigned cap;       // 数组容量
+    unsigned len;       // 数组长度
+    void *  data;       // 数组存储
 };
 
-// 定义动态数组类型
+// array_t - 动态数组类型
 typedef struct array * array_t;
 
 //
-// ARRAY_CREATE - 栈上面创建动态数组对象
-// ARRAY_DELETE - 销毁栈上面动态数组对象
-// var      : 创建动态数组对象名字
-//UINT_AINIT    - 数组初始化默认大小
+// ARRAY_CREATE - 栈上创建动态数组对象
+// ARRAY_DELETE - 销毁栈上动态数组对象
+// var          : 创建动态数组对象名字
+// UINT_AINIT   - 数组初始化默认大小
 #define UINT_AINIT      (1u<<5)
 #define ARRAY_CREATE(type, var)             \
 struct array var[1] = { {                   \
@@ -28,14 +28,14 @@ struct array var[1] = { {                   \
 } }
 
 #define ARRAY_DELETE(var)                   \
-free((var)->as)
+free((var)->data)
 
 //
 // array_create - 返回创建动态数组对象
-// alloc    : 动态数组大小
+// size     : 元素大小
 // return   : 返回创建的动态数组对象
 //
-extern array_t array_create(unsigned alloc);
+extern array_t array_create(unsigned size);
 
 //
 // array_delete - 销毁动态数组对象
@@ -59,14 +59,6 @@ extern void * array_push(array_t a);
 extern void * array_pop(array_t a);
 
 //
-// array_each - 动态数组循环遍历
-// a        : 动态数组
-// func     : 循环执行每个结点函数
-// return   : >= 0 表示成功, < 0 表示失败
-//
-int array_each(array_t a, each_f func, void * arg);
-
-//
 // array_top - 得到动态数组顶元素
 // a        : 动态数组
 // return   : 得到返回动态数组顶部元素
@@ -74,23 +66,23 @@ int array_each(array_t a, each_f func, void * arg);
 extern void * array_top(array_t a);
 
 //
-// array_get - 按照索引得到数组元素
+// array_get - 索引映射数组元素
 // a        : 动态数组
 // idx      : 索引位置
-// return   : NULL 表示没有找见
+// return   : NULL is not found
 //
 extern void * array_get(array_t a, unsigned idx);
 
 //
-// array_idx - 通过结点返回索引
+// array_idx - 通过节点返回索引
 // a        : 动态数组
 // elem     : 查询元素
-// return   : 索引为 (unsigned)-1 表示不存在
+// return   : 索引
 //
 extern unsigned array_idx(array_t a, void * elem);
 
 //
-// array_swap - 动态数组二者交换
+// array_swap - 动态数组交换
 // a        : 动态数组
 // b        : 动态数组
 // return   : void
@@ -104,5 +96,13 @@ extern void array_swap(array_t a, array_t b);
 // return   : void
 //
 extern void array_sort(array_t a, cmp_f fcmp);
+
+//
+// array_each - 动态数组遍历
+// a        : 动态数组
+// func     : 遍历行为
+// return   : >= 0 表示成功, < 0 表示失败
+//
+extern int array_each(array_t a, each_f func, void * arg);
 
 #endif//_H_ARRAY

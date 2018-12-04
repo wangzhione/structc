@@ -1,19 +1,18 @@
 ﻿#include "array.h"
-#include <assert.h>
 
 //
 // array_create - 返回创建动态数组对象
-// alloc    : 动态数组对象大小
+// size     : 元素大小
 // return   : 返回创建的动态数组对象
 //
 inline array_t 
-array_create(unsigned alloc) {
+array_create(unsigned size) {
     struct array * a = malloc(sizeof(struct array));
-    assert(NULL != a && alloc > 0);
-    // 设置默认 size 大小
-    a->size = UINT_AINIT;
-    a->as = malloc(alloc * a->size);
-    a->alloc = alloc;
+    assert(NULL != a && size > 0);
+    // 设置默认 cap 大小
+    a->cap = UINT_AINIT;
+    a->data = malloc(size * a->cap);
+    a->size = size;
     a->len = 0;
     return a;
 }
@@ -26,7 +25,7 @@ array_create(unsigned alloc) {
 inline void 
 array_delete(array_t a) {
     if (a) {
-        free(a->as);
+        free(a->data);
         free(a);
     }
 }
@@ -38,13 +37,13 @@ array_delete(array_t a) {
 //
 inline void * 
 array_push(array_t a) {
-    if (a->len >= a->size) {
+    if (a->len >= a->cap) {
         /* the array is full; allocate new array */
-        a->size <<= 1;
-        a->as = realloc(a->as, a->size * a->alloc);
+        a->cap <<= 1;
+        a->data = realloc(a->data, a->cap * a->size);
     }
 
-    return (char *)a->as + a->alloc * a->len++;
+    return (char *)a->data + a->size * a->len++;
 }
 
 //
@@ -56,7 +55,7 @@ inline void *
 array_pop(array_t a) {
     assert(NULL != a && a->len > 0);
     --a->len;
-    return (char *)a->as + a->alloc * a->len;
+    return (char *)a->data + a->size * a->len;
 }
 
 //
@@ -67,38 +66,36 @@ array_pop(array_t a) {
 inline void * 
 array_top(array_t a) {
     assert(NULL != a && a->len > 0);
-    return (char *)a->as + a->alloc * (a->len - 1);
+    return (char *)a->data + a->size * (a->len - 1);
 }
 
 //
-// array_get - 按照索引得到数组元素
+// array_get - 索引映射数组元素
 // a        : 动态数组
 // idx      : 索引位置
-// return   : NULL 表示没有找见
+// return   : NULL is not found
 //
 inline void * 
 array_get(array_t a, unsigned idx) {
     assert(NULL != a && idx < a->len);
-    return (char *)a->as + a->alloc * idx;
+    return (char *)a->data + a->size * idx;
 }
 
 //
-// array_idx - 通过结点返回索引
+// array_idx - 通过节点返回索引
 // a        : 动态数组
 // elem     : 查询元素
-// return   : 索引为 (unsigned)-1 表示不存在
+// return   : 索引
 //
 inline unsigned 
 array_idx(array_t a, void * elem) {
-    unsigned off;
-    assert(NULL != a && elem >= a->as);
-    off = (unsigned)((char *)elem - (char *)a->as);
-    assert(off % a->alloc == 0);
-    return off / a->alloc;
+    unsigned off = (unsigned)((char *)elem - (char *)a->data);
+    assert(a && elem >= a->data && off % a->size == 0);
+    return off / a->size;
 }
 
 //
-// array_swap - 动态数组二者交换
+// array_swap - 动态数组交换
 // a        : 动态数组
 // b        : 动态数组
 // return   : void
@@ -119,26 +116,26 @@ array_swap(array_t a, array_t b) {
 inline void 
 array_sort(array_t a, cmp_f fcmp) {
     assert(NULL != a && a->len && fcmp != NULL);
-    qsort(a->as, a->len, a->alloc, 
+    qsort(a->data, a->len, a->size, 
         (int (*)(const void *, const void *))fcmp);
 }
 
 //
-// array_each - 动态数组循环遍历
+// array_each - 动态数组遍历
 // a        : 动态数组
-// func     : 循环执行每个结点函数
+// func     : 遍历行为
 // return   : >= 0 表示成功, < 0 表示失败
 //
 int 
 array_each(array_t a, each_f func, void * arg) {
     assert(NULL != a && func != NULL);
-    char * s = a->as;
-    char * e = s + a->alloc * a->len;
+    char * s = a->data;
+    char * e = s + a->size * a->len;
     while (s < e) {
         int ret = func(s, arg);
         if (ret < 0)
             return ret;
-        s += a->alloc;
+        s += a->size;
     }
 
     return 0;

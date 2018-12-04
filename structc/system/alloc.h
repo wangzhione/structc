@@ -84,9 +84,9 @@ enum {
 extern void free_(void * ptr);
 
 //
-// malloc_ - malloc 包装, 封装一些特殊业务
+// malloc_ - malloc 包装函数
 // size     : 分配的内存字节
-// return   : 返回可使用的内存地址.
+// return   : 返回可使用的内存地址
 //
 extern void * malloc_(size_t size);
 
@@ -98,18 +98,18 @@ extern void * malloc_(size_t size);
 extern char * strdup_(const char * s);
 
 //
-// calloc_ - calloc 包装, 封装一些特殊业务
+// calloc_ - calloc 包装函数
 // num      : 数量
 // size     : 大小
-// return   : 返回可用内存地址, 并且置0
+// return   : 返回可用内存地址, 并置 0
 //
 extern void * calloc_(size_t num, size_t size);
 
 //
-// realloc_ - realoc 包装函数, 封装一些特殊业务
-// ptr      : 内存首地址, NULL 等同于 malloc
+// realloc_ - realoc 包装函数
+// ptr      : 首地址, NULL 等同于 malloc
 // size     : 重新分配的内存大小
-// return   : 返回重新分配好的新地址内容
+// return   : 返回重新分配的新地址
 //
 extern void * realloc_(void * ptr, size_t size);
 
