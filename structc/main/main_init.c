@@ -9,23 +9,29 @@
 #define STR_LOG_PATH        "logs/structc.log"
 
 //
-// main_init - 各个模块初始化
+// main_init - 模块初始化
 // return   : void
 //
 void main_init(void) {
-    char r[BUFSIZ];
-    socket_init();
+    char r[FILENAME_MAX], g[FILENAME_MAX];
 
+    // 随机数模块初始化 :)
+    //
     EXTERN_RUN(r_init);
 
-    // 初始化配置相关内容
-    strcat(getawd(r, sizeof r), STR_CONF_PATH);
+    // socket 模块初始化 ~
+    //
+    socket_init();
+
+    // 配置模块初始化
+    //
+    strcpy(r, getawd(g, sizeof g));
+    strcat(r, STR_CONF_PATH);
     IF(!conf_init(r));
 
-    //
     //  日志模块初始化
     //
-    strcat(getawd(r, sizeof r), STR_LOG_PATH);
-    mkfdir(r);
-    EXTERN_RUN(log_init, r);
+    strcat(g, STR_LOG_PATH);
+    mkfdir(g);
+    EXTERN_RUN(log_init, g);
 }

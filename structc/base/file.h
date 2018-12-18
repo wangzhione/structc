@@ -12,9 +12,9 @@
 #include <sys/types.h>
 
 //
-// mkdir - 通用的单层目录创建函数宏, 等价于 mkdir path
-// path     : 目录路径加名称
-// return   : 0表示成功, -1表示失败, 失败原因都在 errno
+// mkdir - 单层目录创建函数宏, 类比 mkdir path
+// path     : 目录路径
+// return   : 0 表示成功, -1 表示失败, 失败原因见 errno
 // 
 #undef  mkdir
 #define mkdir(path)                                 \
@@ -22,13 +22,13 @@ mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 
 //
 // mtime - 得到文件最后修改时间
-// path     : 文件名称
-// return   : 返回时间戳, -1 表示错误
+// path     : 文件路径
+// return   : 返回时间戳, -1 表示失败
 //
 inline time_t mtime(const char * path) {
-    struct stat ss;
+    struct stat st;
     // 数据最后的修改时间
-    return stat(path, &ss) ? -1 : ss.st_mtime;
+    return stat(path, &st) ? -1 : ss.st_mtime;
 }
 
 #endif
@@ -54,18 +54,18 @@ inline time_t mtime(const char * path) {
 #endif
 
 inline time_t mtime(const char * path) {
-    WIN32_FILE_ATTRIBUTE_DATA wfad;
-    if (!GetFileAttributesEx(path, GetFileExInfoStandard, &wfad))
+    WIN32_FILE_ATTRIBUTE_DATA st;
+    if (!GetFileAttributesEx(path, GetFileExInfoStandard, &st))
         return -1;
     // 基于 winds x64 sizeof(long) = 4
-    return *(time_t *)&wfad.ftLastWriteTime;
+    return *(time_t *)&st.ftLastWriteTime;
 }
 
 #endif
 
 //
 // removes - 删除非空目录 or 文件
-// path     : 文件全路径
+// path     : 文件路径
 // return   : < 0 is error, >=0 is success
 //
 extern int removes(const char * path);
@@ -85,7 +85,7 @@ extern int mkdirs(const char * path);
 extern int mkfdir(const char * path);
 
 //
-// getawd - 得到程序所在目录绝对路径会带上 \\ or /
+// getawd - 得到程序运行目录, 结尾是 \\ or /
 // buf      : 存储地址
 // size     : 存储大小
 // return   : NULL is error or buf is success
@@ -93,22 +93,21 @@ extern int mkfdir(const char * path);
 extern char * getawd(char * buf, size_t size);
 
 //
-// :0 一个和程序同生存的配置文件动态刷新机制
 // file_f - 文件更新行为
 //
 typedef void (* file_f)(FILE * c, void * arg);
 
 //
-// file_set - 文件注册触发行为
+// file_set - 文件注册更新行为
 // path     : 文件路径
 // func     : file update -> func(path -> FILE, arg), func is NULL 标记清除
-// arg      : 注入的额外参数
+// arg      : func 额外参数
 // return   : void
 //
 extern void file_set(const char * path, file_f func, void * arg);
 
 //
-// file_update - 更新注册配置解析事件
+// file_update - 配置文件刷新操作
 // return   : void
 //
 extern void file_update(void);

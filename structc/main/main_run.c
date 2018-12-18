@@ -1,9 +1,9 @@
 ﻿#include "head.h"
 
 //
-// main_run - 业务运行的主体
-// argc     : 输入参数个数
-// argv     : 参数集
+// main_run - 运行的主函数
+// argc     : 参数长度
+// argv     : 参数数组
 // return   : void
 //
 void main_run(int argc, char * argv[]) {

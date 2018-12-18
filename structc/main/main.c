@@ -1,18 +1,16 @@
 ﻿#include "head.h"
 
 //
-// main - 程序的总入口, 从扯开始
-// argc     : 输入参数个数
-// argv     : 参数集
-// return   : 返回程序退出的状态码
+// main - 奔跑一切的起点
+// argc     : 参数长度
+// argv     : 参数数组
+// return   : 退出状态码
 //
 int main(int argc, char * argv[]) {
-    //
-    // 初始化 ... ...
-    // ... ...
+    // 初始化 ... .
+    // 
     EXTERN_RUN(main_init);
 
-    //
     // make D=-D_DEBUG
     // main_test 单元测试才会启动
     //
@@ -21,7 +19,7 @@ int main(int argc, char * argv[]) {
 #endif
 
     // ... 
-    // ... 启动当前项目运行的主函数
+    // ... 启动项目运行的主函数
     //
     EXTERN_RUN(main_run, argc, argv);
 

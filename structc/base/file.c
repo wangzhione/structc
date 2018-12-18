@@ -3,7 +3,7 @@
 
 //
 // removes - 删除非空目录 or 文件
-// path     : 文件全路径
+// path     : 文件路径
 // return   : < 0 is error, >=0 is success
 //
 inline int removes(const char * path) {
@@ -120,7 +120,7 @@ mkfdir(const char * path) {
 }
 
 //
-// getawd - 得到程序所在目录绝对路径会带上 \\ or /
+// getawd - 得到程序运行目录, 结尾是 \\ or /
 // buf      : 存储地址
 // size     : 存储大小
 // return   : NULL is error or buf is success
@@ -201,10 +201,10 @@ static struct file * f_s_get(const char * p, unsigned * r) {
 }
 
 //
-// file_set - 文件注册触发行为
+// file_set - 文件注册更新行为
 // path     : 文件路径
 // func     : file update -> func(path -> FILE, arg), func is NULL 标记清除
-// arg      : 注入的额外参数
+// arg      : func 额外参数
 // return   : void
 //
 void 
@@ -224,7 +224,7 @@ file_set(const char * path, file_f func, void * arg) {
 }
 
 //
-// file_update - 更新注册配置解析事件
+// file_update - 配置文件刷新操作
 // return   : void
 //
 void 
