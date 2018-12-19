@@ -13,7 +13,8 @@
 // return   : void
 //
 void main_init(void) {
-    char r[FILENAME_MAX], g[FILENAME_MAX];
+    int n;
+    char r[BUFSIZ];
 
     // 随机数模块初始化 :)
     //
@@ -25,13 +26,14 @@ void main_init(void) {
 
     // 配置模块初始化
     //
-    strcpy(r, getawd(g, sizeof g));
+    n = getawd(r, sizeof r);
+    assert(0 < n && n < sizeof r);
     strcat(r, STR_CONF_PATH);
     IF(!conf_init(r));
 
     //  日志模块初始化
     //
-    strcat(g, STR_LOG_PATH);
-    mkfdir(g);
-    EXTERN_RUN(log_init, g);
+    memcpy(r+n, STR_LOG_PATH, LEN(STR_LOG_PATH));
+    mkfdir(r);
+    EXTERN_RUN(log_init, r);
 }

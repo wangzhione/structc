@@ -85,12 +85,12 @@ extern int mkdirs(const char * path);
 extern int mkfdir(const char * path);
 
 //
-// getawd - 得到程序运行目录, 结尾是 \\ or /
+// getawd - 得到程序运行目录, \\ or / 结尾
 // buf      : 存储地址
 // size     : 存储大小
-// return   : NULL is error or buf is success
+// return   : 返回长度, -1 is error 
 //
-extern char * getawd(char * buf, size_t size);
+extern int getawd(char * buf, size_t size);
 
 //
 // file_f - 文件更新行为

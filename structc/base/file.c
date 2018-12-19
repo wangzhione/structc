@@ -120,12 +120,12 @@ mkfdir(const char * path) {
 }
 
 //
-// getawd - 得到程序运行目录, 结尾是 \\ or /
+// getawd - 得到程序运行目录, \\ or / 结尾
 // buf      : 存储地址
 // size     : 存储大小
-// return   : NULL is error or buf is success
+// return   : 返回长度, -1 is error 
 //
-char * 
+int 
 getawd(char * buf, size_t size) {
     char * tail;
 
@@ -139,14 +139,14 @@ getawd(char * buf, size_t size) {
 
     int r = getawe(buf, size);
     if (r <= 0 || r >= size)
-        return NULL;
+        return -1;
 
     for (tail = buf + r - 1; tail > buf; --tail)
         if ((r = *tail) == '/' || r == '\\')
             break;
     // believe getawe return
-    tail[1] = '\0';
-    return buf;
+    *++tail = '\0';
+    return (int)(tail - buf);
 }
 
 struct file {
