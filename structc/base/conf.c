@@ -32,7 +32,7 @@ if (NULL == $##field || $##field->type != JSON_STRING) {                \
     RETURN(false, "json_object err field = %s, %p", #field, $##field);  \
 }                                                                       \
 free(conf->field);                                                      \
-conf->field = json_str($##field);                                      \
+conf->field = json_str($##field);                                       \
 locals(conf->field)
 
 // conf_parse - 解析内容, 并返回解析结果

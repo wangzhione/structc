@@ -133,7 +133,7 @@ extern const char * strerr(int err) {
     case ERROR_PATH_BUSY                                                          : return "The path specified cannot be used at this time";
     case ERROR_IS_SUBST_TARGET                                                    : return "An attempt was made to join or substitute a drive for which a directory on the drive is the target of a previous substitute";
     case ERROR_SYSTEM_TRACE                                                       : return "System trace information was not specified in your CONFIG.SYS file, or tracing is disallowed";
-    case ERROR_INVALID_EVENT_COUNT                                                : return "The number of specified semaphore events for DosMuxSemWait is not correct";
+    case ERROR_INVALID_EVENT_COUNT                                                : return "The number of specified semaphore event for DosMuxSemWait is not correct";
     case ERROR_TOO_MANY_MUXWAITERS                                                : return "DosMuxSemWait did not execute; too many semaphores are already set";
     case ERROR_INVALID_LIST_FORMAT                                                : return "The DosMuxSemWait list is not correct";
     case ERROR_LABEL_TOO_LONG                                                     : return "The volume label you entered exceeds the label character limit of the target file system";
@@ -1639,7 +1639,7 @@ extern const char * strerr(int err) {
     case ERROR_NO_RECOVERY_POLICY                                                 : return "There is no valid encryption recovery policy configured for this system";
     case ERROR_NO_EFS                                                             : return "The required encryption driver is not loaded for this system";
     case ERROR_WRONG_EFS                                                          : return "The file was encrypted with a different encryption driver than is currently loaded";
-    case ERROR_NO_USER_KEYS                                                       : return "There are no EFS key defined for the user";
+    case ERROR_NO_USER_KEYS                                                       : return "There are no EFS keys defined for the user";
     case ERROR_FILE_NOT_ENCRYPTED                                                 : return "The specified file is not encrypted";
     case ERROR_NOT_EXPORT_FORMAT                                                  : return "The specified file is not in the defined EFS export format";
     case ERROR_FILE_READ_ONLY                                                     : return "The specified file is read only";
@@ -2287,21 +2287,21 @@ extern const char * strerr(int err) {
     case DNS_ERROR_RCODE_BADKEY                                                   : return "DNS bad key";
     case DNS_ERROR_RCODE_BADTIME                                                  : return "DNS signature validity expired";
     case DNS_ERROR_KEYMASTER_REQUIRED                                             : return "Only the DNS server acting as the key master for the zone may perform this operation";
-    case DNS_ERROR_NOT_ALLOWED_ON_SIGNED_ZONE                                     : return "This operation is not allowed on a zone that is signed or has signing key";
+    case DNS_ERROR_NOT_ALLOWED_ON_SIGNED_ZONE                                     : return "This operation is not allowed on a zone that is signed or has signing keys";
     case DNS_ERROR_NSEC3_INCOMPATIBLE_WITH_RSA_SHA1                               : return "NSEC3 is not compatible with the RSA-SHA-1 algorithm. Choose a different algorithm or use NSEC";
-    case DNS_ERROR_NOT_ENOUGH_SIGNING_KEY_DESCRIPTORS                             : return "The zone does not have enough signing key. There must be at least one key signing key (KSK) and at least one zone signing key (ZSK)";
+    case DNS_ERROR_NOT_ENOUGH_SIGNING_KEY_DESCRIPTORS                             : return "The zone does not have enough signing keys. There must be at least one key signing key (KSK) and at least one zone signing key (ZSK)";
     case DNS_ERROR_UNSUPPORTED_ALGORITHM                                          : return "The specified algorithm is not supported";
     case DNS_ERROR_INVALID_KEY_SIZE                                               : return "The specified key size is not supported";
-    case DNS_ERROR_SIGNING_KEY_NOT_ACCESSIBLE                                     : return "One or more of the signing key for a zone are not accessible to the DNS server. Zone signing will not be operational until this error is resolved";
+    case DNS_ERROR_SIGNING_KEY_NOT_ACCESSIBLE                                     : return "One or more of the signing keys for a zone are not accessible to the DNS server. Zone signing will not be operational until this error is resolved";
     case DNS_ERROR_KSP_DOES_NOT_SUPPORT_PROTECTION                                : return "The specified key storage provider does not support DPAPI++ data protection. Zone signing will not be operational until this error is resolved";
     case DNS_ERROR_UNEXPECTED_DATA_PROTECTION_ERROR                               : return "An unexpected DPAPI++ error was encountered. Zone signing will not be operational until this error is resolved";
     case DNS_ERROR_UNEXPECTED_CNG_ERROR                                           : return "An unexpected crypto error was encountered. Zone signing may not be operational until this error is resolved";
     case DNS_ERROR_UNKNOWN_SIGNING_PARAMETER_VERSION                              : return "The DNS server encountered a signing key with an unknown version. Zone signing will not be operational until this error is resolved";
     case DNS_ERROR_KSP_NOT_ACCESSIBLE                                             : return "The specified key service provider cannot be opened by the DNS server";
-    case DNS_ERROR_TOO_MANY_SKDS                                                  : return "The DNS server cannot accept any more signing key with the specified algorithm and KSK flag value for this zone";
+    case DNS_ERROR_TOO_MANY_SKDS                                                  : return "The DNS server cannot accept any more signing keys with the specified algorithm and KSK flag value for this zone";
     case DNS_ERROR_INVALID_ROLLOVER_PERIOD                                        : return "The specified rollover period is invalid";
     case DNS_ERROR_INVALID_INITIAL_ROLLOVER_OFFSET                                : return "The specified initial rollover offset is invalid";
-    case DNS_ERROR_ROLLOVER_IN_PROGRESS                                           : return "The specified signing key is already in process of rolling over key";
+    case DNS_ERROR_ROLLOVER_IN_PROGRESS                                           : return "The specified signing key is already in process of rolling over keys";
     case DNS_ERROR_STANDBY_KEY_NOT_PRESENT                                        : return "The specified signing key does not have a standby key to revoke";
     case DNS_ERROR_NOT_ALLOWED_ON_ZSK                                             : return "This operation is not allowed on a zone signing key (ZSK)";
     case DNS_ERROR_NOT_ALLOWED_ON_ACTIVE_SKD                                      : return "This operation is not allowed on an active signing key";
@@ -2820,7 +2820,7 @@ extern const char * strerr(int err) {
     case ERROR_EVT_INVALID_EVENT_DATA                                             : return "The event data raised by the publisher is not compatible with the event template definition in the publisher's manifest";
     case ERROR_EVT_CHANNEL_NOT_FOUND                                              : return "The specified channel could not be found. Check channel configuration";
     case ERROR_EVT_MALFORMED_XML_TEXT                                             : return "The specified xml text was not well-formed. See Extended Error for more details";
-    case ERROR_EVT_SUBSCRIPTION_TO_DIRECT_CHANNEL                                 : return "The caller is trying to subscribe to a direct channel which is not allowed. The events for a direct channel go directly to a logfile and cannot be subscribed to";
+    case ERROR_EVT_SUBSCRIPTION_TO_DIRECT_CHANNEL                                 : return "The caller is trying to subscribe to a direct channel which is not allowed. The event for a direct channel go directly to a logfile and cannot be subscribed to";
     case ERROR_EVT_CONFIGURATION_ERROR                                            : return "Configuration error";
     case ERROR_EVT_QUERY_RESULT_STALE                                             : return "The query result is stale / invalid. This may be due to the log being cleared or rolling over after the query result was created. Users should handle this code by releasing the query result object and reissuing the query";
     case ERROR_EVT_QUERY_RESULT_INVALID_POSITION                                  : return "Query result is currently at an invalid position";
@@ -2851,8 +2851,8 @@ extern const char * strerr(int err) {
     case ERROR_EVT_PUBLISHER_DISABLED                                             : return "The publisher has been disabled and its resource is not available. This usually occurs when the publisher is in the process of being uninstalled or upgraded";
     case ERROR_EVT_FILTER_OUT_OF_RANGE                                            : return "Attempted to create a numeric type that is outside of its valid range";
     case ERROR_EC_SUBSCRIPTION_CANNOT_ACTIVATE                                    : return "The subscription fails to activate";
-    case ERROR_EC_LOG_DISABLED                                                    : return "The log of the subscription is in disabled state, and can not be used to forward events to. The log must first be enabled before the subscription can be activated";
-    case ERROR_EC_CIRCULAR_FORWARDING                                             : return "When forwarding events from local machine to itself, the query of the subscription can't contain target log of the subscription";
+    case ERROR_EC_LOG_DISABLED                                                    : return "The log of the subscription is in disabled state, and can not be used to forward event to. The log must first be enabled before the subscription can be activated";
+    case ERROR_EC_CIRCULAR_FORWARDING                                             : return "When forwarding event from local machine to itself, the query of the subscription can't contain target log of the subscription";
     case ERROR_EC_CREDSTORE_FULL                                                  : return "The credential store that is used to save credentials is full";
     case ERROR_EC_CRED_NOT_FOUND                                                  : return "The credential used by this subscription can't be found in credential store";
     case ERROR_EC_NO_ACTIVE_CHANNEL                                               : return "No active channel is found for the query";
@@ -3201,7 +3201,7 @@ extern const char * strerr(int err) {
     case EVENT_E_INTERNALERROR                                                    : return "An unexpected internal error was detected";
     case EVENT_E_INVALID_PER_USER_SID                                             : return "The owner SID on a per-user subscription doesn't exist";
     case EVENT_E_USER_EXCEPTION                                                   : return "A user-supplied component or subscriber raised an exception";
-    case EVENT_E_TOO_MANY_METHODS                                                 : return "An interface has too many methods to fire events from";
+    case EVENT_E_TOO_MANY_METHODS                                                 : return "An interface has too many methods to fire event from";
     case EVENT_E_MISSING_EVENTCLASS                                               : return "A subscription cannot be stored unless its event class already exists";
     case EVENT_E_NOT_ALL_REMOVED                                                  : return "Not all the objects requested could be removed";
     case EVENT_E_COMPLUS_NOT_INSTALLED                                            : return "COM+ is required for this operation, but is not installed";
@@ -3547,7 +3547,7 @@ extern const char * strerr(int err) {
     case RPC_E_CANTCALLOUT_AGAIN                                                  : return "There is no second outgoing call on same channel in DDE conversation";
     case RPC_E_SERVER_DIED_DNE                                                    : return "The callee (server [not server application]) is not available and disappeared; all connections are invalid. The call did not execute";
     case RPC_E_SYS_CALL_FAILED                                                    : return "System call failed";
-    case RPC_E_OUT_OF_RESOURCES                                                   : return "Could not allocate some required resource (memory, events, ...)";
+    case RPC_E_OUT_OF_RESOURCES                                                   : return "Could not allocate some required resource (memory, event, ...)";
     case RPC_E_ATTEMPTED_MULTITHREAD                                              : return "Attempted to make calls on more than one thread in single threaded mode";
     case RPC_E_NOT_REGISTERED                                                     : return "The requested interface is not registered on the server object";
     case RPC_E_FAULT                                                              : return "RPC could not call the server or could not return the results of calling the server";
@@ -4874,7 +4874,7 @@ extern const char * strerr(int err) {
     case FVE_E_PIN_INVALID                                                        : return "The BitLocker encryption key cannot be obtained from the Trusted Platform Module (TPM) and PIN";
     case FVE_E_AUTH_INVALID_APPLICATION                                           : return "A boot application has changed since BitLocker Drive Encryption was enabled";
     case FVE_E_AUTH_INVALID_CONFIG                                                : return "The Boot Configuration Data (BCD) settings have changed since BitLocker Drive Encryption was enabled";
-    case FVE_E_FIPS_DISABLE_PROTECTION_NOT_ALLOWED                                : return "The Group Policy setting requiring FIPS compliance prohibits the use of unencrypted key, which prevents BitLocker from being suspended on this drive. Please contact your domain administrator for more information";
+    case FVE_E_FIPS_DISABLE_PROTECTION_NOT_ALLOWED                                : return "The Group Policy setting requiring FIPS compliance prohibits the use of unencrypted keys, which prevents BitLocker from being suspended on this drive. Please contact your domain administrator for more information";
     case FVE_E_FS_NOT_EXTENDED                                                    : return "This drive cannot be encrypted by BitLocker Drive Encryption because the file system does not extend to the end of the drive. Repartition this drive and then try again";
     case FVE_E_FIRMWARE_TYPE_NOT_SUPPORTED                                        : return "BitLocker Drive Encryption cannot be enabled on the operating system drive. Contact the computer manufacturer for BIOS upgrade instructions";
     case FVE_E_NO_LICENSE                                                         : return "This version of Windows does not include BitLocker Drive Encryption. To use BitLocker Drive Encryption, please upgrade the operating system";
@@ -4891,7 +4891,7 @@ extern const char * strerr(int err) {
     case FVE_E_NO_AUTOUNLOCK_MASTER_KEY                                           : return "The auto-unlock master key was not available from the operating system drive";
     case FVE_E_MOR_FAILED                                                         : return "The system firmware failed to enable clearing of system memory when the computer was restarted";
     case FVE_E_HIDDEN_VOLUME                                                      : return "The hidden drive cannot be encrypted";
-    case FVE_E_TRANSIENT_STATE                                                    : return "BitLocker encryption key were ignored because the drive was in a transient state";
+    case FVE_E_TRANSIENT_STATE                                                    : return "BitLocker encryption keys were ignored because the drive was in a transient state";
     case FVE_E_PUBKEY_NOT_ALLOWED                                                 : return "Public key based protectors are not allowed on this drive";
     case FVE_E_VOLUME_HANDLE_OPEN                                                 : return "BitLocker Drive Encryption is already performing an operation on this drive. Please complete all operations before continuing";
     case FVE_E_NO_FEATURE_LICENSE                                                 : return "This version of Windows does not support this feature of BitLocker Drive Encryption. To use this feature, upgrade the operating system";
@@ -5028,7 +5028,7 @@ extern const char * strerr(int err) {
     case FWP_E_SESSION_ABORTED                                                    : return "The session has been cancelled";
     case FWP_E_INCOMPATIBLE_TXN                                                   : return "The call is not allowed from within a read-only transaction";
     case FWP_E_TIMEOUT                                                            : return "The call timed out while waiting to acquire the transaction lock";
-    case FWP_E_NET_EVENTS_DISABLED                                                : return "Collection of network diagnostic events is disabled";
+    case FWP_E_NET_EVENTS_DISABLED                                                : return "Collection of network diagnostic event is disabled";
     case FWP_E_INCOMPATIBLE_LAYER                                                 : return "The operation is not supported by the specified layer";
     case FWP_E_KM_CLIENTS_ONLY                                                    : return "The call is allowed for kernel-mode callers only";
     case FWP_E_LIFETIME_MISMATCH                                                  : return "The call tried to associate two objects with incompatible lifetimes";
@@ -5073,7 +5073,7 @@ extern const char * strerr(int err) {
     case FWP_E_INVALID_TUNNEL_ENDPOINT                                            : return "A tunnel endpoint configuration is invalid";
     case FWP_E_L2_DRIVER_NOT_READY                                                : return "The WFP MAC Layers are not ready";
     case FWP_E_KEY_DICTATOR_ALREADY_REGISTERED                                    : return "A key manager capable of key dictation is already registered";
-    case FWP_E_KEY_DICTATION_INVALID_KEYING_MATERIAL                              : return "A key manager dictated invalid key";
+    case FWP_E_KEY_DICTATION_INVALID_KEYING_MATERIAL                              : return "A key manager dictated invalid keys";
     case FWP_E_CONNECTIONS_DISABLED                                               : return "The BFE IPsec Connection Tracking is disabled";
     case FWP_E_INVALID_DNS_NAME                                                   : return "The DNS name is invalid";
     case FWP_E_STILL_ON                                                           : return "The engine option is still enabled due to other configuration settings";
