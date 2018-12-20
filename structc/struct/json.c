@@ -30,7 +30,7 @@ json_delete(json_t c) {
 //
 int 
 json_len(json_t arr) {
-    register len = 0;
+    register int len = 0;
     if (arr) {
         for (arr = arr->chid; arr; arr = arr->next)
             ++len;
@@ -149,9 +149,9 @@ static unsigned parse_hex4(const char str[]) {
 
 // parse_string - string 解析
 static const char * parse_string(json_t item, const char * str) {
-    const char * ptr, * etr = str;
-    char c, * ntr, * out;
     unsigned len = 1;
+    char c, * ntr, * out;
+    const char * ptr, * etr = str;
 
     while ((c = *etr) != '"' && c) {
         ++etr;
@@ -242,6 +242,26 @@ static const char * parse_string(json_t item, const char * str) {
 err_free:
     free(out);
     return NULL;
+}
+
+// parse_literal - 字面串解析
+static const char * parse_literal(json_t item, const char * str) {
+    char c, * ntr;
+    const char * ptr, * etr = str;
+
+    // 获取到 '`' 字符结尾处
+    while ((c = *etr) != '`' && c)
+        ++etr;
+    if (c != '`') return NULL;
+
+    // 开始构造 json string 节点
+    item->type = JSON_STRING;
+    item->str = ntr = malloc(etr - str + 1);
+    for (ptr = str; ptr < etr; ++ptr) 
+        *ntr++ = *ptr;
+    *ntr = '\0';
+
+    return ptr + 1;
 }
 
 //
@@ -341,19 +361,43 @@ parse_value(json_t item, const char * str) {
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
         return parse_number(item, str);
-    case '"': return parse_string(item, str + 1);
-    case '{': return parse_object(item, str + 1);
-    case '[': return parse_array (item, str + 1);
+    case '"': return parse_string (item, str + 1);
+    case '`': return parse_literal(item, str + 1);
+    case '{': return parse_object (item, str + 1);
+    case '[': return parse_array  (item, str + 1);
     }
 
     return NULL;
 }
 
-// json_mini - 去掉 str 中多余的串, 返回最终串的长度. 并且纪念 mini 比男的还平 :)
+// json_mini - 清洗 str 中冗余的串并返回最终串的长度. 纪念 mini 比男的还平 :)
+// EF BB BF     = UTF-8                 (可选标记, 因为 Unicode 标准未有建议)
+// FE FF        = UTF-16, big-endian    (大尾字节序标记)
+// FF FE        = UTF-16, little-endian (小尾字节序标记, windows 中的 Unicode 编码默认标记)
+// 00 00 FE FF  = UTF-32, big-endian    (大尾字节序标记)
+// FF FE 00 00  = UTF-32, little-endian (小尾字节序标记)
+//
 size_t json_mini(char * str) {
-    char c, * in = str, * to = str;
+    char c, * in = str;
+    unsigned char * to = (unsigned char *)str;
     
+    // 跳过 UTF-8 With BOM 前三个字节
+    if (to[0] == 0xEF && to[1] == 0xBB && to[2] == 0xBF)
+        to += 3;
+
     while ((c = *to)) {
+        // step 0 : 处理字面串
+        if (c == '`') {
+            *in++ = c;
+            while ((c = *++to) && c != '`')
+                *in++ = c;
+            if (c) {
+                *in++ = c;
+                ++to;
+            }
+            continue;
+        }
+
         // step 1 : 处理字符串
         if (c == '"') {
             *in++ = c;

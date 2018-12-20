@@ -28,7 +28,7 @@ mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 inline time_t mtime(const char * path) {
     struct stat st;
     // 数据最后的修改时间
-    return stat(path, &st) ? -1 : ss.st_mtime;
+    return stat(path, &st) ? -1 : st.st_mtime;
 }
 
 #endif

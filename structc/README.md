@@ -115,7 +115,7 @@
 
 ```Bash
 # 开发环境安装
-sudo apt install gcc gdb autogen autoconf
+sudo apt install gcc gdb autogen autoconf libtool
 
 # jemalloc 安装
 cd
@@ -133,9 +133,9 @@ rm -rf jemalloc-5.1.0 jemalloc-5.1.0.tar.bz2
 
 # libuv 安装
 cd
-wget https://github.com/libuv/libuv/archive/v1.23.1.zip
-unzip v1.23.1.zip
-cd libuv-1.23.1
+wget https://github.com/libuv/libuv/archive/v1.24.1.zip
+unzip v1.24.1.zip
+cd libuv-1.24.1
 
 sh autogen.sh
 ./configure
@@ -147,7 +147,7 @@ cd
 #
 # 注意 uv 头文件, 全部导入到系统 include 目录下面
 #
-rm -rf libuv-1.23.1 v1.23.1.zip
+rm -rf libuv-1.24.1 v1.24.1.zip
 ```
 
     b) 编译设置
