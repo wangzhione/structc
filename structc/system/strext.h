@@ -61,7 +61,7 @@ extern char * str_trim(char str[]);
 extern char * str_printf(const char * format, ...);
 
 //
-// str_freads - 读取完整个文件内容返回, 需要事后 free
+// str_freads - 读取整个文件内容返回, 需要事后 free
 // path     : 文件路径
 // return   : 文件内容字符串, NULL 表示读取失败
 //

@@ -354,15 +354,15 @@ parse_value(json_t item, const char * str) {
         item->type = JSON_BOOL; item->num = true;
         return str + sizeof "rue";
     case 'f': case 'F':
-        if (str_cmpin(str + 1, "alse", sizeof "alse" - 1)) return NULL;
+        if (str_cmpin(str + 1, "alse", sizeof "alse"-1)) return NULL;
         item->type = JSON_BOOL;
         return str + sizeof "alse";
     case '+': case '-': case '.':
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
         return parse_number(item, str);
-    case '"': return parse_string (item, str + 1);
     case '`': return parse_literal(item, str + 1);
+    case '"': return parse_string (item, str + 1);
     case '{': return parse_object (item, str + 1);
     case '[': return parse_array  (item, str + 1);
     }
