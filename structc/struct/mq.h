@@ -6,15 +6,15 @@
 
 struct mq {
     q_t q;             // 队列
-    atom_t lock;       // 原子锁
+    atom_t lock;       // 自旋锁
 };
 
 typedef struct mq * mq_t;
 
 //
-// mq_delete - 消息队列销毁, 自行控制删除逻辑
+// mq_delete - 消息队列销毁
 // q        : 消息队列对象
-// fdie     : 删除 push 进来的结点
+// fdie     : 删除 push 进来的节点点
 // return   : void
 //
 inline void mq_delete(mq_t q, node_f fdie) {
@@ -37,7 +37,7 @@ inline mq_t mq_create(void) {
 //
 // mq_pop - 消息队列中弹出消息, 并返回数据
 // q        : 消息队列对象
-// return   : 返回队列尾巴, mq empty return NULL
+// return   : 若 mq empty return NULL
 //
 inline void * mq_pop(mq_t q) {
     atom_lock(q->lock);

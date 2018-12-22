@@ -41,9 +41,9 @@ inline void q_swap(q_t r, q_t w) {
 }
 
 //
-// q_pop - 队列中弹出消息,并返回数据
+// q_pop - 队列中弹出消息数据
 // q      : 队列对象
-// return : 返回队列尾巴, 队列 empty, 返回 NULL
+// return : 若队列 empty, 返回 NULL
 //
 inline void * q_pop(q_t q) {
     void * m = NULL;
@@ -62,7 +62,7 @@ inline void * q_pop(q_t q) {
 //
 // q_delete - 队列销毁
 // q        : 队列对象
-// fdie     : 删除 push 进来的结点
+// fdie     : push 节点删除行为
 // return   : void
 //
 extern void q_delete(q_t q, node_f fdie);

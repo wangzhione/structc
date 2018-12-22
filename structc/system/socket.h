@@ -237,6 +237,18 @@ inline int socket_connect(socket_t s, const sockaddr_t addr) {
     return connect(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
 }
 
+// socket_getsockname - 获取 socket 的本地地址
+// socket_getpeername - 获取 client socket 的地址
+inline int socket_getsockname(socket_t s, sockaddr_t name) {
+    socklen_t len = sizeof (sockaddr_t);
+    return getsockname(s, (struct sockaddr *)name, &len);
+}
+
+inline int socket_getpeername(socket_t s, sockaddr_t name) {
+    socklen_t len = sizeof (sockaddr_t);
+    return getpeername(s, (struct sockaddr *)name, &len);
+}
+
 //
 // socket_binds     - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
 // socket_listens   - 端口监听返回监听好的 socket fd.

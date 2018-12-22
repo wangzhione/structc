@@ -16,7 +16,7 @@
         array.h     动态数组
 
     总的设计:
-        json 串, 原子锁, ...
+        json, cas, shm, pipe, errno, socket ...
     
     来协助我们搭建 C 项目, 提供底层数据结构和额外组件的支持 ...
 
@@ -337,4 +337,8 @@ inline int pthread_async_(node_f frun, void * arg) {
 
     :)
 
+***
+
 -:> [Wuayramanta](https://music.163.com/#/song?id=5207705)
+
+***

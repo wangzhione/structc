@@ -1,6 +1,6 @@
 ﻿#include <pipe.h>
 
-// test pipe 
+// pipe_test - test pipe
 void pipe_test(void) {
     pipe_t ch;
     socket_t fd[2];

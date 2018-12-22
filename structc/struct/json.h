@@ -81,7 +81,7 @@ extern json_t json_array(json_t arr, int i);
 //
 extern json_t json_object(json_t obj, const char * k);
 
-//-------------------------------------json parse begin-----------------------------------
+//----------------------------------json parse begin--------------------------------
 
 //
 // json parse low level api

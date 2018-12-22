@@ -6,23 +6,22 @@
 // pipe - 移植 linux 函数, 通过 WinSock 实现
 // pipefd   : 索引 0 表示 recv fd, 1 是 send fd
 // return   : 0 is success ,-1 is error returned
-// 
+//
 int 
 pipe(socket_t pipefd[2]) {
-    socket_t s;
+    socket_t s = socket_stream();
     sockaddr_t name = { AF_INET };
-    socklen_t len = sizeof name;
     name->sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
-    if ((s = socket_stream()) == INVALID_SOCKET)
+    if (s == INVALID_SOCKET)
         return -1;
-    if (bind(s, (struct sockaddr *)name, len))
+    if (socket_bind(s, name))
         return socket_close(s), -1;
-    if (listen(s, SOMAXCONN))
+    if (listen(s, 1))
         return socket_close(s), -1;
 
-    // 得到绑定端口数据
-    if (getsockname(s, (struct sockaddr *)name, &len))
+    // 得到绑定端口本地地址
+    if (socket_getsockname(s, name))
         return socket_close(s), -1;
 
     // 开始构建互相通信的 socket
@@ -40,8 +39,8 @@ pipe(socket_t pipefd[2]) {
 }
 
 //
-// pipe_open - 打开一个管道
-// ch       : 待打开的管道
+// pipe_open - pipe open
+// ch       : 管道类型
 // return   : 0 is success ,-1 is error returned
 //
 inline int 
@@ -51,7 +50,7 @@ pipe_open(pipe_t ch) {
 }
 
 // pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
-// pipe_send - 管道阻塞发送, 
+// pipe_send - 管道阻塞发送
 inline int 
 pipe_recv(pipe_t ch, void * buf, int sz) {
     DWORD len = 0;
@@ -75,8 +74,8 @@ pipe_send(pipe_t ch, const void * buf, int sz) {
 #else
 
 //
-// pipe_open - 打开一个管道
-// ch       : 待打开的管道
+// pipe_open - pipe open
+// ch       : 管道类型
 // return   : 0 is success ,-1 is error returned
 //
 inline int 
@@ -84,8 +83,8 @@ pipe_open(pipe_t ch) {
     return pipe(&ch->recv);
 }
 
-// pipe_recv - 管道阻塞接收, PIPE_SIZE 4K 内原子交换
-// pipe_send - 管道阻塞发送, 
+// pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
+// pipe_send - 管道阻塞发送
 inline int 
 pipe_recv(pipe_t ch, void * buf, int sz) {
     return (int)read(ch->recv, buf, sz);

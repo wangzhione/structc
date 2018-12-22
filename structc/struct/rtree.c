@@ -2,9 +2,9 @@
 
 //
 // struct $rtree 结构辅助操作宏
-// r    : 当前结点
-// p    : 父结点
-// c    : 当前结点颜色, 1 表示 black, 0 表示 red
+// r    : 当前节点
+// p    : 父节点
+// c    : 当前节点颜色, 1 is black, 0 is red
 //
 #define rtree_parent(r)      ((struct $rtree *)((r)->parentc & ~3))
 #define rtree_color(r)       ((r)->parentc & 1)
@@ -27,9 +27,9 @@ inline static int rtree_default_cmp(const void * ln, const void * rn) {
 
 //
 // rtee_create - 创建一个红黑树结构
-// fcmp     : 结点查找函数
-// fnew     : 结点构造函数
-// fdie     : 结点销毁函数
+// fcmp     : 节点查找函数
+// fnew     : 节点构造函数
+// fdie     : 节点销毁函数
 // return   : 返回构建红黑树
 //
 inline rtree_t 
@@ -43,7 +43,7 @@ rtree_create_(cmp_f fcmp, new_f fnew, node_f fdie) {
     return tree;
 }
 
-// 详细删除操作, 存在爆栈风险
+// rtree_root - 后序删除树节点
 static void rtree_root(struct $rtree * root, node_f fdie) {
     if (root->left)
         rtree_root(root->left, fdie);
@@ -196,7 +196,7 @@ static void rtree_right_rotate(rtree_t tree, struct $rtree * y) {
  *
  * 参数说明:
  *     tree 红黑树的根
- *     node 插入的结点        // 对应 <<算法导论>> 中的 z
+ *     node 插入的节点        // 对应 <<算法导论>> 中的 z
  */
 static void rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
     struct $rtree * parent, * gparent, * uncle;
@@ -267,7 +267,7 @@ static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
 }
 
 //
-// rtree_insert - 红黑树中插入结点 fnew(pack)
+// rtree_insert - 红黑树中插入节点 fnew(pack)
 // tree     : 红黑树结构
 // pack     : 待插入基础结构
 // return   : void
@@ -471,7 +471,7 @@ rtree_remove(rtree_t tree, void * pack) {
     }
 
 ret_out:
-    if (color) // 黑色结点重新调整关系, 并销毁节点操作
+    if (color) // 黑色节点重新调整关系, 并销毁节点操作
         rtree_remove_fixup(tree, child, parent);
     if (tree->fdie)
         tree->fdie(node);

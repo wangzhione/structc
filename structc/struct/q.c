@@ -3,7 +3,7 @@
 //
 // q_delete - 队列销毁
 // q        : 队列对象
-// fdie     : 删除 push 进来的结点
+// fdie     : push 节点删除行为
 // return   : void
 //
 void 
@@ -21,7 +21,7 @@ q_delete(q_t q, node_f fdie) {
     free(q->queue);
 }
 
-// add two cap memory, memory is do not have assert
+// q_expand - expand memory by twice
 static void q_expand(q_t q) {
     int i, size = q->size << 1;
     void ** nq = malloc(sizeof(void *) * size);

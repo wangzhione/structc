@@ -9,7 +9,7 @@ inline array_t
 array_create(unsigned size) {
     struct array * a = malloc(sizeof(struct array));
     assert(NULL != a && size > 0);
-    // 设置默认 cap 大小
+    // set default cap size
     a->cap = UINT_AINIT;
     a->data = malloc(size * a->cap);
     a->size = size;
