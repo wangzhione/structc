@@ -3,50 +3,49 @@
 
 #include "socket.h"
 
-//
-// 定义操作的事件集结构
-// event[INT_EVENT] -> event_t
+// struct event[MAX_EVENT] -> event_t 事件集
 //
 struct event {
-    void * ud;
+    void * u;
     bool read;
     bool write;
     bool error;
+    bool eof;
 };
 
 #define MAX_EVENT (64)
 
 typedef struct event event_t[MAX_EVENT];
 
-#ifdef __linux__
-    typedef int poll_t;
+#ifdef _WIN32
+typedef struct poll * poll_t;
 #else
-    typedef struct poll * poll_t;
+typedef int poll_t;
 #endif
 
 //
-// s_create     - 创建一个 poll 模型
-// s_error      - true 表示当前创建的 poll 模型有问题
-// s_delete     - 销毁一个创建的 poll 模型
+// s_create     - 创建 poll 对象
+// s_error      - true 表示创建 poll 对象异常
+// s_delete     - 销毁创建的 poll 对象
 //
 extern poll_t s_create(void);
 extern bool s_error(poll_t p);
 extern void s_delete(poll_t p);
 
 //
-// s_del        - 删除1检测的 socket
+// s_del        - 删除监测的 socket
 // s_add        - 添加监测的 socket, 并设置读模式, 失败返回 true
-// s_write      - 修改当前 socket, 通过 enable = true 设置写模式
+// s_write      - 修改监测的 socket, 通过 enable = true 设置写模式
 //
 extern void s_del(poll_t p, socket_t s);
-extern bool s_add(poll_t p, socket_t s, void * ud);
-extern void s_write(poll_t p, socket_t s, void * ud, bool enable);
+extern bool s_add(poll_t p, socket_t s, void * u);
+extern void s_write(poll_t p, socket_t s, void * u, bool enable);
 
 //
-// s_wait       - wait 函数, 等待别人自投罗网
-// p        : poll 模型
-// e        : 返回的操作事件集
-// return   : 返回待操作事件长度, < 0 表示失败
+// s_wait       - wait 函数, 守株待兔
+// p        : poll 对象
+// e        : 返回操作事件集
+// return   : 返回操作事件长度, < 0 表示失败
 //
 extern int s_wait(poll_t p, event_t e);
 

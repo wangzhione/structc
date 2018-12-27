@@ -5,76 +5,40 @@
 #include <string.h>
 
 // :) 高效内存分配, 莫名伤感 ~
-// _MSC_VER -> Winds CL
-// __GNUC__ -> Linux GCC
 //
-#ifdef _MSC_VER
-//
-// CPU 检测 x64 or x86
-// ISX64 defined 表示 x64 否则 x86
-//
-#   if defined(_M_ARM64) || defined(_M_X64)
-#       define ISX64
-#   endif
-//
-// _M_PPC 为 PowerPC 平台定义, 现在已不支持 so winds 默认是小端平台
-//
-#   if defined(_M_PPC)
-#       define ISBENIAN
-#   endif
-
-#elif  __GNUC__
-
-#   if defined(__x86_64__)
-#       define ISX64
-#   endif
-//
-// 大小端检测 : ISBENIAN defined 表示大端
-//
-#   if defined(__BIG_ENDIAN__) || defined(__BIG_ENDIAN_BITFIELD)
-#       define ISBENIAN
-#   endif
-
-#else
-#   error BUILD (￣︶￣) S
-#endif
-
-//
-// enum Flag int - 函数返回值全局状态码
-// >= 0 标识 Success 状态, < 0 标识 Error 状态
-//
-enum {
-    SBase       =  +0, // 正确基础类型
-
-    EBase       =  -1, // 错误基础类型
-    EParam      =  -2, // 输入参数错误
-    EFd         =  -3, // 文件打开失败
-    EClose      =  -4, // 文件操作关闭
-    EAccess     =  -5, // 没有操作权限
-    EAlloc      =  -6, // 内存操作错误
-    EParse      =  -7, // 协议解析错误
-    ESmall      =  -8, // 过小基础错误
-    EBig        =  -9, // 过大基础错误
-    ETimeout    = -10, // 操作超时错误
-};
-
-// OFF_ALLOC - 关闭全局 free / malloc 配置
 #ifndef OFF_ALLOC
 
-#   undef  free
-#   define free    free_
+#undef  free
+#define free    free_
 
-#   undef  strdup
-#   define strdup  strdup_
+#undef  strdup
+#define strdup  strdup_
 
-#   undef  malloc
-#   define malloc  malloc_
-#   undef  calloc
-#   define calloc  calloc_
-#   undef  realloc
-#   define realloc realloc_
+#undef  malloc
+#define malloc  malloc_
+#undef  calloc
+#define calloc  calloc_
+#undef  realloc
+#define realloc realloc_
 
 #endif//OFF_ALLOC
+
+// enum 状态, >= 0 is Success 状态, < 0 is Error 状态
+//
+enum {
+    SBase       =   +0, // 正确基础类型
+
+    EBase       =   -1, // 错误基础类型
+    EParam      =   -2, // 输入参数错误
+    EFd         =   -3, // 文件打开失败
+    EClose      =   -4, // 文件操作关闭
+    EAccess     =   -5, // 没有操作权限
+    EAlloc      =   -6, // 内存操作错误
+    EParse      =   -7, // 协议解析错误
+    EBig        =   -8, // 过大基础错误
+    ESmall      =   -9, // 过小基础错误
+    ETimeout    =  -10, // 操作超时错误
+};
 
 //
 // free_ - free 包装函数
