@@ -1,4 +1,4 @@
-﻿#ifdef __linux__
+﻿#if defined(__linux__)
 
 #include "spoll.h"
 #include <sys/epoll.h>

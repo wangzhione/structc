@@ -1,13 +1,11 @@
-﻿#ifdef _WIN32
+﻿#if defined(_WIN32)
 
-#ifdef _MSC_VER
 #undef  FD_SETSIZE
 #define FD_SETSIZE      (1024)
-#endif
 
 #include "spoll.h"
 
-struct trigger {
+struct fds {
     void * u;
     bool write;
     socket_t fd;
@@ -18,7 +16,7 @@ struct poll {
     fd_set fdw;
     fd_set fde;
     uint16_t len;
-    struct trigger trg[FD_SETSIZE];
+    struct fds s[FD_SETSIZE];
 };
 
 //
@@ -44,7 +42,7 @@ inline void s_delete(poll_t p) {
 // s_write      - 修改监测的 socket, 通过 enable = true 设置写模式
 //
 void s_del(poll_t p, socket_t s) {
-    struct trigger * begin = p->trg, * end = p->trg + p->len;
+    struct fds * begin = p->s, * end = p->s + p->len;
     while (begin < end) {
         if (begin->fd == s) {
             --p->len;
@@ -59,17 +57,12 @@ void s_del(poll_t p, socket_t s) {
 }
 
 bool s_add(poll_t p, socket_t s, void * u) {
-    struct trigger * begin, * end;
-#ifdef _MSC_VER
-    if (p->len >= FD_SETSIZE || s <= 0)
+    struct fds * begin, * end;
+    if (p->len >= FD_SETSIZE)
         return true;
-#else
-    if (p->len >= FD_SETSIZE || s < 0)
-        return true;
-#endif
 
-    begin = p->trg;
-    end = p->trg + p->len;
+    begin = p->s;
+    end = p->s + p->len;
     while (begin < end) {
         if (begin->fd == s)
             break;
@@ -86,7 +79,7 @@ bool s_add(poll_t p, socket_t s, void * u) {
 }
 
 void s_write(poll_t p, socket_t s, void * u, bool enable) {
-    struct trigger * begin = p->trg, * end = p->trg + p->len;
+    struct fds * begin = p->s, * end = p->s + p->len;
     while (begin < end) {
         if (begin->fd == s) {
             begin->u = u;
@@ -104,7 +97,7 @@ void s_write(poll_t p, socket_t s, void * u, bool enable) {
 // return   : 返回操作事件长度, < 0 表示失败
 //
 int s_wait(poll_t p, event_t e) {
-    struct trigger * g;
+    struct fds * s;
     socket_t fd, max = 0;
     socklen_t ren = sizeof(int);
     int c, r, i, n, len = p->len;
@@ -113,12 +106,12 @@ int s_wait(poll_t p, event_t e) {
     FD_ZERO(&p->fdw);
     FD_ZERO(&p->fde);
     for (i = 0; i < len; ++i) {
-        g = p->trg + i;
-        if ((fd = g->fd) > max)
+        s = p->s + i;
+        if ((fd = s->fd) > max)
             max = fd;
 
         FD_SET(fd, &p->fdr);
-        if (g->write)
+        if (s->write)
             FD_SET(fd, &p->fdw);
         FD_SET(fd, &p->fde);
     }
@@ -128,11 +121,11 @@ int s_wait(poll_t p, event_t e) {
     if (n <= 0) RETURN(-1, "select n = %d error", n);
 
     for (c = i = 0; c < n && c < MAX_EVENT && i < len; ++i) {
-        g = p->trg + i;
-        fd = g->fd;
+        s = p->s + i;
+        fd = s->fd;
         e[c].eof = false;
         e[c].read = FD_ISSET(fd, &p->fdr);
-        e[c].write = g->write && FD_ISSET(fd, &p->fdw);
+        e[c].write = s->write && FD_ISSET(fd, &p->fdw);
 
         r = 1;
         if (FD_ISSET(fd, &p->fde)) {
@@ -144,7 +137,7 @@ int s_wait(poll_t p, event_t e) {
         // 保存最后错误信息
         if (e[c].read || e[c].write || !r) {
             e[c].error = !!r;
-            e[c].u = g->u;
+            e[c].u = s->u;
             ++c;
         }
     }

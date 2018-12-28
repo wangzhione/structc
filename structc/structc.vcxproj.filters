@@ -138,6 +138,9 @@
     <ClInclude Include="struct\heap.h">
       <Filter>struct</Filter>
     </ClInclude>
+    <ClInclude Include="system\spoll$kqueue.h">
+      <Filter>system\poll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
