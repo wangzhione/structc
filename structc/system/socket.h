@@ -41,7 +41,7 @@ inline int socket_close(socket_t s) {
 
 // socket_set_block     - 设置套接字是阻塞
 // socket_set_nonblock  - 设置套接字是非阻塞
-inline int socket_set_block(socket_t s) {
+inline static int socket_set_block(socket_t s) {
     int mode = fcntl(s, F_GETFL, 0);
     return fcntl(s, F_SETFL, mode & ~O_NONBLOCK);
 }

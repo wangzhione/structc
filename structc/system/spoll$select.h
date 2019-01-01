@@ -127,11 +127,11 @@ int s_wait(poll_t p, event_t e) {
         e[c].read = FD_ISSET(fd, &p->fdr);
         e[c].write = s->write && FD_ISSET(fd, &p->fdw);
 
-        r = 1;
+        r = true;
         if (FD_ISSET(fd, &p->fde)) {
             // 只要最后没有 error 那就 OK | 排除带外数据
             if (getsockopt(fd, SOL_SOCKET, SO_ERROR, (void *)&r, &ren) || r)
-                r = 0;
+                r = false;
         }
 
         // 保存最后错误信息

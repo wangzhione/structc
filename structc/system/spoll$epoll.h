@@ -30,17 +30,17 @@ inline void s_del(poll_t p, socket_t s) {
 }
 
 inline bool s_add(poll_t p, socket_t s, void * u) {
-    struct epoll_event e;
-    e.events = EPOLLIN;
-    e.data.ptr = u;
-    return !!epoll_ctl(p, EPOLL_CTL_ADD, s, &e);
+    struct epoll_event t;
+    t.events = EPOLLIN;
+    t.data.ptr = u;
+    return epoll_ctl(p, EPOLL_CTL_ADD, s, &t);
 }
 
 inline void s_write(poll_t p, socket_t s, void * u, bool enable) {
-    struct epoll_event e;
-    e.events = EPOLLIN | (enable ? EPOLLOUT : 0);
-    e.data.ptr = u;
-    epoll_ctl(p, EPOLL_CTL_MOD, s, &e);
+    struct epoll_event t;
+    t.events = enable ? EPOLLIN | EPOLLOUT : EPOLLIN;
+    t.data.ptr = u;
+    epoll_ctl(p, EPOLL_CTL_MOD, s, &t);
 }
 
 //
@@ -52,9 +52,6 @@ inline void s_write(poll_t p, socket_t s, void * u, bool enable) {
 int s_wait(poll_t p, event_t e) {
     struct epoll_event v[MAX_EVENT];
     int n = epoll_wait(p, v, sizeof v / sizeof *v, -1);
-    if (n <= 0) {
-        RETURN(-1, "epoll_wait n = %d error", n);
-    }
 
     for (int i = 0; i < n; ++i) {
         uint32_t flag = v[i].events;
