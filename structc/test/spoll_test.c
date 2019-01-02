@@ -5,7 +5,6 @@
 //
 // test socket poll 模型
 //
-
 void spoll_test(void) {
     int n;
     event_t e;
@@ -16,7 +15,7 @@ void spoll_test(void) {
         RETNIL("socket_tcp is error!");
 
     poll_t p = s_create();
-    assert(!s_error(p));
+    assert(!s_invalid(p));
 
     if (s_add(p, s, NULL))
         CERR("sp_add sock = is error!");

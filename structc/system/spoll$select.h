@@ -21,14 +21,14 @@ struct poll {
 
 //
 // s_create     - 创建 poll 对象
-// s_error      - true 表示创建 poll 对象异常
+// s_invalid    - true 表示创建 poll 对象异常
 // s_delete     - 销毁创建的 poll 对象
 //
 inline poll_t s_create(void) {
     return calloc(1, sizeof(struct poll));
 }
 
-inline bool s_error(poll_t p) {
+inline bool s_invalid(poll_t p) {
     return NULL == p;
 }
 

@@ -1,12 +1,11 @@
-# C STRUCT 基础库
+# STRUCT C 基础库
 
-    背景 : 构建稍微通用点的 C 结构基础库
-    方式 : 基于注册
-    适用 : 开始搭建项目的人群, 且有点喜欢 C
+    开发背景 : 基于注册, 构建可用的 C 基础库
+    适用人群 : 有点喜欢 C, 尝试搭建项目的人群
 
-### 好像才刚开始 ~
+## 好像才刚开始 ~
 
-    核心围绕:
+    核心点:
         q.h         队  列
         mq.h        原子 q
         dict.h      字  典
@@ -15,14 +14,14 @@
         rtree.h     红黑树
         array.h     动态数组
 
-    总的设计:
-        json, cas, shm, pipe, errno, socket ...
-    
+    总设计:
+        json, cas, pipe, errno, socket ...
+
     来协助我们搭建 C 项目, 提供底层数据结构和额外组件的支持 ...
 
     ...
 
-**代码风格, 希望最贴近原生 api :-**
+**代码风格, 希望最贴近原生 api :**
 
 ```C
 #include <pthread.h>
@@ -30,7 +29,7 @@
 
 //
 // node_f - 销毁当前对象节点
-//  : void list_die(void * node); 
+//  : void list_die(void * node);
 //
 typedef void (* node_f)(void * node);
 
@@ -45,7 +44,7 @@ typedef void * (* start_f)(void * arg);
 // frun     : 运行的主体
 // arg      : 运行参数
 // return   : 返回 0 is success
-// 
+//
 #define pthread_async(frun, arg)                                    \
 pthread_async_((node_f)(frun), (void *)(intptr_t)(arg))
 inline int pthread_async_(node_f frun, void * arg) {
@@ -69,7 +68,7 @@ inline int pthread_async_(node_f frun, void * arg) {
 [structc 环境搭建](./structc/README.md)
 
     - Winds 双击
-        - 目前只维护 x64 的 Debug 和 Release
+        - 只维护 x64 的 Debug 和 Release
         - Best New CL Build
 
     - Linux 搞起
@@ -79,8 +78,9 @@ inline int pthread_async_(node_f frun, void * arg) {
 
     - 工程目录述
         - main 目录
-            - main_run.c 写业务代码
-            - main_test.c 加 test目录下单测
+            - main_run.c  业务代码起点
+            - main_init.c 写单例, 各初始化
+            - main_test.c 加 test 目录下单测
         - test 目录
             - *_test.c -> void *_test(void) { ... }
 
@@ -93,7 +93,7 @@ inline int pthread_async_(node_f frun, void * arg) {
     Linux 抛砖引玉带大家配置哈 VS Code Best Version
 
     0. 安装 C/C++ Microsoft 插件
-    
+
     1. F1 -> Edit Configurations -> c_cpp_properties.json
        Search Linux 部分添加如下内容
 
@@ -110,6 +110,7 @@ inline int pthread_async_(node_f frun, void * arg) {
                 "__GNUC__"
             ],
 ```
+
     2. F5 -> launch.json
        按照规律改 program 项目生成 和 preLaunchTask 前置任务
 
@@ -140,15 +141,15 @@ inline int pthread_async_(node_f frun, void * arg) {
 
     核心思路是基于 Makefile Debug 模式配置 VSCode C Studio.
     此刻就可以在 main.c 入口出发, 开启 F5 F10 F11 玩耍之路.
-    
+
     比 gcc + gdb + vi 好那么一丢丢 ~
 
 ***
 
-### ~ * ~ 写个好手 ...
+### ~ * ~ 写个好手
 
     为要寻一个明星
-    - 徐志摩 
+    - 徐志摩
 
     我骑着一匹拐腿的瞎马，
     向着黑夜里加鞭；——

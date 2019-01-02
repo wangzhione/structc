@@ -25,11 +25,11 @@ typedef int poll_t;
 
 //
 // s_create     - 创建 poll 对象
-// s_error      - true 表示创建 poll 对象异常
+// s_invalid    - true 表示创建 poll 对象异常
 // s_delete     - 销毁创建的 poll 对象
 //
 extern poll_t s_create(void);
-extern bool s_error(poll_t p);
+extern bool s_invalid(poll_t p);
 extern void s_delete(poll_t p);
 
 //
