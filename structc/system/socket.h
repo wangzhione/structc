@@ -3,11 +3,69 @@
 
 #include <time.h>
 #include <fcntl.h>
-#include "struct.h"
+#include "strerr.h"
 #include <signal.h>
 #include <sys/types.h>
 
-#ifdef __GNUC__
+#ifdef _WIN32
+
+#include <ws2tcpip.h>
+
+#undef  errno
+#define errno                   WSAGetLastError()
+
+#undef  EINTR
+#define EINTR                   WSAEINTR
+#undef  EAGAIN
+#define EAGAIN                  WSAEWOULDBLOCK
+#undef  EINPROGRESS
+#define EINPROGRESS             WSAEWOULDBLOCK
+
+// WinSock 2 extension -- manifest constants for shutdown()
+//
+#define SHUT_RD                 SD_RECEIVE
+#define SHUT_WR                 SD_SEND
+#define SHUT_RDWR               SD_BOTH
+
+#define SO_REUSEPORT            SO_REUSEADDR
+
+typedef int socklen_t;
+typedef SOCKET socket_t;
+
+// socket_init - 初始化 socket 库初始化方法
+inline void socket_init(void) {
+    WSADATA version;
+    WSAStartup(WINSOCK_VERSION, &version);
+}
+
+// socket_close     - 关闭上面创建后的句柄
+inline int socket_close(socket_t s) {
+    return closesocket(s);
+}
+
+// socket_set_block     - 设置套接字是阻塞
+inline int socket_set_block(socket_t s) {
+    u_long mode = 0;
+    return ioctlsocket(s, FIONBIO, &mode);
+}
+
+// socket_set_nonblock  - 设置套接字是非阻塞
+inline int socket_set_nonblock(socket_t s) {
+    u_long mode = 1;
+    return ioctlsocket(s, FIONBIO, &mode);
+}
+
+// socket_recv      - 读取数据
+inline int socket_recv(socket_t s, void * buf, int sz) {
+    return sz > 0 ? recv(s, buf, sz, 0) : 0;
+}
+
+// socket_send      - 写入数据
+inline int socket_send(socket_t s, const void * buf, int sz) {
+    return send(s, buf, sz, 0);
+}
+
+#else
 
 #include <netdb.h>
 #include <unistd.h>
@@ -19,7 +77,6 @@
 #include <netinet/tcp.h>
 #include <sys/resource.h>
 
-//
 // This is used instead of -1, since the. by WinSock
 // On now linux EAGAIN and EWOULDBLOCK may be the same value 
 // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
@@ -40,103 +97,25 @@ inline int socket_close(socket_t s) {
 }
 
 // socket_set_block     - 设置套接字是阻塞
-// socket_set_nonblock  - 设置套接字是非阻塞
 inline static int socket_set_block(socket_t s) {
     int mode = fcntl(s, F_GETFL, 0);
     return fcntl(s, F_SETFL, mode & ~O_NONBLOCK);
 }
 
+// socket_set_nonblock  - 设置套接字是非阻塞
 inline int socket_set_nonblock(socket_t s) {
     int mode = fcntl(s, F_GETFL, 0);
     return fcntl(s, F_SETFL, mode | O_NONBLOCK);
 }
 
 // socket_recv      - 读取数据
-// socket_send      - 写入数据
 inline int socket_recv(socket_t s, void * buf, int sz) {
     return (int)read(s, buf, sz);
 }
 
+// socket_send      - 写入数据
 inline int socket_send(socket_t s, const void * buf, int sz) {
     return (int)write(s, buf, sz);
-}
-
-#endif
-
-#ifdef _MSC_VER
-
-#include <ws2tcpip.h>
-
-#undef  errno
-#define errno                   WSAGetLastError()
-#undef  strerror
-#define strerror                ((char * (*)(int))strerr)
-
-#undef  EINTR
-#define EINTR                   WSAEINTR
-#undef  EAGAIN
-#define EAGAIN                  WSAEWOULDBLOCK
-#undef  EINPROGRESS
-#define EINPROGRESS             WSAEWOULDBLOCK
-
-/*
- * WinSock 2 extension -- manifest constants for shutdown()
- */
-#define SHUT_RD                 SD_RECEIVE
-#define SHUT_WR                 SD_SEND
-#define SHUT_RDWR               SD_BOTH
-
-#define SO_REUSEPORT            SO_REUSEADDR
-
-typedef SOCKET socket_t;
-typedef int socklen_t;
-
-//
-// strerr - linux 替代 strerror, winds 替代 FormatMessage 
-// err      : linux 是 errno, winds 可以是 WSAGetLastError() ... 
-// return   : system os 拔下来的提示常量字符串集合
-//
-extern const char * strerr(int err);
-
-//
-// gettimeofday - Linux sys/time.h 中得到微秒时间实现
-// tv       : 返回结果包含秒数和微秒数
-// tz       : 包含的时区, winds 上这个变量没有作用
-// return   : 默认返回 0
-//
-extern int gettimeofday(struct timeval * tv, void * tz);
-
-// socket_init - 初始化 socket 库初始化方法
-inline void socket_init(void) {
-    WSADATA wsad;
-    WSAStartup(WINSOCK_VERSION, &wsad);
-}
-
-// socket_close     - 关闭上面创建后的句柄
-inline int socket_close(socket_t s) {
-    return closesocket(s);
-}
-
-// socket_set_block     - 设置套接字是阻塞
-// socket_set_nonblock  - 设置套接字是非阻塞
-inline int socket_set_block(socket_t s) {
-    u_long mode = 0;
-    return ioctlsocket(s, FIONBIO, &mode);
-}
-
-inline int socket_set_nonblock(socket_t s) {
-    u_long mode = 1;
-    return ioctlsocket(s, FIONBIO, &mode);
-}
-
-// socket_recv      - 读取数据
-// socket_send      - 写入数据
-inline int socket_recv(socket_t s, void * buf, int sz) {
-    return sz > 0 ? recv(s, buf, sz, 0) : 0;
-}
-
-inline int socket_send(socket_t s, const void * buf, int sz) {
-    return send(s, buf, sz, 0);
 }
 
 #endif
@@ -147,32 +126,30 @@ inline int socket_send(socket_t s, const void * buf, int sz) {
 typedef struct sockaddr_in sockaddr_t[1];
 
 // socket_dgram     - 创建 UDP socket
-// socket_stream    - 创建 TCP socket
 inline socket_t socket_dgram(void) {
     return socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 }
 
+// socket_stream    - 创建 TCP socket
 inline socket_t socket_stream(void) {
     return socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 }
 
-// socket_set_reuse - 开启端口和地址复用
-// socket_set_keepalive - 开启心跳包检测, 默认2h 5次
 inline int socket_set_enable(socket_t s, int optname) {
     int ov = 1;
     return setsockopt(s, SOL_SOCKET, optname, (void *)&ov, sizeof ov);
 }
 
+// socket_set_reuse - 开启端口和地址复用
 inline int socket_set_reuse(socket_t s) {
     return socket_set_enable(s, SO_REUSEPORT);
 }
 
+// socket_set_keepalive - 开启心跳包检测, 默认 5次/2h
 inline int socket_set_keepalive(socket_t s) {
     return socket_set_enable(s, SO_KEEPALIVE);
 }
 
-// socket_set_rcvtimeo - 设置接收数据毫秒超时时间
-// socket_set_sndtimeo - 设置发送数据毫秒超时时间
 inline int socket_set_time(socket_t s, int ms, int optname) {
     struct timeval ov = { 0,0 };
     if (ms > 0) {
@@ -182,10 +159,12 @@ inline int socket_set_time(socket_t s, int ms, int optname) {
     return setsockopt(s, SOL_SOCKET, optname, (void *)&ov, sizeof ov);
 }
 
+// socket_set_rcvtimeo - 设置接收数据毫秒超时时间
 inline int socket_set_rcvtimeo(socket_t s, int ms) {
     return socket_set_time(s, ms, SO_RCVTIMEO);
 }
 
+// socket_set_sndtimeo - 设置发送数据毫秒超时时间
 inline int socket_set_sndtimeo(socket_t s, int ms) {
     return socket_set_time(s, ms, SO_SNDTIMEO);
 }
@@ -199,12 +178,12 @@ inline int socket_get_error(socket_t s) {
 }
 
 // socket_recvfrom  - recvfrom 接受函数
-// socket_sendto    - sendto 发送函数
 inline int socket_recvfrom(socket_t s, void * buf, int len, int flags, sockaddr_t in) {
     socklen_t inlen = sizeof (sockaddr_t);
     return recvfrom(s, buf, len, flags, (struct sockaddr *)in, &inlen);
 }
 
+// socket_sendto    - sendto 发送函数
 inline int socket_sendto(socket_t s, const void * buf, int len, int flags, const sockaddr_t to) {
     return sendto(s, buf, len, flags, (const struct sockaddr *)to, sizeof(sockaddr_t));
 }
@@ -217,33 +196,33 @@ extern int socket_recvn(socket_t s, void * buf, int sz);
 extern int socket_sendn(socket_t s, const void * buf, int sz);
 
 // socket_bind          - bind    绑定函数
-// socket_listen        - listen  监听函数
-// socket_accept        - accept  等接函数
-// socket_connect       - connect 链接函数
 inline int socket_bind(socket_t s, const sockaddr_t addr) {
     return bind(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
 }
 
+// socket_listen        - listen  监听函数
 inline int socket_listen(socket_t s) {
     return listen(s, SOMAXCONN);
 }
 
+// socket_accept        - accept  等接函数
 inline socket_t socket_accept(socket_t s, sockaddr_t addr) {
     socklen_t len = sizeof (sockaddr_t);
     return accept(s, (struct sockaddr *)addr, &len);
 }
 
+// socket_connect       - connect 链接函数
 inline int socket_connect(socket_t s, const sockaddr_t addr) {
     return connect(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
 }
 
 // socket_getsockname - 获取 socket 的本地地址
-// socket_getpeername - 获取 client socket 的地址
 inline int socket_getsockname(socket_t s, sockaddr_t name) {
     socklen_t len = sizeof (sockaddr_t);
     return getsockname(s, (struct sockaddr *)name, &len);
 }
 
+// socket_getpeername - 获取 client socket 的地址
 inline int socket_getpeername(socket_t s, sockaddr_t name) {
     socklen_t len = sizeof (sockaddr_t);
     return getpeername(s, (struct sockaddr *)name, &len);
@@ -255,7 +234,6 @@ inline int socket_getpeername(socket_t s, sockaddr_t name) {
 //
 extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
 extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
-
 
 //
 // socket_addr -socket_recv 通过 ip, port 构造 ipv4 结构

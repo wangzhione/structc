@@ -8,46 +8,53 @@
 // ~ 力求最小时间业务单元 ~ 
 // 1s(秒) = 1000ms(毫秒) = 1000000us(微秒) = 1000000000ns(纳秒)
 //
-#ifdef __GNUC__
 
-#include <unistd.h>
-#include <sys/time.h>
+#ifdef _WIN32
+
+#include <winsock2.h>
 
 //
 // msleep - 睡眠函数, 颗粒度是毫秒.
-// m        : 待睡眠的毫秒数
+// ms       : 睡眠的毫秒数
 // return   : void
 //
-inline void msleep(int ms) {
-    usleep(ms * 1000);
-}
-
-#endif
-
-#ifdef _MSC_VER
-
-#include <windows.h>
-
 inline void msleep(int ms) {
     Sleep(ms);
 }
 
 //
-// localtime_r - 安全的得到当前时间结构体
-// timep        : 输入的时间戳指针
-// result       : 返回输出时间结构
-// return       : 失败 NULL, 正常返回 result
+// usleep - 微秒级别等待函数
+// usec     : 等待的微秒
+// return   : 0 on success.  On error, -1 is returned.
+//
+extern int usleep(unsigned usec);
+
+//
+// gettimeofday - Linux sys/time.h 得到微秒时间实现
+// tv       : 返回秒数和微秒数
+// tz       : 返回时区, winds 上这个变量没有作用
+// return   : success is 0
+//
+extern int gettimeofday(struct timeval * tv, void * tz);
+
+//
+// localtime_r - 获取当前时间, 线程安全
+// timep    : 输入的时间戳指针
+// result   : 返回输出时间结构
+// return   : 失败 NULL, 正常返回 result
 //
 inline struct tm * localtime_r(const time_t * timep, struct tm * result) {
     return localtime_s(result, timep) ? NULL : result;
 }
 
-//
-// usleep - 微秒级别等待函数
-// usec         : 等待的微秒
-// return       : 0 on success.  On error, -1 is returned.
-//
-extern int usleep(unsigned usec);
+#else
+
+#include <unistd.h>
+#include <sys/time.h>
+
+inline void msleep(int ms) {
+    usleep(ms * 1000);
+}
 
 #endif
 

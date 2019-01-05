@@ -141,6 +141,9 @@
     <ClInclude Include="system\spoll$kqueue.h">
       <Filter>system\poll</Filter>
     </ClInclude>
+    <ClInclude Include="system\strerr.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">

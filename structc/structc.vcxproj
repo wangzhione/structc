@@ -121,6 +121,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\atomic.h" />
     <ClInclude Include="system\rwlock.h" />
     <ClInclude Include="system\spoll$kqueue.h" />
+    <ClInclude Include="system\strerr.h" />
     <ClInclude Include="system\utf8.h" />
     <ClInclude Include="system\md5.h" />
     <ClInclude Include="system\pipe.h" />

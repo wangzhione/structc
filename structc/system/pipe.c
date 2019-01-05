@@ -11,31 +11,34 @@ int
 pipe(socket_t pipefd[2]) {
     socket_t s = socket_stream();
     sockaddr_t name = { AF_INET };
-    name->sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-
     if (s == INVALID_SOCKET)
         return -1;
     if (socket_bind(s, name))
-        return socket_close(s), -1;
+        goto err_close;
     if (listen(s, 1))
-        return socket_close(s), -1;
+        goto err_close;
 
     // 得到绑定端口本地地址
     if (socket_getsockname(s, name))
-        return socket_close(s), -1;
+        goto err_close;
 
     // 开始构建互相通信的 socket
     if ((pipefd[0] = socket_stream()) == INVALID_SOCKET)
-        return socket_close(s), -1;
+        goto err_close;
     if (socket_connect(pipefd[0], name))
-        return socket_close(s), -1;
+        goto err_pipe;
 
     // 通过 accept 通信避免一些意外
-    pipefd[1] = socket_accept(s, name);
+    if ((pipefd[1] = socket_accept(s, name)) == INVALID_SOCKET) 
+        goto err_pipe;
     socket_close(s);
-    if (pipefd[1] == INVALID_SOCKET) 
-        return socket_close(pipefd[0]), -1;
     return 0;
+
+err_pipe:
+    socket_close(pipefd[0]);
+err_close:
+    socket_close(s);
+    return -1;
 }
 
 //

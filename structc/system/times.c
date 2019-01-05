@@ -1,30 +1,56 @@
 ﻿#include "times.h"
 #include <stdio.h>
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 
 //
 // usleep - 微秒级别等待函数
-// usec         : 等待的微秒
-// return       : 0 on success. On error, -1 is returned.
+// usec     : 等待的微秒
+// return   : 0 on success.  On error, -1 is returned.
 //
 int
 usleep(unsigned usec) {
-    int rt = -1;
+    int ret = -1;
     // Convert to 100 nanosecond interval, negative value indicates relative time
-    LARGE_INTEGER ft = { .QuadPart = -10ll * usec };
+    LARGE_INTEGER t = { .QuadPart = -10ll * usec };
 
     HANDLE timer = CreateWaitableTimer(NULL, TRUE, NULL);
     if (timer) {
         // 负数以100ns为单位等待, 正数以标准FILETIME格式时间
-        SetWaitableTimer(timer, &ft, 0, NULL, NULL, FALSE);
+        SetWaitableTimer(timer, &t, 0, NULL, NULL, FALSE);
         WaitForSingleObject(timer, INFINITE);
         if (GetLastError() == ERROR_SUCCESS)
-            rt = 0;
+            ret = 0;
         CloseHandle(timer);
     }
 
-    return rt;
+    return ret;
+}
+
+//
+// gettimeofday - Linux sys/time.h 得到微秒时间实现
+// tv       : 返回秒数和微秒数
+// tz       : 返回时区, winds 上这个变量没有作用
+// return   : success is 0
+//
+int 
+gettimeofday(struct timeval * tv, void * tz) {
+    struct tm m;
+    SYSTEMTIME se;
+
+    GetLocalTime(&se);
+    m.tm_year = se.wYear - 1900;
+    m.tm_mon = se.wMonth - 1;
+    m.tm_mday = se.wDay;
+    m.tm_hour = se.wHour;
+    m.tm_min = se.wMinute;
+    m.tm_sec = se.wSecond;
+    m.tm_isdst = -1; // 不考虑夏令时
+
+    tv->tv_sec = (long)mktime(&m);
+    tv->tv_usec = se.wMilliseconds * 1000;
+
+    return 0;
 }
 
 #endif

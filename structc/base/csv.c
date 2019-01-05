@@ -44,7 +44,7 @@ err_faid:
     return (int)(s - str);
 }
 
-// csv_parse - 解析 csv 内容并返回解析好的对象
+// csv_parse - 解析 csv 内容返回解析后的对象
 csv_t csv_parse(char * s) {
     csv_t csv;
     char * str;
@@ -70,21 +70,19 @@ csv_t csv_parse(char * s) {
 }
 
 //
-// csv_create - 从文件中构建 csv 对象
-// path    : csv文件内容
-// return  : 返回构建好的 csv_t 对象
+// csv_create - 文件中构建 csv_t 对象
+// path    : 文件路径
+// return  : 返回 csv_t 对象, NULL is error
 //
 csv_t 
 csv_create(const char * path) {
-    csv_t csv;
     char * str = str_freads(path);
     if (NULL == str) {
         RETNUL("str_freads path = %s is error!", path);
     }
 
-    // 如果解析 csv 文件内容失败直接返回
-    csv = csv_parse(str);
-
+    // 开始解析 csv 文件内容
+    csv_t csv = csv_parse(str);
     free(str);
     // 返回最终结果
     return csv;

@@ -6,7 +6,7 @@
 #include <semaphore.h>
 
 //
-// pthread_end - 等待线程结束
+// pthread_end - 等待线程运行结束
 // tid      : 线程 id
 // return   : void
 //
@@ -15,7 +15,7 @@ inline void pthread_end(pthread_t id) {
 }
 
 //
-// pthread_run - 异步启动线程
+// pthread_run - 启动线程
 // id       : 线程 id
 // frun     : 运行主体
 // arg      : 运行参数
@@ -28,7 +28,7 @@ inline int pthread_run_(pthread_t * pi, node_f frun, void * arg) {
 }
 
 //
-// pthread_async - 异步启动分离线程
+// pthread_async - 启动无需等待的线程
 // frun     : 运行的主体
 // arg      : 运行参数
 // return   : return 0 is success

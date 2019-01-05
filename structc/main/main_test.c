@@ -25,7 +25,7 @@ void main_test(void) {
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(spoll_test);
+    EXTERN_RUN(pipe_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }
