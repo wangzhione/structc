@@ -1,56 +1,56 @@
-#ifndef _H_HEAP
+ï»¿#ifndef _H_HEAP
 #define _H_HEAP
 
 #include "struct.h"
 
 //
-// head_t ¶ÑµÄÀàĞÍ½á¹¹
+// head_t å †çš„ç±»å‹ç»“æ„
 //
 typedef struct heap * heap_t;
 
 //
-// heap_create - ´´½¨·ûºÏ¹æÔòµÄ¶Ñ
-// fcmp     : ±È½ÏĞĞÎª, ¹æÔò fcmp() <= 0
-// return   : ·µ»Ø´´½¨ºÃµÄ¶Ñ¶ÔÏó
+// heap_create - åˆ›å»ºç¬¦åˆè§„åˆ™çš„å †
+// fcmp     : æ¯”è¾ƒè¡Œä¸º, è§„åˆ™ fcmp() <= 0
+// return   : è¿”å›åˆ›å»ºå¥½çš„å †å¯¹è±¡
 //
 extern heap_t heap_create(cmp_f fcmp);
 
 //
-// heap_delete - Ïú»Ù¶Ñ
-// h        : ¶Ñ¶ÔÏó
-// fdie     : Ïú»ÙĞĞÎª, Ä¬ÈÏ NULL
+// heap_delete - é”€æ¯å †
+// h        : å †å¯¹è±¡
+// fdie     : é”€æ¯è¡Œä¸º, é»˜è®¤ NULL
 // return   : void
 //
 extern void heap_delete(heap_t h, node_f fdie);
 
 //
-// heap_insert - ¶Ñ²åÈëÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// node     : ²Ù×÷¶ÔÏó
+// heap_insert - å †æ’å…¥æ•°æ®
+// h        : å †å¯¹è±¡
+// node     : æ“ä½œå¯¹è±¡
 // return   : void
 //
 extern void heap_insert(heap_t h, void * node);
 
 //
-// heap_remove - ¶ÑÉ¾³ıÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// arg      : ²Ù×÷²ÎÊı
-// fcmp     : ±È½ÏĞĞÎª, ¹æÔò fcmp() == 0
-// return   : ÕÒµ½µÄ¶Ñ½Úµã
+// heap_remove - å †åˆ é™¤æ•°æ®
+// h        : å †å¯¹è±¡
+// arg      : æ“ä½œå‚æ•°
+// fcmp     : æ¯”è¾ƒè¡Œä¸º, è§„åˆ™ fcmp() == 0
+// return   : æ‰¾åˆ°çš„å †èŠ‚ç‚¹
 //
 extern void * heap_remove(heap_t h, void * arg, cmp_f fcmp);
 
 //
-// heap_top - ²é¿´¶Ñ¶¥½ÚµãÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// return   : ¶Ñ¶¥½Úµã
+// heap_top - æŸ¥çœ‹å †é¡¶èŠ‚ç‚¹æ•°æ®
+// h        : å †å¯¹è±¡
+// return   : å †é¡¶èŠ‚ç‚¹
 //
 extern void * heap_top(heap_t h);
 
 //
-// heap_top - Õªµô¶Ñ¶¥½ÚµãÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// return   : ·µ»Ø¶Ñ¶¥½Úµã
+// heap_top - æ‘˜æ‰å †é¡¶èŠ‚ç‚¹æ•°æ®
+// h        : å †å¯¹è±¡
+// return   : è¿”å›å †é¡¶èŠ‚ç‚¹
 //
 extern void * heap_pop(heap_t h);
 

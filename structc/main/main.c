@@ -1,10 +1,10 @@
 ﻿#include "head.h"
 
 //
-// main - 奔跑一切的起点
-// argc     : 参数长度
+// main - 奔跑的起点
+// argc     : 参数个数
 // argv     : 参数数组
-// return   : 退出状态码
+// return   : 状态码
 //
 int main(int argc, char * argv[]) {
     // 初始化 ... .
@@ -19,7 +19,7 @@ int main(int argc, char * argv[]) {
 #endif
 
     // ... 
-    // ... 启动项目运行的主函数
+    // ... 项目运行的主函数 ~ 龍
     //
     EXTERN_RUN(main_run, argc, argv);
 

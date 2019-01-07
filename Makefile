@@ -79,7 +79,7 @@ $(DOUT):
 	mkdir -p $(DOBJ)
 	mkdir -p $@/test
 	-cp -r $(ROOT)/conf $@
-	-cp -r $(DTEST)/conf $@/test
+	-if [ -d $(DTEST)/conf ] ; then cp -r $(DTEST)/conf $@/test ; fi
 
 # 清除操作
 clean :

@@ -24,7 +24,7 @@ list_delete_(void ** pist, node_f fdie) {
 // list_get - 匹配得到链表中指定值
 // list     : 基础的链表结构
 // fget     : 链表中查找数据执行的方法
-// left     : 待查找的结点内容 
+// left     : 待查找的节点内容 
 // return   : 查找到的节点, NULL 表示没有查到
 //
 void * 
@@ -44,7 +44,7 @@ list_get_(void * list, cmp_f fget, const void * left) {
 // list_pop - 匹配弹出链表中指定值
 // pist     : 指向基础的链表结构
 // fget     : 链表中查找数据执行的方法
-// left     : 待查找的结点内容 
+// left     : 待查找的节点内容 
 // return   : 查找到的节点, NULL 表示没有查到 
 //
 void * 
@@ -73,8 +73,8 @@ list_pop_(void ** pist, cmp_f fget, const void * left) {
 }
 
 //
-// list_next - 获取结点n的下一个结点.
-// n        : 当前结点
+// list_next - 获取节点 n 的下一个节点.
+// n        : 当前节点
 //
 #undef  list_next
 #define list_next(n) ((struct $list *)(n))->next
@@ -83,7 +83,7 @@ list_pop_(void ** pist, cmp_f fget, const void * left) {
 // list_add - 链表中添加数据, 从小到大 fadd(left, ) <= 0
 // pist     : 指向基础的链表结构
 // fadd     : 插入数据方法
-// left     : 待插入的链表结点
+// left     : 待插入的链表节点
 // return   : void
 //
 void 
@@ -92,7 +92,7 @@ list_add_(void ** pist, cmp_f fadd, void * left) {
     if (!pist || !fadd || !left)
         return;
     
-    // 看是否是头结点
+    // 看是否是头节点
     head = *pist;
     if (!head || fadd(left, head) <= 0) {
         list_next(left) = head;
@@ -115,7 +115,7 @@ list_add_(void ** pist, cmp_f fadd, void * left) {
 //
 // list_each - 链表循环处理函数, 仅仅测试而已
 // list     : 基础的链表结构
-// feach    : 处理每个结点行为函数
+// feach    : 处理每个节点行为函数
 // return   : void
 //
 void 

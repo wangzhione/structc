@@ -1,15 +1,15 @@
-#include "heap.h"
+ï»¿#include "heap.h"
 
 #define UINT_HEAP       (1<<5u)
 
 struct heap {
-    cmp_f   fcmp;       // ±È½ÏĞĞÎª
-    unsigned len;       // heap ³¤¶È
-    unsigned cap;       // heap ÈİÁ¿
-    void ** data;       // Êı¾İ½ÚµãÊı×é
+    cmp_f   fcmp;       // æ¯”è¾ƒè¡Œä¸º
+    unsigned len;       // heap é•¿åº¦
+    unsigned cap;       // heap å®¹é‡
+    void ** data;       // æ•°æ®èŠ‚ç‚¹æ•°ç»„
 };
 
-// heap_expand - Ìí¼Ó½ÚµãÀ©Èİ
+// heap_expand - æ·»åŠ èŠ‚ç‚¹æ‰©å®¹
 inline void heap_expand(struct heap * h) {
     if (h->len >= h->cap) {
         h->data = realloc(h->data, h->cap<<=1);
@@ -18,9 +18,9 @@ inline void heap_expand(struct heap * h) {
 }
 
 //
-// heap_create - ´´½¨·ûºÏ¹æÔòµÄ¶Ñ
-// fcmp     : ±È½ÏĞĞÎª, ¹æÔò fcmp() <= 0
-// return   : ·µ»Ø´´½¨ºÃµÄ¶Ñ¶ÔÏó
+// heap_create - åˆ›å»ºç¬¦åˆè§„åˆ™çš„å †
+// fcmp     : æ¯”è¾ƒè¡Œä¸º, è§„åˆ™ fcmp() <= 0
+// return   : è¿”å›åˆ›å»ºå¥½çš„å †å¯¹è±¡
 //
 inline heap_t 
 heap_create(cmp_f fcmp) {
@@ -35,9 +35,9 @@ heap_create(cmp_f fcmp) {
 }
 
 //
-// heap_delete - Ïú»Ù¶Ñ
-// h        : ¶Ñ¶ÔÏó
-// fdie     : Ïú»ÙĞĞÎª, Ä¬ÈÏ NULL
+// heap_delete - é”€æ¯å †
+// h        : å †å¯¹è±¡
+// fdie     : é”€æ¯è¡Œä¸º, é»˜è®¤ NULL
 // return   : void
 //
 void 
@@ -52,7 +52,7 @@ heap_delete(heap_t h, node_f fdie) {
     free(h);
 }
 
-// down - ¶Ñ½ÚµãÏÂ³Á, ´ÓÉÏµ½ÏÂ³ÁÒ»±é
+// down - å †èŠ‚ç‚¹ä¸‹æ²‰, ä»ä¸Šåˆ°ä¸‹æ²‰ä¸€é
 static void down(cmp_f fcmp, void * data[], unsigned len, unsigned x) {
     void * m = data[x];
     for (unsigned i = x * 2 + 1; i < len; i = x * 2 + 1) {
@@ -66,7 +66,7 @@ static void down(cmp_f fcmp, void * data[], unsigned len, unsigned x) {
     data[x] = m;
 }
 
-// up - ¶Ñ½ÚµãÉÏ¸¡, ´ÓÏÂµ½ÉÏ¸¡Ò»±é
+// up - å †èŠ‚ç‚¹ä¸Šæµ®, ä»ä¸‹åˆ°ä¸Šæµ®ä¸€é
 static void up(cmp_f fcmp, void * node, void * data[], unsigned x) {
     while (x > 0) {
         void * m = data[(x-1)>>1];
@@ -79,9 +79,9 @@ static void up(cmp_f fcmp, void * node, void * data[], unsigned x) {
 }
 
 //
-// heap_insert - ¶Ñ²åÈëÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// node     : ²Ù×÷¶ÔÏó
+// heap_insert - å †æ’å…¥æ•°æ®
+// h        : å †å¯¹è±¡
+// node     : æ“ä½œå¯¹è±¡
 // return   : void
 //
 inline void 
@@ -91,33 +91,33 @@ heap_insert(heap_t h, void * node) {
 }
 
 //
-// heap_remove - ¶ÑÉ¾³ıÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// arg      : ²Ù×÷²ÎÊı
-// fcmp     : ±È½ÏĞĞÎª, ¹æÔò fcmp() == 0
-// return   : ÕÒµ½µÄ¶Ñ½Úµã
+// heap_remove - å †åˆ é™¤æ•°æ®
+// h        : å †å¯¹è±¡
+// arg      : æ“ä½œå‚æ•°
+// fcmp     : æ¯”è¾ƒè¡Œä¸º, è§„åˆ™ fcmp() == 0
+// return   : æ‰¾åˆ°çš„å †èŠ‚ç‚¹
 //
 void * 
 heap_remove(heap_t h, void * arg, cmp_f fcmp) {
     if (h == NULL || h->len <= 0)
         return NULL;
 
-    // ¿ªÊ¼²éÕÒÕâ¸ö½Úµã
+    // å¼€å§‹æŸ¥æ‰¾è¿™ä¸ªèŠ‚ç‚¹
     unsigned i = 0;
     fcmp = fcmp ? fcmp : h->fcmp;
     do {
         void * node = h->data[i];
         if (fcmp(arg, node) == 0) {
-            // ÕÒµ½½Úµã¿ªÊ¼×ßÉ¾³ı²Ù×÷
+            // æ‰¾åˆ°èŠ‚ç‚¹å¼€å§‹èµ°åˆ é™¤æ“ä½œ
             if (--h->len > 0 && h->len != i) {
-                // Î²°Í½ÚµãºÍ´ıÉ¾³ı½Úµã±È½Ï
+                // å°¾å·´èŠ‚ç‚¹å’Œå¾…åˆ é™¤èŠ‚ç‚¹æ¯”è¾ƒ
                 int ret = h->fcmp(h->data[h->len], node);
 
-                // Ğ¡¶¥¶Ñ, ĞÂµÄÖµ±ÈÀÏµÄÖµĞ¡, ÄÇÃ´ÉÏ¸¡
+                // å°é¡¶å †, æ–°çš„å€¼æ¯”è€çš„å€¼å°, é‚£ä¹ˆä¸Šæµ®
                 if (ret < 0)
                     up(h->fcmp, h->data[h->len], h->data, i);
                 else if (ret > 0) {
-                    // Ğ¡¶¥¶Ñ, ĞÂµÄÖµ±ÈÀÏµÄÖµ´ó, ÄÇÃ´ÏÂ³Á
+                    // å°é¡¶å †, æ–°çš„å€¼æ¯”è€çš„å€¼å¤§, é‚£ä¹ˆä¸‹æ²‰
                     h->data[i] = h->data[h->len];
                     down(h->fcmp, h->data, h->len, i);
                 }
@@ -131,9 +131,9 @@ heap_remove(heap_t h, void * arg, cmp_f fcmp) {
 }
 
 //
-// heap_top - ²é¿´¶Ñ¶¥½ÚµãÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// return   : ¶Ñ¶¥½Úµã
+// heap_top - æŸ¥çœ‹å †é¡¶èŠ‚ç‚¹æ•°æ®
+// h        : å †å¯¹è±¡
+// return   : å †é¡¶èŠ‚ç‚¹
 //
 inline void * 
 heap_top(heap_t h) {
@@ -141,15 +141,15 @@ heap_top(heap_t h) {
 }
 
 //
-// heap_top - Õªµô¶Ñ¶¥½ÚµãÊı¾İ
-// h        : ¶Ñ¶ÔÏó
-// return   : ·µ»Ø¶Ñ¶¥½Úµã
+// heap_top - æ‘˜æ‰å †é¡¶èŠ‚ç‚¹æ•°æ®
+// h        : å †å¯¹è±¡
+// return   : è¿”å›å †é¡¶èŠ‚ç‚¹
 //
 inline void * 
 heap_pop(heap_t h) {
     void * node = heap_top(h);
     if (node && --h->len > 0) {
-        // Î²°Í½ÚµãÒ»¶¨±ÈĞ¡¶Ñ¶¥½Úµã´ó, ÄÇÃ´ÒªÏÂ³Á
+        // å°¾å·´èŠ‚ç‚¹ä¸€å®šæ¯”å°å †é¡¶èŠ‚ç‚¹å¤§, é‚£ä¹ˆè¦ä¸‹æ²‰
         h->data[0] = h->data[h->len];
         down(h->fcmp, h->data, h->len, 0);
     }

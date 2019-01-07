@@ -109,13 +109,13 @@ rtree_search(rtree_t tree, void * pack) {
  * 对红黑树的节点 [x] 进行左旋转
  *
  * 左旋示意图 (对节点 x 进行左旋):
- *      px                              px
- *     /                               /
- *    x                               y
- *   /  \    --- (左旋) -->          / \
- *  lx   y                          x  ry
- *     /   \                       /  \
- *    ly   ry                     lx  ly  
+ *      px                             px
+ *     /                              /
+ *    x                              y
+ *   /  \       --- (左旋) -->       / \
+ *  lx   y                         x  ry
+ *     /   \                      /  \
+ *    ly   ry                    lx  ly  
  *
  */
 static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
@@ -132,13 +132,17 @@ static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
     // 将 [x的父亲] 设为 [y的父亲]
     rtree_set_parent(y, xparent);
 
-    if (xparent == NULL)
-        tree->root = y;             // 如果 [x的父亲] 是空节点, 则将 [y] 设为根节点
-    else {
-        if (xparent->left == x)
-            xparent->left = y;      // 如果 [x] 是它父节点的左孩子, 则将 [y] 设为 [x的父节点的左孩子]
-        else
-            xparent->right = y;     // 如果 [x] 是它父节点的左孩子, 则将 [y] 设为 [x的父节点的左孩子]
+    if (xparent == NULL) {
+        // 如果 [x的父亲] 是空节点, 则将 [y] 设为根节点
+        tree->root = y;
+    } else {
+        if (xparent->left == x) {
+            // 如果 [x] 是它父节点的左孩子, 则将 [y] 设为 [x的父节点的左孩子]
+            xparent->left = y;
+        } else {
+            // 如果 [x] 是它父节点的左孩子, 则将 [y] 设为 [x的父节点的左孩子]
+            xparent->right = y;
+        }
     }
 
     // 将 [x] 设为 [y的左孩子]
@@ -151,13 +155,13 @@ static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
  * 对红黑树的节点 [y] 进行右旋转
  *
  * 右旋示意图(对节点y进行左旋)：
- *            py                               py
- *           /                                /
- *          y                                x                  
- *         /  \     --- (右旋) -->          /  \
- *        x   ry                           lx   y  
- *       / \                                   / \
- *      lx  rx                                rx  ry
+ *            py                            py
+ *           /                             /
+ *          y                             x                  
+ *         /  \     --- (右旋) -->       /  \
+ *        x   ry                        lx   y  
+ *       / \                                / \
+ *      lx  rx                             rx  ry
  * 
  */
 static void rtree_right_rotate(rtree_t tree, struct $rtree * y) {
@@ -173,13 +177,17 @@ static void rtree_right_rotate(rtree_t tree, struct $rtree * y) {
 
     // 将 [y的父亲] 设为 [x的父亲]
     rtree_set_parent(x, yparent);
-    if (yparent == NULL) 
-        tree->root = x;				// 如果 [y的父亲] 是空节点, 则将 [x] 设为根节点
-    else {
-        if (y == yparent->right)
-            yparent->right = x;		// 如果 [y] 是它父节点的右孩子, 则将 [x] 设为 [y的父节点的右孩子]
-        else
-            yparent->left = x;		// 如果 [y] 是它父节点的左孩子, 将 [x] 设为 [x的父节点的左孩子]
+    if (yparent == NULL) {
+        // 如果 [y的父亲] 是空节点, 则将 [x] 设为根节点
+        tree->root = x;
+    } else {
+        if (y == yparent->right) {
+            // 如果 [y] 是它父节点的右孩子, 则将 [x] 设为 [y的父节点的右孩子]
+            yparent->right = x;
+        } else {
+            // 如果 [y] 是它父节点的左孩子, 将 [x] 设为 [x的父节点的左孩子]
+            yparent->left = x;
+        }
     }
 
     // 将 [y] 设为 [x的右孩子]
