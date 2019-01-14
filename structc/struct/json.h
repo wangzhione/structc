@@ -1,5 +1,5 @@
-﻿#ifndef _H_JSON
-#define _H_JSON
+﻿#ifndef JSON_H
+#define JSON_H
 
 #include "tstr.h"
 #include <math.h>
@@ -12,13 +12,13 @@
 //
 #ifndef JSON_NULL
 
-#define JSON_NULL       (0u << 0)
-#define JSON_BOOL       (1u << 1)
-#define JSON_NUMBER     (1u << 2)
-#define JSON_STRING     (1u << 3)
-#define JSON_OBJECT     (1u << 4)
-#define JSON_ARRAY      (1u << 5)
-#define JSON_CONST      (1u << 6)
+#define JSON_NULL           (0u << 0)
+#define JSON_BOOL           (1u << 1)
+#define JSON_NUMBER         (1u << 2)
+#define JSON_STRING         (1u << 3)
+#define JSON_OBJECT         (1u << 4)
+#define JSON_ARRAY          (1u << 5)
+#define JSON_CONST          (1u << 6)
 
 struct json {
     unsigned char type;     // CJSON_NULL - JSON_ARRAY and JSON_CONST
@@ -44,7 +44,6 @@ typedef struct json * json_t;
 #define json_int(item) ((int)(item)->num)
 
 #endif//JSON_NULL
-
 // json_str - json 字符串分离, 需要自行 free
 inline char * json_str(json_t item) {
     item->type &= JSON_CONST;
@@ -186,4 +185,4 @@ extern json_t json_detach_object(json_t obj, const char * k);
 
 //----------------------------------json utils end----------------------------------
 
-#endif//_H_JSON
+#endif//JSON_H
