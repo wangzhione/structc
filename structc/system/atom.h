@@ -1,5 +1,5 @@
-﻿#ifndef _H_ATOM
-#define _H_ATOM
+﻿#ifndef ATOM_H
+#define ATOM_H
 
 #include "atomic.h"
 
@@ -11,13 +11,6 @@
 // atom_unlock(o);
 //
 typedef volatile long atom_t;
-
-// atom_acquire - 维护优化后读写代码不在其前
-#define atom_acquire()      atomic_fence(ATOMIC_ACQUIRE)
-// atom_release - 维护优化后读写代码不在其后
-#define atom_release()      atomic_fence(ATOMIC_RELEASE)
-// atom_seq_cst - 维护优化后读写代码前后不动
-#define atom_seq_cst()      atomic_fence(ATOMIC_SEQ_CST)
 
 #ifdef __GNUC__
 
@@ -51,25 +44,25 @@ typedef volatile long atom_t;
 #include <intrin0.h>
 
 /* Interlocked intrinsic mapping for _nf/_acq/_rel */
-#if defined(_M_ARM) || defined(_M_ARM64)
-#define _ACQUIRE(x) ATOMIC_CONCAT(x, _acq)
-#else /* defined(_M_ARM) || defined(_M_ARM64) */
-#define _ACQUIRE(x) x
-#endif /* defined(_M_ARM) || defined(_M_ARM64) */
+#  if defined(_M_ARM) || defined(_M_ARM64)
+#    define _ACQUIRE(x) ATOMIC_CONCAT(x, _acq)
+#  else  /* defined(_M_ARM) || defined(_M_ARM64) */
+#    define _ACQUIRE(x) x
+#  endif /* defined(_M_ARM) || defined(_M_ARM64) */
 
 #define atom_trylock(o)     (!_ACQUIRE(_interlockedbittestandset)(&(o), 0))
 
 #define atom_lock(o)        while(_ACQUIRE(_interlockedbittestandset)(&(o), 0))
 
-inline void store_release(atom_t * x) {
+static inline void store_release(atom_t * x) {
     /* store _Value atomically with release memory order */
-#if defined(_M_ARM) || defined(_M_ARM64)
+#  if defined(_M_ARM) || defined(_M_ARM64)
     __dmb(0xB /* _ARM_BARRIER_ISH or _ARM64_BARRIER_ISH*/);
     __iso_volatile_store32((volatile int *)x, 0);
-#else
+#  else
     _ReadWriteBarrier();
     *x = 0;
-#endif
+#  endif
 }
 
 #define atom_unlock(o)      store_release(&(o))
@@ -94,4 +87,4 @@ inline void store_release(atom_t * x) {
 
 #endif
 
-#endif//_H_ATOM
+#endif//ATOM_H

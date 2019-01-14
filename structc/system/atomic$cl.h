@@ -1,152 +1,161 @@
-﻿#if !defined(_H_ATOMIC$CL) && defined(_MSC_VER)
-#define _H_ATOMIC$CL
+﻿#if !defined(ATOMIC$CL_H) && defined(_MSC_VER)
+#define ATOMIC$CL_H
 
+#include <stdbool.h>
 #include <windows.h>
 
-#define ATOMIC_INIT(...) {__VA_ARGS__}
+typedef enum memory_order {
+    memory_order_relaxed,
+    memory_order_consume,
+    memory_order_acquire,
+    memory_order_release,
+    memory_order_acq_rel,
+    memory_order_seq_cst,
+} memory_order;
 
-typedef enum {
-    atomic_memory_order_relaxed,
-    atomic_memory_order_acquire,
-    atomic_memory_order_release,
-    atomic_memory_order_acq_rel,
-    atomic_memory_order_seq_cst,
-} atomic_memory_order_t;
+#define ATOMIC_VAR_INIT(...) {__VA_ARGS__}
 
-typedef char    atomic_repr_0_t;
-typedef short   atomic_repr_1_t;
-typedef long    atomic_repr_2_t;
-typedef __int64 atomic_repr_3_t;
-
-static inline void atomic_fence(atomic_memory_order_t mo) {
+static inline void atomic_thread_fence(memory_order o) {
     _ReadWriteBarrier();
-#   if defined(_M_ARM) || defined(_M_ARM64)
-    /* ARM needs a barrier for everything but relaxed. */
-    if (mo != atomic_memory_order_relaxed) {
+#  if defined(_M_ARM) || defined(_M_ARM64)
+    // ARM needs a barrier for everything but relaxed.
+    if (o != memory_order_relaxed)
         MemoryBarrier();
-    }
-#   elif defined(_M_IX86) || defined(_M_X64)
-    /* x86 needs a barrier only for seq_cst. */
-    if (mo == atomic_memory_order_seq_cst) {
+#  elif defined(_M_IX86) || defined (_M_X64)
+    // x86 needs a barrier only for seq_cst.
+    if (o == memory_order_seq_cst)
         MemoryBarrier();
-    }
-#   else
-#   error "Don't know how to create atomics for this platform for CL."
-#   endif
+#  else
+#    error "Don't know how to create atomics for this platform for cl."
+#  endif
     _ReadWriteBarrier();
 }
 
-#define ATOMIC_INTERLOCKED_REPR(lg_size) atomic_repr_ ## lg_size ## _t
+#define INTERLOCKED_SUFFIX_1 8
+#define INTERLOCKED_SUFFIX_2 16
+#define INTERLOCKED_SUFFIX_4
+#define INTERLOCKED_SUFFIX_8 64
 
-#define ATOMIC_CONCAT(a, b)     ATOMIC_RAW_CONCAT(a, b)
-#define ATOMIC_RAW_CONCAT(a, b) a ## b
+#define CONCAT(a, b)                 CONCAT_RAW(a, b)
+#define CONCAT_RAW(a, b)             a##b
 
-#define ATOMIC_INTERLOCKED_NAME(base_name, lg_size) \
-ATOMIC_CONCAT(base_name, ATOMIC_INTERLOCKED_SUFFIX(lg_size))
+typedef char    atomic_size_1_t;
+typedef short   atomic_size_2_t;
+typedef long    atomic_size_4_t;
+typedef __int64 atomic_size_8_t;
 
-#define ATOMIC_INTERLOCKED_SUFFIX(lg_size) \
-ATOMIC_CONCAT(ATOMIC_INTERLOCKED_SUFFIX_, lg_size)
+#define INTERLOCKED_TYPE(size)       atomic_size_##size##_t
 
-#define ATOMIC_INTERLOCKED_SUFFIX_0 8
-#define ATOMIC_INTERLOCKED_SUFFIX_1 16
-#define ATOMIC_INTERLOCKED_SUFFIX_2 
-#define ATOMIC_INTERLOCKED_SUFFIX_3 64
+#define INTERLOCKED_SUFFIX(size)     CONCAT(INTERLOCKED_SUFFIX_, size)
 
-#define GENERATE_ATOMICS(type, short_type, lg_size)                     \
-typedef struct {                                                        \
-    ATOMIC_INTERLOCKED_REPR(lg_size) repr;                              \
-} atomic_##short_type##_t;                                              \
-                                                                        \
-static inline type atomic_load_##short_type(                            \
-    const atomic_##short_type##_t * a, atomic_memory_order_t mo) {      \
-    ATOMIC_INTERLOCKED_REPR(lg_size) ret = a->repr;                     \
-    if (mo != atomic_memory_order_relaxed) {                            \
-        atomic_fence(atomic_memory_order_acquire);                      \
-    }                                                                   \
-    return (type)ret;                                                   \
-}                                                                       \
-                                                                        \
-static inline void atomic_store_##short_type(                           \
-    atomic_##short_type##_t * a, type val, atomic_memory_order_t mo) {  \
-    if (mo != atomic_memory_order_relaxed) {                            \
-        atomic_fence(atomic_memory_order_release);                      \
-    }                                                                   \
-    a->repr = (ATOMIC_INTERLOCKED_REPR(lg_size)) val;                   \
-    if (mo == atomic_memory_order_seq_cst) {                            \
-        atomic_fence(atomic_memory_order_seq_cst);                      \
-    }                                                                   \
-}                                                                       \
-                                                                        \
-static inline type atomic_exchange_##short_type(                        \
-    atomic_##short_type##_t * a, type val, atomic_memory_order_t mo) {  \
-    return (type)ATOMIC_INTERLOCKED_NAME(_InterlockedExchange,          \
-        lg_size)(&a->repr, (ATOMIC_INTERLOCKED_REPR(lg_size))val);      \
-}                                                                       \
-                                                                        \
-static inline _Bool atomic_compare_exchange_weak_##short_type(          \
-    atomic_##short_type##_t * a,                                        \
-    type * expected, type desired, atomic_memory_order_t success_mo,    \
-    atomic_memory_order_t failure_mo) {                                 \
-    ATOMIC_INTERLOCKED_REPR(lg_size) e =                                \
-        (ATOMIC_INTERLOCKED_REPR(lg_size))*expected;                    \
-    ATOMIC_INTERLOCKED_REPR(lg_size) d =                                \
-        (ATOMIC_INTERLOCKED_REPR(lg_size))desired;                      \
-    ATOMIC_INTERLOCKED_REPR(lg_size) old =                              \
-        ATOMIC_INTERLOCKED_NAME(_InterlockedCompareExchange,            \
-        lg_size)(&a->repr, d, e);                                       \
-    if (old != e) {                                                     \
-        *expected = (type)old;                                          \
-    }                                                                   \
-    return old == e;                                                    \
-}                                                                       \
-                                                                        \
-static inline _Bool atomic_compare_exchange_strong_##short_type(        \
-    atomic_##short_type##_t * a,                                        \
-    type * expected, type desired, atomic_memory_order_t success_mo,    \
-    atomic_memory_order_t failure_mo) {                                 \
-    /* We implement the weak version with strong semantics. */          \
-    return atomic_compare_exchange_weak_##short_type(a, expected,       \
-        desired, success_mo, failure_mo);                               \
+#define INTERLOCKED_NAME(name, size) CONCAT(name, INTERLOCKED_SUFFIX(size))
+
+#define GENERIC_ATOMIC(type, mark, size)                            \
+                                                                    \
+typedef struct {                                                    \
+    INTERLOCKED_TYPE(size) repr;                                    \
+} atomic_##mark##_t;                                                \
+                                                                    \
+static inline type                                                  \
+atomic_load_##mark(const atomic_##mark##_t * a, memory_order o) {   \
+    INTERLOCKED_TYPE(size) ret = a->repr;                           \
+    if (o != memory_order_relaxed)                                  \
+        atomic_thread_fence(memory_order_acquire);                  \
+    return (type)ret;                                               \
+}                                                                   \
+                                                                    \
+static inline void                                                  \
+atomic_store_##mark(atomic_##mark##_t * a, type v,                  \
+                    memory_order o) {                               \
+    if (o != memory_order_relaxed)                                  \
+        atomic_thread_fence(memory_order_release);                  \
+    a->repr = (INTERLOCKED_TYPE(size))v;                            \
+    if (o == memory_order_seq_cst)                                  \
+        atomic_thread_fence(memory_order_seq_cst);                  \
+}                                                                   \
+                                                                    \
+static inline type                                                  \
+atomic_exchange_##mark(atomic_##mark##_t * a, type v,               \
+                       memory_order o) {                            \
+    return (type)INTERLOCKED_NAME(_InterlockedExchange, size)(      \
+                &a->repr, (INTERLOCKED_TYPE(size))v                 \
+           );                                                       \
+}                                                                   \
+                                                                    \
+static inline bool                                                  \
+atomic_compare_exchange_weak_##mark(atomic_##mark##_t * a,          \
+                                    type * c, type v,               \
+                                    memory_order o,                 \
+                                    memory_order n) {               \
+    INTERLOCKED_TYPE(size) d = (INTERLOCKED_TYPE(size))v;           \
+    INTERLOCKED_TYPE(size) e = (INTERLOCKED_TYPE(size))*c;          \
+    INTERLOCKED_TYPE(size) old =                                    \
+        INTERLOCKED_NAME(_InterlockedCompareExchange, size)(        \
+            &a->repr, d, e                                          \
+        );                                                          \
+    if (e != old) {                                                 \
+        *c = (type)old;                                             \
+        return false;                                               \
+    }                                                               \
+    return true;                                                    \
+}                                                                   \
+                                                                    \
+static inline bool                                                  \
+atomic_compare_exchange_strong_##mark(atomic_##mark##_t * a,        \
+                                      type * c, type v,             \
+                                      memory_order o,               \
+                                      memory_order n) {             \
+    /* We implement the weak version with strong semantics. */      \
+    return atomic_compare_exchange_weak_##mark(a, c, v, o, n);      \
 }
 
-
-#define GENERATE_INT_ATOMICS(type, short_type, lg_size)                 \
-GENERATE_ATOMICS(type, short_type, lg_size)                             \
-                                                                        \
-static inline type atomic_fetch_add_##short_type(                       \
-    atomic_##short_type##_t * a, type val, atomic_memory_order_t mo) {  \
-    return (type)ATOMIC_INTERLOCKED_NAME(_InterlockedExchangeAdd,       \
-        lg_size)(&a->repr, (ATOMIC_INTERLOCKED_REPR(lg_size))val);      \
-}                                                                       \
-                                                                        \
-static inline type atomic_fetch_sub_##short_type(                       \
-    atomic_##short_type##_t * a, type val, atomic_memory_order_t mo) {  \
-    /*                                                                  \
-     * CL warns on negation of unsigned operands, but for us it         \
-     * gives exactly the right semantics (MAX_TYPE + 1 - operand).      \
-     */                                                                 \
-    __pragma(warning(push))                                             \
-    __pragma(warning(disable: 4146))                                    \
-    return atomic_fetch_add_##short_type(a, -val, mo);                  \
-    __pragma(warning(pop))                                              \
-}                                                                       \
-                                                                        \
-static inline type atomic_fetch_and_##short_type(                       \
-    atomic_##short_type##_t * a, type val, atomic_memory_order_t mo) {  \
-    return (type)ATOMIC_INTERLOCKED_NAME(_InterlockedAnd, lg_size)(     \
-        &a->repr, (ATOMIC_INTERLOCKED_REPR(lg_size))val);               \
-}                                                                       \
-                                                                        \
-static inline type atomic_fetch_or_##short_type(                        \
-    atomic_##short_type##_t * a, type val, atomic_memory_order_t mo) {  \
-    return (type)ATOMIC_INTERLOCKED_NAME(_InterlockedOr, lg_size)(      \
-        &a->repr, (ATOMIC_INTERLOCKED_REPR(lg_size))val);               \
-}                                                                       \
-                                                                        \
-static inline type atomic_fetch_xor_##short_type(                       \
-    atomic_##short_type##_t *a, type val, atomic_memory_order_t mo) {   \
-    return (type)ATOMIC_INTERLOCKED_NAME(_InterlockedXor, lg_size)(     \
-        &a->repr, (ATOMIC_INTERLOCKED_REPR(lg_size))val);               \
+#define GENERIC_INT_ATOMIC(type, mark, size)                        \
+                                                                    \
+GENERIC_ATOMIC(type, mark, size)                                    \
+                                                                    \
+static inline type                                                  \
+atomic_fetch_add_##mark(atomic_##mark##_t * a, type v,              \
+                        memory_order o) {                           \
+    return (type)INTERLOCKED_NAME(_InterlockedExchangeAdd, size)(   \
+                &a->repr, (INTERLOCKED_TYPE(size))v                 \
+           );                                                       \
+}                                                                   \
+                                                                    \
+static inline type                                                  \
+atomic_fetch_sub_##mark(atomic_##mark##_t * a, type v,              \
+                        memory_order o) {                           \
+    /*                                                              \
+     * MSVC warns on negation of unsigned operands, but for us it   \
+     * gives exactly the right semantics (MAX_TYPE + 1 - operand).  \
+     */                                                             \
+    __pragma(warning(push))                                         \
+    __pragma(warning(disable: 4146))                                \
+    return atomic_fetch_add_##mark(a, -v, o);                       \
+    __pragma(warning(pop))                                          \
+}                                                                   \
+                                                                    \
+static inline type                                                  \
+atomic_fetch_and_##mark(atomic_##mark##_t * a, type v,              \
+                        memory_order o) {                           \
+    return (type)INTERLOCKED_NAME(_InterlockedAnd, size)(           \
+                &a->repr, (INTERLOCKED_TYPE(size))v                 \
+           );                                                       \
+}                                                                   \
+                                                                    \
+static inline type                                                  \
+atomic_fetch_or_##mark(atomic_##mark##_t * a, type v,               \
+                       memory_order o) {                            \
+    return (type)INTERLOCKED_NAME(_InterlockedOr, size)(            \
+                &a->repr, (INTERLOCKED_TYPE(size))v                 \
+           );                                                       \
+}                                                                   \
+                                                                    \
+static inline type                                                  \
+atomic_fetch_xor_##mark(atomic_##mark##_t * a, type v,              \
+                        memory_order o) {                           \
+    return (type)INTERLOCKED_NAME(_InterlockedXor, size)(           \
+                &a->repr, (INTERLOCKED_TYPE(size))v                 \
+           );                                                       \
 }
 
-#endif//_H_ATOMIC$CL
+#endif//ATOMIC$CL_H

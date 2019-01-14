@@ -1,31 +1,26 @@
-﻿#ifndef _H_RWLOCK
-#define _H_RWLOCK
+﻿#ifndef RWLOCK_H
+#define RWLOCK_H
 
 #include "atom.h"
 
-//
 // create atom write and read lock
 // struct rwlock need zero is atom interface ext
-//
+// need var init struct rwlock rw = { 0, 0 };
 struct rwlock {
     atom_t rlock;
     atom_t wlock;
 };
 
-// add read lock
+// rwlock_rlock - add read lock
 extern void rwlock_rlock(struct rwlock * lock);
 
-// add write lock
+// rwlock_wlock - add write lock
 extern void rwlock_wlock(struct rwlock * lock);
 
-// unlock write lock
-inline void rwlock_unwlock(struct rwlock * lock) {
-    atom_unlock(lock->wlock);
-}
+// rwlock_unwlock - unlock write lock
+extern void rwlock_unwlock(struct rwlock * lock);
 
-// unlock read lock
-inline void rwlock_unrlock(struct rwlock * lock) {
-    atom_dec(lock->rlock);
-}
+// rwlock_unrlock - unlock read lock
+extern void rwlock_unrlock(struct rwlock * lock);
 
-#endif//_H_RWLOCK
+#endif//RWLOCK_H
