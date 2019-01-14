@@ -44,6 +44,7 @@ typedef struct json * json_t;
 #define json_int(item) ((int)(item)->num)
 
 #endif//JSON_NULL
+
 // json_str - json 字符串分离, 需要自行 free
 inline char * json_str(json_t item) {
     item->type &= JSON_CONST;

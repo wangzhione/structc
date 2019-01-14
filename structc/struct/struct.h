@@ -1,5 +1,5 @@
-﻿#ifndef _H_STRUCT
-#define _H_STRUCT
+﻿#ifndef STRUCT_H
+#define STRUCT_H
 
 #include <math.h>
 #include "alloc.h"
@@ -40,7 +40,7 @@ typedef void (* node_f)(void * node);
 typedef void * (* start_f)(void * arg);
 
 //
-// each_f - 遍历行为, arg 外部参数, node 是内部结点
+// each_f - 遍历行为, arg 外部参数, node 是内部节点
 // : int echo(void * node, void * arg) { return 0; }
 //
 typedef int (* each_f)(void * node, void * arg);
@@ -97,4 +97,4 @@ RETURN(NIL , fmt, ##__VA_ARGS__)
 #define RETNUL(fmt, ...)                                                \
 RETURN(NULL, fmt, ##__VA_ARGS__)
 
-#endif//_H_STRUCT
+#endif//STRUCT_H

@@ -1,12 +1,12 @@
-﻿#ifndef _H_ALLOC
-#define _H_ALLOC
+﻿#ifndef ALLOC_H
+#define ALLOC_H
 
 #include <stdlib.h>
 #include <string.h>
 
 // :) 高效内存分配, 莫名伤感 ~
 //
-#ifndef OFF_ALLOC
+#ifndef ALLOC_OFF
 
 #undef  free
 #define free    free_
@@ -21,7 +21,7 @@
 #undef  realloc
 #define realloc realloc_
 
-#endif//OFF_ALLOC
+#endif//ALLOC_OFF
 
 // enum 状态, >= 0 is Success 状态, < 0 is Error 状态
 //
@@ -77,4 +77,4 @@ extern void * calloc_(size_t num, size_t size);
 //
 extern void * realloc_(void * ptr, size_t size);
 
-#endif//_H_STDEXIT
+#endif//ALLOC_H
