@@ -1,5 +1,5 @@
-﻿#ifndef _H_LOOP
-#define _H_LOOP
+﻿#ifndef _LOOP_H
+#define _LOOP_H
 
 #include "q.h"
 #include "atom.h"
@@ -32,4 +32,4 @@ extern void loop_push(loop_t p, void * m);
 loop_create_((node_f)(frun), (node_f)(fdie))
 extern loop_t loop_create_(node_f frun, node_f fdie);
 
-#endif//_H_LOOP
+#endif//_LOOP_H

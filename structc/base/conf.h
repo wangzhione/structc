@@ -1,7 +1,8 @@
-﻿#ifndef _H_CONF
-#define _H_CONF
+﻿#ifndef _CONF_H
+#define _CONF_H
 
 #include "utf8.h"
+#include "json.h"
 
 //
 // config 映射配置
@@ -24,4 +25,4 @@ extern struct conf * conf_instance(void);
 //
 bool conf_init(const char * path);
 
-#endif//_H_CONF
+#endif//_CONF_H

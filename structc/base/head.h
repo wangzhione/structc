@@ -1,10 +1,10 @@
-﻿#ifndef _H_HEAD
-#define _H_HEAD
+﻿#ifndef _HEAD_H
+#define _HEAD_H
 
+#include "log.h"
 #include "conf.h"
 #include "file.h"
 #include "check.h"
-#include "times.h"
 #include "thread.h"
 
 #ifdef _MSC_VER
@@ -29,7 +29,6 @@ inline void cls(void) {
 
 // getch - 立即得到用户输入的一个字符
 inline int getch(void) {
-    int cr;
     struct termios nts, ots;
     if (tcgetattr(0, &ots)) // 得到当前终端(0表示标准输入)的设置
         return EOF;
@@ -39,7 +38,7 @@ inline int getch(void) {
     if (tcsetattr(0, TCSANOW, &nts)) // 设置上更改之后的设置
         return EOF;
 
-    cr = getchar();
+    int cr = getchar();
     if (tcsetattr(0, TCSANOW, &ots)) // 设置还原成老的模式
         return EOF;
     return cr;
@@ -91,22 +90,22 @@ inline uint32_t ntoh(uint32_t x) {
 // ftest    : 需要执行的函数名称
 // ...      : 可变参数, 保留
 //
-#define EXTERN_RUN(ftest, ...)                                  \
-do {                                                            \
-    extern void ftest();                                        \
-    ftest (__VA_ARGS__);                                        \
+#define EXTERN_RUN(ftest, ...)                                    \
+do {                                                              \
+    extern void ftest();                                          \
+    ftest (__VA_ARGS__);                                          \
 } while(0)
 
 //
 // TEST_RUN - 测试代码块, 并输出简单时间信息
 // code : { ... } 包裹的代码块
 //
-#define TEST_RUN(code)                                          \
-do {                                                            \
-    clock_t $s = clock();                                       \
-    code                                                        \
-    double $e = (double)clock();                                \
-    printf("test code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);\
+#define TEST_RUN(code)                                            \
+do {                                                              \
+    clock_t $s = clock();                                         \
+    code                                                          \
+    double $e = (double)clock();                                  \
+    printf("test code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);  \
 } while (0)
 
-#endif//_H_HEAD
+#endif//_HEAD_H

@@ -1,5 +1,4 @@
 ﻿#include "file.h"
-#include "atom.h"
 
 //
 // removes - 删除非空目录 or 文件

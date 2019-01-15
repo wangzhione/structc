@@ -1,5 +1,5 @@
-﻿#ifndef _H_URL
-#define _H_URL
+﻿#ifndef _URL_H
+#define _URL_H
 
 #include "alloc.h"
 #include <ctype.h>
@@ -32,4 +32,4 @@ extern char * url_encode(const char * s, int len, int * nen);
 //
 extern int url_decode(char s[], int len);
 
-#endif//_H_URL
+#endif//_URL_H

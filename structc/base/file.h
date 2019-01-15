@@ -1,6 +1,7 @@
-﻿#ifndef _H_FILE
-#define _H_FILE
+﻿#ifndef _FILE_H
+#define _FILE_H
 
+#include "atom.h"
 #include "struct.h"
 #include "strext.h"
 
@@ -112,4 +113,4 @@ extern void file_set(const char * path, file_f func, void * arg);
 //
 extern void file_update(void);
 
-#endif//_H_FILE
+#endif//_FILE_H

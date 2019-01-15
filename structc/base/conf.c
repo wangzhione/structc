@@ -1,5 +1,4 @@
-﻿#include "json.h"
-#include "conf.h"
+﻿#include "conf.h"
 
 //
 // conf_instance - 获取配置
@@ -50,14 +49,13 @@ bool conf_parse(json_t json, struct conf * conf) {
 //
 bool 
 conf_init(const char * path) {
-    bool ret;
     json_t json = json_file(path);
     if (NULL == json) {
         RETURN(false, "json_file err path is %s", path);
     }
 
     // 解析 json 内容, 并返回详细配置内容
-    ret = conf_parse(json, conf_instance());
+    bool ret = conf_parse(json, conf_instance());
     json_delete(json);
     return ret;
 }

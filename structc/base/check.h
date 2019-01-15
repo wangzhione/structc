@@ -1,5 +1,5 @@
-﻿#ifndef _H_CHECK
-#define _H_CHECK
+﻿#ifndef _CHECK_H
+#define _CHECK_H
 
 #include <stdbool.h>
 
@@ -17,4 +17,4 @@ extern bool is_ip(const char * ips);
 //
 extern bool is_email(const char * mail);
 
-#endif//_H_CHECK
+#endif//_CHECK_H

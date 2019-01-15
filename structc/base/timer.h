@@ -1,5 +1,5 @@
-﻿#ifndef _H_TIMER
-#define _H_TIMER
+﻿#ifndef _TIMER_H
+#define _TIMER_H
 
 #include "list.h"
 #include "times.h"
@@ -22,4 +22,4 @@ extern void timer_del(int id);
 timer_add_(ms, (node_f)ftimer, (void *)(intptr_t)arg)
 extern int timer_add_(int ms, node_f ftimer, void * arg);
 
-#endif//_H_TIMER
+#endif//_TIMER_H

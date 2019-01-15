@@ -1,5 +1,4 @@
 ﻿#include "loop.h"
-#include <assert.h>
 
 // loop 轮询器结构
 struct loop {

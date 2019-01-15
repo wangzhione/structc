@@ -48,7 +48,7 @@ is_ip(const char * ips) {
 // is_email - 判断是否是邮箱
 // mail     : email 串 
 // return   : true is email
-#define INT_EMAIL (255)
+#define EMAIL_INT (255)
 bool 
 is_email(const char * mail) {
     //
@@ -64,7 +64,7 @@ is_email(const char * mail) {
     if (!((c >= '0' && c <= '9') 
        || (c >= 'A' && c <= 'Z') 
        || (c >= 'a' && c <= 'z'))) return false;
-    for (i = 1; (c = *++mail) && c != '@' && i < INT_EMAIL; ++i) {
+    for (i = 1; (c = *++mail) && c != '@' && i < EMAIL_INT; ++i) {
         // 非法字符直接返回
         if (!((c >= '0' && c <= '9') 
         || (c >= 'A' && c <= 'Z') 
@@ -76,12 +76,12 @@ is_email(const char * mail) {
     }
 
     // check A end
-    if (c != '@' || i >= INT_EMAIL 
+    if (c != '@' || i >= EMAIL_INT 
                  || mail[-1] == '-' || mail[-1] == '_')
         return false;
     
     // check b start
-    for (b = d = false; (c = *++mail) && i < INT_EMAIL; ++i) {
+    for (b = d = false; (c = *++mail) && i < EMAIL_INT; ++i) {
         // 非法字符直接返回
         if (!((c >= '0' && c <= '9') 
         || (c >= 'A' && c <= 'Z') 
@@ -101,6 +101,6 @@ is_email(const char * mail) {
         b = true;
     }
     // 必须存在 ., 最后 '\0' 结尾, 255 以内
-    return b && d && !c && i < INT_EMAIL 
+    return b && d && !c && i < EMAIL_INT 
              && (mail[-1] < '0' || mail[-1] > '9');
 }
