@@ -2,11 +2,11 @@
 #include "socket.h"
 
 //
-// STR_CONF_PATH - 配置文件路径
-// STR_LOG_PATH  - 日志文件路径
+// CONF_PATH_STR - 配置文件路径
+// LOG_PATH_STR  - 日志文件路径
 // 
-#define STR_CONF_PATH       "conf/conf.conf"
-#define STR_LOG_PATH        "logs/structc.log"
+#define CONF_PATH_STR       "conf/conf.conf"
+#define LOG_PATH_STR        "logs/structc.log"
 
 //
 // main_init - 模块初始化
@@ -28,12 +28,12 @@ void main_init(void) {
     //
     n = getawd(r, sizeof r);
     assert(0 < n && n < sizeof r);
-    strcat(r, STR_CONF_PATH);
+    strcat(r, CONF_PATH_STR);
     IF(!conf_init(r));
 
     //  日志模块初始化
     //
-    memcpy(r+n, STR_LOG_PATH, LEN(STR_LOG_PATH));
+    memcpy(r+n, LOG_PATH_STR, LEN(LOG_PATH_STR));
     mkfdir(r);
     EXTERN_RUN(log_init, r);
 }

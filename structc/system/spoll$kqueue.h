@@ -1,11 +1,12 @@
-#if defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined (__NetBSD__)
+ï»¿#if !defined(SPOLL$KQUEUE_H) && !defined(_WIN32) && !defined(__linux__)
+#define SPOLL$KQUEUE_H
 
 #include <sys/event.h>
 
 //
-// s_create     - ´´½¨ poll ¶ÔÏó
-// s_invalid    - true ±íÊ¾´´½¨ poll ¶ÔÏóÒì³£
-// s_delete     - Ïú»Ù´´½¨µÄ poll ¶ÔÏó
+// s_create   - åˆ›å»º poll å¯¹è±¡
+// s_invalid  - true è¡¨ç¤ºåˆ›å»º poll å¯¹è±¡å¼‚å¸¸
+// s_delete   - é”€æ¯åˆ›å»ºçš„ poll å¯¹è±¡
 //
 inline poll_t s_create(void) {
     return epoll_create1(EPOLL_CLOEXEC);
@@ -20,9 +21,9 @@ inline void s_delete(poll_t p) {
 }
 
 //
-// s_del        - É¾³ı¼à²âµÄ soctt
-// s_add        - Ìí¼Ó¼à²âµÄ soctt, ²¢ÉèÖÃ¶ÁÄ£Ê½, Ê§°Ü·µ»Ø true
-// s_write      - ĞŞ¸Ä¼à²âµÄ soctt, Í¨¹ı enable = true ÉèÖÃĞ´Ä£Ê½
+// s_del     - åˆ é™¤ç›‘æµ‹çš„ socket
+// s_add     - æ·»åŠ ç›‘æµ‹çš„ socket, å¹¶è®¾ç½®è¯»æ¨¡å¼, å¤±è´¥è¿”å› true
+// s_write   - ä¿®æ”¹ç›‘æµ‹çš„ socket, é€šè¿‡ enable = true è®¾ç½®å†™æ¨¡å¼
 //
 inline void s_del(poll_t p, socket_t s) {
     struct kevent t;
@@ -60,10 +61,10 @@ inline void s_write(poll_t p, socket_t s, void * u, bool enable) {
 }
 
 //
-// s_wait       - wait º¯Êı, ÊØÖê´ıÍÃ
-// p        : poll ¶ÔÏó
-// e        : ·µ»Ø²Ù×÷ÊÂ¼ş¼¯
-// return   : ·µ»Ø²Ù×÷ÊÂ¼ş³¤¶È, < 0 ±íÊ¾Ê§°Ü
+// s_wait   - wait å‡½æ•°, å®ˆæ ªå¾…å…”
+// p        : poll å¯¹è±¡
+// e        : è¿”å›æ“ä½œäº‹ä»¶é›†
+// return   : è¿”å›æ“ä½œäº‹ä»¶é•¿åº¦, < 0 è¡¨ç¤ºå¤±è´¥
 //
 int s_wait(poll_t p, event_t e) {
     struct kevent v[MAX_EVENT];
@@ -82,4 +83,4 @@ int s_wait(poll_t p, event_t e) {
     return n;
 }
 
-#endif
+#endif//SPOLL$KQUEUE_H

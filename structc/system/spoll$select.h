@@ -1,4 +1,5 @@
-﻿#if defined(_WIN32)
+﻿#if !defined(SPOLL$SELECT_H) && defined(_WIN32)
+#define SPOLL$SELECT_H
 
 #undef  FD_SETSIZE
 #define FD_SETSIZE      (1024)
@@ -20,9 +21,9 @@ struct poll {
 };
 
 //
-// s_create     - 创建 poll 对象
-// s_invalid    - true 表示创建 poll 对象异常
-// s_delete     - 销毁创建的 poll 对象
+// s_create   - 创建 poll 对象
+// s_invalid  - true 表示创建 poll 对象异常
+// s_delete   - 销毁创建的 poll 对象
 //
 inline poll_t s_create(void) {
     return calloc(1, sizeof(struct poll));
@@ -37,9 +38,9 @@ inline void s_delete(poll_t p) {
 }
 
 //
-// s_del        - 删除监测的 socket
-// s_add        - 添加监测的 socket, 并设置读模式, 失败返回 true
-// s_write      - 修改监测的 socket, 通过 enable = true 设置写模式
+// s_del     - 删除监测的 socket
+// s_add     - 添加监测的 socket, 并设置读模式, 失败返回 true
+// s_write   - 修改监测的 socket, 通过 enable = true 设置写模式
 //
 void s_del(poll_t p, socket_t s) {
     struct fds * begin = p->s, * end = p->s + p->len;
@@ -91,7 +92,7 @@ void s_write(poll_t p, socket_t s, void * u, bool enable) {
 }
 
 //
-// s_wait       - wait 函数, 守株待兔
+// s_wait   - wait 函数, 守株待兔
 // p        : poll 对象
 // e        : 返回操作事件集
 // return   : 返回操作事件长度, < 0 表示失败
@@ -145,4 +146,4 @@ int s_wait(poll_t p, event_t e) {
     return c;
 }
 
-#endif
+#endif//SPOLL$SELECT_H

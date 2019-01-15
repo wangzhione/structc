@@ -16,16 +16,16 @@ do {                                                                \
 
 
 //
-// main_test - run *_test is here
+// main_test - make D=-D_DEBUG here run test
 // return   : void
 //
 void main_test(void) {
     puts("*--------------------------------** main test *--------------------------------*");
-    //
+    // 
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(atom_test);
+    EXTERN_RUN(spoll_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }
