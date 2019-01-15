@@ -1,5 +1,5 @@
-﻿#ifndef _H_Q
-#define _H_Q
+﻿#ifndef Q_H
+#define Q_H
 
 #include "struct.h"
 
@@ -18,13 +18,13 @@ typedef struct q {
 // q_init - 初始化
 // q      : 队列对象
 // return : void
-// INT_Q  - 队列初始大小, 必须是 2 的幂
-#define INT_Q     (1<<6)
+// Q_INT  - 队列初始大小, 必须是 2 的幂
+#define Q_INT     (1<< 6)
 inline void q_init(q_t q) {
     q->head = 0;
     q->tail = -1;
-    q->size = INT_Q;
-    q->queue = malloc(sizeof(void *) * INT_Q);
+    q->size = Q_INT;
+    q->queue = malloc(sizeof(void *) * Q_INT);
 }
 
 //
@@ -45,27 +45,7 @@ inline void q_swap(q_t r, q_t w) {
 // q      : 队列对象
 // return : 若队列 empty, 返回 NULL
 //
-inline void * q_pop(q_t q) {
-    void * m = NULL;
-    if (q->tail >= 0) {
-        m = q->queue[q->head];
-        if (q->tail != q->head)
-            q->head = (q->head + 1) & (q->size - 1);
-        else {
-            q->head = 0; // empty 情况, 重置 tail and head
-            q->tail = -1;
-        }
-    }
-    return m;
-}
-
-//
-// q_delete - 队列销毁
-// q        : 队列对象
-// fdie     : push 节点删除行为
-// return   : void
-//
-extern void q_delete(q_t q, node_f fdie);
+extern void * q_pop(q_t q);
 
 //
 // q_push - 队列中压入数据
@@ -75,4 +55,12 @@ extern void q_delete(q_t q, node_f fdie);
 // 
 extern void q_push(q_t q, void * m);
 
-#endif//_H_Q
+//
+// q_delete - 队列销毁
+// q        : 队列对象
+// fdie     : push 节点删除行为
+// return   : void
+//
+extern void q_delete(q_t q, node_f fdie);
+
+#endif//Q_H

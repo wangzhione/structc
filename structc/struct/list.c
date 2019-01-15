@@ -73,7 +73,7 @@ list_pop_(void ** pist, cmp_f fget, const void * left) {
 }
 
 //
-// list_next - 获取节点 n 的下一个节点.
+// list_next - 获取节点 n 的下一个节点
 // n        : 当前节点
 //
 #undef  list_next

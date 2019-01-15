@@ -10,7 +10,7 @@ array_create(unsigned size) {
     struct array * a = malloc(sizeof(struct array));
     assert(NULL != a && size > 0);
     // set default cap size
-    a->cap = UINT_AINIT;
+    a->cap = ARRAY_UINT;
     a->data = malloc(size * a->cap);
     a->size = size;
     a->len = 0;

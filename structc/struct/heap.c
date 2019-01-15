@@ -1,6 +1,6 @@
 ﻿#include "heap.h"
 
-#define UINT_HEAP       (1<<5u)
+#define HEAP_UINT       (1<<5u)
 
 struct heap {
     cmp_f   fcmp;       // 比较行为
@@ -28,9 +28,9 @@ heap_create(cmp_f fcmp) {
     assert(h && fcmp);
     h->fcmp = fcmp;
     h->len = 0;
-    h->cap = UINT_HEAP;
-    h->data = malloc(sizeof(void *) * UINT_HEAP);
-    assert(h->data && UINT_HEAP > 0);
+    h->cap = HEAP_UINT;
+    h->data = malloc(sizeof(void *) * HEAP_UINT);
+    assert(h->data && HEAP_UINT > 0);
     return h;
 }
 

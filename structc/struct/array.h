@@ -1,5 +1,5 @@
-﻿#ifndef _H_ARRAY
-#define _H_ARRAY
+﻿#ifndef ARRAY_H
+#define ARRAY_H
 
 #include "struct.h"
 
@@ -17,14 +17,14 @@ typedef struct array * array_t;
 // ARRAY_CREATE - 栈上创建动态数组对象
 // ARRAY_DELETE - 销毁栈上动态数组对象
 // var          : 创建动态数组对象名字
-// UINT_AINIT   - 数组初始化默认大小
-#define UINT_AINIT      (1u<<5)
+// ARRAY_UINT   - 数组初始化默认大小
+#define ARRAY_UINT      (1u<<5)
 #define ARRAY_CREATE(type, var)             \
 struct array var[1] = { {                   \
     sizeof(type),                           \
-    UINT_AINIT,                             \
+    ARRAY_UINT,                             \
     0,                                      \
-    malloc(sizeof(type) * UINT_AINIT)       \
+    malloc(sizeof(type) * ARRAY_UINT)       \
 } }
 
 #define ARRAY_DELETE(var)                   \
@@ -105,4 +105,4 @@ extern void array_sort(array_t a, cmp_f fcmp);
 //
 extern int array_each(array_t a, each_f func, void * arg);
 
-#endif//_H_ARRAY
+#endif//ARRAY_H

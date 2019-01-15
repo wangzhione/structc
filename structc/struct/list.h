@@ -1,5 +1,5 @@
-﻿#ifndef _H_LIST
-#define _H_LIST
+﻿#ifndef LIST_H
+#define LIST_H
 
 #include "struct.h"
 
@@ -14,7 +14,7 @@ struct $list {
 #define $LIST struct $list $node;
 
 //
-// list_next - 获取节点 n 的下一个节点.
+// list_next - 获取节点 n 的下一个节点
 // n        : 当前节点
 //
 #define list_next(n) ((void *)((struct $list *)(n))->next)
@@ -75,4 +75,4 @@ extern void list_add_(void ** pist, cmp_f fadd, void * left);
 list_each_((list), (node_f)(feach))
 extern void list_each_(void * list, node_f feach);
 
-#endif//_H_LIST
+#endif//LIST_H

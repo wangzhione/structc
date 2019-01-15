@@ -1,5 +1,5 @@
-﻿#ifndef _H_TSTR
-#define _H_TSTR
+﻿#ifndef TSTR_H
+#define TSTR_H
 
 #include "strext.h"
 
@@ -34,7 +34,7 @@ free((var)->str)
 extern void tstr_delete(tstr_t tsr);
 
 //
-// tstr_expand - 为当前字符串扩容, 属于低级api
+// tstr_expand - 字符串扩容, low level api
 // tsr      : 可变字符串
 // len      : 扩容的长度
 // return   : tsr->str + tsr->len 位置的串
@@ -42,19 +42,21 @@ extern void tstr_delete(tstr_t tsr);
 char * tstr_expand(tstr_t tsr, size_t len);
 
 //
-// tstr_t 创建函数, 根据 C 的 str 串创建 tstr_t 字符串
+// tstr_t 创建函数, 根据 C 串创建 tstr_t 字符串
 // str      : 待创建的字符串
 // len      : 创建串的长度
-// return   : 返回创建好的字符串,内存不足会打印日志退出程序
+// return   : 返回创建的字符串
 //
 extern tstr_t tstr_create(const char * str, size_t len);
 extern tstr_t tstr_creates(const char * str);
 
 //
-// 向 tstr_t 串结构中添加字符等, 内存分配失败内部会自己处理
-// c        : 单个添加的char
+// tstr_t 串结构中添加字符等
+// tsr      : tstr_t 串
+// c        : 单个添加的 char
 // str      : 添加的 C 串
 // sz       : 添加串的长度
+// return   : void
 //
 extern void tstr_appendc(tstr_t tsr, int c);
 extern void tstr_appends(tstr_t tsr, const char * str);
@@ -83,7 +85,7 @@ extern char * tstr_dupstr(tstr_t tsr);
 extern void tstr_popup(tstr_t tsr, size_t len);
 
 //
-// tstr_printf - 参照 sprintf 填充方式写入内容
+// tstr_printf - 参照 sprintf 方式填充内容
 // tsr      : tstr_t 串
 // fmt      : 待格式化的串
 // ...      : 等待进入的变量
@@ -91,4 +93,4 @@ extern void tstr_popup(tstr_t tsr, size_t len);
 //
 extern char * tstr_printf(tstr_t tsr, const char * fmt, ...);
 
-#endif//_H_TSTR
+#endif//TSTR_H

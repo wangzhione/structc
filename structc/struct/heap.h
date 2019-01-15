@@ -1,5 +1,5 @@
-﻿#ifndef _H_HEAP
-#define _H_HEAP
+﻿#ifndef HEAP_H
+#define HEAP_H
 
 #include "struct.h"
 
@@ -54,4 +54,4 @@ extern void * heap_top(heap_t h);
 //
 extern void * heap_pop(heap_t h);
 
-#endif//_H_HEAP
+#endif//HEAP_H

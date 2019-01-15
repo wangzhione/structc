@@ -1,10 +1,10 @@
 ﻿#include "tstr.h"
 
-// INT_TSTR - 字符串构建的初始化大小
-#define INT_TSTR  (1<<8)
+// TSTR_INT - 字符串构建的初始大小
+#define TSTR_INT  (1<<8)
 
 //
-// tstr_expand - 为当前字符串扩容, 属于低级api
+// tstr_expand - 字符串扩容, low level api
 // tsr      : 可变字符串
 // len      : 扩容的长度
 // return   : tsr->str + tsr->len 位置的串
@@ -14,7 +14,7 @@ tstr_expand(tstr_t tsr, size_t len) {
     size_t cap = tsr->cap;
     if ((len += tsr->len) > cap) {
         // 走 1.5 倍内存分配, '合理'降低内存占用
-        cap = cap < INT_TSTR ? INT_TSTR : cap;
+        cap = cap < TSTR_INT ? TSTR_INT : cap;
         while (cap < len) cap = cap * 3 / 2;
         tsr->str = realloc(tsr->str, cap);
         tsr->cap = cap;
@@ -34,10 +34,10 @@ tstr_delete(tstr_t tsr) {
 }
 
 //
-// tstr_t 创建函数, 根据 C 的 str 串创建 tstr_t 字符串
+// tstr_t 创建函数, 根据 C 串创建 tstr_t 字符串
 // str      : 待创建的字符串
 // len      : 创建串的长度
-// return   : 返回创建好的字符串,内存不足会打印日志退出程序
+// return   : 返回创建的字符串
 //
 inline tstr_t 
 tstr_create(const char * str, size_t len) {
@@ -54,10 +54,12 @@ tstr_creates(const char * str) {
 }
 
 //
-// 向 tstr_t 串结构中添加字符等, 内存分配失败内部会自己处理
-// c        : 单个添加的char
+// tstr_t 串结构中添加字符等
+// tsr      : tstr_t 串
+// c        : 单个添加的 char
 // str      : 添加的 C 串
 // sz       : 添加串的长度
+// return   : void
 //
 inline void 
 tstr_appendc(tstr_t tsr, int c) {
@@ -146,7 +148,7 @@ static int tstr_vprintf(tstr_t tsr, const char * fmt, va_list arg) {
 }
 
 //
-// tstr_printf - 参照 sprintf 填充方式写入内容
+// tstr_printf - 参照 sprintf 方式填充内容
 // tsr      : tstr_t 串
 // fmt      : 待格式化的串
 // ...      : 等待进入的变量
