@@ -1,5 +1,5 @@
-﻿#ifndef JSON_H
-#define JSON_H
+﻿#ifndef _JSON_H
+#define _JSON_H
 
 #include "tstr.h"
 #include <math.h>
@@ -186,4 +186,4 @@ extern json_t json_detach_object(json_t obj, const char * k);
 
 //----------------------------------json utils end----------------------------------
 
-#endif//JSON_H
+#endif//_JSON_H

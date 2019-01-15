@@ -1,5 +1,5 @@
-﻿#ifndef MQ_H
-#define MQ_H
+﻿#ifndef _MQ_H
+#define _MQ_H
 
 #include "q.h"
 #include "atom.h"
@@ -80,4 +80,4 @@ inline int mq_len(mq_t q) {
     return tail>0 ? tail : tail+size;
 }
 
-#endif//MQ_H
+#endif//_MQ_H

@@ -1,5 +1,5 @@
-﻿#ifndef RTREE_H
-#define RTREE_H
+﻿#ifndef _RTREE_H
+#define _RTREE_H
 
 #include "struct.h"
 
@@ -66,4 +66,4 @@ extern void rtree_insert(rtree_t tree, void * pack);
 //
 extern void rtree_remove(rtree_t tree, void * pack);
 
-#endif//RTREE_H
+#endif//_RTREE_H

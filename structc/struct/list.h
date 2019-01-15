@@ -1,5 +1,5 @@
-﻿#ifndef LIST_H
-#define LIST_H
+﻿#ifndef _LIST_H
+#define _LIST_H
 
 #include "struct.h"
 
@@ -75,4 +75,4 @@ extern void list_add_(void ** pist, cmp_f fadd, void * left);
 list_each_((list), (node_f)(feach))
 extern void list_each_(void * list, node_f feach);
 
-#endif//LIST_H
+#endif//_LIST_H

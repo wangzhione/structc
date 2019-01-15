@@ -1,5 +1,5 @@
-﻿#ifndef TSTR_H
-#define TSTR_H
+﻿#ifndef _TSTR_H
+#define _TSTR_H
 
 #include "strext.h"
 
@@ -93,4 +93,4 @@ extern void tstr_popup(tstr_t tsr, size_t len);
 //
 extern char * tstr_printf(tstr_t tsr, const char * fmt, ...);
 
-#endif//TSTR_H
+#endif//_TSTR_H

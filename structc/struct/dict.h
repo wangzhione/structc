@@ -1,5 +1,5 @@
-﻿#ifndef DICT_H
-#define DICT_H
+﻿#ifndef _DICT_H
+#define _DICT_H
 
 #include "struct.h"
 #include "strext.h"
@@ -40,4 +40,4 @@ extern void * dict_get(dict_t d, const char * k);
 //
 extern void dict_set(dict_t d, const char * k, void * v);
 
-#endif//DICT_H
+#endif//_DICT_H
