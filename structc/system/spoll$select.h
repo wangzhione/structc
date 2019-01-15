@@ -1,5 +1,5 @@
-﻿#if !defined(SPOLL$SELECT_H) && defined(_WIN32)
-#define SPOLL$SELECT_H
+﻿#if !defined(_SPOLL$SELECT_H) && defined(_WIN32)
+#define _SPOLL$SELECT_H
 
 #undef  FD_SETSIZE
 #define FD_SETSIZE      (1024)
@@ -146,4 +146,4 @@ int s_wait(poll_t p, event_t e) {
     return c;
 }
 
-#endif//SPOLL$SELECT_H
+#endif//_SPOLL$SELECT_H

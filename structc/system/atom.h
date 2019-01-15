@@ -1,5 +1,5 @@
-﻿#ifndef ATOM_H
-#define ATOM_H
+﻿#ifndef _ATOM_H
+#define _ATOM_H
 
 #include "atomic.h"
 
@@ -87,4 +87,4 @@ static inline void store_release(atom_t * x) {
 
 #endif
 
-#endif//ATOM_H
+#endif//_ATOM_H

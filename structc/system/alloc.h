@@ -1,5 +1,5 @@
-﻿#ifndef ALLOC_H
-#define ALLOC_H
+﻿#ifndef _ALLOC_H
+#define _ALLOC_H
 
 #include <stdlib.h>
 #include <string.h>
@@ -77,4 +77,4 @@ extern void * calloc_(size_t num, size_t size);
 //
 extern void * realloc_(void * ptr, size_t size);
 
-#endif//ALLOC_H
+#endif//_ALLOC_H

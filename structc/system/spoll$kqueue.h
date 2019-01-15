@@ -1,5 +1,5 @@
-﻿#if !defined(SPOLL$KQUEUE_H) && !defined(_WIN32) && !defined(__linux__)
-#define SPOLL$KQUEUE_H
+﻿#if !defined(_SPOLL$KQUEUE_H) && !defined(_WIN32) && !defined(__linux__)
+#define _SPOLL$KQUEUE_H
 
 #include <sys/event.h>
 
@@ -83,4 +83,4 @@ int s_wait(poll_t p, event_t e) {
     return n;
 }
 
-#endif//SPOLL$KQUEUE_H
+#endif//_SPOLL$KQUEUE_H

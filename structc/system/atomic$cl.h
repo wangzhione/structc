@@ -1,5 +1,5 @@
-﻿#if !defined(ATOMIC$CL_H) && defined(_MSC_VER)
-#define ATOMIC$CL_H
+﻿#if !defined(_ATOMIC$CL_H) && defined(_MSC_VER)
+#define _ATOMIC$CL_H
 
 #include <stdbool.h>
 #include <windows.h>
@@ -158,4 +158,4 @@ atomic_fetch_xor_##mark(atomic_##mark##_t * a, type v,              \
            );                                                       \
 }
 
-#endif//ATOMIC$CL_H
+#endif//_ATOMIC$CL_H

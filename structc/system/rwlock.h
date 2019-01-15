@@ -1,5 +1,5 @@
-﻿#ifndef RWLOCK_H
-#define RWLOCK_H
+﻿#ifndef _RWLOCK_H
+#define _RWLOCK_H
 
 #include "atom.h"
 
@@ -23,4 +23,4 @@ extern void rwlock_unwlock(struct rwlock * lock);
 // rwlock_unrlock - unlock read lock
 extern void rwlock_unrlock(struct rwlock * lock);
 
-#endif//RWLOCK_H
+#endif//_RWLOCK_H

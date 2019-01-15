@@ -1,5 +1,5 @@
-﻿#ifndef ATOMIC_H
-#define ATOMIC_H
+﻿#ifndef _ATOMIC_H
+#define _ATOMIC_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -59,4 +59,4 @@ GENERIC_INT_ATOMIC(size_t, zu, PTR_SIZEOF)
 
 GENERIC_INT_ATOMIC(ssize_t, zd, PTR_SIZEOF)
 
-#endif//ATOMIC_H
+#endif//_ATOMIC_H

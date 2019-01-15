@@ -1,5 +1,5 @@
-﻿#if !defined(SPOLL$EPOLL_H) && defined(__linux__)
-#define SPOLL$EPOLL_H
+﻿#if !defined(_SPOLL$EPOLL_H) && defined(__linux__)
+#define _SPOLL$EPOLL_H
 
 #include "spoll.h"
 #include <sys/epoll.h>
@@ -66,4 +66,4 @@ int s_wait(poll_t p, event_t e) {
     return n;
 }
 
-#endif//SPOLL$EPOLL_H
+#endif//_SPOLL$EPOLL_H

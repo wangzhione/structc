@@ -1,5 +1,5 @@
-﻿#ifndef SPOLL_H
-#define SPOLL_H
+﻿#ifndef _SPOLL_H
+#define _SPOLL_H
 
 #include "socket.h"
 
@@ -49,4 +49,4 @@ extern void s_write(poll_t p, socket_t s, void * u, bool enable);
 //
 extern int s_wait(poll_t p, event_t e);
 
-#endif//SPOLL_H
+#endif//_SPOLL_H
