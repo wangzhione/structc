@@ -127,10 +127,9 @@ static const char * parse_number(json_t item, const char * str) {
 
 // parse_hex4 - parse 4 digit hexadecimal number
 static unsigned parse_hex4(const char str[]) {
-    unsigned h, i;
-    unsigned char c;
-    for (h = i = 0; ; ++str) {
-        c = *str;
+    unsigned h = 0;
+    for (unsigned i = 0; ; ++str) {
+        unsigned char c = *str;
         if (c >= '0' && c <= '9')
             h += c - '0';
         else if (c >= 'a' && c <= 'f')
@@ -225,12 +224,13 @@ static const char * parse_string(json_t item, const char * str) {
             case 3: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6;
             // 10xxxxxx
             case 2: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6;
-            // depending on the length in bytes this determines the encoding ofthe first UTF8 byte
+            // depending on the length in bytes this determines the 
+            // encoding ofthe first UTF8 byte
             case 1: *--ntr = ((uc | marks[len]));
             }
             ntr += len;
-            break;
         }
+        break;
         default : *ntr++ = c;
         }
     }
@@ -461,15 +461,13 @@ json_t json_parse(const char * str) {
 //
 json_t 
 json_file(const char * path) {
-    json_t c;
-    char * str;
     // 读取文件中内容, 并检查
     if (!path || !*path) return NULL;
-    str = str_freads(path);
+    char * str = str_freads(path);
     if (!str) return NULL;
 
     // 返回解析结果
-    c = json_create(str);
+    json_t c = json_create(str);
     free(str);
     return c;
 }
@@ -524,7 +522,6 @@ static char * print_number(json_t item, tstr_t p) {
 
 // print_string - string 编码
 static char * print_string(char * str, tstr_t p) {
-    size_t len;
     unsigned char c;
     const char * ptr;
     char * ntr, * out;
@@ -536,7 +533,7 @@ static char * print_string(char * str, tstr_t p) {
     }
 
     // 获取最终字符输出长度
-    len = 0;
+    size_t len = 0;
     for (ptr = str; (c = *ptr); ++ptr) {
         ++len;
         switch (c) {
@@ -691,10 +688,8 @@ json_print(json_t c) {
 //
 json_t 
 json_new_arrays(unsigned char t, const void * arr, int n) {
-    int i = 0;
-    json_t m, p, a;
-
-    for (m = p = a = NULL; i < n; ++i) {
+    json_t m = NULL, p = NULL, a = NULL;
+    for (int i = 0; i < n; ++i) {
         switch(t) {
         case JSON_NULL  : m = json_new_null(); break;
         case JSON_BOOL  : m = json_new_bool(arr ? ((bool *)arr)[i] : false); break;

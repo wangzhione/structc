@@ -10,7 +10,6 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <string.h>
 
 //
 // str_hash - Brian Kernighan 与 Dennis Ritchie hash 算法
