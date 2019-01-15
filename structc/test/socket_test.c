@@ -1,12 +1,12 @@
 ﻿#include <socket.h>
 #include <thread.h>
 
-#define STR_HOST "127.0.0.1:19527"
+#define HOST_STR "127.0.0.1:19527"
 
 static void socket_run(socket_t s) {
     int r, num;
     sockaddr_t addr;
-    const char * cots = STR_HOST;
+    const char * cots = HOST_STR;
     int sz = (int)strlen(cots);
 
     // 开始处理每个监听
@@ -34,7 +34,7 @@ static void socket_run(socket_t s) {
 // 创建一个服务器监听资源
 static void socket_server(void) {
     pthread_t tid;
-    const char * host = STR_HOST;
+    const char * host = HOST_STR;
     socket_t s = socket_tcp(host);
     if (INVALID_SOCKET == s)
         RETNIL("socket_tcp err host = %s", host);
@@ -49,7 +49,7 @@ static void socket_server(void) {
 static int socket_client(int idx) {
     int r;
     char buf[BUFSIZ];
-    const char * host = STR_HOST;
+    const char * host = HOST_STR;
     socket_t c = socket_connects(host);
     if (INVALID_SOCKET == c)
         return EBase;
@@ -75,7 +75,7 @@ void socket_test(void) {
     sockaddr_t addr;
     const char * host;
 
-    r = socket_host(host = STR_HOST, addr);
+    r = socket_host(host = HOST_STR, addr);
     if (r < SBase)
         RETNIL("socket_host is err %s", host);
 

@@ -1,7 +1,8 @@
-﻿#ifndef _H_TIMES
-#define _H_TIMES
+﻿#ifndef _TIMES_H
+#define _TIMES_H
 
 #include <time.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 //
@@ -130,9 +131,9 @@ int times_fmt(const char * fmt, char out[], size_t sz);
 // times_buf - 存储毫秒串 "2016-07-10 22:38:34 500"
 // ns           : 返回生成串
 // return       : 返回生成串长度
-#define STR_TIMES "%04d-%02d-%02d %02d:%02d:%02d %03d"
+#define TIMES_STR "%04d-%02d-%02d %02d:%02d:%02d %03d"
 inline int times_buf(times_t ns) {
-    return times_fmt(STR_TIMES, ns, sizeof(times_t));
+    return times_fmt(TIMES_STR, ns, sizeof(times_t));
 }
 
 //
@@ -145,4 +146,4 @@ inline char * times_str(times_t ns) {
     return ns;
 }
 
-#endif//_H_TIMES
+#endif//_TIMES_H

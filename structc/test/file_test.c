@@ -13,7 +13,7 @@ inline void removes_test(const char * path) {
     printf("rm -rf '%s' -> %d\n", path, ret);
 }
 
-#define STR_CONF "conf/config.conf"
+#define CONF_STR "conf/config.conf"
 
 // conf_update - 简单测试代码
 static void conf_update(FILE * c, void * arg) {
@@ -34,7 +34,7 @@ void file_test(void) {
     // removes_test("logs/");
 
     // 开始注册一个
-    file_set(STR_CONF, conf_update, NULL);
+    file_set(CONF_STR, conf_update, NULL);
 
     // 定时刷新, 凡事追求 61分.
     for (int i = 0; i < 61; ++i) {

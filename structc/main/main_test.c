@@ -1,7 +1,7 @@
 ﻿#include "head.h"
 
 //
-// TEST - 单元测试宏, 并打印执行时间
+// TEST     - 单元测试宏, 并打印执行时间
 // ftest    : 测试函数
 // ...      : 可变参数
 //
@@ -16,8 +16,8 @@ do {                                                                \
 
 
 //
-// main_test - make D=-D_DEBUG here run test
-// return   : void
+// main_test - make D=-D_DEBUG run test
+// return    : void
 //
 void main_test(void) {
     puts("*--------------------------------** main test *--------------------------------*");

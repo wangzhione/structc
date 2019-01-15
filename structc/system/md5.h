@@ -1,5 +1,5 @@
-﻿#ifndef _H_MD5
-#define _H_MD5
+﻿#ifndef _MD5_H
+#define _MD5_H
 
 #include <stdio.h>
 #include <stddef.h>
@@ -51,4 +51,4 @@ inline uint8_t * md5_16s(md5_t m, const char * s) {
     return m;
 }
 
-#endif//_H_MD5
+#endif//_MD5_H

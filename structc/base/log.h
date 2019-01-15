@@ -1,7 +1,9 @@
-﻿#ifndef _H_LOG
-#define _H_LOG
+﻿#ifndef _LOG_H
+#define _LOG_H
 
 #include "times.h"
+#include <stdlib.h>
+#include <stdarg.h>
 
 //
 // LOG_PRINTF - 拼接构建输出的格式串,最后输出数据
@@ -31,4 +33,4 @@ log_printf(pre "[%s:%s:%d]" fmt "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS_
 //
 void log_printf(const char * fmt, ...);
 
-#endif//_H_LOG
+#endif//_LOG_H

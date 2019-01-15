@@ -1,5 +1,5 @@
-﻿#ifndef _H_STRERR
-#define _H_STRERR
+﻿#ifndef _STRERR_H
+#define _STRERR_H
 
 #include "struct.h"
 
@@ -21,4 +21,4 @@
 //
 extern const char * strerr(int err);
 
-#endif//_H_STRERR
+#endif//_STRERR_H

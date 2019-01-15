@@ -1,5 +1,5 @@
-﻿#ifndef _H_PIPE
-#define _H_PIPE
+﻿#ifndef _PIPE_H
+#define _PIPE_H
 
 #include "socket.h"
 
@@ -48,4 +48,4 @@ extern int pipe_open(pipe_t ch);
 extern int pipe_recv(pipe_t ch, void * buf, int sz);
 extern int pipe_send(pipe_t ch, const void * buf, int sz);
 
-#endif//_H_PIPE
+#endif//_PIPE_H

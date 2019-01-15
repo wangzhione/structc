@@ -14,7 +14,7 @@ struct gravity {
     char * msg;
 };
 
-// _update - 更新图片内容
+// update - 更新图片内容
 void update(struct gravity * grav) {
     char data[BUFSIZ];
     uv_buf_t buf;

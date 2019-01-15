@@ -1,5 +1,4 @@
 ﻿#include "times.h"
-#include <stdio.h>
 
 #ifdef _WIN32
 
@@ -57,7 +56,7 @@ gettimeofday(struct timeval * tv, void * tz) {
 
 // times_tm - 从时间串中提取出来年月日时分秒
 bool times_tm(times_t ns, struct tm * om) {
-    int c, num, *es, *py;
+    int c, num, * es, * py;
     if ((!ns) || !(c = *ns) || c < '0' || c > '9')
         return false;
 

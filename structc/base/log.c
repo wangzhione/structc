@@ -1,7 +1,4 @@
 ﻿#include "log.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
 
 static FILE * log;
 
@@ -28,7 +25,7 @@ log_printf(const char * fmt, ...) {
     va_list ap;
     // 每条日志大小, 按照系统缓冲区走
     char str[BUFSIZ];
-    int len = times_fmt("["STR_TIMES"]", str, sizeof str);
+    int len = times_fmt("["TIMES_STR"]", str, sizeof str);
 
     // 填入日志内容
     va_start(ap, fmt);

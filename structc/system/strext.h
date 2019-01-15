@@ -1,5 +1,5 @@
-﻿#ifndef _H_STREXT
-#define _H_STREXT
+﻿#ifndef _STREXT_H
+#define _STREXT_H
 
 /*
     继承 : string.h
@@ -83,4 +83,4 @@ extern int str_fwrites(const char * path, const char * str);
 //
 extern int str_fappends(const char * path, const char * str);
 
-#endif//_H_STREXT
+#endif//_STREXT_H

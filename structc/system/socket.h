@@ -1,5 +1,5 @@
-﻿#ifndef _H_SOCKET
-#define _H_SOCKET
+﻿#ifndef _SOCKET_H
+#define _SOCKET_H
 
 #include <time.h>
 #include <fcntl.h>
@@ -282,4 +282,4 @@ extern socket_t socket_connects(const char * host);
 //
 extern socket_t socket_connectos(const char * host, int ms);
 
-#endif//_H_SOCKET
+#endif//_SOCKET_H

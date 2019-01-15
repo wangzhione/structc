@@ -1,5 +1,5 @@
-﻿#ifndef _H_THREAD
-#define _H_THREAD
+﻿#ifndef _THREAD_H
+#define _THREAD_H
 
 #include "struct.h"
 #include <pthread.h>
@@ -45,4 +45,4 @@ inline int pthread_async_(node_f frun, void * arg) {
     return ret;
 }
 
-#endif//_H_THREAD
+#endif//_THREAD_H

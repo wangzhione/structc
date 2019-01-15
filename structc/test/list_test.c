@@ -1,21 +1,21 @@
 ﻿#include <list.h>
 #include <head.h>
 
-#define INT_NAME (64)
+#define NAME_INT (64)
 
 struct peoples {
     $LIST
 
     double age;
-    char name[INT_NAME + 1];
+    char name[NAME_INT + 1];
 };
 
-// _peoples_add : 默认年龄从小到大排序, 并且获取
+// peoples_add : 默认年龄从小到大排序, 并且获取
 inline static int peoples_add(struct peoples * left, struct peoples * node) {
     return (int)(left->age - node->age);
 }
 
-// _peoples_each : 单纯的打印接口信息
+// peoples_each : 单纯的打印接口信息
 inline static void peoples_each(struct peoples * node) {
     printf("age = %9.6lf, name = %s\n", node->age, node->name);
 }

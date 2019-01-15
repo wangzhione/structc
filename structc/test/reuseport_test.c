@@ -2,8 +2,8 @@
 #include <socket.h>
 #include <thread.h>
 
-// UINT_PORT - 监听端口
-#define UINT_PORT (8088)
+// PORT_UINT - 监听端口
+#define PORT_UINT (8088)
 
 // accept_example - SO_REUSEPORT accept example 
 void accept_example(int id);
@@ -32,7 +32,7 @@ accept_example(int id) {
     IF(socket_set_reuse(s));
 
     // 构造地址
-    sockaddr_t addr = {{ AF_INET, htons(UINT_PORT) }};
+    sockaddr_t addr = {{ AF_INET, htons(PORT_UINT) }};
 
     // 绑定地址
     IF(socket_bind(s, addr));

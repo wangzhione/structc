@@ -1,5 +1,5 @@
-﻿#ifndef _H_RAND
-#define _H_RAND
+﻿#ifndef _RAND_H
+#define _RAND_H
 
 //
 // 线程安全的 rand 库, by redis
@@ -67,4 +67,4 @@ inline int32_t r_rands(int32_t min, int32_t max) {
     return r_rand() % (max - min + 1) + min;
 }
 
-#endif//_H_RAND
+#endif//_RAND_H
