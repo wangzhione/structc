@@ -1,75 +1,41 @@
 ﻿#include "list.h"
 
 //
-// list_delete - 链表数据销毁操作
-// pist     : 指向基础的链表结构
-// fdie     : 链表中删除数据执行的方法
+// list_each - 链表循环处理, feach(x)
+// list     : 链表对象
+// feach    : node_f 节点遍历行为
 // return   : void
 //
 void 
-list_delete_(void ** pist, node_f fdie) {
+list_each(void * list, void * feach) {    
+    if (list && feach) {
+        struct $list * head = list;
+        while (head) {
+            struct $list * next = head->next;
+            ((node_f)feach)(head);
+            head = next;
+        }
+    }
+}
+
+//
+// list_delete - 链表数据销毁操作, fdie(x)
+// pist     : 指向链表对象指针
+// fdie     : node_f 链表中删除数据行为
+// return   : void
+//
+void 
+list_delete(void ** pist, void * fdie) {
     if (pist && fdie) {
         // 详细处理链表数据变化
         struct $list * head = *pist;
         while (head) {
             struct $list * next = head->next;
-            fdie(head);
+            ((node_f)fdie)(head);
             head = next;
         }
         *pist = NULL;
-    }
-}
-
-//
-// list_get - 匹配得到链表中指定值
-// list     : 基础的链表结构
-// fget     : 链表中查找数据执行的方法
-// left     : 待查找的节点内容 
-// return   : 查找到的节点, NULL 表示没有查到
-//
-void * 
-list_get_(void * list, cmp_f fget, const void * left) {
-    if (fget) {
-        struct $list * head = list;
-        while (head) {
-            if (fget(left, head) == 0)
-                return head;
-            head = head->next;
-        }
-    }
-    return NULL;
-}
-
-//
-// list_pop - 匹配弹出链表中指定值
-// pist     : 指向基础的链表结构
-// fget     : 链表中查找数据执行的方法
-// left     : 待查找的节点内容 
-// return   : 查找到的节点, NULL 表示没有查到 
-//
-void * 
-list_pop_(void ** pist, cmp_f fget, const void * left) {
-    struct $list * head, * next;
-    if (!pist || fget)
-        return NULL;
-
-    // 看是否是头节点
-    head = *pist;
-    if (fget(left, head) == 0) {
-        *pist = head->next;
-        return head;
-    }
-
-    // 不是头节点挨个处理
-    while (!!(next = head->next)) {
-        if (fget(left, next) == 0) {
-            head->next = next->next;
-            return next;
-        }
-        head = next;
-    }
-
-    return NULL;
+    }    
 }
 
 //
@@ -80,21 +46,20 @@ list_pop_(void ** pist, cmp_f fget, const void * left) {
 #define list_next(n) ((struct $list *)(n))->next
 
 //
-// list_add - 链表中添加数据, 从小到大 fadd(left, ) <= 0
-// pist     : 指向基础的链表结构
+// list_add - 链表中添加数据, 升序 fadd(left, x) <= 0
+// pist     : 指向链表对象指针
 // fadd     : 插入数据方法
 // left     : 待插入的链表节点
 // return   : void
 //
 void 
-list_add_(void ** pist, cmp_f fadd, void * left) {
-    struct $list * head;
+list_add(void ** pist, void * fadd, void * left) {
     if (!pist || !fadd || !left)
         return;
     
     // 看是否是头节点
-    head = *pist;
-    if (!head || fadd(left, head) <= 0) {
+    struct $list * head = *pist;
+    if (!head || ((cmp_f)fadd)(left, head) <= 0) {
         list_next(left) = head;
         *pist = left;
         return;
@@ -102,7 +67,7 @@ list_add_(void ** pist, cmp_f fadd, void * left) {
 
     // 不是头节点, 挨个比对
     while (head->next) {
-        if (fadd(left, head->next) <= 0)
+        if (((cmp_f)fadd)(left, head->next) <= 0)
             break;
         head = head->next;
     }
@@ -113,19 +78,51 @@ list_add_(void ** pist, cmp_f fadd, void * left) {
 }
 
 //
-// list_each - 链表循环处理函数, 仅仅测试而已
-// list     : 基础的链表结构
-// feach    : 处理每个节点行为函数
-// return   : void
+// list_get - 查找到链表中指定节点值, fget(left, x) == 0
+// list     : 链表对象
+// fget     : cmp_f 链表中查找数据行为
+// left     : 待查找的辅助数据 
+// return   : 查找到的节点, NULL 表示没有查到
 //
-void 
-list_each_(void * list, node_f feach) {    
-    if (list && feach) {
+void * 
+list_get(void * list, void * fget, const void * left) {
+    if (fget) {
         struct $list * head = list;
         while (head) {
-            struct $list * next = head->next;
-            feach(head);
-            head = next;
+            if (((cmp_f)fget)(left, head) == 0)
+                return head;
+            head = head->next;
         }
     }
+    return NULL;    
+}
+
+//
+// list_pop - 弹出链表中指定节点值, fget(left, x) == 0
+// pist     : 指向链表对象指针
+// fget     : cmp_f 链表中查找数据行为
+// left     : 待查找的辅助数据 
+// return   : 查找到的节点, NULL 表示没有查到 
+//
+void * 
+list_pop(void ** pist, void * fget, const void * left) {
+    if (!pist || !*pist || !fget) 
+        return NULL;
+
+    // 看是否是头节点
+    struct $list * head = *pist;
+    if (((cmp_f)fget)(left, head) == 0) {
+        *pist = head->next;
+        return head;
+    }
+
+    // 不是头节点挨个处理
+    for (struct $list * next; !!(next = head->next); head = next) {
+        if (((cmp_f)fget)(left, next) == 0) {
+            head->next = next->next;
+            return next;
+        }
+    }
+
+    return NULL;    
 }

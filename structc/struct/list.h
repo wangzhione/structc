@@ -20,59 +20,46 @@ struct $list {
 #define list_next(n) ((void *)((struct $list *)(n))->next)
 
 //
-// list_delete - 链表数据销毁操作
-// list     : 基础的链表结构
-// pist     : 指向基础的链表结构
-// fdie     : 链表中删除数据执行的方法
+// list_each - 链表循环处理, feach(x)
+// list     : 链表对象
+// feach    : node_f 节点遍历行为
 // return   : void
 //
-#define list_delete(list, fdie)                                         \
-list_delete_((void **)&(list), (node_f)(fdie))
-extern void list_delete_(void ** pist, node_f fdie);
+extern void list_each(void * list, void * feach);
 
 //
-// list_get - 匹配得到链表中指定值
-// list     : 基础的链表结构
-// fget     : 链表中查找数据执行的方法
-// left     : 待查找的节点内容 
-// return   : 查找到的节点, NULL 表示没有查到
+// list_delete - 链表数据销毁操作, fdie(x)
+// pist     : 指向链表对象指针
+// fdie     : node_f 链表中删除数据行为
+// return   : void
 //
-#define list_get(list, fget, left)                                      \
-list_get_((list), (cmp_f)(fget), (const void *)(intptr_t)(left))
-extern void * list_get_(void * list, cmp_f fget, const void * left);
+extern void list_delete(void ** pist, void * fdie);
 
 //
-// list_pop - 匹配弹出链表中指定值
-// list     : 基础的链表结构
-// pist     : 指向基础的链表结构
-// fget     : 链表中查找数据执行的方法
-// left     : 待查找的节点内容 
-// return   : 查找到的节点, NULL 表示没有查到 
-//
-#define list_pop(list, fget, left)                                      \
-list_pop_((void **)&(list), (cmp_f)(fget), (const void *)(intptr_t)(left))
-extern void * list_pop_(void ** pist, cmp_f fget, const void * left);
-
-//
-// list_add - 链表中添加数据, 从小到大 fadd(left, ) <= 0
-// list     : 基础的链表结构
-// pist     : 指向基础的链表结构
+// list_add - 链表中添加数据, 升序 fadd(left, x) <= 0
+// pist     : 指向链表对象指针
 // fadd     : 插入数据方法
 // left     : 待插入的链表节点
 // return   : void
 //
-#define list_add(list, fadd, left)                                      \
-list_add_((void **)&(list), (cmp_f)(fadd), (void *)(intptr_t)(left))
-extern void list_add_(void ** pist, cmp_f fadd, void * left);
+extern void list_add(void ** pist, void * fadd, void * left);
 
 //
-// list_each - 链表循环处理函数, 仅仅测试而已
-// list     : 基础的链表结构
-// feach    : 处理每个节点行为函数
-// return   : void
+// list_get - 查找到链表中指定节点值, fget(left, x) == 0
+// list     : 链表对象
+// fget     : cmp_f 链表中查找数据行为
+// left     : 待查找的辅助数据 
+// return   : 查找到的节点, NULL 表示没有查到
 //
-#define list_each(list, feach)                                          \
-list_each_((list), (node_f)(feach))
-extern void list_each_(void * list, node_f feach);
+extern void * list_get(void * list, void * fget, const void * left);
+
+//
+// list_pop - 弹出链表中指定节点值, fget(left, x) == 0
+// pist     : 指向链表对象指针
+// fget     : cmp_f 链表中查找数据行为
+// left     : 待查找的辅助数据 
+// return   : 查找到的节点, NULL 表示没有查到 
+//
+extern void * list_pop(void ** pist, void * fget, const void * left);
 
 #endif//_LIST_H
