@@ -1,7 +1,7 @@
 ﻿#include <rtree.h>
 
 struct names {
-    $RTREE
+$RTREE
     char * name;
 };
 

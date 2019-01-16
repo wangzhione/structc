@@ -27,13 +27,13 @@ inline static int rtree_default_cmp(const void * ln, const void * rn) {
 
 //
 // rtee_create - 创建一个红黑树对象
-// fcmp     : 节点查找函数
-// fnew     : 节点构造函数
-// fdie     : 节点销毁函数
+// fcmp     : cmp_f 节点插入时比较行为
+// fnew     : new_f 节点插入时构造行为
+// fdie     : node_f 节点删除时销毁行为
 // return   : 返回构建红黑树对象
 //
 inline rtree_t 
-rtree_create(cmp_f fcmp, new_f fnew, node_f fdie) {
+rtree_create(void * fcmp, void * fnew, void * fdie) {
     rtree_t tree = malloc(sizeof *tree);
     tree->root = NULL;
     tree->fcmp = fcmp ? fcmp : rtree_default_cmp;
@@ -282,15 +282,12 @@ static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
 //
 void 
 rtree_insert(rtree_t tree, void * pack) {
-    cmp_f fcmp;
-    struct $rtree * node, * x, * y;
     if (!tree || !pack) return;
-    
-    y = NULL;
-    x = tree->root;
-    fcmp = tree->fcmp;
+
+    cmp_f fcmp = tree->fcmp;
+    struct $rtree * x = tree->root, * y = NULL;
     // 1. 构造插入节点, 并设置节点的颜色为红色
-    node = rtree_new(tree, pack);
+    struct $rtree * node = rtree_new(tree, pack);
 
     // 2. 将红黑树当作一颗二叉查找树, 将节点添加到二叉查找树中. 默认 从小到大
     while (x) {

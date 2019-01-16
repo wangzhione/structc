@@ -17,22 +17,20 @@ struct $rtree {
 
 typedef struct {
     struct $rtree * root;
-
+    cmp_f fget; // cmp_f 节点查找时比较行为
     cmp_f fcmp;
     new_f fnew;
     node_f fdie;
-
-    cmp_f fget;
 } * rtree_t;
 
 //
 // rtee_create - 创建一个红黑树对象
-// fcmp     : 节点查找函数
-// fnew     : 节点构造函数
-// fdie     : 节点销毁函数
+// fcmp     : cmp_f 节点插入时比较行为
+// fnew     : new_f 节点插入时构造行为
+// fdie     : node_f 节点删除时销毁行为
 // return   : 返回构建红黑树对象
 //
-extern rtree_t rtree_create(cmp_f fcmp, new_f fnew, node_f fdie);
+extern rtree_t rtree_create(void * fcmp, void * fnew, void * fdie);
 
 //
 // rtree_delete - 红黑树销毁函数
