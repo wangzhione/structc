@@ -26,14 +26,14 @@ inline static int rtree_default_cmp(const void * ln, const void * rn) {
 }
 
 //
-// rtee_create - 创建一个红黑树结构
+// rtee_create - 创建一个红黑树对象
 // fcmp     : 节点查找函数
 // fnew     : 节点构造函数
 // fdie     : 节点销毁函数
-// return   : 返回构建红黑树
+// return   : 返回构建红黑树对象
 //
 inline rtree_t 
-rtree_create_(cmp_f fcmp, new_f fnew, node_f fdie) {
+rtree_create(cmp_f fcmp, new_f fnew, node_f fdie) {
     rtree_t tree = malloc(sizeof *tree);
     tree->root = NULL;
     tree->fcmp = fcmp ? fcmp : rtree_default_cmp;

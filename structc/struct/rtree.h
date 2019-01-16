@@ -26,15 +26,13 @@ typedef struct {
 } * rtree_t;
 
 //
-// rtee_create - 创建一个红黑树结构
-// fcmp     : 结点查找函数
-// fnew     : 结点构造函数
-// fdie     : 结点销毁函数
-// return   : 返回构建红黑树
+// rtee_create - 创建一个红黑树对象
+// fcmp     : 节点查找函数
+// fnew     : 节点构造函数
+// fdie     : 节点销毁函数
+// return   : 返回构建红黑树对象
 //
-#define rtree_create(fcmp, fnew, fdie)                              \
-rtree_create_((cmp_f)(fcmp), (new_f)(fnew), (node_f)(fdie))
-extern rtree_t rtree_create_(cmp_f fcmp, new_f fnew, node_f fdie);
+extern rtree_t rtree_create(cmp_f fcmp, new_f fnew, node_f fdie);
 
 //
 // rtree_delete - 红黑树销毁函数
