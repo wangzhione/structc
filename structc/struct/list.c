@@ -20,48 +20,47 @@ list_each(void * list, void * feach) {
 
 //
 // list_delete - 链表数据销毁操作, fdie(x)
-// pist     : 指向链表对象指针
+// pist     : void ** 指向链表对象指针
 // fdie     : node_f 链表中删除数据行为
 // return   : void
 //
 void 
-list_delete(void ** pist, void * fdie) {
+list_delete(void * pist, void * fdie) {
     if (pist && fdie) {
         // 详细处理链表数据变化
-        struct $list * head = *pist;
+        struct $list * head = *(void **)pist;
         while (head) {
             struct $list * next = head->next;
             ((node_f)fdie)(head);
             head = next;
         }
-        *pist = NULL;
-    }    
+        *(void **)pist = NULL;
+    }  
 }
 
 //
 // list_next - 获取节点 n 的下一个节点
 // n        : 当前节点
-//
 #undef  list_next
 #define list_next(n) ((struct $list *)(n))->next
 
 //
 // list_add - 链表中添加数据, 升序 fadd(left, x) <= 0
-// pist     : 指向链表对象指针
+// pist     : void ** 指向链表对象指针
 // fadd     : 插入数据方法
 // left     : 待插入的链表节点
 // return   : void
 //
 void 
-list_add(void ** pist, void * fadd, void * left) {
+list_add(void * pist, void * fadd, void * left) {
     if (!pist || !fadd || !left)
         return;
     
     // 看是否是头节点
-    struct $list * head = *pist;
+    struct $list * head = *(void **)pist;
     if (!head || ((cmp_f)fadd)(left, head) <= 0) {
         list_next(left) = head;
-        *pist = left;
+        *(void **)pist = left;
         return;
     }
 
@@ -94,35 +93,35 @@ list_get(void * list, void * fget, const void * left) {
             head = head->next;
         }
     }
-    return NULL;    
+    return NULL;
 }
 
 //
 // list_pop - 弹出链表中指定节点值, fget(left, x) == 0
-// pist     : 指向链表对象指针
+// pist     : void ** 指向链表对象指针
 // fget     : cmp_f 链表中查找数据行为
 // left     : 待查找的辅助数据 
 // return   : 查找到的节点, NULL 表示没有查到 
 //
 void * 
-list_pop(void ** pist, void * fget, const void * left) {
-    if (!pist || !*pist || !fget) 
+list_pop(void * pist, void * fget, const void * left) {
+    if (!pist || !*(void **)pist || !fget) 
         return NULL;
 
     // 看是否是头节点
-    struct $list * head = *pist;
+    struct $list * head = *(void **)pist;
     if (((cmp_f)fget)(left, head) == 0) {
-        *pist = head->next;
+        *(void **)pist = head->next;
         return head;
     }
 
     // 不是头节点挨个处理
-    for (struct $list * next; !!(next = head->next); head = next) {
+    for (struct $list * next; (next = head->next); head = next) {
         if (((cmp_f)fget)(left, next) == 0) {
             head->next = next->next;
             return next;
         }
     }
 
-    return NULL;    
+    return NULL;
 }

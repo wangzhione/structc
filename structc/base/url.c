@@ -9,22 +9,20 @@
 // 
 char * 
 url_encode(const char * s, int len, int * nen) {
-    register unsigned char c;
-    unsigned char * to, * start;
-    const unsigned char * from, * end;
-    static unsigned char encode[] = "0123456789ABCDEF";
+    static const unsigned char encode[] = "0123456789ABCDEF";
 
     if (!s || !*s || len <= 0) {
         if (nen) *nen = 0;
         return NULL;
     }
 
-    from = (unsigned char *)s;
-    end = (unsigned char *)s + len;
-    start = to = calloc(3 * len + 1, sizeof(unsigned char));
+    const unsigned char * from = (unsigned char *)s;
+    const unsigned char * end = (unsigned char *)s + len;
+    unsigned char * to = calloc(3 * len + 1, sizeof(unsigned char));
+    unsigned char * start = to;
 
     while (from < end) {
-        c = *from++;
+        register unsigned char c = *from++;
         if (c == ' ') {
             *to++ = '+';
             continue;
@@ -73,13 +71,12 @@ inline char htoc(char * s) {
 //
 int 
 url_decode(char s[], int len) {
-    char * dest, * data, c;
     if (!s || !*s || len <= 0)
         return -1;
 
-    dest = data = s;
+    char * dest = s,  * data = s;
     while (len--) {
-        c = *data++;
+        char c = *data++;
         // 反向解码
         if (c == '+')
             *dest = ' ';

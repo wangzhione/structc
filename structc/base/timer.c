@@ -27,10 +27,10 @@ inline static int timer_node_time_cmp(const struct timer_node * l,
 
 // timer_list 链表对象管理器
 struct timer_list {
-    int id;                     // 当前 timer node id
-    atom_t lock;                // 自旋锁
-    bool status;                // true is thread loop, false is stop
-    struct timer_node * list;   // timer list list
+    int id;                   // 当前 timer node id
+    atom_t lock;              // 自旋锁
+    volatile bool status;     // true is thread loop, false is stop
+    struct timer_node * list; // timer list list
 };
 
 // timer_list_sus - 得到等待的微秒事件, <= 0 表示可以执行
@@ -65,13 +65,13 @@ inline void
 timer_del(int id) {
     if (timer.list) {
         atom_lock(timer.lock);
-        free(list_pop(timer.list, timer_node_id_cmp, id));
+        free(list_pop(&timer.list, timer_node_id_cmp, (void *)(intptr_t)id));
         atom_unlock(timer.lock);
     }
 }
 
-// timer_node_new - timer_node 定时器结点构建
-static struct timer_node * timer_node_new(int s, node_f ftimer, void * arg) {
+// timer_new - timer_node 定时器结点构建
+static struct timer_node * timer_new(int s, node_f ftimer, void * arg) {
     struct timer_node * node = malloc(sizeof(struct timer_node));
     node->id = atom_inc(timer.id);
     if (node->id < 0)
@@ -104,25 +104,23 @@ static void timer_run(struct timer_list * list) {
 
 //
 // timer_add - 添加定时器事件
-// ms       : 执行间隔(毫秒), <= 0 表示立即执行
-// ftimer   : 定时器行为
+// ms       : 执行间隔毫秒, <= 0 表示立即执行
+// ftimer   : node_f 定时器行为
 // arg      : 定时器参数
-// return   : 返回定时器 id
+// return   : 定时器 id, < 0 标识 error
 //
 int 
-timer_add_(int ms, node_f ftimer, void * arg) {
-    int id;
-    struct timer_node * node;
+timer_add(int ms, void * ftimer, void * arg) {
     if (ms <= 0) {
-        ftimer(arg);
+        ((node_f)ftimer)(arg);
         return 0;
     }
 
-    node = timer_node_new(ms, ftimer, arg);
-    id = node->id;
+    struct timer_node * node = timer_new(ms, ftimer, arg);
+    int id = node->id;
     atom_lock(timer.lock);
 
-    list_add(timer.list, timer_node_time_cmp, node);
+    list_add(&timer.list, timer_node_time_cmp, node);
 
     // 判断是否需要开启新的线程
     if (!timer.status) {

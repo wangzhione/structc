@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// :) 高效内存分配, 莫名伤感 ~
+// :) 内存分配包装层, 莫名伤感 ~
 //
 #ifndef ALLOC_OFF
 
