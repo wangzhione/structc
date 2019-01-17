@@ -8,16 +8,16 @@
 inline int removes(const char * path) {
     char s[BUFSIZ];
 
-#ifndef STR_RMRF
+#ifndef RMRF_STR
 #   ifdef _MSC_VER
-#       define STR_RMRF    "rmdir /s /q \"%s\""
+#       define RMRF_STR    "rmdir /s /q \"%s\""
 #   else
-#       define STR_RMRF    "rm -rf '%s'"
+#       define RMRF_STR    "rm -rf '%s'"
 #   endif
 #endif
 
     // path 超过缓冲区长度, 返回异常
-    if (snprintf(s, sizeof s, STR_RMRF, path) == sizeof s) 
+    if (snprintf(s, sizeof s, RMRF_STR, path) == sizeof s) 
         return -1;
     return access(path, F_OK) ? 0 : -system(s);
 }
@@ -228,10 +228,8 @@ file_set(const char * path, file_f func, void * arg) {
 //
 void 
 file_update(void) {
-    struct file * fu;
     atom_lock(f_s.lock);
-
-    fu = f_s.head;
+    struct file * fu = f_s.head;
     while (fu) {
         struct file * next = fu->next;
 
