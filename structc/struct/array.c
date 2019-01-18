@@ -117,7 +117,7 @@ inline void
 array_sort(array_t a, cmp_f fcmp) {
     assert(NULL != a && a->len && fcmp != NULL);
     qsort(a->data, a->len, a->size, 
-        (int (*)(const void *, const void *))fcmp);
+         (int (*)(const void *, const void *))fcmp);
 }
 
 //

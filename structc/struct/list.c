@@ -35,7 +35,7 @@ list_delete(void * pist, void * fdie) {
             head = next;
         }
         *(void **)pist = NULL;
-    }  
+    }
 }
 
 //
@@ -47,7 +47,7 @@ list_delete(void * pist, void * fdie) {
 //
 // list_add - 链表中添加数据, 升序 fadd(left, x) <= 0
 // pist     : void ** 指向链表对象指针
-// fadd     : 插入数据方法
+// fadd     : cmp_f 链表中插入数据方法
 // left     : 待插入的链表节点
 // return   : void
 //

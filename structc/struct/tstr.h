@@ -53,8 +53,8 @@ extern tstr_t tstr_creates(const char * str);
 //
 // tstr_t 串结构中添加字符等
 // tsr      : tstr_t 串
-// c        : 单个添加的 char
-// str      : 添加的 C 串
+// c        : 添加 char
+// str      : 添加 char *
 // sz       : 添加串的长度
 // return   : void
 //
