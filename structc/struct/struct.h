@@ -5,7 +5,6 @@
 #include "alloc.h"
 #include <ctype.h>
 #include <float.h>
-#include <stdio.h>
 #include <errno.h>
 #include <assert.h>
 #include <stdarg.h>
@@ -52,11 +51,11 @@ typedef int (* each_f)(void * node, void * arg);
 // });
 //
 #ifndef DCODE
-#   ifdef _DEBUG
-#       define DCODE(code)  do code while(0)
-#   else
-#       define DCODE(code)  
-#   endif //  ! _DEBUG
+#  ifdef _DEBUG
+#    define DCODE(code)  do code while(0)
+#  else
+#    define DCODE(code)  
+#  endif //  ! _DEBUG
 #endif  //  ! DCODE
 
 //
