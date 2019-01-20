@@ -1,6 +1,4 @@
-﻿#include <stdio.h>
-
-#define ALLOC_OFF
+﻿#define ALLOC_OFF
 #include "alloc.h"
 
 #define JEMALLOC_NO_DEMANGLE
