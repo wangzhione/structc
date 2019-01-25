@@ -33,13 +33,12 @@ static void socket_run(socket_t s) {
 
 // 创建一个服务器监听资源
 static void socket_server(void) {
-    pthread_t tid;
     const char * host = HOST_STR;
     socket_t s = socket_tcp(host);
     if (INVALID_SOCKET == s)
         RETNIL("socket_tcp err host = %s", host);
 
-    if (pthread_run(tid, socket_run, s)) {
+    if (pthread_async(socket_run, (void *)(intptr_t)s)) {
         socket_close(s);
         RETNIL("pthread_run is error");
     }

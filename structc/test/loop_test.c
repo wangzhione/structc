@@ -42,7 +42,7 @@ void loop_test(void) {
     loop_t s = loop_create(run, free);
 
     // 线程开启, 跑起来测试
-    IF(pthread_run(id, run_write, s));
+    IF(pthread_run(&id, run_write, s));
     // 线程等待
     pthread_end(id);
 

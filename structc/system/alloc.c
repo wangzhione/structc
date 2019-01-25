@@ -5,7 +5,7 @@
 #include <jemalloc/jemalloc.h>
 
 // check - 内存检测并处理
-static inline void * check(void * ptr, size_t size) {
+inline void * check(void * ptr, size_t size) {
     if (NULL == ptr) {
         fprintf(stderr, "check memory collapse %zu\n", size);
         fflush(stderr);

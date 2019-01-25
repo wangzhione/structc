@@ -12,7 +12,7 @@ void accept_example(int id);
 void reuseport_test(void) {
     // start 10 pthread run accept_example
     for (int i = 1; i <= 10; ++i) {
-        IF(pthread_async(accept_example, i));
+        IF(pthread_async(accept_example, (void *)(intptr_t)i));
     }
 
     msleep(609);

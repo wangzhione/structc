@@ -41,18 +41,16 @@ typedef void * (* start_f)(void * arg);
 
 //
 // pthread_async - 启动无需等待的线程
-// frun     : 运行的主体
+// frun     : node_f or start_f 运行的主体
 // arg      : 运行参数
-// return   : return 0 is success
+// return   : 0 is success, -1 is error
 // 
-#define pthread_async(frun, arg)                                    \
-pthread_async_((node_f)(frun), (void *)(intptr_t)(arg))
-inline int pthread_async_(node_f frun, void * arg) {
+inline static int pthread_async(void * frun, void * arg) {
     pthread_t id;
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    int ret = pthread_create(&id, &attr, (start_f)frun, arg);
+    int ret = pthread_create(&id, &attr, frun, arg);
     pthread_attr_destroy(&attr);
     return ret;
 }

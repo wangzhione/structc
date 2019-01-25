@@ -17,7 +17,7 @@ void thread_test(void) {
 
     // 开始运行
     for (i = 0; i < LEN(ids); ++i)
-        if (pthread_run(ids[i], heoo, i))
+        if (pthread_run(ids + i, heoo, (void *)(intptr_t)i))
             RETNIL("pthread_run is error!");
 
     // 等待结束
