@@ -223,7 +223,7 @@ times_week(times_t ns, times_t ts) {
 
 //
 // times_fmt - 通过 fmt 格式最终拼接一个字符串
-// fmt          : 必须包含 %04d %02d %02d %02d %02d %02d %03d
+// fmt          : 推荐遵循 TIMES_STR 意图
 // out          : 最终保存的内容
 // sz           : buf 长度
 // return       : 返回生成串长度

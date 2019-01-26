@@ -34,7 +34,8 @@ inline int getch(void) {
         return EOF;
 
     nts = ots;
-    cfmakeraw(&nts); // 设置终端为 Raw 原始模式，模式下输入数据全以字节单位被处理
+    // 设置终端为 Raw 原始模式，该模式下输入数据全以字节单位被处理
+    cfmakeraw(&nts);
     if (tcsetattr(0, TCSANOW, &nts)) // 设置上更改之后的设置
         return EOF;
 

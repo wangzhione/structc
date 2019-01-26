@@ -118,9 +118,12 @@ extern bool times_day(times_t ns, times_t ts);
 //
 extern bool times_week(times_t ns, times_t ts);
 
+// TIMES_STR - "{年}.{月}.{日}.{时}.{分}.{秒}.{毫秒}"
+#define TIMES_STR "%04d-%02d-%02d %02d:%02d:%02d %03d"
+
 //
 // times_fmt - 通过 fmt 格式最终拼接一个字符串
-// fmt          : 必须包含 %04d %02d %02d %02d %02d %02d %03d
+// fmt          : 推荐遵循 TIMES_STR 意图
 // out          : 最终保存的内容
 // sz           : buf 长度
 // return       : 返回生成串长度
@@ -131,7 +134,6 @@ int times_fmt(const char * fmt, char out[], size_t sz);
 // times_buf - 存储毫秒串 "2016-07-10 22:38:34 500"
 // ns           : 返回生成串
 // return       : 返回生成串长度
-#define TIMES_STR "%04d-%02d-%02d %02d:%02d:%02d %03d"
 inline int times_buf(times_t ns) {
     return times_fmt(TIMES_STR, ns, sizeof(times_t));
 }

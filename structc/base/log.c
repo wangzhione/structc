@@ -3,9 +3,9 @@
 static FILE * log;
 
 //
-// log_init - !单例! 日志库对象初始化
+// log_init - !单例! 日志库初始化
 // path     : 初始化日志系统文件名
-// return   : true 表示成功
+// return   : void
 //
 void log_init(const char * path) {
     if (!(log = fopen(path, "ab"))) {
@@ -32,6 +32,6 @@ log_printf(const char * fmt, ...) {
     vsnprintf(str + len, sizeof str - len, fmt, ap);
     va_end(ap);
 
-    // 数据写入到文件中
+    // 数据刷入文件缓存
     fputs(str, log);
 }
