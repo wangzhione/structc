@@ -125,6 +125,26 @@ static const char * parse_number(json_t item, const char * str) {
     return str;
 }
 
+// parse_literal - 字面串解析
+static const char * parse_literal(json_t item, const char * str) {
+    char c, * ntr;
+    const char * ptr, * etr = str;
+
+    // 获取到 '`' 字符结尾处
+    while ((c = *etr) != '`' && c)
+        ++etr;
+    if (c != '`') return NULL;
+
+    // 开始构造 json string 节点
+    item->type = JSON_STRING;
+    item->str = ntr = malloc(etr - str + 1);
+    for (ptr = str; ptr < etr; ++ptr) 
+        *ntr++ = *ptr;
+    *ntr = '\0';
+
+    return ptr + 1;
+}
+
 // parse_hex4 - parse 4 digit hexadecimal number
 static unsigned parse_hex4(const char str[]) {
     unsigned h = 0;
@@ -244,26 +264,6 @@ err_free:
     return NULL;
 }
 
-// parse_literal - 字面串解析
-static const char * parse_literal(json_t item, const char * str) {
-    char c, * ntr;
-    const char * ptr, * etr = str;
-
-    // 获取到 '`' 字符结尾处
-    while ((c = *etr) != '`' && c)
-        ++etr;
-    if (c != '`') return NULL;
-
-    // 开始构造 json string 节点
-    item->type = JSON_STRING;
-    item->str = ntr = malloc(etr - str + 1);
-    for (ptr = str; ptr < etr; ++ptr) 
-        *ntr++ = *ptr;
-    *ntr = '\0';
-
-    return ptr + 1;
-}
-
 //
 // parse_value - 递归下降解析
 // item     : json 节点
@@ -340,10 +340,8 @@ static const char * parse_object(json_t item, const char * str) {
 
 static const char * 
 parse_value(json_t item, const char * str) {
-    char c;
-    if ((!str) || !(c = *str)) return NULL;
-
-    switch (c) {
+    if (!str) return NULL;
+    switch (*str) {
     // n or N = null, f or F = false, t or T = true ...
     case 'n': case 'N':
         if (str_cmpin(str + 1, "ull", sizeof "ull" - 1)) return NULL;
@@ -366,7 +364,6 @@ parse_value(json_t item, const char * str) {
     case '{': return parse_object (item, str + 1);
     case '[': return parse_array  (item, str + 1);
     }
-
     return NULL;
 }
 

@@ -101,7 +101,7 @@ typedef void (* file_f)(FILE * c, void * arg);
 //
 // file_set - 文件注册更新行为
 // path     : 文件路径
-// func     : file update -> func(path -> FILE, arg), func is NULL 标记清除
+// func     : NULL 是标记清除, 否则 update -> func(path -> FILE, arg)
 // arg      : func 额外参数
 // return   : void
 //

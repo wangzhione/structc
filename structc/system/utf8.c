@@ -13272,7 +13272,7 @@ isu8s(const char * s) {
     unsigned char c, byts = 0;
 
     while ((c = *s++)) {
-        // ascii 码最高位为0, 0xxx xxxx
+        // ascii 码最高位为 0, 0xxx xxxx
         if ((c & 0x80)) ascii = false;
 
         // 计算字节数
@@ -13312,7 +13312,7 @@ isu8(const char d[], size_t n) {
 
     while (i < n) {
         c = d[i++];
-        // ascii 码最高位为0, 0xxx xxxx
+        // ascii 码最高位为 0, 0xxx xxxx
         if ((c & 0x80)) ascii = false;
 
         // 计算字节数
