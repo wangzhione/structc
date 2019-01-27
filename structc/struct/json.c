@@ -306,11 +306,15 @@ static const char * parse_object(json_t item, const char * str) {
     item->type = JSON_OBJECT;
     if ('}' == *str) return str + 1;
     // "key" check invalid
-    if ('"' != *str) return NULL;
+    if ('"' != *str && *str != '`') return NULL;
 
     // {"key":value,...} 先处理 key 
     item->chid = chid = json_new();
-    str = parse_string(chid, str + 1);
+    if ('"' != *str)
+        str = parse_literal(chid, str + 1);
+    else
+        str = parse_string(chid, str + 1);
+
     if (!str || *str != ':') return NULL;
     chid->key = chid->str;
     chid->str = NULL;
@@ -323,10 +327,15 @@ static const char * parse_object(json_t item, const char * str) {
     while (*str == ',') {
         // 多行解析直接返回结果
         if ('}' == *++str) return str + 1;
-        if ('"' != *str) return NULL;
+        if ('"' != *str && *str != '`') return NULL;
 
         chid->next = json_new();
-        str = parse_string(chid = chid->next, str + 1);
+        chid = chid->next;
+        if ('"' != *str)
+            str = parse_literal(chid, str + 1);
+        else
+            str = parse_string(chid, str + 1);
+
         if (!str || *str != ':') return NULL;
         chid->key = chid->str;
         chid->str = NULL;

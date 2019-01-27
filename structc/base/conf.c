@@ -25,14 +25,14 @@ inline char * locals(char utf8s[]) {
 }
 
 // CONFIG_PARSE_JSON_STR - json field -> conf field
-#define CONFIG_PARSE_JSON_STR(json, conf, field)                        \
-json_t $##field = json_object(json, #field);                            \
-if (NULL == $##field || $##field->type != JSON_STRING) {                \
-    RETURN(false, "json_object err field = %s, %p", #field, $##field);  \
-}                                                                       \
-free(conf->field);                                                      \
-conf->field = json_str($##field);                                       \
-locals(conf->field)
+#define CONFIG_PARSE_JSON_STR(json, conf, field)                     \
+json_t $##field = json_object(json, #field);                         \
+if (NULL == $##field || $##field->type != JSON_STRING) {             \
+    RETURN(false, "json_object err field = "#field", %p", $##field); \
+}                                                                    \
+free(conf->##field);                                                 \
+conf->##field = json_str($##field);                                  \
+locals(conf->##field)
 
 // conf_parse - 解析内容, 并返回解析结果
 bool conf_parse(json_t json, struct conf * conf) {
