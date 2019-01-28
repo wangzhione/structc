@@ -144,6 +144,12 @@
     <ClInclude Include="system\strerr.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="base\msg.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\rsq.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -313,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="struct\heap.c">
       <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="base\rsq.c">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

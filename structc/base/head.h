@@ -68,24 +68,6 @@ inline void epause(void) {
 //
 #define LEN(a) sizeof(a)/sizeof(*(a))
 
-// hton - 本地字节序转网络字节序(大端)
-// noth - 网络字节序转本地字节序
-inline uint32_t hton(uint32_t x) {
-#ifndef ISBENIAN
-    uint8_t t;
-    union { uint32_t i; uint8_t s[sizeof(uint32_t)]; } u = { x };
-    t = u.s[0]; u.s[0] = u.s[sizeof(u)-1]; u.s[sizeof(u)-1] = t;
-    t = u.s[1]; u.s[1] = u.s[sizeof(u)-2]; u.s[sizeof(u)-2] = t;
-    return u.i;
-#else
-    return x;
-#endif
-}
-
-inline uint32_t ntoh(uint32_t x) {
-    return hton(x);
-}
-
 //
 // EXTERN_RUN - 简单的声明, 并立即使用的宏
 // ftest    : 需要执行的函数名称
