@@ -12,9 +12,9 @@ struct mq {
 typedef struct mq * mq_t;
 
 //
-// mq_delete - 消息队列销毁
+// mq_delete - 消息队列删除
 // q        : 消息队列对象
-// fdie     : 删除 push 进来的节点点
+// fdie     : node_f 行为, 删除 push 进来的节点
 // return   : void
 //
 inline void mq_delete(mq_t q, node_f fdie) {
@@ -63,7 +63,7 @@ inline void mq_push(mq_t q, void * m) {
 // q        : 消息队列对象
 // return   : 返回消息队列长度
 //
-inline int mq_len(mq_t q) {
+inline static int mq_len(mq_t q) {
     int head, tail, size;
     atom_lock(q->lock);
     if ((tail = q->q->tail) == -1) {

@@ -43,12 +43,12 @@ rtree_create(void * fcmp, void * fnew, void * fdie) {
     return tree;
 }
 
-// rtree_root - 后序删除树节点
-static void rtree_root(struct $rtree * root, node_f fdie) {
+// rtree_die - 后序删除树节点
+static void rtree_die(struct $rtree * root, node_f fdie) {
     if (root->left)
-        rtree_root(root->left, fdie);
+        rtree_die(root->left, fdie);
     if (root->right)
-        rtree_root(root->right, fdie);
+        rtree_die(root->right, fdie);
     fdie(root);
 }
 
@@ -61,7 +61,7 @@ inline void
 rtree_delete(rtree_t tree) {
     if (NULL == tree) return;
     if (tree->root && tree->fdie)
-        rtree_root(tree->root, tree->fdie);
+        rtree_die(tree->root, tree->fdie);
     tree->root = NULL;
     free(tree);
 }
@@ -299,13 +299,17 @@ rtree_insert(rtree_t tree, void * pack) {
     }
     rtree_set_parent(node, y);
 
-    if (NULL == y)
-        tree->root = node;              // 情况 1: 若 y是空节点, 则将 node设为根
-    else {
-        if (fcmp(y, node) > 0)
-            y->left = node;             // 情况 2: 若 "node所包含的值" < "y所包含的值", 则将 [node] 设为 [y的左孩子]
-        else
-            y->right = node;            // 情况 3：若 "node所包含的值" >= "y所包含的值", 将 [node] 设为 [y的右孩子] 
+    if (NULL == y) {
+        // 情况 1: 若 y是空节点, 则将 node设为根
+        tree->root = node;
+    } else {
+        if (fcmp(y, node) > 0) {
+            // 情况 2: 若 "node所包含的值" < "y所包含的值", 则将 [node] 设为 [y的左孩子]
+            y->left = node;
+        } else {
+            // 情况 3：若 "node所包含的值" >= "y所包含的值", 将 [node] 设为 [y的右孩子] 
+            y->right = node;
+        }
     }
 
     // 3. 将它重新修正为一颗二叉查找树

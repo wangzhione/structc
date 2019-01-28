@@ -5,12 +5,12 @@
 #include "strext.h"
 
 //
-// dict_t : C 字符串为 k 的字典结构
+// dict_t - C 字符串为 k 的字典结构
 //
 typedef struct dict * dict_t;
 
 //
-// dict_delete - 字典销毁
+// dict_delete - 字典删除
 // d        : dict_create 创建的字典对象
 // return   : void 
 //
@@ -18,7 +18,7 @@ extern void dict_delete(dict_t d);
 
 //
 // dict_create - 字典创建
-// fdie     : v 销毁函数
+// fdie     : node_f 销毁行为
 // return   : dict_t
 //
 extern dict_t dict_create(node_f fdie);

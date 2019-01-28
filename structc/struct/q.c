@@ -53,9 +53,9 @@ q_push(q_t q, void * m) {
 }
 
 //
-// q_delete - 队列销毁
+// q_delete - 队列删除
 // q        : 队列对象
-// fdie     : push 节点删除行为
+// fdie     : node_f push 节点删除行为
 // return   : void
 //
 void 

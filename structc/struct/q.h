@@ -5,7 +5,7 @@
 
 //
 // pop empty  <=> tail == -1 ( head == 0 )
-// push full  <=> head == tail + 1
+// push full  <=> head == (tail + 1) % size
 //
 typedef struct q {
     int head;           // 头结点
@@ -56,9 +56,9 @@ extern void * q_pop(q_t q);
 extern void q_push(q_t q, void * m);
 
 //
-// q_delete - 队列销毁
+// q_delete - 队列删除
 // q        : 队列对象
-// fdie     : push 节点删除行为
+// fdie     : node_f push 节点删除行为
 // return   : void
 //
 extern void q_delete(q_t q, node_f fdie);

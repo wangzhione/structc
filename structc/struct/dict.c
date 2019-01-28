@@ -39,14 +39,14 @@ struct keypair {
     char key[];
 };
 
-// 销毁结点数据
+// keypair_delete - 销毁结点数据
 inline void keypair_delete(node_f fdie, struct keypair * pair) {
     if (pair->val && fdie)
         fdie(pair->val);
     free(pair);
 }
 
-// 创建结点数据
+// keypair_create - 创建结点数据
 inline struct keypair * keypair_create(unsigned hash, void * v, const char * k) {
     size_t len = strlen(k) + 1;
     struct keypair * pair = malloc(sizeof(struct keypair) + len);
@@ -95,7 +95,7 @@ static void dict_resize(struct dict * d) {
 }
 
 //
-// dict_delete - 字典销毁
+// dict_delete - 字典删除
 // d        : dict_create 创建的字典对象
 // return   : void 
 //
