@@ -53,8 +53,8 @@ static void rtree_die(struct $rtree * root, node_f fdie) {
 }
 
 //
-// rtree_delete - 红黑树销毁函数
-// tree     : 待销毁的红黑树
+// rtree_delete - 红黑树删除函数
+// tree     : 待删除的红黑树
 // return   : void
 //
 inline void 

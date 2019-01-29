@@ -8,8 +8,8 @@
 // push full  <=> head == (tail + 1) % size
 //
 typedef struct q {
-    int head;           // 头结点
-    int tail;           // 尾结点
+    int head;           // 头节点
+    int tail;           // 尾节点
     int size;           // 队列大小
     void ** queue;      // 队列实体
 } q_t[1];

@@ -33,8 +33,8 @@ typedef struct {
 extern rtree_t rtree_create(void * fcmp, void * fnew, void * fdie);
 
 //
-// rtree_delete - 红黑树销毁函数
-// tree     : 待销毁的红黑树
+// rtree_delete - 红黑树删除函数
+// tree     : 待删除的红黑树
 // return   : void
 //
 extern void rtree_delete(rtree_t tree);
