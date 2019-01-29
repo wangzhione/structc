@@ -22,13 +22,13 @@ inline void cls(void) {
 #include <unistd.h>
 #include <termios.h>
 
-// cls - 屏幕清除宏, 依赖系统脚本
+// cls - 屏幕清除, 依赖系统脚本
 inline void cls(void) {
     printf("\ec");
 }
 
 // getch - 立即得到用户输入的一个字符
-inline int getch(void) {
+inline static int getch(void) {
     struct termios nts, ots;
     if (tcgetattr(0, &ots)) // 得到当前终端(0表示标准输入)的设置
         return EOF;
@@ -47,8 +47,8 @@ inline int getch(void) {
 
 #endif
 
-// epause - 程序结束等待操作
-inline void epause(void) {
+// spause - 程序结束后等待
+inline static void spause(void) {
     rewind(stdin);
     fflush(stderr); fflush(stdout);
     printf("Press any key to continue . . .");
@@ -57,38 +57,38 @@ inline void epause(void) {
 
 //
 // STR - 添加双引号的宏 
-// v    : 待添加双引号的量
+// v        : 待添加双引号的量
 //
 #define STR(v) S_R(v)
 #define S_R(v) #v
 
 //
 // LEN - 获取数组长度
-// arr : 数组名
+// a        : 数组名
 //
 #define LEN(a) sizeof(a)/sizeof(*(a))
 
 //
-// EXTERN_RUN - 简单的声明, 并立即使用的宏
+// EXTERN_RUN - 简单声明, 并立即使用的宏
 // ftest    : 需要执行的函数名称
 // ...      : 可变参数, 保留
 //
-#define EXTERN_RUN(ftest, ...)                                    \
-do {                                                              \
-    extern void ftest();                                          \
-    ftest (__VA_ARGS__);                                          \
+#define EXTERN_RUN(ftest, ...)                               \
+do {                                                         \
+    extern void ftest();                                     \
+    ftest (__VA_ARGS__);                                     \
 } while(0)
 
 //
-// TEST_RUN - 测试代码块, 并输出简单时间信息
-// code : { ... } 包裹的代码块
+// TEST_RUN - 测试代码块, 并输出运行时间
+// code     : { ... } 包裹的代码块
 //
-#define TEST_RUN(code)                                            \
-do {                                                              \
-    clock_t $s = clock();                                         \
-    code                                                          \
-    double $e = (double)clock();                                  \
-    printf("test code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);  \
+#define TEST_RUN(code)                                      \
+do {                                                        \
+    clock_t $s = clock();                                   \
+    code                                                    \
+    double $e = (double)clock();                            \
+    printf("code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC); \
 } while (0)
 
 #endif//_HEAD_H

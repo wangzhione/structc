@@ -42,7 +42,7 @@ inline uint32_t hton(uint32_t x) {
 #endif
 }
 
-// noth - 网络字节序转本地字节序
+// noth - 网络字节序(大端)转本地字节序
 inline uint32_t ntoh(uint32_t x) {
     return hton(x);
 }
@@ -62,9 +62,9 @@ typedef struct {
 // MSG_LEN  - 得到当前消息长度 24bit 3 字节 len
 // MSG_SZ   - 8bit type + 24 bit len -> uint32_t sz
 //
-#define MSG_TYPE(sz)  (uint8_t)((uint32_t)(sz) >> 24)
-#define MSG_LEN (sz)  ((uint32_t)(sz) & 0xffffff)
-#define MSG_SZ(t, n)  (((uint32_t)((uint8_t)t) << 24) | (uint32_t)(n))
+#define MSG_TYPE(sz)  (uint8_t)((uint32_t)(sz)>>24)
+#define MSG_LEN (sz)  ((uint32_t)(sz) & 0xFFFFFFu)
+#define MSG_SZ(t, n)  (((uint32_t)((uint8_t)t)<<24) | (uint32_t)(n))
 
 //
 // msg_create - msg 创建函数, send(fd, msg->data, msg->sz, 0)
@@ -97,7 +97,7 @@ inline static msg_t msg_create(const void * data, uint32_t len) {
 // msg      : msg_t 消息体
 // return   : void
 //
-inline static msg_delete(msg_t msg) {
+inline static void msg_delete(msg_t msg) {
     if (msg) free(msg);
 }
 
