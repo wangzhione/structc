@@ -113,17 +113,26 @@ int msg_buf_pop(msg_buf_t q, msg_t * p) {
 
 // msg_data_pop - data pop msg 
 static msg_t msg_buf_data_pop(msg_buf_t q, 
-                              const void * data, uint32_t sz) {
-    struct msg_buf b[1] = { {
-        .data = (char *)data, 
-        .len = (int)sz,
-    }};
+                              const char * data, uint32_t n) {
+    // step 1 : 报文长度 buffer q->sz init
+    uint32_t sz;
+    memcpy(&sz, data, sizeof sz);
+    sz = ntoh(sz);
 
-    msg_t msg; 
-    msg_buf_pop(b, &msg);
-    // 数据存在, 填入剩余数据
-    if (msg && b->len > 0) {
-        msg_buf_push(q, b->data, b->len);
+    // step 2 : check data len is true
+    uint32_t len = MSG_LEN(q->sz);
+    if (len <= 0 || len + sizeof sz > n)
+        return NULL;
+
+    // step 3 : create msg
+    msg_t msg = malloc(sizeof(*msg) + len);
+    msg->sz = sz;
+    memcpy(msg->data, data + sizeof(sz), len);
+
+    // step 4 : 数据存在, 填入剩余数据
+    len += sizeof sz;
+    if (len < n) {
+        msg_buf_push(q, data + len, n - len);
     }
 
     return msg;
