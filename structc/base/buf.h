@@ -29,8 +29,9 @@ extern void msg_buf_delete(msg_buf_t q);
 // sz       : 内存数据 size
 // return   : EParse 协议解析错误, ESmall 协议不完整
 //
-extern int msg_buf_append(msg_buf_t q, msg_t * p,
-                          const void * data, uint32_t sz);
+extern int msg_buf_append(msg_buf_t q,
+                          const void * data, uint32_t sz,
+                          msg_t * p);
 
 #endif//_BUF_H
 

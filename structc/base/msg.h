@@ -63,7 +63,7 @@ typedef struct {
 // MSG_SZ   - 8bit type + 24 bit len -> uint32_t sz
 //
 #define MSG_TYPE(sz)  (uint8_t)((uint32_t)(sz)>>24)
-#define MSG_LEN (sz)  ((uint32_t)(sz) & 0xFFFFFFu)
+#define MSG_LEN( sz)  ((uint32_t)(sz) & 0xFFFFFF)
 #define MSG_SZ(t, n)  (((uint32_t)((uint8_t)t)<<24) | (uint32_t)(n))
 
 //

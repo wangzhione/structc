@@ -1,6 +1,6 @@
 ﻿#include "buf.h"
 
-#define BUF_INT         (1024)
+#define BUF_INT         (128)
 
 //
 // msg buffer manager
@@ -53,17 +53,110 @@ msg_buf_delete(msg_buf_t q) {
 }
 
 //
-// buf_append - msg buffer 添加数据, 并尝试解析出结果
+// msg_buf_push - msg buffer push data
 // q        : msg buffer
-// p        : return msg
 // data     : 内存数据
 // sz       : 内存数据 size
+//
+inline static void msg_buf_push(msg_buf_t q, 
+                                const void * data, int len) {
+    msg_buf_expand(q, len);
+    memcpy(q->data + q->len, data, len);
+    q->len += len; 
+}
+
+// msg_buf_pop_data - q pop len data
+inline void msg_buf_pop_data(msg_buf_t q, 
+                             void * data, int len) {
+    memcpy(data, q->data, len);
+    q->len -= len;
+    memmove(data, q->data + len, q->len);
+}
+
+// msg_buf_pop_sz - q pop sz
+inline void msg_buf_pop_sz(msg_buf_t q) {
+    msg_buf_pop_data(q, &q->sz, sizeof(q->sz));
+    q->sz = ntoh(q->sz);
+}
+
+//
+// msg_buf_pop - msg buffer pop
+// q        : msg buffer 
+// p        : return msg
+// return   : EParse 协议解析错误, ESmall 协议不完整
+//
+int msg_buf_pop(msg_buf_t q, msg_t * p) {
+    *p = NULL;
+
+    // step 1 : 报文长度 buffer q->sz check
+    if (q->sz <= 0 && q->len >= sizeof(q->sz))
+        msg_buf_pop_sz(q);
+
+    // step 2 : check data parse is true
+    int len = MSG_LEN(q->sz);
+    if (len <= 0 && q->sz > 0)
+        return EParse;
+
+    // step 3 : q->sz > 0 继续看是否有需要的报文内容
+    if (len <= 0 || len > q->len)
+        return ESmall;
+
+    // step 4: 索要的报文长度存在, 开始构建返回
+    msg_t msg = malloc(sizeof(*msg) + len);
+    msg->sz = q->sz;
+    msg_buf_pop_data(q, msg->data, len);
+    *p = msg;
+
+    q->sz = 0;
+    return SBase;
+}
+
+// msg_data_pop - data pop msg 
+static msg_t msg_buf_data_pop(msg_buf_t q, 
+                              const void * data, uint32_t sz) {
+    struct msg_buf b[1] = { {
+        .data = (char *)data, 
+        .len = (int)sz,
+    }};
+
+    msg_t msg; 
+    msg_buf_pop(b, &msg);
+    // 数据存在, 填入剩余数据
+    if (msg && b->len > 0) {
+        msg_buf_push(q, b->data, b->len);
+    }
+
+    return msg;
+}
+
+//
+// buf_append - msg buffer 添加数据, 并尝试解析出结果
+// q        : msg buffer
+// data     : 内存数据
+// sz       : 内存数据 size
+// p        : return msg
 // return   : EParse 协议解析错误, ESmall 协议不完整
 //
 int 
-msg_buf_append(msg_buf_t q, msg_t * p, 
-               const void * data, uint32_t sz) {
-    
+msg_buf_append(msg_buf_t q,
+               const void * data, uint32_t sz,
+               msg_t * p) {
+    DCODE({
+        if(!q || !data || !sz || !p) {
+            EXIT(
+                "error q = %p, data = %p, sz = %u, p = %p\n", 
+                q, data, sz, p
+            );
+        }
+    });
 
-    return SBase;
+    // data, sz 刚好可以解析出 msg 情况处理
+    if (q->sz <= 0 && sz > BUF_INT) {
+        *p = msg_buf_data_pop(q, data, sz);
+        if (*p)
+            return SBase;
+    }
+
+    msg_buf_push(q, data, sz);
+    return msg_buf_pop(q,p);
 }
