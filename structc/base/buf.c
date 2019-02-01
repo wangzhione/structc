@@ -61,6 +61,7 @@ msg_buf_delete(msg_buf_t q) {
 inline static void msg_buf_push(msg_buf_t q, 
                                 const void * data, int len) {
     msg_buf_expand(q, len);
+    printf("4 q->len = %d, len = %d\n", q->len, len);
     memcpy(q->data + q->len, data, len);
     q->len += len; 
 }
@@ -70,12 +71,12 @@ inline void msg_buf_pop_data(msg_buf_t q,
                              void * data, int len) {
     memcpy(data, q->data, len);
     q->len -= len;
-    memmove(data, q->data + len, q->len);
+    memmove(q->data, q->data + len, q->len);
 }
 
 // msg_buf_pop_sz - q pop sz
 inline void msg_buf_pop_sz(msg_buf_t q) {
-    msg_buf_pop_data(q, &q->sz, sizeof(q->sz));
+    msg_buf_pop_data(q, &q->sz, sizeof(uint32_t));
     q->sz = ntoh(q->sz);
 }
 
@@ -89,9 +90,8 @@ int msg_buf_pop(msg_buf_t q, msg_t * p) {
     *p = NULL;
 
     // step 1 : 报文长度 buffer q->sz check
-    if (q->sz <= 0 && q->len >= sizeof(q->sz))
+    if (q->sz <= 0 && q->len >= sizeof(uint32_t))
         msg_buf_pop_sz(q);
-
     // step 2 : check data parse is true
     int len = MSG_LEN(q->sz);
     if (len <= 0 && q->sz > 0)
@@ -121,16 +121,16 @@ static msg_t msg_buf_data_pop(msg_buf_t q,
 
     // step 2 : check data len is true
     uint32_t len = MSG_LEN(q->sz);
-    if (len <= 0 || len + sizeof sz > n)
+    if (len <= 0 || len + sizeof(uint32_t) > n)
         return NULL;
 
     // step 3 : create msg
     msg_t msg = malloc(sizeof(*msg) + len);
     msg->sz = sz;
-    memcpy(msg->data, data + sizeof(sz), len);
+    memcpy(msg->data, data + sizeof(uint32_t), len);
 
     // step 4 : 数据存在, 填入剩余数据
-    len += sizeof sz;
+    len += sizeof(uint32_t);
     if (len < n) {
         msg_buf_push(q, data + len, n - len);
     }
@@ -165,7 +165,6 @@ msg_buf_append(msg_buf_t q,
         if (*p)
             return SBase;
     }
-
     msg_buf_push(q, data, sz);
     return msg_buf_pop(q,p);
 }

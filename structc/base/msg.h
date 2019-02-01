@@ -31,15 +31,15 @@
 
 // hton - 本地字节序转网络字节序(大端)
 inline uint32_t hton(uint32_t x) {
-#ifndef ISBIG
+#  ifdef ISBIG
+    return x;
+#  else
     uint8_t t;
     union { uint32_t i; uint8_t s[sizeof(uint32_t)]; }u = { x };
     t = u.s[0]; u.s[0] = u.s[sizeof(u)-1]; u.s[sizeof(u)-1] = t;
     t = u.s[1]; u.s[1] = u.s[sizeof(u)-2]; u.s[sizeof(u)-2] = t;
     return u.i;
-#else
-    return x;
-#endif
+#  endif
 }
 
 // noth - 网络字节序(大端)转本地字节序
@@ -63,8 +63,8 @@ typedef struct {
 // MSG_SZ   - 8bit type + 24 bit len -> uint32_t sz
 //
 #define MSG_TYPE(sz)  (uint8_t)((uint32_t)(sz)>>24)
-#define MSG_LEN( sz)  ((uint32_t)(sz) & 0xFFFFFF)
-#define MSG_SZ(t, n)  (((uint32_t)((uint8_t)t)<<24) | (uint32_t)(n))
+#define MSG_LEN( sz)  ((uint32_t)(sz)&0xFFFFFF)
+#define MSG_SZ(t, n)  (((uint32_t)(uint8_t)(t)<<24)|(uint32_t)(n))
 
 //
 // msg_create - msg 创建函数, send(fd, msg->data, msg->sz, 0)
@@ -81,10 +81,11 @@ inline static msg_t msg_create(const void * data, uint32_t len) {
     uint32_t sz = len + sizeof(uint32_t);
     msg_t msg = malloc(sizeof(*msg) + sz);
     msg->sz = sz;
-
+    
     // type + len -> 协议值 -> 网络传输约定值
-    sz = MSG_SZ(0, sz);
+    sz = MSG_SZ(0, len);
     sz = hton(sz);
+
     // 开始内存填充
     memcpy(msg->data, &sz, sizeof(uint32_t));
     memcpy(msg->data + sizeof(uint32_t), data, len);
