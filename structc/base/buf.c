@@ -58,10 +58,9 @@ msg_buf_delete(msg_buf_t q) {
 // data     : 内存数据
 // sz       : 内存数据 size
 //
-inline static void msg_buf_push(msg_buf_t q, 
-                                const void * data, int len) {
+inline void msg_buf_push(msg_buf_t q, 
+                         const void * data, int len) {
     msg_buf_expand(q, len);
-    printf("4 q->len = %d, len = %d\n", q->len, len);
     memcpy(q->data + q->len, data, len);
     q->len += len; 
 }
@@ -165,6 +164,7 @@ msg_buf_append(msg_buf_t q,
         if (*p)
             return SBase;
     }
+
     msg_buf_push(q, data, sz);
     return msg_buf_pop(q,p);
 }

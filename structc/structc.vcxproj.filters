@@ -147,7 +147,7 @@
     <ClInclude Include="base\msg.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="base\rsq.h">
+    <ClInclude Include="base\buf.h">
       <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>
@@ -320,7 +320,10 @@
     <ClCompile Include="struct\heap.c">
       <Filter>struct</Filter>
     </ClCompile>
-    <ClCompile Include="base\rsq.c">
+    <ClCompile Include="test\buf_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="base\buf.c">
       <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
