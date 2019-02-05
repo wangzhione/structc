@@ -1,8 +1,10 @@
 ﻿#ifndef _TIMER_H
 #define _TIMER_H
 
+#include "atom.h"
 #include "list.h"
 #include "times.h"
+#include "thread.h"
 
 //
 // timer_del - 删除定时器事件

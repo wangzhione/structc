@@ -60,7 +60,7 @@ loop_push(loop_t p, void * m) {
     }
 }
 
-// 轮询器执行的循环体
+// loop_run - 轮询器执行的循环体
 static void loop_run(loop_t p) {
     while (p->loop) {
         void * m = q_pop(p->rq);
@@ -86,12 +86,12 @@ static void loop_run(loop_t p) {
 
 //
 // loop_create - 创建轮询对象
-// frun     : 消息处理行为
-// fdie     : 消息销毁行为
+// frun     : node_f 消息处理行为
+// fdie     : node_f 消息销毁行为
 // return   : 轮询对象
 //
-inline loop_t 
-loop_create_(node_f frun, node_f fdie) {
+loop_t 
+loop_create(void * frun, void * fdie) {
     loop_t p = malloc(sizeof(struct loop));
     p->lock = 0;
     q_init(p->rq);
@@ -107,5 +107,5 @@ loop_create_(node_f frun, node_f fdie) {
         free(p->wq->queue);
         free(p); p = NULL;
     }
-    return p;
+    return p;    
 }

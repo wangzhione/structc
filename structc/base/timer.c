@@ -1,6 +1,4 @@
-﻿#include "atom.h"
-#include "timer.h"
-#include "thread.h"
+﻿#include "timer.h"
 
 // timer_node 定时器节点
 struct timer_node {
