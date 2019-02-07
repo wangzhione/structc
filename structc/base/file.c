@@ -8,13 +8,13 @@
 inline int removes(const char * path) {
     char s[BUFSIZ];
 
-#ifndef RMRF_STR
-#   ifdef _MSC_VER
-#       define RMRF_STR    "rmdir /s /q \"%s\""
-#   else
-#       define RMRF_STR    "rm -rf '%s'"
-#   endif
-#endif
+#  ifndef RMRF_STR
+#    ifdef _MSC_VER
+#      define RMRF_STR    "rmdir /s /q \"%s\""
+#    else
+#      define RMRF_STR    "rm -rf '%s'"
+#    endif
+#  endif
 
     // path 超过缓冲区长度, 返回异常
     if (snprintf(s, sizeof s, RMRF_STR, path) == sizeof s) 
@@ -128,13 +128,13 @@ int
 getawd(char * buf, size_t size) {
     char * tail;
 
-#ifndef getawe
-#   ifdef _MSC_VER
-#       define getawe(b, s)    (int)GetModuleFileName(NULL, b, (DWORD)s);
-#   else
-#       define getawe(b, s)    (int)readlink("/proc/self/exe", b, s);
-#   endif
-#endif
+#  ifndef getawe
+#    ifdef _MSC_VER
+#      define getawe(b, s)    (int)GetModuleFileName(NULL, b, (DWORD)s);
+#    else
+#      define getawe(b, s)    (int)readlink("/proc/self/exe", b, s);
+#    endif
+#  endif
 
     int r = getawe(buf, size);
     if (r <= 0 || r >= size)
