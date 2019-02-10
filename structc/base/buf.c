@@ -86,19 +86,21 @@ inline void msg_buf_pop_sz(msg_buf_t q) {
 // return   : EParse 协议解析错误, ESmall 协议不完整
 //
 int msg_buf_pop(msg_buf_t q, msg_t * p) {
-    *p = NULL;
-
     // step 1 : 报文长度 buffer q->sz check
     if (q->sz <= 0 && q->len >= sizeof(uint32_t))
         msg_buf_pop_sz(q);
     // step 2 : check data parse is true
     int len = MSG_LEN(q->sz);
-    if (len <= 0 && q->sz > 0)
+    if (len <= 0 && q->sz > 0) {
+        *p = NULL;
         return EParse;
+    }
 
     // step 3 : q->sz > 0 继续看是否有需要的报文内容
-    if (len <= 0 || len > q->len)
+    if (len <= 0 || len > q->len) {
+        *p = NULL;
         return ESmall;
+    }
 
     // step 4: 索要的报文长度存在, 开始构建返回
     msg_t msg = malloc(sizeof(*msg) + len);
