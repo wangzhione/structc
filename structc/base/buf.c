@@ -58,8 +58,8 @@ msg_buf_delete(msg_buf_t q) {
 // data     : 内存数据
 // sz       : 内存数据 size
 //
-inline void msg_buf_push(msg_buf_t q, 
-                         const void * data, int len) {
+inline static void msg_buf_push(msg_buf_t q, 
+                                const void * data, int len) {
     msg_buf_expand(q, len);
     memcpy(q->data + q->len, data, len);
     q->len += len; 
