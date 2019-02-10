@@ -106,9 +106,9 @@ int msg_buf_pop(msg_buf_t q, msg_t * p) {
     msg_t msg = malloc(sizeof(*msg) + len);
     msg->sz = q->sz;
     msg_buf_pop_data(q, msg->data, len);
-    *p = msg;
-
     q->sz = 0;
+
+    *p = msg;
     return SBase;
 }
 
