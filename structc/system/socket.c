@@ -138,7 +138,7 @@ static int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
                 RETURN(EParam, "host port err %s", host);
             port = atoi(host);
             // 有些常识数字, 不一定是魔法 ... :)
-            if (port <= 1024 || port > 65535)
+            if (port < 1024 || port > 65535)
                 RETURN(EParam, "host port err %s, %d", host, port);
         }
     }

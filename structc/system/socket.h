@@ -3,8 +3,8 @@
 
 #include <time.h>
 #include <fcntl.h>
-#include "strerr.h"
 #include <signal.h>
+#include "strerr.h"
 #include <sys/types.h>
 
 #ifdef _WIN32
@@ -55,16 +55,6 @@ inline int socket_set_nonblock(socket_t s) {
     return ioctlsocket(s, FIONBIO, &mode);
 }
 
-// socket_recv      - 读取数据
-inline int socket_recv(socket_t s, void * buf, int sz) {
-    return sz > 0 ? recv(s, buf, sz, 0) : 0;
-}
-
-// socket_send      - 写入数据
-inline int socket_send(socket_t s, const void * buf, int sz) {
-    return send(s, buf, sz, 0);
-}
-
 #else
 
 #include <netdb.h>
@@ -108,17 +98,17 @@ inline int socket_set_nonblock(socket_t s) {
     return fcntl(s, F_SETFL, mode | O_NONBLOCK);
 }
 
+#endif
+
 // socket_recv      - 读取数据
 inline int socket_recv(socket_t s, void * buf, int sz) {
-    return (int)read(s, buf, sz);
+    return sz > 0 ? (int)recv(s, buf, sz, 0) : 0;
 }
 
 // socket_send      - 写入数据
 inline int socket_send(socket_t s, const void * buf, int sz) {
-    return (int)write(s, buf, sz);
+    return (int)send(s, buf, sz, 0);
 }
-
-#endif
 
 //
 // 通用 sockaddr_in ipv4 地址
@@ -178,14 +168,14 @@ inline int socket_get_error(socket_t s) {
 }
 
 // socket_recvfrom  - recvfrom 接受函数
-inline int socket_recvfrom(socket_t s, void * buf, int len, int flags, sockaddr_t in) {
+inline int socket_recvfrom(socket_t s, void * buf, int sz, sockaddr_t in) {
     socklen_t inlen = sizeof (sockaddr_t);
-    return recvfrom(s, buf, len, flags, (struct sockaddr *)in, &inlen);
+    return recvfrom(s, buf, sz, 0, (struct sockaddr *)in, &inlen);
 }
 
 // socket_sendto    - sendto 发送函数
-inline int socket_sendto(socket_t s, const void * buf, int len, int flags, const sockaddr_t to) {
-    return sendto(s, buf, len, flags, (const struct sockaddr *)to, sizeof(sockaddr_t));
+inline int socket_sendto(socket_t s, const void * buf, int sz, const sockaddr_t to) {
+    return sendto(s, buf, sz, 0, (const struct sockaddr *)to, sizeof (sockaddr_t));
 }
 
 //
