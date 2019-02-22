@@ -34,4 +34,3 @@ extern int msg_buf_append(msg_buf_t q,
                           msg_t * p);
 
 #endif//_BUF_H
-
