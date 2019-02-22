@@ -13238,7 +13238,7 @@ size_t g2u8n(const char * gs, size_t n, char * u8s) {
 //
 inline void
 u82g(char d[]) {
-    // len utf8 >= len gbk convt
+    // len utf8 >= len gbk convert
     size_t n = strlen(d);
     char * gs = malloc(n + 1);
     size_t m = u82gn(d, n, gs);

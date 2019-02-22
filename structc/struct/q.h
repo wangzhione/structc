@@ -8,10 +8,10 @@
 // push full  <=> head == (tail + 1) % size
 //
 typedef struct q {
+    void ** queue;      // 队列实体
+    int size;           // 队列大小
     int head;           // 头节点
     int tail;           // 尾节点
-    int size;           // 队列大小
-    void ** queue;      // 队列实体
 } q_t[1];
 
 //
@@ -21,10 +21,10 @@ typedef struct q {
 // Q_INT  - 队列初始大小, 必须是 2 的幂
 #define Q_INT     (1<< 6)
 inline void q_init(q_t q) {
+    q->queue = malloc(sizeof(void *) * Q_INT);
+    q->size = Q_INT;
     q->head = 0;
     q->tail = -1;
-    q->size = Q_INT;
-    q->queue = malloc(sizeof(void *) * Q_INT);
 }
 
 //

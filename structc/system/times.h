@@ -7,7 +7,7 @@
 
 //
 // ~ 力求最小时间业务单元 ~ 
-// 1s(秒) = 1000ms(毫秒) = 1000000us(微秒) = 1000000000ns(纳秒)
+// 1s 秒 = 1000ms 毫秒 = 1000000us 微秒 = 1000000000ns 纳秒
 //
 
 #ifdef _WIN32
@@ -31,7 +31,7 @@ inline void msleep(int ms) {
 extern int usleep(unsigned usec);
 
 //
-// gettimeofday - Linux sys/time.h 得到微秒时间实现
+// gettimeofday - 实现 Linux sys/time.h 得到微秒时间
 // tv       : 返回秒数和微秒数
 // tz       : 返回时区, winds 上这个变量没有作用
 // return   : success is 0

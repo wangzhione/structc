@@ -5,13 +5,13 @@
 // ftest    : 测试函数
 // ...      : 可变参数
 //
-#define TEST(ftest, ...)                                            \
-do {                                                                \
-    extern void ftest();                                            \
-    clock_t $s = clock();                                           \
-    ftest (##__VA_ARGS__);                                          \
-    double $e = (double)clock();                                    \
-    printf(STR(ftest)" run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);   \
+#define TEST(ftest, ...)                                           \
+do {                                                               \
+    extern void ftest();                                           \
+    clock_t $s = clock();                                          \
+    ftest (##__VA_ARGS__);                                         \
+    double $e = (double)clock();                                   \
+    printf(STR(ftest)" run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC);  \
 } while(0)
 
 
@@ -21,11 +21,12 @@ do {                                                                \
 //
 void main_test(void) {
     puts("*--------------------------------** main test *--------------------------------*");
-    // 
+
+    //
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(buf_test);
+    EXTERN_RUN(json_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

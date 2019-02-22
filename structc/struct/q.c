@@ -29,10 +29,10 @@ static void q_expand(q_t q) {
     free(q->queue);
 
     // 重新构造内存关系
-    q->head = 0;
     q->tail = q->size;
     q->size = size;
     q->queue = p;
+    q->head = 0;
 }
 
 //

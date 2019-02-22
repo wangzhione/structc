@@ -2,8 +2,8 @@
 
 #include <string.h>
 
-extern inline const char * strerr(int err) {
-    return strerror(err);
+extern inline const char * strerr(int no) {
+    return strerror(no);
 }
 
 #else
@@ -12,8 +12,8 @@ extern inline const char * strerr(int err) {
 
 #define DWORD int
 
-extern const char * strerr(int err) {
-    switch (err) {
+extern const char * strerr(int no) {
+    switch (no) {
     case ERROR_SUCCESS                                                            : return "The operation completed successfully";
     case ERROR_INVALID_FUNCTION                                                   : return "Incorrect function";
     case ERROR_FILE_NOT_FOUND                                                     : return "The system cannot find the file specified";

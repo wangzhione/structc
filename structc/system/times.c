@@ -27,7 +27,7 @@ usleep(unsigned usec) {
 }
 
 //
-// gettimeofday - Linux sys/time.h 得到微秒时间实现
+// gettimeofday - 实现 Linux sys/time.h 得到微秒时间
 // tv       : 返回秒数和微秒数
 // tz       : 返回时区, winds 上这个变量没有作用
 // return   : success is 0
@@ -36,8 +36,8 @@ int
 gettimeofday(struct timeval * tv, void * tz) {
     struct tm m;
     SYSTEMTIME se;
-
     GetLocalTime(&se);
+
     m.tm_year = se.wYear - 1900;
     m.tm_mon = se.wMonth - 1;
     m.tm_mday = se.wDay;
@@ -48,7 +48,6 @@ gettimeofday(struct timeval * tv, void * tz) {
 
     tv->tv_sec = (long)mktime(&m);
     tv->tv_usec = se.wMilliseconds * 1000;
-
     return 0;
 }
 

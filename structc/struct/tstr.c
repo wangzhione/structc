@@ -1,8 +1,5 @@
 ﻿#include "tstr.h"
 
-// TSTR_INT - 字符串构建的初始大小
-#define TSTR_INT  (1<<8)
-
 //
 // tstr_expand - 字符串扩容, low level api
 // tsr      : 可变字符串
@@ -14,7 +11,6 @@ tstr_expand(tstr_t tsr, size_t len) {
     size_t cap = tsr->cap;
     if ((len += tsr->len) > cap) {
         // 走 1.5 倍内存分配, '合理'降低内存占用
-        cap = cap < TSTR_INT ? TSTR_INT : cap;
         while (cap < len) cap = cap * 3 / 2;
         tsr->str = realloc(tsr->str, cap);
         tsr->cap = cap;
@@ -41,14 +37,20 @@ tstr_delete(tstr_t tsr) {
 //
 inline tstr_t 
 tstr_create(const char * str, size_t len) {
-    tstr_t tsr = calloc(1, sizeof(struct tstr));
+    tstr_t tsr = malloc(sizeof(struct tstr));
+    tsr->str = malloc(TSTR_INT);
+    tsr->cap = TSTR_INT;
+    tsr->len = 0;
     if (str && len) tstr_appendn(tsr, str, len);
     return tsr;
 }
 
 inline tstr_t 
 tstr_creates(const char * str) {
-    tstr_t tsr = calloc(1, sizeof(struct tstr));
+    tstr_t tsr = malloc(sizeof(struct tstr));
+    tsr->str = malloc(TSTR_INT);
+    tsr->cap = TSTR_INT;
+    tsr->len = 0;
     if (str) tstr_appends(tsr, str);
     return tsr;
 }

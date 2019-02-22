@@ -13,26 +13,19 @@
 // return   : void
 //
 void main_init(void) {
-    int n;
-    char r[BUFSIZ];
-
-    // 随机数模块初始化 :)
-    //
+    // :) 随机数模块初始化
     EXTERN_RUN(r_init);
 
     // socket 模块初始化 ~
-    //
     socket_init();
 
     // 配置模块初始化
-    //
-    n = getawd(r, sizeof r);
+    char r[BUFSIZ];
+    int n = getawd(r, sizeof r);
     assert(0 < n && n < sizeof r);
-    strcat(r, CONF_PATH_STR);
-    IF(!conf_init(r));
+    IF(!conf_init(strcat(r, CONF_PATH_STR)));
 
-    //  日志模块初始化
-    //
+    // 日志模块初始化
     memcpy(r+n, LOG_PATH_STR, LEN(LOG_PATH_STR));
     mkfdir(r);
     EXTERN_RUN(log_init, r);

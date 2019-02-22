@@ -6,10 +6,13 @@
 #ifndef TSTR_CREATE
 
 struct tstr {
-    size_t len;   // 长度
-    size_t cap;   // 容量
     char * str;   // 字符池
+    size_t cap;   // 容量
+    size_t len;   // 长度
 };
+
+// TSTR_INT 字符串构建的初始大小
+#define TSTR_INT  (1<<8)
 
 typedef struct tstr * tstr_t;
 
@@ -18,10 +21,13 @@ typedef struct tstr * tstr_t;
 // TSTR_DELETE - 释放栈上 tstr_t 结构
 // var  : 变量名
 //
-#define TSTR_CREATE(var)                                    \
-struct tstr var[1] = { { 0, 0, NULL } }
+#define TSTR_CREATE(var)                \
+struct tstr var[1] = { {                \
+    .str = malloc(TSTR_INT),            \
+    .cap = TSTR_INT,                    \
+} }
 
-#define TSTR_DELETE(var)                                    \
+#define TSTR_DELETE(var)                \
 free((var)->str)
 
 #endif//TSTR_CREATE

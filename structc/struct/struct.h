@@ -47,7 +47,7 @@ typedef int (* each_f)(void * node, void * arg);
 //
 // DCODE - DEBUG 模式下的测试宏
 // DCODE({
-//     puts("debug start...");
+//     puts("debug test start ...");
 // });
 //
 #ifndef DCODE
@@ -63,37 +63,37 @@ typedef int (* each_f)(void * node, void * arg);
 // EXIT - 打印错误信息, 并 exit
 // IF   - 条件判断异常退出的辅助宏
 //
-#define CERR(fmt, ...)                                                   \
-fprintf(stderr, "[%s:%s:%d][%d:%s]" fmt "\n",                            \
-    __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
+#define CERR(fmt, ...)                                                 \
+fprintf(stderr, "[%s:%s:%d][%d:%s]"fmt"\n",                            \
+    __FILE__, __func__, __LINE__, errno, strerror(errno), __VA_ARGS__)
 
-#define EXIT(fmt, ...)                                                   \
-do {                                                                     \
-    CERR(fmt, ##__VA_ARGS__);                                            \
-    exit(EXIT_FAILURE);                                                  \
+#define EXIT(fmt, ...)                                                 \
+do {                                                                   \
+    CERR(fmt, __VA_ARGS__);                                            \
+    exit(EXIT_FAILURE);                                                \
 } while(0)
 
-#define IF(cond)                                                         \
+#define IF(cond)                                                       \
 if ((cond)) EXIT(#cond)
 
 //
 // RETURN - 打印错误信息, 并 return 返回指定结果
-// val      : return 的东西, 当需要 return void; 时候填 , 就过 or NIL
+// val      : return 的东西, 当需要 return void; 时候填 , or NIL
 // fmt      : 双引号包裹的格式化字符串
-// ...      : fmt中对应的参数
+// ...      : fmt 中对应的参数
 // return   : val
 // 
-#define RETURN(val, fmt, ...)                                           \
-do {                                                                    \
-    CERR(fmt, ##__VA_ARGS__);                                           \
-    return val;                                                         \
+#define RETURN(val, fmt, ...)                                         \
+do {                                                                  \
+    CERR(fmt, __VA_ARGS__);                                           \
+    return val;                                                       \
 } while(0)
 
 #define NIL
-#define RETNIL(fmt, ...)                                                \
-RETURN(NIL , fmt, ##__VA_ARGS__)
+#define RETNIL(fmt, ...)                                              \
+RETURN(NIL, fmt, __VA_ARGS__)
 
-#define RETNUL(fmt, ...)                                                \
-RETURN(NULL, fmt, ##__VA_ARGS__)
+#define RETNUL(fmt, ...)                                              \
+RETURN(NULL, fmt, __VA_ARGS__)
 
 #endif//_STRUCT_H

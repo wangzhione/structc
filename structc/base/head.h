@@ -29,20 +29,21 @@ inline void cls(void) {
 
 // getch - 立即得到用户输入的一个字符
 inline static int getch(void) {
-    struct termios nts, ots;
-    if (tcgetattr(0, &ots)) // 得到当前终端(0表示标准输入)的设置
+    struct termios now, old;
+    if (tcgetattr(0, &old)) // 得到当前终端(0表示标准输入)的设置
         return EOF;
+    now = old;
 
-    nts = ots;
     // 设置终端为 Raw 原始模式，该模式下输入数据全以字节单位被处理
-    cfmakeraw(&nts);
-    if (tcsetattr(0, TCSANOW, &nts)) // 设置上更改之后的设置
+    cfmakeraw(&now);
+    if (tcsetattr(0, TCSANOW, &now)) // 设置上更改之后的设置
         return EOF;
 
-    int cr = getchar();
-    if (tcsetattr(0, TCSANOW, &ots)) // 设置还原成老的模式
+    int c = getchar();
+
+    if (tcsetattr(0, TCSANOW, &old)) // 设置还原成老的模式
         return EOF;
-    return cr;
+    return c;
 }
 
 #endif
@@ -70,13 +71,13 @@ inline static void spause(void) {
 
 //
 // EXTERN_RUN - 简单声明, 并立即使用的宏
-// ftest    : 需要执行的函数名称
+// frun     : 需要执行的函数名称
 // ...      : 可变参数, 保留
 //
-#define EXTERN_RUN(ftest, ...)                               \
+#define EXTERN_RUN(frun, ...)                                \
 do {                                                         \
-    extern void ftest();                                     \
-    ftest (__VA_ARGS__);                                     \
+    extern void frun();                                      \
+    frun (__VA_ARGS__);                                      \
 } while(0)
 
 //

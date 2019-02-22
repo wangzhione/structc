@@ -3,6 +3,13 @@
 
 #include "struct.h"
 
+//
+// strerr - strerror 跨平台实现版本
+// no      : linux errno, winds WSAGetLastError() ...
+// return  : system os 拔下来的提示字符串
+//
+extern const char * strerr(int no);
+
 #ifdef _WIN32
 
 #include <windows.h>
@@ -13,12 +20,5 @@
 #define strerror                ((char * (*)(int))strerr)
 
 #endif
-
-//
-// strerr - strerror 跨平台实现版本
-// err      : linux errno, winds 有 WSAGetLastError() ...
-// return   : system os 拔下来的提示字符串
-//
-extern const char * strerr(int err);
 
 #endif//_STRERR_H

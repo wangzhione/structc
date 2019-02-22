@@ -5,7 +5,7 @@
 #include "strext.h"
 
 //
-// dict_t - C 字符串为 k 的字典结构
+// dict_t - C 字符串为 key 的字典结构
 //
 typedef struct dict * dict_t;
 

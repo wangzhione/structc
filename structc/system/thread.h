@@ -16,13 +16,13 @@ inline void pthread_end(pthread_t id) {
 
 //
 // pthread_run - 启动线程
-// id       : 线程 id
+// p        : 指向线程 id 的指针
 // frun     : node_f or start_f 运行主体
 // arg      : 运行参数
 // return   : 0 is success, -1 is error
 //
-inline int pthread_run(pthread_t * pi, void * frun, void * arg) {
-    return pthread_create(pi, NULL, frun, arg);
+inline int pthread_run(pthread_t * p, void * frun, void * arg) {
+    return pthread_create(p, NULL, frun, arg);
 }
 
 //
