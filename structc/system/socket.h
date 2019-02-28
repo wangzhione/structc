@@ -170,12 +170,12 @@ inline int socket_get_error(socket_t s) {
 // socket_recvfrom  - recvfrom 接受函数
 inline int socket_recvfrom(socket_t s, void * buf, int sz, sockaddr_t in) {
     socklen_t inlen = sizeof (sockaddr_t);
-    return recvfrom(s, buf, sz, 0, (struct sockaddr *)in, &inlen);
+    return (int)recvfrom(s, buf, sz, 0, (struct sockaddr *)in, &inlen);
 }
 
 // socket_sendto    - sendto 发送函数
 inline int socket_sendto(socket_t s, const void * buf, int sz, const sockaddr_t to) {
-    return sendto(s, buf, sz, 0, (const struct sockaddr *)to, sizeof (sockaddr_t));
+    return (int)sendto(s, buf, sz, 0, (const struct sockaddr *)to, sizeof (sockaddr_t));
 }
 
 //
