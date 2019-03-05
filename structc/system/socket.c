@@ -39,23 +39,30 @@ socket_sendn(socket_t s, const void * buf, int sz) {
     return sz - n;
 }
 
-//
 // socket_addr - 通过 ip, port 构造 ipv4 结构
-//
-int 
-socket_addr(const char * ip, uint16_t port, sockaddr_t addr) {
+int socket_addr(const char * ip, uint16_t port, sockaddr_t addr) {
     addr->sin_family = AF_INET;
     addr->sin_port = htons(port);
     addr->sin_addr.s_addr = inet_addr(ip);
+    memset(addr->sin_zero, 0, sizeof addr->sin_zero);
+
     if (addr->sin_addr.s_addr == INADDR_NONE) {
         struct hostent * host = gethostbyname(ip);
-        if (!host || !host->h_addr)
-            return EParam;
+        struct addrinfo * ai = NULL, req = {
+            .ai_family = AF_UNSPEC,
+            .ai_socktype = SOCK_STREAM ,
+            .ai_protocol = IPPROTO_IPV4 ,
+        };
 
-        // 尝试一种, 默认 ipv4
-        memcpy(&addr->sin_addr, host->h_addr, host->h_length);
+        char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
+        if (getaddrinfo(ip, ports, &req, &ai))
+           return EParam;
+
+        // 尝试默认第一个 ipv4
+        void * src = &(((struct sockaddr_in *)ai->ai_addr)->sin_addr);
+        memcpy(&addr->sin_addr, src, ai->ai_addrlen);
+        freeaddrinfo(ai);
     }
-    memset(addr->sin_zero, 0, sizeof addr->sin_zero);
 
     return SBase;
 }
@@ -66,43 +73,39 @@ socket_addr(const char * ip, uint16_t port, sockaddr_t addr) {
 //
 socket_t 
 socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family) {
-    socket_t fd;
-    char ports[sizeof "65535"];
-    struct addrinfo * addr = NULL, hint = { 0 };
-    if (NULL == ip || *ip == '\0')
-        ip = "0.0.0.0"; // default INADDR_ANY
+    // default INADDR_ANY
+    if (!ip || !*ip) ip = "0.0.0.0"; 
 
-    sprintf(ports, "%hu", port);
-    hint.ai_family = AF_UNSPEC;
+    struct addrinfo * ai = NULL, req = { .ai_family = AF_UNSPEC };
     if (protocol == IPPROTO_TCP)
-        hint.ai_socktype = SOCK_STREAM;
+        req.ai_socktype = SOCK_STREAM;
     else {
         assert(protocol == IPPROTO_UDP);
-        hint.ai_socktype = SOCK_DGRAM;
+        req.ai_socktype = SOCK_DGRAM;
     }
-    hint.ai_protocol = protocol;
+    req.ai_protocol = protocol;
 
-    if (getaddrinfo(ip, ports, &hint, &addr))
+    char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
+    if (getaddrinfo(ip, ports, &req, &ai))
         return INVALID_SOCKET;
 
-    fd = socket(addr->ai_family, addr->ai_socktype, 0);
+    socket_t fd = socket(ai->ai_family, ai->ai_socktype, 0);
     if (fd == INVALID_SOCKET)
         goto err_free;
     if (socket_set_reuse(fd))
         goto err_close;
-    if (bind(fd, addr->ai_addr, (int)addr->ai_addrlen))
+    if (bind(fd, ai->ai_addr, (int)ai->ai_addrlen))
         goto err_close;
 
     // Success return ip family
-    if (family)
-        *family = addr->ai_family;
-    freeaddrinfo(addr);
+    if (family) *family = ai->ai_family;
+    freeaddrinfo(ai);
     return fd;
 
 err_close:
     socket_close(fd);
 err_free:
-    freeaddrinfo(addr);
+    freeaddrinfo(ai);
     return INVALID_SOCKET;
 }
 
@@ -117,7 +120,7 @@ socket_listens(const char * ip, uint16_t port, int backlog) {
 }
 
 // host_parse - 解析 host 内容
-static int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
+static int host_parse(const char * host, char ip[INET6_ADDRSTRLEN], uint16_t * pprt) {
     int port = 0;
     char * st = ip;
     if (!host || !*host || *host == ':')
@@ -126,7 +129,7 @@ static int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
         char c;
         // 简单检查字符串是否合法
         size_t n = strlen(host);
-        if (n >= BUFSIZ)
+        if (n >= INET6_ADDRSTRLEN)
             RETURN(EParam, "host err %s", host);
 
         // 寻找分号
@@ -155,7 +158,7 @@ static int host_parse(const char * host, char ip[BUFSIZ], uint16_t * pprt) {
 //
 int 
 socket_host(const char * host, sockaddr_t addr) {
-    uint16_t port; char ip[BUFSIZ];
+    uint16_t port; char ip[INET6_ADDRSTRLEN];
     if (host_parse(host, ip, &port) < SBase)
         return EParam;
 
@@ -174,7 +177,7 @@ socket_host(const char * host, sockaddr_t addr) {
 //
 socket_t 
 socket_tcp(const char * host) {
-    uint16_t port; char ip[BUFSIZ];
+    uint16_t port; char ip[INET6_ADDRSTRLEN];
     if (host_parse(host, ip, &port) < SBase)
         return EParam;
     return socket_listens(ip, port, SOMAXCONN);
@@ -187,7 +190,7 @@ socket_tcp(const char * host) {
 //
 socket_t 
 socket_udp(const char * host) {
-    uint16_t port; char ip[BUFSIZ];
+    uint16_t port; char ip[INET6_ADDRSTRLEN];
     if (host_parse(host, ip, &port) < SBase)
         return EParam;
     return socket_binds(ip, port, IPPROTO_UDP, NULL);

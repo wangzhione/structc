@@ -186,8 +186,8 @@ extern int socket_recvn(socket_t s, void * buf, int sz);
 extern int socket_sendn(socket_t s, const void * buf, int sz);
 
 // socket_bind          - bind    绑定函数
-inline int socket_bind(socket_t s, const sockaddr_t addr) {
-    return bind(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
+inline int socket_bind(socket_t s, const void * addr) {
+    return bind(s, addr, sizeof(sockaddr_t));
 }
 
 // socket_listen        - listen  监听函数
@@ -224,11 +224,6 @@ inline int socket_getpeername(socket_t s, sockaddr_t name) {
 //
 extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
 extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
-
-//
-// socket_addr -socket_recv 通过 ip, port 构造 ipv4 结构
-//
-extern int socket_addr(const char * ip, uint16_t port, sockaddr_t addr);
 
 // socket_pton - 返回 ip 串
 inline char * socket_pton(sockaddr_t addr, char ip[INET_ADDRSTRLEN]) {
