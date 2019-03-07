@@ -65,11 +65,11 @@ typedef int (* each_f)(void * node, void * arg);
 //
 #define CERR(fmt, ...)                                                 \
 fprintf(stderr, "[%s:%s:%d][%d:%s]"fmt"\n",                            \
-    __FILE__, __func__, __LINE__, errno, strerror(errno), __VA_ARGS__)
+    __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
 
 #define EXIT(fmt, ...)                                                 \
 do {                                                                   \
-    CERR(fmt, __VA_ARGS__);                                            \
+    CERR(fmt, ##__VA_ARGS__);                                            \
     exit(EXIT_FAILURE);                                                \
 } while(0)
 
@@ -85,15 +85,15 @@ if ((cond)) EXIT(#cond)
 // 
 #define RETURN(val, fmt, ...)                                         \
 do {                                                                  \
-    CERR(fmt, __VA_ARGS__);                                           \
+    CERR(fmt, ##__VA_ARGS__);                                           \
     return val;                                                       \
 } while(0)
 
 #define NIL
 #define RETNIL(fmt, ...)                                              \
-RETURN(NIL, fmt, __VA_ARGS__)
+RETURN(NIL, fmt, ##__VA_ARGS__)
 
 #define RETNUL(fmt, ...)                                              \
-RETURN(NULL, fmt, __VA_ARGS__)
+RETURN(NULL, fmt, ##__VA_ARGS__)
 
 #endif//_STRUCT_H

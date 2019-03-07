@@ -13,7 +13,7 @@ typedef enum memory_order {
     memory_order_seq_cst,
 } memory_order;
 
-#define ATOMIC_VAR_INIT(...) {__VA_ARGS__}
+#define ATOMIC_VAR_INIT(...) {##__VA_ARGS__}
 
 static inline void atomic_thread_fence(memory_order o) {
     _ReadWriteBarrier();

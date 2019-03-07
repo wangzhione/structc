@@ -47,11 +47,9 @@ int socket_addr(const char * ip, uint16_t port, sockaddr_t addr) {
     memset(addr->sin_zero, 0, sizeof addr->sin_zero);
 
     if (addr->sin_addr.s_addr == INADDR_NONE) {
-        struct hostent * host = gethostbyname(ip);
         struct addrinfo * ai = NULL, req = {
-            .ai_family = AF_UNSPEC,
-            .ai_socktype = SOCK_STREAM ,
-            .ai_protocol = IPPROTO_IPV4 ,
+            .ai_family   = AF_INET,
+            .ai_socktype = SOCK_STREAM,
         };
 
         char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
@@ -76,14 +74,16 @@ socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family) {
     // default INADDR_ANY
     if (!ip || !*ip) ip = "0.0.0.0"; 
 
-    struct addrinfo * ai = NULL, req = { .ai_family = AF_UNSPEC };
+    struct addrinfo * ai = NULL, req = {
+        .ai_family   = AF_UNSPEC,
+        .ai_protocol = protocol,
+    };
     if (protocol == IPPROTO_TCP)
         req.ai_socktype = SOCK_STREAM;
     else {
         assert(protocol == IPPROTO_UDP);
         req.ai_socktype = SOCK_DGRAM;
     }
-    req.ai_protocol = protocol;
 
     char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
     if (getaddrinfo(ip, ports, &req, &ai))
