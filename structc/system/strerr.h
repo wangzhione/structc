@@ -1,7 +1,7 @@
 ﻿#ifndef _STRERR_H
 #define _STRERR_H
 
-#include "struct.h"
+#include <errno.h>
 
 //
 // strerr - strerror 跨平台实现版本

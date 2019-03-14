@@ -1,10 +1,12 @@
 ﻿#ifndef _SOCKET_H
 #define _SOCKET_H
 
+#include "strerr.h"
+#include "struct.h"
+
 #include <time.h>
 #include <fcntl.h>
 #include <signal.h>
-#include "strerr.h"
 #include <sys/types.h>
 
 #ifdef _WIN32
@@ -63,6 +65,7 @@ inline int socket_set_nonblock(socket_t s) {
 #include <sys/uio.h>
 #include <sys/time.h>
 #include <arpa/inet.h>
+#include <netinet/in.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
 #include <sys/resource.h>
@@ -111,8 +114,21 @@ inline int socket_send(socket_t s, const void * buf, int sz) {
 }
 
 //
-// 通用 sockaddr_in ipv4 地址
+// sockaddr_t 通用 sockaddr 地址
 //
+// typedef struct {
+//     union {
+//         struct sockaddr v;
+//         struct sockaddr_in v4;
+//         struct sockaddr_in6 v6;
+//     } ip;                 // 通用 sockaddr
+
+//     void * addr;          // &sin6_addr or &sin_addr
+//     socklen_t len;        // sizeof sockaddr_in or sockaddr_in6
+//     uint16_t port;        // 端口 [1024, 65535]    
+//     uint16_t family;      // AF_INET or AF_INET6 or AF_UNSPEC
+// } sockaddr_t[1];
+
 typedef struct sockaddr_in sockaddr_t[1];
 
 // socket_dgram     - 创建 UDP socket
@@ -168,14 +184,13 @@ inline int socket_get_error(socket_t s) {
 }
 
 // socket_recvfrom  - recvfrom 接受函数
-inline int socket_recvfrom(socket_t s, void * buf, int sz, sockaddr_t in) {
-    socklen_t inlen = sizeof (sockaddr_t);
-    return (int)recvfrom(s, buf, sz, 0, (struct sockaddr *)in, &inlen);
+inline int socket_recvfrom(socket_t s, void * buf, int sz, void * in, socklen_t * inlen) {
+    return (int)recvfrom(s, buf, sz, 0, in, inlen);
 }
 
 // socket_sendto    - sendto 发送函数
-inline int socket_sendto(socket_t s, const void * buf, int sz, const sockaddr_t to) {
-    return (int)sendto(s, buf, sz, 0, (const struct sockaddr *)to, sizeof (sockaddr_t));
+inline int socket_sendto(socket_t s, const void * buf, int sz, const void * to, socklen_t tolen) {
+    return (int)sendto(s, buf, sz, 0, to, tolen);
 }
 
 //
