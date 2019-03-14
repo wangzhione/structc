@@ -130,29 +130,9 @@ sudo ldconfig
 
 cd
 rm -rf jemalloc-5.1.0 jemalloc-5.1.0.tar.bz2
-
-# libuv 安装
-cd
-wget https://github.com/libuv/libuv/archive/v1.26.0.zip
-unzip v1.26.0.zip
-cd libuv-1.26.0
-
-sh autogen.sh
-./configure
-make -j4
-sudo make install
-sudo ldconfig
-
-cd
-#
-# 注意 uv 头文件, 全部导入到系统 include 目录下面
-#
-rm -rf libuv-1.26.0 v1.26.0.zip
 ```
 
     b) 编译设置
 
-        -lm
-        -lpthread
+        -lm -lpthread
 
-        -luv

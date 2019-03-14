@@ -81,10 +81,10 @@ do {                                                         \
 } while(0)
 
 //
-// TEST_RUN - 测试代码块, 并输出运行时间
+// CODE_RUN - 代码块测试, 并输出运行时间
 // code     : { ... } 包裹的代码块
 //
-#define TEST_RUN(code)                                      \
+#define CODE_RUN(code)                                      \
 do {                                                        \
     clock_t $s = clock();                                   \
     code                                                    \
