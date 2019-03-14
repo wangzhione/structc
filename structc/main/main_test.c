@@ -26,7 +26,7 @@ void main_test(void) {
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(json_test);
+    EXTERN_RUN(uv_tty_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

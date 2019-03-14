@@ -107,29 +107,33 @@ inline static int pthread_async(void * frun, void * arg) {
 ```
 
     2. F5 -> launch.json
-       按照规律改 program 项目生成 和 preLaunchTask 前置任务
+       按照规律改 program 项目生成 和添加 preLaunchTask 前置任务行
 
 ```json
-            "name": "(gdb) Launch",
-            "type": "cppdbg",
-            "request": "launch",
             "program": "${workspaceFolder}/Out/main.exe",
 
             "preLaunchTask": "Debug",
 ```
 
-    3. F5 -> tasks.json
-       建立下面任务, 目前只使用了 Debug
+    3. F1 -> [>Tasks: Configure Build] -> [Enter] -> [Others] -> tasks.json
+       建立下面任务
 
 ```json
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
             "type"    : "shell",
             "label"   : "Debug",
             "command" : "make D=-D_DEBUG"
-        }
+        },
+        {
+            "type"    : "shell",
+            "label"   : "Release",
+            "command" : "make"
+        },
     ]
 }
 ```
