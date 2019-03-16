@@ -2,7 +2,6 @@
 #define _SOCKET_H
 
 #include "strerr.h"
-#include "struct.h"
 
 #include <time.h>
 #include <fcntl.h>
@@ -47,14 +46,14 @@ inline int socket_close(socket_t s) {
 
 // socket_set_block     - 设置套接字是阻塞
 inline int socket_set_block(socket_t s) {
-    u_long mode = 0;
-    return ioctlsocket(s, FIONBIO, &mode);
+    u_long ov = 0;
+    return ioctlsocket(s, FIONBIO, &ov);
 }
 
 // socket_set_nonblock  - 设置套接字是非阻塞
 inline int socket_set_nonblock(socket_t s) {
-    u_long mode = 1;
-    return ioctlsocket(s, FIONBIO, &mode);
+    u_long ov = 1;
+    return ioctlsocket(s, FIONBIO, &ov);
 }
 
 #else
@@ -113,22 +112,7 @@ inline int socket_send(socket_t s, const void * buf, int sz) {
     return (int)send(s, buf, sz, 0);
 }
 
-//
-// sockaddr_t 通用 sockaddr 地址
-//
-// typedef struct {
-//     union {
-//         struct sockaddr v;
-//         struct sockaddr_in v4;
-//         struct sockaddr_in6 v6;
-//     } ip;                 // 通用 sockaddr
-
-//     void * addr;          // &sin6_addr or &sin_addr
-//     socklen_t len;        // sizeof sockaddr_in or sockaddr_in6
-//     uint16_t port;        // 端口 [1024, 65535]    
-//     uint16_t family;      // AF_INET or AF_INET6 or AF_UNSPEC
-// } sockaddr_t[1];
-
+// sockaddr_t 为 ipv4 封装的库
 typedef struct sockaddr_in sockaddr_t[1];
 
 // socket_dgram     - 创建 UDP socket
@@ -175,7 +159,7 @@ inline int socket_set_sndtimeo(socket_t s, int ms) {
     return socket_set_time(s, ms, SO_SNDTIMEO);
 }
 
-// socket_get_error - 得到当前socket error 值, 0 表示正确, 其它都是错误
+// socket_get_error - 获取 socket error 值, 0 正确, 其它都是 error
 inline int socket_get_error(socket_t s) {
     int err;
     socklen_t len = sizeof(err);
@@ -184,13 +168,14 @@ inline int socket_get_error(socket_t s) {
 }
 
 // socket_recvfrom  - recvfrom 接受函数
-inline int socket_recvfrom(socket_t s, void * buf, int sz, void * in, socklen_t * inlen) {
-    return (int)recvfrom(s, buf, sz, 0, in, inlen);
+inline int socket_recvfrom(socket_t s, void * buf, int sz, sockaddr_t in) {
+    socklen_t inlen = sizeof(sockaddr_t);
+    return (int)recvfrom(s, buf, sz, 0, (struct sockaddr *)in, &inlen);
 }
 
 // socket_sendto    - sendto 发送函数
-inline int socket_sendto(socket_t s, const void * buf, int sz, const void * to, socklen_t tolen) {
-    return (int)sendto(s, buf, sz, 0, to, tolen);
+inline int socket_sendto(socket_t s, const void * buf, int sz, const sockaddr_t to) {
+    return (int)sendto(s, buf, sz, 0, (struct sockaddr *)to, sizeof(sockaddr_t));
 }
 
 //
@@ -201,8 +186,8 @@ extern int socket_recvn(socket_t s, void * buf, int sz);
 extern int socket_sendn(socket_t s, const void * buf, int sz);
 
 // socket_bind          - bind    绑定函数
-inline int socket_bind(socket_t s, const void * addr) {
-    return bind(s, addr, sizeof(sockaddr_t));
+inline int socket_bind(socket_t s, const sockaddr_t a) {
+    return bind(s, (struct sockaddr *)a, sizeof(sockaddr_t));
 }
 
 // socket_listen        - listen  监听函数
@@ -211,14 +196,14 @@ inline int socket_listen(socket_t s) {
 }
 
 // socket_accept        - accept  等接函数
-inline socket_t socket_accept(socket_t s, sockaddr_t addr) {
+inline socket_t socket_accept(socket_t s, sockaddr_t a) {
     socklen_t len = sizeof (sockaddr_t);
-    return accept(s, (struct sockaddr *)addr, &len);
+    return accept(s, (struct sockaddr *)a, &len);
 }
 
 // socket_connect       - connect 链接函数
-inline int socket_connect(socket_t s, const sockaddr_t addr) {
-    return connect(s, (const struct sockaddr *)addr, sizeof(sockaddr_t));
+inline int socket_connect(socket_t s, const sockaddr_t a) {
+    return connect(s, (const struct sockaddr *)a, sizeof(sockaddr_t));
 }
 
 // socket_getsockname - 获取 socket 的本地地址
@@ -240,18 +225,18 @@ inline int socket_getpeername(socket_t s, sockaddr_t name) {
 extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
 extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
 
-// socket_pton - 返回 ip 串
-inline char * socket_pton(sockaddr_t addr, char ip[INET_ADDRSTRLEN]) {
-    return (char *)inet_ntop(AF_INET, &addr->sin_addr, ip, INET_ADDRSTRLEN);
+// socket_ntop - 点分十进制转 ip 串
+inline char * socket_ntop(sockaddr_t a, char ip[INET6_ADDRSTRLEN]) {
+    return (char *)inet_ntop(a->sin_family = AF_INET, &a->sin_addr, ip, INET6_ADDRSTRLEN);
 }
 
 //
 // socket_host - 通过 ip:port 串得到 socket addr 结构
 // host     : ip:port 串
-// addr     : 返回最终生成的地址
+// a        : 返回最终生成的地址
 // return   : >= EBase 表示成功
 //
-extern int socket_host(const char * host, sockaddr_t addr);
+extern int socket_host(const char * host, sockaddr_t a);
 
 //
 // socket_tcp - 创建 TCP 详细套接字
@@ -275,10 +260,10 @@ extern socket_t socket_udp(const char * host);
 extern socket_t socket_connects(const char * host);
 
 //
-// socket_connectos - 返回链接后的非阻塞套接字
+// socket_connectos - 返回链接后的阻塞套接字
 // host     : ip:port 串  
 // ms       : 链接过程中毫秒数
-// return   : 返回链接后非阻塞套接字
+// return   : 返回链接后阻塞套接字
 //
 extern socket_t socket_connectos(const char * host, int ms);
 

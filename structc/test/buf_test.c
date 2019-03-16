@@ -10,7 +10,7 @@ void buf_test(void) {
     char * str = "simplc";
     uint32_t len = (uint32_t)strlen(str) + 1;
     uint32_t x = MSG_SZ(1, len);
-    x = hton(x);
+    x = small(x);
 
     // send阶段, 先发送字符长度
     msg_t msg;

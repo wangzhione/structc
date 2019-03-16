@@ -76,7 +76,7 @@ inline void msg_buf_pop_data(msg_buf_t q,
 // msg_buf_pop_sz - q pop sz
 inline void msg_buf_pop_sz(msg_buf_t q) {
     msg_buf_pop_data(q, &q->sz, sizeof(uint32_t));
-    q->sz = ntoh(q->sz);
+    q->sz = small(q->sz);
 }
 
 //
@@ -118,7 +118,7 @@ static msg_t msg_buf_data_pop(msg_buf_t q,
     // step 1 : 报文长度 buffer q->sz init
     uint32_t sz;
     memcpy(&sz, data, sizeof sz);
-    sz = ntoh(sz);
+    sz = small(sz);
 
     // step 2 : check data len is true
     uint32_t len = MSG_LEN(q->sz);

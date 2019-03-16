@@ -29,9 +29,9 @@
 #  endif
 #endif
 
-// hton - 本地字节序转网络字节序(大端)
-inline uint32_t hton(uint32_t x) {
-#  ifdef ISBIG
+// small - 转本地字节序(小端)
+inline uint32_t small(uint32_t x) {
+#  ifndef ISBIG
     return x;
 #  else
     uint8_t t;
@@ -40,11 +40,6 @@ inline uint32_t hton(uint32_t x) {
     t = u.s[1]; u.s[1] = u.s[sizeof(u)-2]; u.s[sizeof(u)-2] = t;
     return u.i;
 #  endif
-}
-
-// noth - 网络字节序(大端)转本地字节序
-inline uint32_t ntoh(uint32_t x) {
-    return hton(x);
 }
 
 //
@@ -84,7 +79,7 @@ inline static msg_t msg_create(const void * data, uint32_t len) {
     
     // type + len -> 协议值 -> 网络传输约定值
     sz = MSG_SZ(0, len);
-    sz = hton(sz);
+    sz = small(sz);
 
     // 开始内存填充
     memcpy(msg->data, &sz, sizeof(uint32_t));

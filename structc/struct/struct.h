@@ -69,7 +69,7 @@ fprintf(stderr, "[%s:%s:%d][%d:%s]"fmt"\n",                            \
 
 #define EXIT(fmt, ...)                                                 \
 do {                                                                   \
-    CERR(fmt, ##__VA_ARGS__);                                            \
+    CERR(fmt, ##__VA_ARGS__);                                          \
     exit(EXIT_FAILURE);                                                \
 } while(0)
 
@@ -85,7 +85,7 @@ if ((cond)) EXIT(#cond)
 // 
 #define RETURN(val, fmt, ...)                                         \
 do {                                                                  \
-    CERR(fmt, ##__VA_ARGS__);                                           \
+    CERR(fmt, ##__VA_ARGS__);                                         \
     return val;                                                       \
 } while(0)
 
