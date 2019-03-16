@@ -15,7 +15,7 @@
 log_printf(pre"[%s:%s:%d]"fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 //
-// log 有些朴实, 也许很快很安全 ~
+// log 有些朴实, 也许极快 ~
 //
 #define LOG_ERROR(fmt, ...) LOG_PRINTF("[ERROR]", fmt, ##__VA_ARGS__)
 #define LOG_INFOS(fmt, ...) LOG_PRINTF("[INFOS]", fmt, ##__VA_ARGS__)

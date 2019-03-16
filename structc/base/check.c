@@ -1,12 +1,12 @@
 ﻿#include "check.h"
 
 //
-// is_ip - 判断是否是 ipv4
+// is_ipv4 - 判断是否是 ipv4
 // ips      : ip 串
 // return   : true 是合法 ip
 //
 bool 
-is_ip(const char * ips) {
+is_ipv4(const char * ips) {
     //
     // [0-9].
     // 7       - 15

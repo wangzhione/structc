@@ -41,12 +41,12 @@ socket_sendn(socket_t s, const void * buf, int sz) {
 
 // socket_addr - 通过 ip, port 构造 ipv4 结构
 int socket_addr(char ip[INET6_ADDRSTRLEN], uint16_t port, sockaddr_t a) {
-    a->sin_family = AF_INET;
-    a->sin_port = htons(port);
     a->sin_addr.s_addr = inet_addr(ip);
-    memset(a->sin_zero, 0, sizeof a->sin_zero);
-
-    if (a->sin_addr.s_addr == INADDR_NONE) {
+    if (a->sin_addr.s_addr != INADDR_NONE) {
+        a->sin_family = AF_INET;
+        a->sin_port = htons(port);
+        memset(a->sin_zero, 0, sizeof a->sin_zero);
+    } else {
         char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
         struct addrinfo * ai = NULL, req = {
             .ai_family   = AF_INET,
@@ -57,8 +57,7 @@ int socket_addr(char ip[INET6_ADDRSTRLEN], uint16_t port, sockaddr_t a) {
             return EParam;
 
         // 尝试默认第一个 ipv4
-        void * src = &(((struct sockaddr_in *)ai->ai_addr)->sin_addr);
-        memcpy(&a->sin_addr, src, ai->ai_addrlen);
+        memcpy(a, ai->ai_addr, ai->ai_addrlen);
         freeaddrinfo(ai);
     }
 

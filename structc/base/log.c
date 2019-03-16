@@ -2,11 +2,7 @@
 
 static FILE * log;
 
-//
-// log_init - !单例! 日志库初始化
-// path     : 初始化日志系统文件名
-// return   : void
-//
+// log_init - 单例, 日志库初始化
 void log_init(const char * path) {
     if (!(log = fopen(path, "ab"))) {
         fprintf(stderr, "fopen ab path err %s\n", path);
@@ -32,6 +28,6 @@ log_printf(const char * fmt, ...) {
     vsnprintf(str + len, sizeof str - len, fmt, ap);
     va_end(ap);
 
-    // 数据刷入文件缓存
+    // 数据交给文件缓存层
     fputs(str, log);
 }
