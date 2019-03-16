@@ -173,15 +173,6 @@
     <ClCompile Include="system\strext.c">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="test\uv_tty_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\uv_timer_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\uv_love_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="test\list_test.c">
       <Filter>test</Filter>
     </ClCompile>

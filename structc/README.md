@@ -24,7 +24,6 @@
 
         项目右击 -> [属性] -> [链接器] -> [输入]
 
-        libuv.lib
         psapi.lib
         user32.lib
         shell32.lib
@@ -58,7 +57,7 @@
         WIN32_LEAN_AND_MEAN
         _CRT_SECURE_NO_WARNINGS
         _CRT_NONSTDC_NO_DEPRECATE
-        _WINSOCK_DEPRECATED_NO_WARNINGS    
+        _WINSOCK_DEPRECATED_NO_WARNINGS
 
         PTW32_STATIC_LIB
 

@@ -59,7 +59,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/LTCG /IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -86,7 +86,7 @@ echo e n d init directory $(TargetDir)conf</Command>
       <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libuv.lib;psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc141-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo begin init directory $(TargetDir)conf
@@ -193,9 +193,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\spoll_test.c" />
     <ClCompile Include="test\thread_test.c" />
     <ClCompile Include="test\times_test.c" />
-    <ClCompile Include="test\uv_timer_test.c" />
-    <ClCompile Include="test\uv_love_test.c" />
-    <ClCompile Include="test\uv_tty_test.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="conf\conf.conf" />
