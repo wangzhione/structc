@@ -1,8 +1,8 @@
 ﻿#
 # 编译的目录结构
-# Release : make 
-# Debug   : make D=-D_DEBUG
+# Release : make
 # Clean   : make clean
+# Debug   : make D=-D_DEBUG
 #
 ROOT        ?= structc
 

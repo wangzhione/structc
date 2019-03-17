@@ -1,10 +1,6 @@
 ﻿#include "socket.h"
 
-//
 // socket_recvn     - socket 接受 sz 个字节
-// socket_sendn     - socket 发送 sz 个字节
-//
-
 int 
 socket_recvn(socket_t s, void * buf, int sz) {
     int r, n = sz;
@@ -22,6 +18,7 @@ socket_recvn(socket_t s, void * buf, int sz) {
     return sz - n;
 }
 
+// socket_sendn     - socket 发送 sz 个字节
 int 
 socket_sendn(socket_t s, const void * buf, int sz) {
     int r, n = sz;
@@ -49,7 +46,7 @@ int socket_addr(char ip[INET6_ADDRSTRLEN], uint16_t port, sockaddr_t a) {
     } else {
         char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
         struct addrinfo * ai = NULL, req = {
-            .ai_family   = AF_INET,
+            .ai_family   = PF_INET,
             .ai_socktype = SOCK_STREAM,
         };
 
@@ -64,10 +61,7 @@ int socket_addr(char ip[INET6_ADDRSTRLEN], uint16_t port, sockaddr_t a) {
     return SBase;
 }
 
-//
-// socket_binds     - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
-// socket_listens   - 端口监听返回监听好的 socket fd.
-//
+// socket_binds     - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
 socket_t 
 socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family) {
     // 构建 getaddrinfo 请求参数
@@ -101,6 +95,7 @@ err_free:
     return INVALID_SOCKET;
 }
 
+// socket_listens   - 返回监听好的 socket fd
 socket_t 
 socket_listens(const char * ip, uint16_t port, int backlog) {
     socket_t fd = socket_binds(ip, port, IPPROTO_TCP, NULL);

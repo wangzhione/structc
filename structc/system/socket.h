@@ -178,11 +178,10 @@ inline int socket_sendto(socket_t s, const void * buf, int sz, const sockaddr_t 
     return (int)sendto(s, buf, sz, 0, (struct sockaddr *)to, sizeof(sockaddr_t));
 }
 
-//
 // socket_recvn     - socket 接受 sz 个字节
-// socket_sendn     - socket 发送 sz 个字节
-//
 extern int socket_recvn(socket_t s, void * buf, int sz);
+
+// socket_sendn     - socket 发送 sz 个字节
 extern int socket_sendn(socket_t s, const void * buf, int sz);
 
 // socket_bind          - bind    绑定函数
@@ -218,11 +217,10 @@ inline int socket_getpeername(socket_t s, sockaddr_t name) {
     return getpeername(s, (struct sockaddr *)name, &len);
 }
 
-//
-// socket_binds     - 端口绑定返回绑定好的 socket fd, 返回 INVALID_SOCKET or PF_INET PF_INET6
-// socket_listens   - 端口监听返回监听好的 socket fd.
-//
+// socket_binds     - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
 extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
+
+// socket_listens   - 返回监听好的 socket fd
 extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
 
 // socket_ntop - 点分十进制转 ip 串

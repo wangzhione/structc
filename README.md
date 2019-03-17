@@ -87,7 +87,7 @@ inline static int pthread_async(void * frun, void * arg) {
 
     Winds 还是万年不变的 Visual Studio Best Version
 
-    Linux 抛砖引玉带大家配置哈 VS Code Best Version
+    Linux 抛砖引玉带大家配哈 VS Code Best Version
 
     0. 安装 C/C++ Microsoft 插件
 
@@ -104,8 +104,13 @@ inline static int pthread_async(void * frun, void * arg) {
             ],
             "defines": [
                 "_DEBUG",
-                "__GNUC__"
+                "__GNUC__",
+                "_GNU_SOURCE"
             ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
 ```
 
     2. F5 -> launch.json
@@ -122,8 +127,6 @@ inline static int pthread_async(void * frun, void * arg) {
 
 ```json
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
@@ -140,10 +143,20 @@ inline static int pthread_async(void * frun, void * arg) {
 }
 ```
 
-    核心思路是基于 Makefile Debug 模式配置 VSCode C Studio.
-    此刻就可以在 main.c 入口出发, 开启 F5 F10 F11 玩耍之路.
+    4. [settings.json] 设置 *.h 是 C 文件格式
 
-    比 gcc + gdb + vi 好那么一丢丢 ~
+```json
+{
+    "files.associations": {
+        "*.h": "c",
+    }
+}
+```
+
+    核心思路是配置 VSCode C Studio 联动 Makefile Debug 调试.
+    此刻有了这些就可以在项目开发中随心所欲 F5 F10 F11 开启玩耍之路.
+
+    是不是比 gcc + gdb + vi 好那么一丢丢 ~
 
 ***
 

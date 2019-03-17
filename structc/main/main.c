@@ -1,7 +1,7 @@
 ﻿#include "head.h"
 
 //
-// main - 奔跑的起点
+// main     - 奔跑的起点
 // argc     : 参数个数
 // argv     : 参数数组
 // return   : 状态码
@@ -19,7 +19,7 @@ int main(int argc, char * argv[]) {
 #endif
 
     // ... 
-    // ... 项目运行的主函数 ~ 龍
+    // ... 业务运行的主函数 ~ 龍
     //
     EXTERN_RUN(main_run, argc, argv);
 
