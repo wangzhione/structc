@@ -74,22 +74,22 @@ inline static void spause(void) {
 // frun     : 需要执行的函数名称
 // ...      : 可变参数, 保留
 //
-#define EXTERN_RUN(frun, ...)                                \
-do {                                                         \
-    extern void frun();                                      \
-    frun (__VA_ARGS__);                                      \
+#define EXTERN_RUN(frun, ...)                          \
+do {                                                   \
+    extern void frun();                                \
+    frun (__VA_ARGS__);                                \
 } while(0)
 
 //
 // CODE_RUN - 代码块测试, 并输出运行时间
 // code     : { ... } 包裹的代码块
 //
-#define CODE_RUN(code)                                      \
-do {                                                        \
-    clock_t $s = clock();                                   \
-    code                                                    \
-    double $e = (double)clock();                            \
-    printf("code run time:%lfs\n", ($e-$s)/CLOCKS_PER_SEC); \
+#define CODE_RUN(code)                                 \
+do {                                                   \
+    clock_t $s = clock();                              \
+    code                                               \
+    double $e = (double)clock();                       \
+    printf("code run %lfs\n", ($e-$s)/CLOCKS_PER_SEC); \
 } while (0)
 
 #endif//_HEAD_H

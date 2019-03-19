@@ -14,7 +14,7 @@
 typedef struct {   // struct in heap malloc
     int    rlen;   // 数据行数, 索引 [0, rlen)
     int    clen;   // 数据列数, 索引 [0, clen)
-    char * data[]; // 保存数据, rlen * clen '二维数组
+    char * data[]; // 保存数据, rlen * clen 二维数组
 } * csv_t;
 
 //
@@ -22,7 +22,7 @@ typedef struct {   // struct in heap malloc
 // csv     : csv_t 对象
 // r       : 行索引 [0, csv->rlen)
 // c       : 列索引 [0, csv->clen)
-// return  : 返回 csv[r][c], 后面可以用 atoi, atof, strdup ...
+// return  : 返回 csv[r][c], 后续可以 atoi, atof, strdup ...
 //
 inline const char * csv_get(csv_t csv, int r, int c) {
     DCODE({

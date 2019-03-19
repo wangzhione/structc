@@ -1,8 +1,8 @@
 ﻿#include "csv.h"
 
-// csv_check - 解析和检查 csv 文件内容, 返回构造的合法串
+// csv_check - 解析和检查 csv 文件内容, 返回构造的合法串长度
 static int csv_check(char * str, int * pr, int * pc) {
-    int c, n, rnt = 0, cnt = 0;
+    int c, rnt = 0, cnt = 0;
     char * tar = str, * s = str;
     while ((c = *tar++) != '\0') {
         // csv 内容解析, 状态机切换
@@ -11,7 +11,7 @@ static int csv_check(char * str, int * pr, int * pc) {
             while ((c = *tar++) != '\0') {
                 if ('"' == c) {
                     // 有效字符再次压入栈, 顺带去掉多余 " 字符
-                    if ((n = *tar) != '"') 
+                    if (*tar != '"') 
                         break;
                     ++tar;
                 }
@@ -29,7 +29,7 @@ static int csv_check(char * str, int * pr, int * pc) {
         }
     }
     // CRLF 处理
-    if (str != s && tar[-2] != '\n') {
+    if (str != s && (c = tar[-2]) && c != '\n') {
         *s++ = '\0'; ++cnt; ++rnt;
     }
 
@@ -44,27 +44,26 @@ err_faid:
     return (int)(s - str);
 }
 
-// csv_parse - 解析 csv 内容返回解析后的对象
-csv_t csv_parse(char * s) {
-    csv_t csv;
-    char * str;
-    int diff, rnt, cnt;
-    if ((diff = csv_check(s, &rnt, &cnt)) < 0)
+// csv_parse - 解析字节流返回 csv 对象
+csv_t csv_parse(char * str) {
+    int n, rnt, cnt;
+    if ((n = csv_check(str, &rnt, &cnt)) < 0)
         return NULL;
     
     // 分配最终内存
-    csv = malloc(diff + sizeof *csv + sizeof(char *) * cnt);
-    str = (char *)csv + sizeof *csv + sizeof(char *) * cnt ;
-    memcpy(str, s, diff);
-    // 开始内存整理
+    csv_t csv = malloc(n + sizeof *csv + sizeof(char *) * cnt);
+    char * s = (char *)csv + sizeof *csv + sizeof(char *) * cnt;
+    memcpy(s, str, n);
+
+    // 开始内存整理, csv 字段填充
+    n = 0;
     csv->rlen = rnt;
     csv->clen = cnt / rnt;
-    diff = 0;
     do {
-        csv->data[diff] = str;
-        while (*str ++)
+        csv->data[n] = s;
+        while (*s++)
             ;
-    } while (++diff < cnt);
+    } while (++n < cnt);
 
     return csv;
 }
@@ -77,13 +76,12 @@ csv_t csv_parse(char * s) {
 csv_t 
 csv_create(const char * path) {
     char * str = str_freads(path);
-    if (NULL == str) {
-        RETNUL("str_freads path = %s is error!", path);
+    if (str) {
+        // 开始解析 csv 文件内容, 并返回最终结果
+        csv_t csv = csv_parse(str);
+        free(str);
+        return csv;   
     }
-
-    // 开始解析 csv 文件内容
-    csv_t csv = csv_parse(str);
-    free(str);
-    // 返回最终结果
-    return csv;
+    // 意外返回 NULL
+    RETNUL("str_freads path = %s is error!", path);
 }

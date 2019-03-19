@@ -202,7 +202,7 @@ static struct file * f_s_get(const char * p, unsigned * r) {
 //
 // file_set - 文件注册更新行为
 // path     : 文件路径
-// func     : NULL 是标记清除, 否则 update -> func(path -> FILE, arg)
+// func     : NULL 标记清除, 正常 update -> func(path -> FILE, arg)
 // arg      : func 额外参数
 // return   : void
 //
