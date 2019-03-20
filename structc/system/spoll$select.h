@@ -100,7 +100,6 @@ void s_write(poll_t p, socket_t s, void * u, bool enable) {
 int s_wait(poll_t p, event_t e) {
     struct fds * s;
     socket_t fd, max = 0;
-    socklen_t ren = sizeof(int);
     int c, r, i, n, len = p->len;
 
     FD_ZERO(&p->fdr);
@@ -118,7 +117,7 @@ int s_wait(poll_t p, event_t e) {
     }
 
     // wait for you ...
-    n = select((int)max + 1, &p->fdr, &p->fdw, &p->fde, NULL);
+    n = socket_select(max, &p->fdr, &p->fdw, &p->fde, NULL);
     if (n <= 0) RETURN(-1, "select n = %d error", n);
 
     for (c = i = 0; c < n && c < MAX_EVENT && i < len; ++i) {
@@ -131,7 +130,7 @@ int s_wait(poll_t p, event_t e) {
         r = true;
         if (FD_ISSET(fd, &p->fde)) {
             // 只要最后没有 error 那就 OK | 排除带外数据
-            if (getsockopt(fd, SOL_SOCKET, SO_ERROR, (void *)&r, &ren) || r)
+            if (socket_get_error(fd))
                 r = false;
         }
 

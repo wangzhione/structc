@@ -3,7 +3,7 @@
     开发背景 : 构建可用的 C 基础库
     适用人群 : 有点喜欢 C 代码人群
 
-## 好像才刚开始 ~
+## 一切都是刚刚开始
 
     核心点:
     
@@ -23,23 +23,32 @@
 
     ...
 
-**代码风格, 希望最贴近原生 api**
+**代码风格, 希望"最"贴近原生 api**
 
 ```C
 #include <pthread.h>
 #include <semaphore.h>
 
 //
-// node_f - 销毁当前对象节点
-//  : void list_die(void * node);
+// node_f - 销毁行为
+// : void list_die(void * node)
 //
 typedef void (* node_f)(void * node);
 
 //
 // start_f - pthread create func
-//  : int * run(int * arg)
+// : int * run(int * arg)
 //
 typedef void * (* start_f)(void * arg);
+
+//
+// pthread_end - 等待线程运行结束
+// tid      : 线程 id
+// return   : void
+//
+inline void pthread_end(pthread_t id) {
+    pthread_join(id, NULL);
+}
 
 //
 // pthread_async - 启动无需等待的线程
@@ -47,14 +56,17 @@ typedef void * (* start_f)(void * arg);
 // arg      : 运行参数
 // return   : 0 is success, -1 is error
 // 
-inline static int pthread_async(void * frun, void * arg) {
-    pthread_t id;
-    pthread_attr_t attr;
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    int ret = pthread_create(&id, &attr, frun, arg);
-    pthread_attr_destroy(&attr);
-    return ret;
+extern int pthread_async(void * frun, void * arg);
+
+//
+// pthread_run - 启动线程
+// p        : 指向线程 id 的指针
+// frun     : node_f or start_f 运行主体
+// arg      : 运行参数
+// return   : 0 is success, -1 is error
+//
+inline int pthread_run(pthread_t * p, void * frun, void * arg) {
+    return pthread_create(p, NULL, frun, arg);
 }
 ```
 
@@ -118,7 +130,6 @@ inline static int pthread_async(void * frun, void * arg) {
 
 ```json
             "program": "${workspaceFolder}/Out/main.exe",
-
             "preLaunchTask": "Debug",
 ```
 

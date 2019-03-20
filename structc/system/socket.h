@@ -167,6 +167,38 @@ inline int socket_get_error(socket_t s) {
     return r < 0 ? errno : err;
 }
 
+// socket_getsockname - 获取 socket 的本地地址
+inline int socket_getsockname(socket_t s, sockaddr_t name) {
+    socklen_t len = sizeof (sockaddr_t);
+    return getsockname(s, (struct sockaddr *)name, &len);
+}
+
+// socket_getpeername - 获取 client socket 的地址
+inline int socket_getpeername(socket_t s, sockaddr_t name) {
+    socklen_t len = sizeof (sockaddr_t);
+    return getpeername(s, (struct sockaddr *)name, &len);
+}
+
+// socket_ntop - 点分十进制转 ip 串
+inline char * socket_ntop(sockaddr_t a, char ip[INET6_ADDRSTRLEN]) {
+    return (char *)inet_ntop(a->sin_family = AF_INET, &a->sin_addr, ip, INET6_ADDRSTRLEN);
+}
+
+//
+// socket_select - socket select 版本
+// max      : max socket fd
+// fdr      : read fd set
+// fdw      : write fd set
+// fde      : error fd set
+// timeout  : 等待时间, NULL 永久等待
+// return   : ready descriptors number or -1 for errors
+//
+inline int socket_select(socket_t max, 
+                         fd_set * fdr, fd_set * fdw, fd_set * fde, 
+                         struct timeval * timeout) {
+    return select((int)max + 1, fdr, fdw, fde, timeout);
+}
+
 // socket_recvfrom  - recvfrom 接受函数
 inline int socket_recvfrom(socket_t s, void * buf, int sz, sockaddr_t in) {
     socklen_t inlen = sizeof(sockaddr_t);
@@ -205,28 +237,11 @@ inline int socket_connect(socket_t s, const sockaddr_t a) {
     return connect(s, (const struct sockaddr *)a, sizeof(sockaddr_t));
 }
 
-// socket_getsockname - 获取 socket 的本地地址
-inline int socket_getsockname(socket_t s, sockaddr_t name) {
-    socklen_t len = sizeof (sockaddr_t);
-    return getsockname(s, (struct sockaddr *)name, &len);
-}
-
-// socket_getpeername - 获取 client socket 的地址
-inline int socket_getpeername(socket_t s, sockaddr_t name) {
-    socklen_t len = sizeof (sockaddr_t);
-    return getpeername(s, (struct sockaddr *)name, &len);
-}
-
 // socket_binds     - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
 extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
 
 // socket_listens   - 返回监听好的 socket fd
 extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
-
-// socket_ntop - 点分十进制转 ip 串
-inline char * socket_ntop(sockaddr_t a, char ip[INET6_ADDRSTRLEN]) {
-    return (char *)inet_ntop(a->sin_family = AF_INET, &a->sin_addr, ip, INET6_ADDRSTRLEN);
-}
 
 //
 // socket_host - 通过 ip:port 串得到 socket addr 结构

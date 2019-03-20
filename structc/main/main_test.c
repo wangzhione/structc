@@ -26,7 +26,7 @@ void main_test(void) {
     // 开始你的表演, 单元测试
     //
 
-    EXTERN_RUN(alloc_test);
+    EXTERN_RUN(thread_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

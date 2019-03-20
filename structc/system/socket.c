@@ -209,7 +209,7 @@ socket_connects(const char * host) {
 // socket_connecto - connect 超时链接, 返回非阻塞 socket
 static int socket_connecto(socket_t s, const sockaddr_t a, int ms) {
     int n, r;
-    struct timeval to;
+    struct timeval timeout;
     fd_set rset, wset, eset;
 
     // 还是阻塞的connect
@@ -230,9 +230,9 @@ static int socket_connecto(socket_t s, const sockaddr_t a, int ms) {
     FD_ZERO(&rset); FD_SET(s, &rset);
     FD_ZERO(&wset); FD_SET(s, &wset);
     FD_ZERO(&eset); FD_SET(s, &eset);
-    to.tv_sec = ms / 1000;
-    to.tv_usec = (ms % 1000) * 1000;
-    n = select((int)s + 1, &rset, &wset, &eset, &to);
+    timeout.tv_sec = ms / 1000;
+    timeout.tv_usec = (ms % 1000) * 1000;
+    n = socket_select(s, &rset, &wset, &eset, &timeout);
     // 超时直接滚
     if (n <= 0) return EBase;
 

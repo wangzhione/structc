@@ -5,7 +5,7 @@ volatile static int c;
 static void heoo(int index) {
     for (int i = 0; i < 10000; ++i)
         ++c;
-    printf("index = %d, g = %d\n", index, c);
+    printf("index = %2d, g = %d\n", index, c);
 }
 
 //
@@ -19,6 +19,9 @@ void thread_test(void) {
     for (i = 0; i < LEN(ids); ++i)
         if (pthread_run(ids + i, heoo, (void *)(intptr_t)i))
             RETNIL("pthread_run is error!");
+
+    // 二楞子
+    pthread_async(heoo, (void *)(intptr_t)-1);
 
     // 等待结束
     for (j = 0; j < i; ++j)

@@ -16,6 +16,9 @@ void main_init(void) {
     // :) 随机数模块初始化
     EXTERN_RUN(r_init);
 
+    // thread 模块初始化
+    EXTERN_RUN(pthread_init);
+
     // socket 模块初始化 ~
     socket_init();
 
