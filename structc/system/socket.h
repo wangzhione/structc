@@ -1,6 +1,7 @@
 ﻿#ifndef _SOCKET_H
 #define _SOCKET_H
 
+#include "struct.h"
 #include "strerr.h"
 
 #include <time.h>

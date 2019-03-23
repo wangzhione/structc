@@ -163,6 +163,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="system\rwlock.c" />
     <ClCompile Include="system\alloc.c" />
     <ClCompile Include="system\strerr.c" />
+    <ClCompile Include="system\thread.c" />
     <ClCompile Include="system\utf8.c" />
     <ClCompile Include="system\md5.c" />
     <ClCompile Include="system\rand.c" />

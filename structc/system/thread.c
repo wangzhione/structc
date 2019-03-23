@@ -1,4 +1,4 @@
-#include "thread.h"
+﻿#include "thread.h"
 
 static pthread_attr_t attr[1];
 
