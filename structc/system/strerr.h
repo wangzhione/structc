@@ -3,11 +3,13 @@
 
 #include <errno.h>
 #include <string.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 //
-// strerr - strerror 跨平台实现版本
-// no      : linux errno, winds WSAGetLastError() ...
-// return  : system os 拔下来的提示字符串
+// strerr - strerror 跨平台实现
+// no      : linux errno, winds WSAGetLastError()
+// return  : system os 拔下来的提示串
 //
 extern const char * strerr(int no);
 

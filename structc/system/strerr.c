@@ -10,6 +10,7 @@ extern inline const char * strerr(int no) {
 
 #include <winerror.h>
 
+#undef  DWORD
 #define DWORD int
 
 extern const char * strerr(int no) {
