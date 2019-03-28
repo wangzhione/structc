@@ -182,7 +182,8 @@ inline int socket_getpeername(socket_t s, sockaddr_t name) {
 
 // socket_ntop - 点分十进制转 ip 串
 inline char * socket_ntop(sockaddr_t a, char ip[INET6_ADDRSTRLEN]) {
-    return (char *)inet_ntop(a->sin_family = AF_INET, &a->sin_addr, ip, INET6_ADDRSTRLEN);
+    a->sin_family = AF_INET;
+    return (char *)inet_ntop(AF_INET, &a->sin_addr, ip, INET6_ADDRSTRLEN);
 }
 
 //

@@ -5,7 +5,7 @@
 
 // create atom write and read lock
 // struct rwlock need zero is atom interface ext
-// need var init struct rwlock rw = { 0, 0 };
+// need var init struct rwlock rw = { 0,0 };
 struct rwlock {
     atom_t rlock;
     atom_t wlock;
