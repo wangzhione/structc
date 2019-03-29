@@ -137,7 +137,6 @@ time_get(times_t ns) {
     return mktime(&m);
 }
 
-
 //
 // time_day - 判断时间戳是否是同一天
 // n            : 第一个时间戳
