@@ -17,7 +17,7 @@ struct $rtree {
 
 typedef struct {
     struct $rtree * root;
-    cmp_f fget; // cmp_f 节点查找时比较行为
+    cmp_f fget; // cmp_f 结点查找时比较行为
     cmp_f fcmp;
     new_f fnew;
     node_f fdie;
@@ -25,9 +25,9 @@ typedef struct {
 
 //
 // rtee_create - 创建一个红黑树对象
-// fcmp     : cmp_f 节点插入时比较行为
-// fnew     : new_f 节点插入时构造行为
-// fdie     : node_f 节点删除时销毁行为
+// fcmp     : cmp_f 结点插入时比较行为
+// fnew     : new_f 结点插入时构造行为
+// fdie     : node_f 结点删除时销毁行为
 // return   : 返回构建红黑树对象
 //
 extern rtree_t rtree_create(void * fcmp, void * fnew, void * fdie);
@@ -42,12 +42,12 @@ extern void rtree_delete(rtree_t tree);
 //
 // rtree_search - 红黑树查找函数
 // tree     : 待查找的红黑树结构
-// return   : 返回查找的节点
+// return   : 返回查找的结点
 //
 extern void * rtree_search(rtree_t tree, void * pack);
 
 //
-// rtree_insert - 红黑树中插入节点 fnew(pack)
+// rtree_insert - 红黑树中插入结点 fnew(pack)
 // tree     : 红黑树结构
 // pack     : 待插入基础结构
 // return   : void
@@ -55,7 +55,7 @@ extern void * rtree_search(rtree_t tree, void * pack);
 extern void rtree_insert(rtree_t tree, void * pack);
 
 //
-// rtree_remove - 红黑树中删除节点
+// rtree_remove - 红黑树中删除结点
 // tree     : 红黑树结构
 // pack     : 待删除基础结构
 // return   : void

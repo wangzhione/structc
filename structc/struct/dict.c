@@ -39,14 +39,14 @@ struct keypair {
     char key[];
 };
 
-// keypair_delete - 销毁节点数据
+// keypair_delete - 销毁结点数据
 inline void keypair_delete(node_f fdie, struct keypair * pair) {
     if (pair->val && fdie)
         fdie(pair->val);
     free(pair);
 }
 
-// keypair_create - 创建节点数据
+// keypair_create - 创建结点数据
 inline struct keypair * keypair_create(unsigned hash, void * v, const char * k) {
     size_t len = strlen(k) + 1;
     struct keypair * pair = malloc(sizeof(struct keypair) + len);
@@ -57,9 +57,9 @@ inline struct keypair * keypair_create(unsigned hash, void * v, const char * k) 
 }
 
 struct dict {
-    node_f fdie;                // 节点注册的销毁函数
+    node_f fdie;                // 结点注册的销毁函数
     unsigned idx;               // 使用 _primes 质数表索引
-    unsigned used;              // 用户已经使用的节点个数
+    unsigned used;              // 用户已经使用的结点个数
     struct keypair ** table;    // size = primes[idx][0]
 };
 
@@ -193,11 +193,11 @@ dict_set(dict_t d, const char * k, void * v) {
                 else
                     prev->next = pair->next;
 
-                // 销毁节点, 直接返回
+                // 销毁结点, 直接返回
                 return keypair_delete(d->fdie, pair);
             }
 
-            // 更新节点
+            // 更新结点
             if (d->fdie)
                 d->fdie(pair->val);
             pair->val = v;

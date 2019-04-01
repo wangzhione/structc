@@ -36,21 +36,21 @@ extern void heap_insert(heap_t h, void * node);
 // h        : 堆对象
 // arg      : 操作参数
 // fcmp     : 比较行为, 规则 fcmp() == 0
-// return   : 找到的堆节点
+// return   : 找到的堆结点
 //
 extern void * heap_remove(heap_t h, void * arg, cmp_f fcmp);
 
 //
-// heap_top - 查看堆顶节点数据
+// heap_top - 查看堆顶结点数据
 // h        : 堆对象
-// return   : 堆顶节点
+// return   : 堆顶结点
 //
 extern void * heap_top(heap_t h);
 
 //
-// heap_top - 摘掉堆顶节点数据
+// heap_top - 摘掉堆顶结点数据
 // h        : 堆对象
-// return   : 返回堆顶节点
+// return   : 返回堆顶结点
 //
 extern void * heap_pop(heap_t h);
 

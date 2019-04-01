@@ -1,6 +1,6 @@
 ﻿#include "timer.h"
 
-// timer_node 定时器节点
+// timer_node 定时器结点
 struct timer_node {
 $LIST
     int id;            // 定时器 id
@@ -68,7 +68,7 @@ timer_del(int id) {
     }
 }
 
-// timer_new - timer_node 定时器节点构建
+// timer_new - timer_node 定时器结点构建
 static struct timer_node * timer_new(int s, node_f ftimer, void * arg) {
     struct timer_node * node = malloc(sizeof(struct timer_node));
     node->id = atom_inc(timer.id);

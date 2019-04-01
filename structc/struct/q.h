@@ -10,8 +10,8 @@
 typedef struct q {
     void ** queue;      // 队列实体
     int size;           // 队列大小
-    int head;           // 头节点
-    int tail;           // 尾节点
+    int head;           // 头结点
+    int tail;           // 尾结点
 } q_t[1];
 
 //
@@ -58,7 +58,7 @@ extern void q_push(q_t q, void * m);
 //
 // q_delete - 队列删除
 // q        : 队列对象
-// fdie     : node_f push 节点删除行为
+// fdie     : node_f push 结点删除行为
 // return   : void
 //
 extern void q_delete(q_t q, node_f fdie);

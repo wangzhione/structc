@@ -74,7 +74,7 @@ extern void * array_top(array_t a);
 extern void * array_get(array_t a, unsigned idx);
 
 //
-// array_idx - 通过节点返回索引
+// array_idx - 通过结点返回索引
 // a        : 动态数组
 // elem     : 查询元素
 // return   : 索引

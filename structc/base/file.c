@@ -156,7 +156,7 @@ struct file {
     file_f func;            // 执行行为
     void * arg;             // 行为参数
 
-    struct file * next;     // 文件下一个节点
+    struct file * next;     // 文件下一个结点
 };
 
 static struct files {
@@ -178,7 +178,7 @@ static void f_s_add(const char * p, unsigned h, file_f func, void * arg) {
     fu->func = func;
     fu->arg = arg;
 
-    // 直接插入到头节点部分
+    // 直接插入到头结点部分
     atom_lock(f_s.lock);
     fu->next = f_s.list;
     f_s.list = fu;
@@ -234,7 +234,7 @@ file_update(void) {
         struct file * next = fu->next;
 
         if (NULL == fu->func) {
-            // 删除的是头节点
+            // 删除的是头结点
             if (f_s.list == fu)
                 f_s.list = next;
 

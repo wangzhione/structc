@@ -14,7 +14,7 @@ typedef struct mq * mq_t;
 //
 // mq_delete - 消息队列删除
 // q        : 消息队列对象
-// fdie     : node_f 行为, 删除 push 进来的节点
+// fdie     : node_f 行为, 删除 push 进来的结点
 // return   : void
 //
 inline void mq_delete(mq_t q, node_f fdie) {

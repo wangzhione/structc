@@ -6,10 +6,10 @@ struct heap {
     cmp_f   fcmp;       // 比较行为
     unsigned len;       // heap 长度
     unsigned cap;       // heap 容量
-    void ** data;       // 数据节点数组
+    void ** data;       // 数据结点数组
 };
 
-// heap_expand - 添加节点扩容
+// heap_expand - 添加结点扩容
 inline void heap_expand(struct heap * h) {
     if (h->len >= h->cap) {
         h->data = realloc(h->data, h->cap<<=1);
@@ -52,7 +52,7 @@ heap_delete(heap_t h, node_f fdie) {
     free(h);
 }
 
-// down - 堆节点下沉, 从上到下沉一遍
+// down - 堆结点下沉, 从上到下沉一遍
 static void down(cmp_f fcmp, void * data[], unsigned len, unsigned x) {
     void * m = data[x];
     for (unsigned i = x * 2 + 1; i < len; i = x * 2 + 1) {
@@ -66,7 +66,7 @@ static void down(cmp_f fcmp, void * data[], unsigned len, unsigned x) {
     data[x] = m;
 }
 
-// up - 堆节点上浮, 从下到上浮一遍
+// up - 堆结点上浮, 从下到上浮一遍
 static void up(cmp_f fcmp, void * node, void * data[], unsigned x) {
     while (x > 0) {
         void * m = data[(x-1)>>1];
@@ -95,22 +95,22 @@ heap_insert(heap_t h, void * node) {
 // h        : 堆对象
 // arg      : 操作参数
 // fcmp     : 比较行为, 规则 fcmp() == 0
-// return   : 找到的堆节点
+// return   : 找到的堆结点
 //
 void * 
 heap_remove(heap_t h, void * arg, cmp_f fcmp) {
     if (h == NULL || h->len <= 0)
         return NULL;
 
-    // 开始查找这个节点
+    // 开始查找这个结点
     unsigned i = 0;
     fcmp = fcmp ? fcmp : h->fcmp;
     do {
         void * node = h->data[i];
         if (fcmp(arg, node) == 0) {
-            // 找到节点开始走删除操作
+            // 找到结点开始走删除操作
             if (--h->len > 0 && h->len != i) {
-                // 尾巴节点和待删除节点比较
+                // 尾巴结点和待删除结点比较
                 int ret = h->fcmp(h->data[h->len], node);
 
                 // 小顶堆, 新的值比老的值小, 那么上浮
@@ -131,9 +131,9 @@ heap_remove(heap_t h, void * arg, cmp_f fcmp) {
 }
 
 //
-// heap_top - 查看堆顶节点数据
+// heap_top - 查看堆顶结点数据
 // h        : 堆对象
-// return   : 堆顶节点
+// return   : 堆顶结点
 //
 inline void * 
 heap_top(heap_t h) {
@@ -141,15 +141,15 @@ heap_top(heap_t h) {
 }
 
 //
-// heap_top - 摘掉堆顶节点数据
+// heap_top - 摘掉堆顶结点数据
 // h        : 堆对象
-// return   : 返回堆顶节点
+// return   : 返回堆顶结点
 //
 inline void * 
 heap_pop(heap_t h) {
     void * node = heap_top(h);
     if (node && --h->len > 0) {
-        // 尾巴节点一定比小堆顶节点大, 那么要下沉
+        // 尾巴结点一定比小堆顶结点大, 那么要下沉
         h->data[0] = h->data[h->len];
         down(h->fcmp, h->data, h->len, 0);
     }

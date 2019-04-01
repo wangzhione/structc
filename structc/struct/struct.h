@@ -39,7 +39,7 @@ typedef void (* node_f)(void * node);
 typedef void * (* start_f)(void * arg);
 
 //
-// each_f - 遍历行为, node 是内部节点, arg 是外部参数
+// each_f - 遍历行为, node 是内部结点, arg 是外部参数
 // : int echo(void * node, void * arg) { return 0; }
 //
 typedef int (* each_f)(void * node, void * arg);

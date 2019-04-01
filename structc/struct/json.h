@@ -22,10 +22,10 @@
 
 struct json {
     unsigned char type;     // CJSON_NULL - JSON_ARRAY and JSON_CONST
-    struct json * next;     // type & OBJECT or ARRAY -> 下个节点链表
-    struct json * chid;     // type & OBJECT or ARRAY -> 对象节点数据
+    struct json * next;     // type & OBJECT or ARRAY -> 下个结点链表
+    struct json * chid;     // type & OBJECT or ARRAY -> 对象结点数据
 
-    char * key;             // json 节点的 key
+    char * key;             // json 结点的 key
     union {
         char * str;         // type & STRING -> 字符串
         double num;         // type & NUMBER -> number
@@ -37,8 +37,8 @@ struct json {
 typedef struct json * json_t;
 
 //
-// json_int - 得到节点的 int 值
-// item     : json 节点
+// json_int - 得到结点的 int 值
+// item     : json 结点
 //          : 返回 number int 值
 //
 #define json_int(item) ((int)(item)->num)
@@ -66,10 +66,10 @@ extern void json_delete(json_t c);
 extern int json_len(json_t c);
 
 //
-// json_array - 通过索引获取 json 数组中子节点
+// json_array - 通过索引获取 json 数组中子结点
 // arr      : json 数组
 // i        : [0, json_len()) 索引
-// return   : 返回对应的数组节点
+// return   : 返回对应的数组结点
 //
 extern json_t json_array(json_t arr, int i);
 
@@ -77,7 +77,7 @@ extern json_t json_array(json_t arr, int i);
 // json_object - 获取 json 对象中子对象 
 // obj      : json 对象
 // k        : key
-// return   : 返回对应的对象节点
+// return   : 返回对应的对象结点
 //
 extern json_t json_object(json_t obj, const char * k);
 
