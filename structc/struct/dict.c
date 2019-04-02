@@ -47,7 +47,8 @@ inline void keypair_delete(node_f fdie, struct keypair * pair) {
 }
 
 // keypair_create - 创建结点数据
-inline struct keypair * keypair_create(unsigned hash, void * v, const char * k) {
+inline struct keypair * keypair_create(unsigned hash, 
+                                       void * v, const char * k) {
     size_t len = strlen(k) + 1;
     struct keypair * pair = malloc(sizeof(struct keypair) + len);
     pair->hash = hash;
