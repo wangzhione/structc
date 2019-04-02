@@ -21,8 +21,8 @@ inline void rtree_set_color(struct $rtree * r, int color) {
     r->parentc = (r->parentc & ~1) | (1 & color);
 }
 
-inline static int rtree_default_cmp(const void * ln, const void * rn) {
-    return (int)((intptr_t)ln - (intptr_t)rn);
+inline static int rtree_default_cmp(const void * l, const void * r) {
+    return (int)((intptr_t)l - (intptr_t)r);
 }
 
 //
@@ -109,13 +109,14 @@ rtree_search(rtree_t tree, void * pack) {
  * 对红黑树的结点 [x] 进行左旋转
  *
  * 左旋示意图 (对结点 x 进行左旋):
- *      px                             px
- *     /                              /
- *    x                              y
- *   /  \       --- (左旋) -->       / \
- *  lx   y                         x  ry
- *     /   \                      /  \
- *    ly   ry                    lx  ly  
+ * 
+ *       px                             px
+ *      /                              /
+ *     x                              y
+ *    /  \       --- (左旋) -->       / \
+ *   lx   y                         x  ry
+ *      /   \                      /  \
+ *     ly   ry                    lx  ly  
  *
  */
 static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
@@ -155,13 +156,14 @@ static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
  * 对红黑树的结点 [y] 进行右旋转
  *
  * 右旋示意图(对结点y进行左旋)：
- *            py                            py
- *           /                             /
- *          y                             x                  
- *         /  \     --- (右旋) -->       /  \
- *        x   ry                        lx   y  
- *       / \                                / \
- *      lx  rx                             rx  ry
+ * 
+ *         py                            py
+ *        /                             /
+ *       y                             x                  
+ *      /  \      --- (右旋) -->      /  \
+ *     x   ry                        lx   y  
+ *    / \                                / \
+ *   lx  rx                             rx  ry
  * 
  */
 static void rtree_right_rotate(rtree_t tree, struct $rtree * y) {
@@ -304,10 +306,12 @@ rtree_insert(rtree_t tree, void * pack) {
         tree->root = node;
     } else {
         if (fcmp(y, node) > 0) {
-            // 情况 2: 若 "node所包含的值" < "y所包含的值", 则将 [node] 设为 [y的左孩子]
+            // 情况 2: 
+            // 若 "node所包含的值" < "y所包含的值", 则将 [node] 设为 [y的左孩子]
             y->left = node;
         } else {
-            // 情况 3：若 "node所包含的值" >= "y所包含的值", 将 [node] 设为 [y的右孩子] 
+            // 情况 3: 
+            // 若 "node所包含的值" >= "y所包含的值", 将 [node] 设为 [y的右孩子] 
             y->right = node;
         }
     }
@@ -326,7 +330,9 @@ rtree_insert(rtree_t tree, void * pack) {
  *     tree 红黑树的根
  *     node 待修正的结点
  */
-static void rtree_remove_fixup(rtree_t tree, struct $rtree * node, struct $rtree * parent) {
+static void rtree_remove_fixup(rtree_t tree, 
+                               struct $rtree * node, 
+                               struct $rtree * parent) {
     struct $rtree * other;
 
     while ((!node || rtree_is_black(node)) && node != tree->root) {

@@ -17,9 +17,9 @@ struct $rtree {
 
 typedef struct {
     struct $rtree * root;
-    cmp_f fget; // cmp_f 结点查找时比较行为
-    cmp_f fcmp;
-    new_f fnew;
+    cmp_f  fget; // cmp_f 结点查找时比较行为
+    cmp_f  fcmp;
+    new_f  fnew;
     node_f fdie;
 } * rtree_t;
 
