@@ -202,7 +202,9 @@ static const char * parse_string(json_t item, const char * str) {
         // transcode UTF16 to UTF8. See RFC2781 and RFC3629
         case 'u': {
             // first bytes of UTF8 encoding for a given length in bytes
-            static const unsigned char marks[] = { 0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
+            static const unsigned char marks[] = { 
+                0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC 
+            };
             unsigned oc, uc = parse_hex4(ptr + 1);
             // check for invalid
             if ((ptr += 4) >= etr) goto err_free;
@@ -379,7 +381,7 @@ parse_value(json_t item, const char * str) {
 // json_mini - 清洗 str 中冗余的串并返回最终串的长度. 纪念 mini 比男的还平 :)
 // EF BB BF     = UTF-8                 (可选标记, 因为 Unicode 标准未有建议)
 // FE FF        = UTF-16, big-endian    (大尾字节序标记)
-// FF FE        = UTF-16, little-endian (小尾字节序标记, windows 中的 Unicode 编码默认标记)
+// FF FE        = UTF-16, little-endian (小尾字节序标记, windows Unicode 编码默认标记)
 // 00 00 FE FF  = UTF-32, big-endian    (大尾字节序标记)
 // FF FE 00 00  = UTF-32, little-endian (小尾字节序标记)
 //
