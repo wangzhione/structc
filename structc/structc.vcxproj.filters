@@ -114,9 +114,6 @@
     <ClInclude Include="system\times.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="system\utf8.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="base\url.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -148,6 +145,9 @@
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="base\buf.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="system\utf8.h">
       <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>
@@ -251,9 +251,6 @@
     <ClCompile Include="test\file_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="system\utf8.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="system\pipe.c">
       <Filter>system</Filter>
     </ClCompile>
@@ -319,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="system\thread.c">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\utf8.c">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
