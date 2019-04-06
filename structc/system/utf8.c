@@ -13119,9 +13119,10 @@ static unsigned gbk_utf8[] = {
 // u82ue - utf8 串转成 unicode, 返回编码值和长度
 int u82ue(const char * u8s, size_t n, int * ue, int * len) {
     char c = u8s[0];
-    if ((c & 0xF8) == 0xF0) { // 4位
+    if ((c & 0xF8) == 0xF0) { // 4 位
         if ((n < 4) || 
-            (u8s[1] & 0xC0) != 0x80 || (u8s[2] & 0xC0) != 0x80 || (u8s[3] & 0xC0) != 0x80) {
+            (u8s[1] & 0xC0) != 0x80 || 
+			(u8s[2] & 0xC0) != 0x80 || (u8s[3] & 0xC0) != 0x80) {
             // 编码字节长度不够
             return -2;
         }
@@ -13136,7 +13137,7 @@ int u82ue(const char * u8s, size_t n, int * ue, int * len) {
 
         *ue <<= 6;
         *ue |= u8s[3] & 0x3F;
-    } else if ((c & 0xF0) == 0xE0) { // 3位
+    } else if ((c & 0xF0) == 0xE0) { // 3 位
         if ((n < 3) || 
             (u8s[1] & 0xC0) != 0x80 || (u8s[2] & 0xC0) != 0x80)
             return -2;
@@ -13149,7 +13150,7 @@ int u82ue(const char * u8s, size_t n, int * ue, int * len) {
 
         *ue <<= 6;
         *ue |= u8s[2] & 0x3F;
-    } else if ((c & 0xE0) == 0xC0) { // 2位
+    } else if ((c & 0xE0) == 0xC0) { // 2 位
         if ((n < 2) || 
             (u8s[1] & 0xC0) != 0x80) 
             return -2;
@@ -13159,7 +13160,7 @@ int u82ue(const char * u8s, size_t n, int * ue, int * len) {
 
         *ue <<= 6;
         *ue |= u8s[1] & 0x3F;
-    } else if ((c & 0x80) == 0x00) { // 1位
+    } else if ((c & 0x80) == 0x00) { // 1 位
         *len = 1;
         *ue = c;
     } else {

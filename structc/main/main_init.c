@@ -13,6 +13,10 @@
 // return   : void
 //
 void main_init(void) {
+	char r[BUFSIZ];
+	int n = getawd(r, sizeof r);
+	assert(0 < n && n < sizeof r);
+
     // :) 随机数模块初始化
     EXTERN_RUN(r_init);
 
@@ -23,9 +27,6 @@ void main_init(void) {
     socket_init();
 
     // 配置模块初始化
-    char r[BUFSIZ];
-    int n = getawd(r, sizeof r);
-    assert(0 < n && n < sizeof r);
     IF(!conf_init(strcat(r, CONF_PATH_STR)));
 
     // 日志模块初始化

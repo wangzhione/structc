@@ -32,7 +32,7 @@
         iphlpapi.lib
         advapi32.lib
         pthread_lib.lib
-        jemalloc-vc141-Release-static.lib
+        jemalloc-vc142-Release-static.lib
 
         
     c). 添加包含目录
@@ -118,9 +118,9 @@ sudo apt install gcc gdb autogen autoconf libtool
 
 # jemalloc 安装
 cd
-wget https://github.com/jemalloc/jemalloc/releases/download/5.1.0/jemalloc-5.1.0.tar.bz2
-tar -jxvf jemalloc-5.1.0.tar.bz2
-cd jemalloc-5.1.0
+wget https://github.com/jemalloc/jemalloc/releases/download/5.2.0/jemalloc-5.2.0.tar.bz2
+tar -jxvf jemalloc-5.2.0.tar.bz2
+cd jemalloc-5.2.0
 
 sh autogen.sh
 make -j4
@@ -128,10 +128,9 @@ sudo make install
 sudo ldconfig
 
 cd
-rm -rf jemalloc-5.1.0 jemalloc-5.1.0.tar.bz2
+rm -rf jemalloc*
 ```
 
     b) 编译设置
 
         -lm -lpthread
-
