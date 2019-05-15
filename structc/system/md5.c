@@ -226,12 +226,14 @@ extern void md5_final(struct md5c * ctx, uint8_t digest[16]) {
 
 // md5_convert 将16位 md5 转成 32 位 md5码
 uint8_t * md5_convert(md5_t m, const uint8_t digest[16]) {
+	static const unsigned char code[] = "0123456789ABCDEF";
+
     uint8_t i = 0, * o = m;
     while (i < 16) {
         uint8_t x = digest[i++];
-        // 潜规则走小写 MD5
-        *o++ = (uint8_t)"0123456789abcdefg"[x >> 4];
-        *o++ = (uint8_t)"0123456789abcdefg"[x & 15];
+        // 潜规则走大写 MD5
+        *o++ = code[x >> 4];
+        *o++ = code[x & 15];
     }
     *o = '\0';
     return m;

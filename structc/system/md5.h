@@ -7,7 +7,7 @@
 #include <string.h>
 
 //
-// md5 16 byte, 默认是 32位的C串 
+// md5 16 byte, 默认是 32 位的 C 串 
 // md5 16 = md5 32 [8:24] tail add 0
 //
 typedef uint8_t md5_t[2 * 16 + 1];
@@ -22,7 +22,7 @@ extern uint8_t * md5_file(md5_t m, const char * p);
 
 //
 // md5_strs - 得到字符串的 md5 串
-// m        : 存储 md5串地址
+// m        : 存储 md5 串地址
 // d        : 内存块数据
 // n        : 内存块长度
 // return   : m 首地址

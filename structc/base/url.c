@@ -9,7 +9,7 @@
 // 
 char * 
 url_encode(const char * s, int len, int * nen) {
-    static const unsigned char encode[] = "0123456789ABCDEF";
+	static const unsigned char code[] = "0123456789ABCDEF";
 
     if (!s || !*s || len <= 0) {
         if (nen) *nen = 0;
@@ -18,7 +18,7 @@ url_encode(const char * s, int len, int * nen) {
 
     const unsigned char * from = (unsigned char *)s;
     const unsigned char * end = (unsigned char *)s + len;
-    unsigned char * to = calloc(3 * len + 1, sizeof(unsigned char));
+    unsigned char * to = calloc(3 * (size_t)len + 1, sizeof(unsigned char));
     unsigned char * start = to;
 
     while (from < end) {
@@ -34,8 +34,8 @@ url_encode(const char * s, int len, int * nen) {
             (c > 'Z' && c  < 'a' && c != '_') ||
             (c > 'z')) {
             to[0] = '%';
-            to[1] = encode[c >> 4];
-            to[2] = encode[c & 15];
+            to[1] = code[c >> 4];
+            to[2] = code[c & 15];
             to += 3;
             continue;
         }
@@ -49,7 +49,7 @@ url_encode(const char * s, int len, int * nen) {
     return (char *)start;
 }
 
-// htoc - 2字节变成16进制数表示
+// htoc - 2 字节变成 16 进制数表示
 inline char htoc(char * s) {
     int v, c= s[0];
     // 小写变大写是兼容性写法
