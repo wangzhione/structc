@@ -44,7 +44,6 @@ int
 str_cmpi(const char * ls, const char * rs) {
     int l, r;
     if (!ls || !rs) return (int)(ls - rs);
-    
     do {
         if ((l = *ls++) >= 'A' && l <= 'Z')
             l += 'a' - 'A';
@@ -65,7 +64,6 @@ int
 str_cmpin(const char * ls, const char * rs, size_t n) {
     int l, r;
     if (!ls || !rs || !n) return (int)(ls - rs);
-
     do {
         if ((l = *ls++) >= 'A' && l <= 'Z')
             l += 'a' - 'A';
@@ -166,18 +164,17 @@ str_freads(const char * path) {
 
     // 读取数据
     n = fread(buf, sizeof(char), BUFSIZ, txt);
-    if (n == 0 || ferror(txt)) {
+    if (ferror(txt)) {
         fclose(txt);
         return NULL;
     }
 
-    // 直接分配内存足够直接返回内容
-    if (n < BUFSIZ) {
+    // 由于分配内存足够, 读取完毕就直接构造返回内容
+    if (feof(txt)) {
         fclose(txt);
         str = malloc(n + 1);
-        memcpy(str, buf, n);
         str[n] = '\0';
-        return str;
+        return memcpy(str, buf, n);
     }
 
     str = malloc((cap = n << 1));
@@ -195,10 +192,10 @@ str_freads(const char * path) {
             str = realloc(str, cap <<= 1);
         memcpy(str + len, buf, n);
         len += n;
-    } while (n == BUFSIZ);
+    } while (!feof(txt));
+    fclose(txt);
 
     // 设置结尾, 并返回结果
-    fclose(txt);
     str[len] = '\0';
     return realloc(str, len + 1);
 }
