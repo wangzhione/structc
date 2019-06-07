@@ -16,7 +16,7 @@ typedef volatile long atom_t;
 
 #define atom_trylock(o)     (!__sync_lock_test_and_set(&(o), 1))
 
-#define atom_lock(o)        while(__sync_lock_test_and_set(&(o), 1))
+#define atom_lock(o)        while(__sync_lock_test_and_set(&(o), 1)) while ((o)) continue
 
 #define atom_unlock(o)      __sync_lock_release(&(o))
 
@@ -52,7 +52,7 @@ typedef volatile long atom_t;
 
 #define atom_trylock(o)     (!_ACQUIRE(_interlockedbittestandset)(&(o), 0))
 
-#define atom_lock(o)        while(_ACQUIRE(_interlockedbittestandset)(&(o), 0))
+#define atom_lock(o)        while(_ACQUIRE(_interlockedbittestandset)(&(o), 0)) while ((o)) continue
 
 static inline void store_release(atom_t * x) {
     /* store _Value atomically with release memory order */

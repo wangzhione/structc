@@ -21,7 +21,7 @@ extern void dict_delete(dict_t d);
 // fdie     : node_f 销毁行为
 // return   : dict_t
 //
-extern dict_t dict_create(node_f fdie);
+extern dict_t dict_create(void * fdie);
 
 //
 // dict_get - 获取字典中对映的 v

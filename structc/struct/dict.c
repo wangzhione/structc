@@ -40,7 +40,7 @@ struct keypair {
 };
 
 // keypair_delete - 销毁结点数据
-inline void keypair_delete(node_f fdie, struct keypair * pair) {
+inline void keypair_delete(struct keypair * pair, node_f fdie) {
     if (pair->val && fdie)
         fdie(pair->val);
     free(pair);
@@ -109,7 +109,7 @@ dict_delete(dict_t d) {
         struct keypair * pair = d->table[i];
         while (pair) {
             struct keypair * next = pair->next;
-            keypair_delete(d->fdie, pair);
+            keypair_delete(pair, d->fdie);
             pair = next;
         }
     }
@@ -123,7 +123,7 @@ dict_delete(dict_t d) {
 // return   : dict_t
 //
 inline dict_t 
-dict_create(node_f fdie) {
+dict_create(void * fdie) {
     struct dict * d = malloc(sizeof(struct dict));
     unsigned size = primes[d->idx = 0][1];
     d->used = 0;
@@ -195,7 +195,7 @@ dict_set(dict_t d, const char * k, void * v) {
                     prev->next = pair->next;
 
                 // 销毁结点, 直接返回
-                return keypair_delete(d->fdie, pair);
+                return keypair_delete(pair, d->fdie);
             }
 
             // 更新结点

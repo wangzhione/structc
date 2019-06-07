@@ -16,7 +16,7 @@ do {                                                         \
 
 
 //
-// main_test - make D=-D_DEBUG run test
+// main_test - main run test
 // return    : void
 //
 void main_test(void) {

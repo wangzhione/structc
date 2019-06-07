@@ -1,10 +1,10 @@
 ﻿#include "log.h"
 
-static FILE * log;
+static FILE * gol;
 
 // log_init - 单例, 日志库初始化
 void log_init(const char * path) {
-    if (!(log = fopen(path, "ab"))) {
+    if (!(gol = fopen(path, "ab"))) {
         fprintf(stderr, "fopen ab path err %s\n", path);
         exit(EXIT_FAILURE);
     }
@@ -29,5 +29,5 @@ log_printf(const char * fmt, ...) {
     va_end(ap);
 
     // 数据交给文件缓存层
-    fputs(str, log);
+    fputs(str, gol);
 }

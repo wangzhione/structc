@@ -65,7 +65,7 @@
         JEMALLOC_EXPORT=
 
         [Release]
-        - _DEBUG
+        NDEBUG
 
     e). 设置编译额外选项
         项目右击 -> [属性] -> [C/C++] -> [常规] -> [调试信息格式] -> [程序数据库 (/Zi)]

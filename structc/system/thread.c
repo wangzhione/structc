@@ -14,7 +14,7 @@ void pthread_init(void) {
 
 //
 // pthread_async - 启动无需等待的线程
-// frun     : node_f or start_f 运行的主体
+// frun     : node_f or ... 运行主体
 // arg      : 运行参数
 // return   : 0 is success, -1 is error
 // 

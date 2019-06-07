@@ -11,10 +11,10 @@ int main(int argc, char * argv[]) {
     // 
     EXTERN_RUN(main_init);
 
-    // make D=-D_DEBUG
+    // make D=-DNDEBUG
     // main_test 单元测试才会启动
     //
-#ifdef _DEBUG
+#ifndef NDEBUG
     EXTERN_RUN(main_test);
 #endif
 

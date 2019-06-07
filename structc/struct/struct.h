@@ -30,13 +30,7 @@ typedef void * (* new_f)();
 // node_f - 销毁行为
 // : void list_die(void * node)
 //
-typedef void (* node_f)(void * node);
-
-//
-// start_f - pthread create func
-// : int * run(int * arg)
-//
-typedef void * (* start_f)(void * arg);
+typedef void (* node_f)();
 
 //
 // each_f - 遍历行为, node 是内部结点, arg 是外部参数
@@ -51,12 +45,12 @@ typedef int (* each_f)(void * node, void * arg);
 // });
 //
 #ifndef DCODE
-#  ifdef _DEBUG
+#  ifndef NDEBUG
 #    define DCODE(code)  do code while(0)
 #  else
 #    define DCODE(code)  
-#  endif //  ! _DEBUG
-#endif  //  ! DCODE
+#  endif//NDEBUG
+#endif//DCODE
 
 //
 // CERR - 打印错误信息
@@ -91,7 +85,7 @@ do {                                                                  \
 
 #define NIL
 #define RETNIL(fmt, ...)                                              \
-RETURN(NIL, fmt, ##__VA_ARGS__)
+RETURN(NIL , fmt, ##__VA_ARGS__)
 
 #define RETNUL(fmt, ...)                                              \
 RETURN(NULL, fmt, ##__VA_ARGS__)
