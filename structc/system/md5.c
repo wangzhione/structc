@@ -283,7 +283,7 @@ md5_file(md5_t m, const char * p) {
             return m;
         }
         md5_update(&ctx, d, n);
-    } while (n == sizeof d);
+    } while (!feof(txt));
     fclose(txt);
 
     md5_final(&ctx, digest);
