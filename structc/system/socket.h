@@ -37,7 +37,7 @@ typedef SOCKET socket_t;
 // socket_init - 初始化 socket 库初始化方法
 inline void socket_init(void) {
     WSADATA version;
-    WSAStartup(WINSOCK_VERSION, &version);
+    (void)WSAStartup(WINSOCK_VERSION, &version);
 }
 
 // socket_close     - 关闭上面创建后的句柄

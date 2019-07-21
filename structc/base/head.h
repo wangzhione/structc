@@ -2,6 +2,7 @@
 #define _HEAD_H
 
 #include "log.h"
+#include "rand.h"
 #include "conf.h"
 #include "file.h"
 #include "check.h"
@@ -53,7 +54,7 @@ inline static void spause(void) {
     rewind(stdin);
     fflush(stderr); fflush(stdout);
     printf("Press any key to continue . . .");
-    getch();
+    (void)getch();
 }
 
 //
@@ -70,7 +71,7 @@ inline static void spause(void) {
 #define LEN(a) sizeof(a)/sizeof(*(a))
 
 //
-// EXTERN_RUN - 简单声明, 并立即使用的宏
+// EXTERN_RUN - 函数包装宏, 声明并立即使用
 // frun     : 需要执行的函数名称
 // ...      : 可变参数, 保留
 //

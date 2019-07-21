@@ -26,11 +26,11 @@ extern int pthread_async(void * frun, void * arg);
 
 //
 // thread_async - 强制启动无需等待线程
-// frun		: node_f or ... 运行主体
-// return	: void 
+// frun     : node_f or ... 运行主体
+// return   : void 
 //
 inline void thread_async(void * frun) {
-	IF(pthread_async(frun, NULL));
+    IF(pthread_async(frun, NULL));
 }
 
 //
@@ -39,7 +39,7 @@ inline void thread_async(void * frun) {
 // return   : void
 //
 inline void pthread_end(pthread_t id) {
-	pthread_join(id, NULL);
+    pthread_join(id, NULL);
 }
 
 #endif//_THREAD_H

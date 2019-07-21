@@ -182,8 +182,10 @@ time_week(time_t n, time_t t) {
     localtime_r(&n, &m);
     // 得到当前时间到周一起点的时间差
     m.tm_wday = m.tm_wday ? m.tm_wday - 1 : 6;
-    p = m.tm_wday * 24 * 3600 + m.tm_hour * 3600 +
-        m.tm_min * 60 + m.tm_sec;
+    p = (time_t)m.tm_wday * 24 * 3600 
+      + (time_t)m.tm_hour * 3600 
+      + (time_t)m.tm_min * 60 
+      + m.tm_sec;
 
     // [min, n], n = max(n, t) 表示在同一周内
     return t >= n - p;
@@ -231,7 +233,7 @@ times_fmt(const char * fmt, char out[], size_t sz) {
     struct tm m;
     struct timespec s;
 
-    timespec_get(&s, TIME_UTC);
+    (void)timespec_get(&s, TIME_UTC);
     localtime_r(&s.tv_sec, &m);
 
     return snprintf(out, sz, fmt,
