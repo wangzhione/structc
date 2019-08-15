@@ -53,7 +53,7 @@ extern int str_cmpin(const char * ls, const char * rs, size_t n);
 extern char * str_trim(char str[]);
 
 //
-// str_printf - 字符串构建函数
+// str_printf - 格化式字符串构建
 // format   : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存

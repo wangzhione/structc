@@ -99,55 +99,32 @@ str_trim(char str[]) {
     return s == str ? str : memmove(str, s, e - s + 2);
 }
 
-// str_vprintf - 成功直接返回
-static char * str_vprintf(const char * format, va_list arg) {
-    char buf[BUFSIZ];
-    int n = vsnprintf(buf, sizeof buf, format, arg);
-    if (n < sizeof buf) {
-        char * ret = malloc(n + 1);
-        return memcpy(ret, buf, n + 1);
-    }
-    return NULL;
-}
-
 //
-// str_printf - 字符串构建函数
+// str_printf - 格化式字符串构建
 // format   : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存
 //
 char * 
 str_printf(const char * format, ...) {
-    char * ret;
-    int n, cap;
+    // 确定待分配内存 size
     va_list arg;
     va_start(arg, format);
+    int n = vsnprintf(NULL, 0, format, arg);
+    va_end(arg);
 
-    // BUFSIZ 以下内存直接分配
-    ret = str_vprintf(format, arg);
-    if (ret != NULL)
-        return ret;
+    if (n < 0) 
+        return NULL;
 
-    cap = BUFSIZ << 1;
-    for (;;) {
-        ret = malloc(cap);
-        n = vsnprintf(ret, cap, format, arg);
-        // 失败的情况
-        if (n < 0) {
-            free(ret);
-            return NULL;
-        }
+    // 获取待分配内存
+    char * ret = malloc(++n);
 
-        // 成功情况
-        if (n < cap)
-            break;
+    // 数据转换, 预设 vsnprintf 二次安全
+    va_start(arg, format);
+    vsnprintf(ret, n, format, arg);
+    va_end(arg);
 
-        // 内存不足的情况
-        free(ret);
-        cap <<= 1;
-    }
-
-    return realloc(ret, n + 1);
+    return ret;
 }
 
 //
@@ -159,8 +136,10 @@ char *
 str_freads(const char * path) {
     size_t n, cap, len;
     char * str, buf[BUFSIZ];
+
     FILE * txt = fopen(path, "rb");
-    if (NULL == txt) return NULL;
+    if (NULL == txt) 
+        return NULL;
 
     // 读取数据
     n = fread(buf, sizeof(char), BUFSIZ, txt);
@@ -193,6 +172,7 @@ str_freads(const char * path) {
         memcpy(str + len, buf, n);
         len += n;
     } while (!feof(txt));
+
     fclose(txt);
 
     // 设置结尾, 并返回结果

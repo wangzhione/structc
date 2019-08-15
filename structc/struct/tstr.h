@@ -97,6 +97,6 @@ extern void tstr_popup(tstr_t tsr, size_t len);
 // ...      : 等待进入的变量
 // return   : 返回创建的 C 字符串内容
 //
-extern char * tstr_printf(tstr_t tsr, const char * fmt, ...);
+extern char * tstr_printf(tstr_t tsr, const char * format, ...);
 
 #endif//_TSTR_H

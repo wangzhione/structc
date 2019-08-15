@@ -135,48 +135,31 @@ tstr_popup(tstr_t tsr, size_t len) {
     }
 }
 
-// tstr_vprintf - BUFSIZ 以下内存处理
-static int tstr_vprintf(tstr_t tsr, const char * fmt, va_list arg) {
-    char buf[BUFSIZ];
-    int len = vsnprintf(buf, sizeof buf, fmt, arg);
-    if (len < sizeof buf) {
-        // 合法直接构建内存返回
-        if (len > 0)
-            tstr_appendn(tsr, buf, len);
-        tstr_cstr(tsr);
-        va_end(arg);
-    }
-    return len;
-}
-
 //
 // tstr_printf - 参照 sprintf 方式填充内容
 // tsr      : tstr_t 串
-// fmt      : 待格式化的串
+// format   : 待格式化的串
 // ...      : 等待进入的变量
 // return   : 返回创建的 C 字符串内容
 //
 char * 
-tstr_printf(tstr_t tsr, const char * fmt, ...) {
-    int n, cap;
+tstr_printf(tstr_t tsr, const char * format, ...) {
+    // 确定待分配内存 size
     va_list arg;
-    va_start(arg, fmt);
-
-    // 初步构建失败直接返回
-    cap = tstr_vprintf(tsr, fmt, arg);
-    if (cap < BUFSIZ)
-        return tsr->str;
-    
-    // 开始详细构建内存
-    do {
-        char * ret = malloc(cap <<= 1);
-        n = vsnprintf(ret, cap, fmt, arg);
-        // 内存足够就开始填充, 以备结束
-        if (n < cap && n > 0)
-            tstr_appendn(tsr, ret, n);
-        free(ret);
-    } while (n < cap);
-
+    va_start(arg, format);
+    int n = vsnprintf(NULL, 0, format, arg);
     va_end(arg);
-    return tstr_cstr(tsr);
+
+    if (n <= 0) 
+        return tstr_cstr(tsr);
+
+    // 预备待分配内存
+    tstr_expand(tsr, ++n);
+
+    // 数据转换, 预设 vsnprintf 二次安全
+    va_start(arg, format);
+    tsr->len += vsnprintf(tsr->str + tsr->len, n, format, arg);
+    va_end(arg);
+
+    return tsr->str;
 }
