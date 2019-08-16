@@ -72,6 +72,7 @@
         项目右击 -> [属性] -> [C/C++] -> [代码生成] -> [运行库] -> [多线程/MT]
         项目右击 -> [属性] -> [C/C++] -> [高级] -> [编译为] -> [编译为C代码/TC]
         项目右击 -> [属性] -> [C/C++] -> [高级] -> [禁用特定警告] -> [4098]
+        项目右击 -> [属性] -> [C/C++] -> [命令行] -> [/D "restrict=__restrict" ]
         项目右击 -> [属性] -> [链接器] -> [常规] -> [启用增量链接] -> [否 (/INCREMENTAL:NO)]
         项目右击 -> [属性] -> [链接器] -> [系统] -> [子系统] -> [控制台]
         项目右击 -> [属性] -> [链接器] -> [命令行] -> /LTCG /IGNORE:4099
@@ -118,9 +119,9 @@ sudo apt install gcc gdb autogen autoconf libtool
 
 # jemalloc 安装
 cd
-wget https://github.com/jemalloc/jemalloc/releases/download/5.2.0/jemalloc-5.2.0.tar.bz2
-tar -jxvf jemalloc-5.2.0.tar.bz2
-cd jemalloc-5.2.0
+wget https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2
+tar -jxvf jemalloc-5.2.1.tar.bz2
+cd jemalloc-5.2.1
 
 sh autogen.sh
 make -j4

@@ -77,5 +77,5 @@ inline int64_t
 r_ranb(void) {
     uint64_t x = ((r_rand() << N) ^ r_rand()) & INT32_MAX;
     uint64_t y = ((r_rand() << N) ^ r_rand()) & INT32_MAX;
-    return ((x << 2 * N) | y) & INT64_MAX;	
+    return ((x << 2 * N) | y) & INT64_MAX;
 }

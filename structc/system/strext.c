@@ -7,11 +7,10 @@
 //
 unsigned 
 str_hash(const char * str) {
-    register unsigned h = 0u;
+    register unsigned u, h = 0;
     if (str) {
-        register unsigned c;
-        while ((c = *str++))
-            h = h * 131u + c;
+        while ((u = *str++))
+            h = h * 131u + u;
     }
     return h;
 }
@@ -24,7 +23,7 @@ str_hash(const char * str) {
 // return   : 返回字符串长度
 //
 int 
-str_cpyn(char * src, const char * tar, size_t n) {
+str_cpyn(char * restrict src, const char * tar, size_t n) {
     size_t i;
     if (!src || !tar || !n) return EParam;
     for (i = 1; 

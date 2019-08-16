@@ -10,6 +10,9 @@ extern "C" {
 /* Defined if alloc_size attribute is supported. */
 /* #undef JEMALLOC_HAVE_ATTR_ALLOC_SIZE */
 
+/* Defined if format_arg(...) attribute is supported. */
+/* #undef JEMALLOC_HAVE_ATTR_FORMAT_ARG */
+
 /* Defined if format(gnu_printf, ...) attribute is supported. */
 /* #undef JEMALLOC_HAVE_ATTR_FORMAT_GNU_PRINTF */
 
@@ -150,6 +153,7 @@ extern "C" {
 #      define JEMALLOC_EXPORT __declspec(dllimport)
 #    endif
 #  endif
+#  define JEMALLOC_FORMAT_ARG(i)
 #  define JEMALLOC_FORMAT_PRINTF(s, i)
 #  define JEMALLOC_NOINLINE __declspec(noinline)
 #  ifdef __cplusplus
@@ -176,6 +180,11 @@ extern "C" {
 #  endif
 #  ifndef JEMALLOC_EXPORT
 #    define JEMALLOC_EXPORT JEMALLOC_ATTR(visibility("default"))
+#  endif
+#  ifdef JEMALLOC_HAVE_ATTR_FORMAT_ARG
+#    define JEMALLOC_FORMAT_ARG(i) JEMALLOC_ATTR(__format_arg__(3))
+#  else
+#    define JEMALLOC_FORMAT_ARG(i)
 #  endif
 #  ifdef JEMALLOC_HAVE_ATTR_FORMAT_GNU_PRINTF
 #    define JEMALLOC_FORMAT_PRINTF(s, i) JEMALLOC_ATTR(format(gnu_printf, s, i))
