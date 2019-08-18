@@ -76,16 +76,6 @@
         项目右击 -> [属性] -> [链接器] -> [常规] -> [启用增量链接] -> [否 (/INCREMENTAL:NO)]
         项目右击 -> [属性] -> [链接器] -> [系统] -> [子系统] -> [控制台]
         项目右击 -> [属性] -> [链接器] -> [命令行] -> /LTCG /IGNORE:4099
-        
-        项目右击 -> [生成事件] -> [后期生成事件] -> [命令行]
-
-        echo begin init directory $(TargetDir)conf
-        if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
-        xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
-        if not exist  $(TargetDir)test mkdir $(TargetDir)test
-        if not exist  $(TargetDir)test\conf mkdir $(TargetDir)test\conf
-        xcopy /D /S /E /Y $(ProjectDir)test\conf $(TargetDir)test\conf
-        echo e n d init directory $(TargetDir)conf
 
         [Release]
         - [控制台]
@@ -105,7 +95,16 @@
         测试文件. 方便统一生成特定内容.
 
     g). 后期生成事件
+
         项目右击 -> [属性] -> [生成事件] -> [后期生成事件] -> [命令行]
+
+        echo begin init directory $(TargetDir)conf
+        if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
+        xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
+        if not exist  $(TargetDir)test mkdir $(TargetDir)test
+        if not exist  $(TargetDir)test\conf mkdir $(TargetDir)test\conf
+        xcopy /D /S /E /Y $(ProjectDir)test\conf $(TargetDir)test\conf
+        echo e n d init directory $(TargetDir)conf
 
 ## 2. linux 部署
 
