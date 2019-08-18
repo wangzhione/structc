@@ -5,8 +5,8 @@
 #include <jemalloc/jemalloc.h>
 
 // check 内存检测并处理
-inline void * check(void * ptr, size_t size) {
-    if (NULL == ptr) {
+inline void * check(void * restrict ptr, size_t size) {
+    if (!ptr) {
         fprintf(stderr, "check memory collapse %zu\n", size);
         fflush(stderr);
         abort();
@@ -20,7 +20,7 @@ inline void * check(void * ptr, size_t size) {
 // size     : 重新分配的内存大小
 // return   : 返回重新分配的新地址
 //
-inline void * realloc_(void * ptr, size_t size) {
+inline void * realloc_(void * restrict ptr, size_t size) {
     void * ntr = je_realloc(ptr, size);
     return check(ntr, size);
 }
@@ -47,24 +47,24 @@ inline void * malloc_(size_t size) {
 }
 
 //
+// strdup_  - strdup 包装函数
+// str      : '\0' 结尾 C 字符串
+// return   : 拷贝后新的 C 字符串
+//
+inline char * strdup_(const char * str) {
+    if (str) {
+        size_t n = strlen(str) + 1;
+        char * ptr = malloc_(n);
+        return memcpy(ptr, str, n);
+    }
+    return NULL;
+}
+
+//
 // free_    - free 包装函数
 // ptr      : 内存首地址
 // return   : void
 //
-inline void free_(void * ptr) {
+inline void free_(void * restrict ptr) {
     je_free(ptr);
-}
-
-//
-// strdup_  - strdup 包装函数
-// s        : '\0' 结尾 C 字符串
-// return   : 拷贝后新的 C 字符串
-//
-inline char * strdup_(const char * s) {
-    if (s) {
-        size_t n = strlen(s) + 1;
-        char * ptr = malloc_(n);
-        return memcpy(ptr, s, n);
-    }
-    return NULL;
 }

@@ -3,13 +3,13 @@
 static pthread_attr_t attr[1];
 
 // 
-// pthread_init - thread 使用方初始化
+// pthread_init - thread 使用方需要手动初始化
 // attr     : pthread_attr_t 变量
 // return   : void
 //
 void pthread_init(void) {
     pthread_attr_init(attr);
-    pthread_attr_setdetachstate(attr, PTHREAD_CREATE_DETACHED);    
+    pthread_attr_setdetachstate(attr, PTHREAD_CREATE_DETACHED);
 }
 
 //

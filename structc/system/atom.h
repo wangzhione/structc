@@ -3,13 +3,13 @@
 
 #include "atomic.h"
 
-//
-// atom_t 自旋锁类型
-// [static] atom_t o = 0;
-//   atom_lock(o);
-//  - One Man RPG
-// atom_unlock(o);
-//
+/*
+ * atom_t 自锁原子锁类型
+ * [static] atom_t o = 0;
+ * atom_lock(o);
+ *  - One Man RPG
+ * atom_unlock(o);
+ */
 typedef volatile long atom_t;
 
 #ifdef __GNUC__
@@ -20,20 +20,20 @@ typedef volatile long atom_t;
 
 #define atom_unlock(o)      __sync_lock_release(&(o))
 
-// 内存屏障, 维持代码顺序
+/* 内存屏障, 防止代码优化改变顺序 */
 #define atom_sync()         __sync_synchronize()
 
-// v += a ; return v;
+/* v += a ; return v; */
 #define atom_add(v, a)      __sync_add_and_fetch(&(v), (a))
-// type tmp = v ; v = a; return tmp;
+/* type tmp = v ; v = a; return tmp; */
 #define atom_set(v, a)      __sync_lock_test_and_set(&(v), (a))
-// v &= a; return v;
+/* v &= a; return v; */
 #define atom_and(v, a)      __sync_and_and_fetch(&(v), (a))
-// return ++v;
+/* return ++v; */
 #define atom_inc(v)         __sync_add_and_fetch(&(v), 1)
-// return --v;
+/* return --v; */
 #define atom_dec(v)         __sync_sub_and_fetch(&(v), 1)
-// bool b = v == c; b ? v=a : ; return b;
+/* bool b = v == c; b ? v=a : ; return b; */
 #define atom_cas(v, c, a)   __sync_bool_compare_and_swap(&(v), (c), (a))
 
 #endif
@@ -67,22 +67,22 @@ static inline void store_release(atom_t * x) {
 
 #define atom_unlock(o)      store_release(&(o))
 
-// 保证代码优化后不乱序执行
+/* 内存屏障, 防止代码优化改变顺序 */
 #define atom_sync()         MemoryBarrier()
 
-// v 和 a 都是 long 这样数据
+/* v 和 a 都应该是 long 类型大小数据 */
 #define atom_add(v, a)      InterlockedAdd((volatile LONG *)&(v), (LONG)(a))
 #define atom_set(v, a)      InterlockedExchange((volatile LONG *)&(v), (LONG)(a))
 #define atom_and(v, a)      (InterlockedAnd((volatile LONG *)&(v), (LONG)(a)), (LONG)(v))
 #define atom_inc(v)         InterlockedIncrement((volatile LONG *)&(v))
 #define atom_dec(v)         InterlockedDecrement((volatile LONG *)&(v))
-//
-// 对于 InterlockedCompareExchange(v, c, a) 等价于下面
-// long tmp = v ; v == a ? v = c : ; return tmp;
-//
-// 咱们的 atom_cas(v, c, a) 等价于下面
-// long tmp = v ; v == c ? v = a : ; return tmp;
-//
+/*
+ * 对于 InterlockedCompareExchange(v, c, a) 等价于下面
+ * long tmp = v ; v == a ? v = c : ; return tmp;
+ *
+ * 咱们的 atom_cas(v, c, a) 等价于下面
+ * long tmp = v ; v == c ? v = a : ; return tmp;
+ */
 #define atom_cas(v, c, a)   ((LONG)(c) == InterlockedCompareExchange((volatile LONG *)&(v), (LONG)(a), (LONG)(c)))
 
 #endif

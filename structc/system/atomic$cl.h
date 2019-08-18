@@ -18,11 +18,11 @@ typedef enum memory_order {
 static inline void atomic_thread_fence(memory_order o) {
     _ReadWriteBarrier();
 #  if defined(_M_ARM) || defined(_M_ARM64)
-    // ARM needs a barrier for everything but relaxed.
+    /* ARM needs a barrier for everything but relaxed. */
     if (o != memory_order_relaxed)
         MemoryBarrier();
 #  elif defined(_M_IX86) || defined (_M_X64)
-    // x86 needs a barrier only for seq_cst.
+    /* x86 needs a barrier only for seq_cst. */
     if (o == memory_order_seq_cst)
         MemoryBarrier();
 #  else

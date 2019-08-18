@@ -1,6 +1,6 @@
 ﻿#include "socket.h"
 
-// socket_recvn     - socket 接受 sz 个字节
+// socket_recvn - socket 接受 sz 个字节
 int 
 socket_recvn(socket_t s, void * buf, int sz) {
     int r, n = sz;
@@ -18,7 +18,7 @@ socket_recvn(socket_t s, void * buf, int sz) {
     return sz - n;
 }
 
-// socket_sendn     - socket 发送 sz 个字节
+// socket_sendn - socket 发送 sz 个字节
 int 
 socket_sendn(socket_t s, const void * buf, int sz) {
     int r, n = sz;
@@ -45,57 +45,57 @@ int socket_addr(char ip[INET6_ADDRSTRLEN], uint16_t port, sockaddr_t a) {
         memset(a->sin_zero, 0, sizeof a->sin_zero);
     } else {
         char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
-        struct addrinfo * ai = NULL, req = {
+        struct addrinfo * rsp, req = {
             .ai_family   = PF_INET,
             .ai_socktype = SOCK_STREAM,
         };
 
-        if (getaddrinfo(ip, ports, &req, &ai))
+        if (getaddrinfo(ip, ports, &req, &rsp))
             return EParam;
 
         // 尝试默认第一个 ipv4
-        memcpy(a, ai->ai_addr, ai->ai_addrlen);
-        freeaddrinfo(ai);
+        memcpy(a, rsp->ai_addr, rsp->ai_addrlen);
+        freeaddrinfo(rsp);
     }
 
     return SBase;
 }
 
-// socket_binds     - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
+// socket_binds - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
 socket_t 
 socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family) {
     // 构建 getaddrinfo 请求参数
     if (!ip || !*ip) ip = "0.0.0.0";
     char ports[sizeof "65535"]; sprintf(ports, "%hu", port);
-    struct addrinfo * ai = NULL, req = {
+    struct addrinfo * rsp, req = {
         .ai_family   = PF_UNSPEC,
         .ai_socktype = protocol == IPPROTO_TCP ? SOCK_STREAM : SOCK_DGRAM,
         .ai_protocol = protocol,
     };
-    if (getaddrinfo(ip, ports, &req, &ai))
+    if (getaddrinfo(ip, ports, &req, &rsp))
         return INVALID_SOCKET;
 
-    socket_t fd = socket(ai->ai_family, ai->ai_socktype, 0);
+    socket_t fd = socket(rsp->ai_family, rsp->ai_socktype, 0);
     if (fd == INVALID_SOCKET)
         goto err_free;
     if (socket_set_reuse(fd))
         goto err_close;
-    if (bind(fd, ai->ai_addr, (int)ai->ai_addrlen))
+    if (bind(fd, rsp->ai_addr, (int)rsp->ai_addrlen))
         goto err_close;
 
     // Success return ip family
-    if (family) *family = ai->ai_family;
-    freeaddrinfo(ai);
+    if (family) *family = rsp->ai_family;
+    freeaddrinfo(rsp);
     return fd;
 
 err_close:
     socket_close(fd);
 err_free:
-    freeaddrinfo(ai);
+    freeaddrinfo(rsp);
     return INVALID_SOCKET;
 }
 
-// socket_listens   - 返回监听好的 socket fd
+// socket_listens - 返回监听好的 socket fd
 socket_t 
 socket_listens(const char * ip, uint16_t port, int backlog) {
     socket_t fd = socket_binds(ip, port, IPPROTO_TCP, NULL);
@@ -147,7 +147,7 @@ socket_host(const char * host, sockaddr_t a) {
         return port;
 
     // 开始构造 sockaddr
-    if (NULL == a) {
+    if (!a) {
         sockaddr_t addr;
         return socket_addr(ip, port, addr);
     }
@@ -206,7 +206,7 @@ socket_connects(const char * host) {
     RETURN(INVALID_SOCKET, "host = %s", host);
 }
 
-// socket_connecto - connect 超时链接, 返回非阻塞 socket
+// socket_connecto - connect 带超时的链接, 返回非阻塞 socket
 static int socket_connecto(socket_t s, const sockaddr_t a, int ms) {
     int n, r;
     struct timeval timeout;
@@ -232,7 +232,7 @@ static int socket_connecto(socket_t s, const sockaddr_t a, int ms) {
     FD_ZERO(&eset); FD_SET(s, &eset);
     timeout.tv_sec = ms / 1000;
     timeout.tv_usec = (ms % 1000) * 1000;
-    n = socket_select(s, &rset, &wset, &eset, &timeout);
+    n = select((int)(s + 1), &rset, &wset, &eset, &timeout);
     // 超时直接滚
     if (n <= 0) return EBase;
 

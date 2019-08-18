@@ -13,6 +13,9 @@
 
 #include <ws2tcpip.h>
 
+typedef SOCKET socket_t;
+typedef int    socklen_t;
+
 #undef  errno
 #define errno                   WSAGetLastError()
 
@@ -23,7 +26,7 @@
 #undef  EINPROGRESS
 #define EINPROGRESS             WSAEWOULDBLOCK
 
-// WinSock 2 extension -- manifest constants for shutdown()
+// WinSock 2 extension manifest constants for shutdown()
 //
 #define SHUT_RD                 SD_RECEIVE
 #define SHUT_WR                 SD_SEND
@@ -31,27 +34,24 @@
 
 #define SO_REUSEPORT            SO_REUSEADDR
 
-typedef int socklen_t;
-typedef SOCKET socket_t;
-
 // socket_init - 初始化 socket 库初始化方法
 inline void socket_init(void) {
     WSADATA version;
     (void)WSAStartup(WINSOCK_VERSION, &version);
 }
 
-// socket_close     - 关闭上面创建后的句柄
+// socket_close - 关闭上面创建后的句柄
 inline int socket_close(socket_t s) {
     return closesocket(s);
 }
 
-// socket_set_block     - 设置套接字是阻塞
+// socket_set_block - 设置套接字是阻塞
 inline int socket_set_block(socket_t s) {
     u_long ov = 0;
     return ioctlsocket(s, FIONBIO, &ov);
 }
 
-// socket_set_nonblock  - 设置套接字是非阻塞
+// socket_set_nonblock - 设置套接字是非阻塞
 inline int socket_set_nonblock(socket_t s) {
     u_long ov = 1;
     return ioctlsocket(s, FIONBIO, &ov);
@@ -74,14 +74,14 @@ inline int socket_set_nonblock(socket_t s) {
 // On now linux EAGAIN and EWOULDBLOCK may be the same value 
 // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
 //
-typedef int socket_t;
+typedef int    socket_t;
 
 #define INVALID_SOCKET          (~0)
 #define SOCKET_ERROR            (-1)
 
 // socket_init - 初始化 socket 库初始化方法
 inline void socket_init(void) {
-    // 管道破裂, 忽略 SIGPIPE 信号
+    // 防止管道破裂, 忽略 SIGPIPE 信号
     signal(SIGPIPE, SIG_IGN);
 }
 
@@ -89,13 +89,13 @@ inline int socket_close(socket_t s) {
     return close(s);
 }
 
-// socket_set_block     - 设置套接字是阻塞
+// socket_set_block - 设置套接字是阻塞
 inline static int socket_set_block(socket_t s) {
     int mode = fcntl(s, F_GETFL, 0);
     return fcntl(s, F_SETFL, mode & ~O_NONBLOCK);
 }
 
-// socket_set_nonblock  - 设置套接字是非阻塞
+// socket_set_nonblock - 设置套接字是非阻塞
 inline int socket_set_nonblock(socket_t s) {
     int mode = fcntl(s, F_GETFL, 0);
     return fcntl(s, F_SETFL, mode | O_NONBLOCK);
@@ -103,25 +103,22 @@ inline int socket_set_nonblock(socket_t s) {
 
 #endif
 
-// socket_recv      - 读取数据
+// socket_recv - 读取数据
 inline int socket_recv(socket_t s, void * buf, int sz) {
     return sz > 0 ? (int)recv(s, buf, sz, 0) : 0;
 }
 
-// socket_send      - 写入数据
+// socket_send - 写入数据
 inline int socket_send(socket_t s, const void * buf, int sz) {
     return (int)send(s, buf, sz, 0);
 }
 
-// sockaddr_t 为 ipv4 封装的库
-typedef struct sockaddr_in sockaddr_t[1];
-
-// socket_dgram     - 创建 UDP socket
+// socket_dgram - 创建 UDP socket
 inline socket_t socket_dgram(void) {
     return socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 }
 
-// socket_stream    - 创建 TCP socket
+// socket_stream - 创建 TCP socket
 inline socket_t socket_stream(void) {
     return socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 }
@@ -136,7 +133,7 @@ inline int socket_set_reuse(socket_t s) {
     return socket_set_enable(s, SO_REUSEPORT);
 }
 
-// socket_set_keepalive - 开启心跳包检测, 默认 5次/2h
+// socket_set_keepalive - 开启心跳包检测, 默认 5 次/2h
 inline int socket_set_keepalive(socket_t s) {
     return socket_set_enable(s, SO_KEEPALIVE);
 }
@@ -164,9 +161,11 @@ inline int socket_set_sndtimeo(socket_t s, int ms) {
 inline int socket_get_error(socket_t s) {
     int err;
     socklen_t len = sizeof(err);
-    int r = getsockopt(s, SOL_SOCKET, SO_ERROR, (void *)&err, &len);
-    return r < 0 ? errno : err;
+    return getsockopt(s, SOL_SOCKET, SO_ERROR, (void *)&err, &len) ? errno : err;
 }
+
+// sockaddr_t 为 ipv4 socket 封装库默认地址结构
+typedef struct sockaddr_in sockaddr_t[1];
 
 // socket_getsockname - 获取 socket 的本地地址
 inline int socket_getsockname(socket_t s, sockaddr_t name) {
@@ -182,23 +181,9 @@ inline int socket_getpeername(socket_t s, sockaddr_t name) {
 
 // socket_ntop - 点分十进制转 ip 串
 inline char * socket_ntop(sockaddr_t a, char ip[INET6_ADDRSTRLEN]) {
+    // 默认当前 socket 库只处理 ipv4 版本
     a->sin_family = AF_INET;
-    return (char *)inet_ntop(AF_INET, &a->sin_addr, ip, INET6_ADDRSTRLEN);
-}
-
-//
-// socket_select - socket select 版本
-// max      : max socket fd
-// fdr      : read fd set
-// fdw      : write fd set
-// fde      : error fd set
-// timeout  : 等待时间, NULL 永久等待
-// return   : ready descriptors number or -1 for errors
-//
-inline int socket_select(socket_t max, 
-                         fd_set * fdr, fd_set * fdw, fd_set * fde, 
-                         struct timeval * timeout) {
-    return select((int)max + 1, fdr, fdw, fde, timeout);
+    return (char *)inet_ntop(a->sin_family, &a->sin_addr, ip, INET6_ADDRSTRLEN);
 }
 
 // socket_recvfrom  - recvfrom 接受函数
@@ -212,37 +197,37 @@ inline int socket_sendto(socket_t s, const void * buf, int sz, const sockaddr_t 
     return (int)sendto(s, buf, sz, 0, (struct sockaddr *)to, sizeof(sockaddr_t));
 }
 
-// socket_recvn     - socket 接受 sz 个字节
+// socket_recvn - socket 接受 sz 个字节
 extern int socket_recvn(socket_t s, void * buf, int sz);
 
-// socket_sendn     - socket 发送 sz 个字节
+// socket_sendn - socket 发送 sz 个字节
 extern int socket_sendn(socket_t s, const void * buf, int sz);
 
-// socket_bind          - bind    绑定函数
+// socket_bind - bind    绑定函数
 inline int socket_bind(socket_t s, const sockaddr_t a) {
     return bind(s, (struct sockaddr *)a, sizeof(sockaddr_t));
 }
 
-// socket_listen        - listen  监听函数
+// socket_listen - listen  监听函数
 inline int socket_listen(socket_t s) {
     return listen(s, SOMAXCONN);
 }
 
-// socket_accept        - accept  等接函数
+// socket_accept - accept  等接函数
 inline socket_t socket_accept(socket_t s, sockaddr_t a) {
     socklen_t len = sizeof (sockaddr_t);
     return accept(s, (struct sockaddr *)a, &len);
 }
 
-// socket_connect       - connect 链接函数
+// socket_connect - connect 链接函数
 inline int socket_connect(socket_t s, const sockaddr_t a) {
     return connect(s, (const struct sockaddr *)a, sizeof(sockaddr_t));
 }
 
-// socket_binds     - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
+// socket_binds - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
 extern socket_t socket_binds(const char * ip, uint16_t port, uint8_t protocol, int * family);
 
-// socket_listens   - 返回监听好的 socket fd
+// socket_listens - 返回监听好的 socket fd
 extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
 
 //

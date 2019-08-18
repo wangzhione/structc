@@ -6,17 +6,6 @@
 #include <semaphore.h>
 
 //
-// pthread_run - 启动线程
-// p        : 指向线程 id 的指针
-// frun     : node_f or ... 运行主体
-// arg      : 运行参数
-// return   : 0 is success, -1 is error
-//
-inline int pthread_run(pthread_t * p, void * frun, void * arg) {
-    return pthread_create(p, NULL, frun, arg);
-}
-
-//
 // pthread_async - 启动无需等待的线程
 // frun     : node_f or ... 运行主体
 // arg      : 运行参数
@@ -31,6 +20,17 @@ extern int pthread_async(void * frun, void * arg);
 //
 inline void thread_async(void * frun) {
     IF(pthread_async(frun, NULL));
+}
+
+//
+// pthread_run - 启动线程
+// p        : 指向线程 id 的指针
+// frun     : node_f or ... 运行主体
+// arg      : 运行参数
+// return   : 0 is success, -1 is error
+//
+inline int pthread_run(pthread_t * p, void * frun, void * arg) {
+    return pthread_create(p, NULL, frun, arg);
 }
 
 //

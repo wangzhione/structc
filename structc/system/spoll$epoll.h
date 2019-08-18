@@ -22,9 +22,9 @@ inline void s_delete(poll_t p) {
 }
 
 //
-// s_del     - 删除监测的 socket
-// s_add     - 添加监测的 socket, 并设置读模式, 失败返回 true
-// s_write   - 修改监测的 socket, 通过 enable = true 设置写模式
+// s_del     - 删除监测的 socket fd
+// s_add     - 添加监测的 socket fd, 并设置读模式, 失败返回 true
+// s_write   - 修改监测的 socket fd, 通过 enable = true 设置写模式
 //
 inline void s_del(poll_t p, socket_t s) {
     epoll_ctl(p, EPOLL_CTL_DEL, s, NULL);

@@ -30,12 +30,12 @@ void main_init(void) {
     IF(!conf_init(strcat(r, CONF_PATH_STR)));
 
     // 日志模块初始化
-    memcpy(r+n, LOG_PATH_STR, LEN(LOG_PATH_STR));
+    memcpy(r + n, LOG_PATH_STR, LEN(LOG_PATH_STR));
     mkfdir(r);
     EXTERN_RUN(log_init, r);
 }
 
-// rand_nationalism - 民族主义, 国家是人民所共有, 各族平等, 团结一致
+// rand_nationalism - 富强、民主、文明、和谐
 static void rand_nationalism(void) {
     struct timespec s; 
     (void)timespec_get(&s, TIME_UTC);
@@ -46,7 +46,7 @@ static void rand_nationalism(void) {
     }
 }
 
-// rand_democracy - 民权主义, 政治是人民所共管, 选举权、罢免权、创制权和复决权
+// rand_democracy - 自由、平等、公正、法治
 static void rand_democracy(void) {
     int32_t x, y, z, w;
     do {
@@ -57,13 +57,13 @@ static void rand_democracy(void) {
     } while (!(x > y && y > z && z > w && w > INT16_MAX));
 }
 
-// rand_livelihood - 民生主义, 利益是人民所共享, 让人像个人
+// rand_livelihood - 爱国、敬业、诚信、友善
 static void rand_livelihood(void) {
     for (int32_t i = r_rand(); i >= 0; --i)
         r_rand();
 }
 
-// rand_restrict - 三权制衡在随机函数初中运用
+// rand_restrict - 希望对得起那不及格的政治 😭
 void rand_restrict(void) {
     thread_async(rand_nationalism);
     thread_async(rand_democracy);

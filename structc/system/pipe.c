@@ -18,7 +18,7 @@ pipe(socket_t pipefd[2]) {
     if (listen(s, 1))
         goto err_close;
 
-    // 得到绑定端口本地地址
+    // 得到绑定端口和本地地址
     if (socket_getsockname(s, name))
         goto err_close;
 
@@ -55,7 +55,7 @@ pipe_open(pipe_t ch) {
 // pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
 // pipe_send - 管道阻塞发送
 inline int 
-pipe_recv(pipe_t ch, void * buf, int sz) {
+pipe_recv(pipe_t ch, void * restrict buf, int sz) {
     DWORD len = 0;
     BOOL ret = PeekNamedPipe(ch->recv, NULL, 0, NULL, &len, NULL);
     if (!ret || len <= 0)
@@ -89,7 +89,7 @@ pipe_open(pipe_t ch) {
 // pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
 // pipe_send - 管道阻塞发送
 inline int 
-pipe_recv(pipe_t ch, void * buf, int sz) {
+pipe_recv(pipe_t ch, void * restrict buf, int sz) {
     return (int)read(ch->recv, buf, sz);
 }
 

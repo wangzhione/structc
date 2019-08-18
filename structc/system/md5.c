@@ -224,24 +224,25 @@ extern void md5_final(struct md5c * ctx, uint8_t digest[16]) {
     digest[4 * 3 + 3] = (uint8_t)((ctx->d >> 3 * 8) & 0xFF);
 }
 
-// md5_convert 将16位 md5 转成 32 位 md5码
+// md5_convert 将 16 byte md5 转成 32 byte md5 码
 uint8_t * md5_convert(md5_t m, const uint8_t digest[16]) {
-	static const unsigned char code[] = "0123456789ABCDEF";
+    static const uint8_t code[] = "0123456789abcdef";
 
-    uint8_t i = 0, * o = m;
+    uint8_t * o = m, i = 0;
     while (i < 16) {
         uint8_t x = digest[i++];
-        // 潜规则走大写 MD5
+        // 潜规则走小写 md5
         *o++ = code[x >> 4];
         *o++ = code[x & 15];
     }
     *o = '\0';
+
     return m;
 }
 
 //
 // md5_strs - 得到字符串的 md5 串
-// m        : 存储 md5串地址
+// m        : 存储 md5 串地址
 // d        : 内存块数据
 // n        : 内存块长度
 // return   : m 首地址
@@ -260,7 +261,7 @@ md5_data(md5_t m, const void * d, size_t n) {
 
 //
 // md5_strs - 得到字符串的 md5 串
-// m        : 存储 md5串地址
+// m        : 存储 md5 串地址
 // p        : 文件的路径
 // return   : m 首地址
 //
@@ -270,7 +271,7 @@ md5_file(md5_t m, const char * p) {
     FILE * txt;
     struct md5c ctx;
     uint8_t digest[16], d[BUFSIZ];
-    if ((txt = fopen(p, "rb")) == NULL) 
+    if (!(txt = fopen(p, "rb")))
         return m;
 
     md5_init(&ctx);

@@ -46,10 +46,10 @@ atomic_compare_exchange_strong_##mark(atomic_##mark##_t * a,        \
     return atomic_compare_exchange_strong_explicit(a, c, v, o, n);  \
 }
 
-//
-// Integral types have some special operations available that
-// non-integral ones lack.
-//
+/*
+ * Integral types have some special operations available that
+ * non-integral ones lack.
+ */
 #define GENERIC_INT_ATOMIC(type, mark, /* unused */ size)           \
                                                                     \
 GENERIC_ATOMIC(type, mark, size)                                    \

@@ -2,39 +2,43 @@
 
 // rwlock_rlock - add read lock
 void
-rwlock_rlock(struct rwlock * lock) {
+rwlock_rlock(struct rwlock * restrict rw) {
     for (;;) {
-        // 等待读完毕, 并防止代码位置优化
-        while (lock->wlock)
+        // 等待读完毕, 并设置内存屏障
+        while (rw->wlock)
             atom_sync();
 
-        atom_inc(lock->rlock);
-        // 没有写占用, 开始读了
-        if (!lock->wlock)
+        // 乐观的添加读计数
+        atom_inc(rw->rlock);
+
+        // 没有写占用, 就可以读了
+        if (!rw->wlock)
             break;
 
-        // 还是有写, 删掉添加的读
-        atom_dec(lock->rlock);
+        // 还是有写, 收回刚添加的读计数
+        atom_dec(rw->rlock);
     }
 }
 
 // rwlock_wlock - add write lock
 void
-rwlock_wlock(struct rwlock * lock) {
-    atom_lock(lock->wlock);
-    // 等待读占用锁
-    while (lock->rlock)
+rwlock_wlock(struct rwlock * restrict rw) {
+    atom_lock(rw->wlock);
+    // 等待读锁释放
+    while (rw->rlock)
         atom_sync();
 }
 
 // rwlock_unwlock - unlock write lock
 inline void
-rwlock_unwlock(struct rwlock * lock) {
-    atom_unlock(lock->wlock);
+rwlock_unwlock(struct rwlock * restrict rw) {
+    assert(rw->wlock > 0);
+    atom_unlock(rw->wlock);
 }
 
 // rwlock_unrlock - unlock read lock
 inline void
-rwlock_unrlock(struct rwlock * lock) {
-    atom_dec(lock->rlock);
+rwlock_unrlock(struct rwlock * restrict rw) {
+    assert(rw->rlock > 0);
+    atom_dec(rw->rlock);
 }

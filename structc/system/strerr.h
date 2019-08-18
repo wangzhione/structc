@@ -9,7 +9,7 @@
 //
 // strerr - strerror 跨平台实现
 // no      : linux errno, winds WSAGetLastError()
-// return  : system os 拔下来的提示串
+// return  : system os 拔下来的提示 message
 //
 extern const char * strerr(int no);
 
@@ -18,9 +18,9 @@ extern const char * strerr(int no);
 #include <windows.h>
 
 #undef  errno
-#define errno                   (GetLastError())
+#define errno                    (GetLastError())
 #undef  strerror
-#define strerror                ((char * (*)(int))strerr)
+#define strerror                 ((char * (*)(int))strerr)
 
 #endif
 

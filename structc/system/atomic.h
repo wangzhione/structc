@@ -1,6 +1,7 @@
 ﻿#ifndef _ATOMIC_H
 #define _ATOMIC_H
 
+#include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -26,7 +27,7 @@
  *   mimics C11's atomic_thread_fence(memory_order)
  */
 
-// sys/types.h constructor
+/* sys/types.h constructor */
 #ifndef __ssize_t_defined
 typedef ptrdiff_t ssize_t;
 #endif

@@ -30,7 +30,7 @@ inline poll_t s_create(void) {
 }
 
 inline bool s_invalid(poll_t p) {
-    return NULL == p;
+    return !p;
 }
 
 inline void s_delete(poll_t p) {
@@ -38,9 +38,9 @@ inline void s_delete(poll_t p) {
 }
 
 //
-// s_del     - 删除监测的 socket
-// s_add     - 添加监测的 socket, 并设置读模式, 失败返回 true
-// s_write   - 修改监测的 socket, 通过 enable = true 设置写模式
+// s_del     - 删除监测的 socket fd
+// s_add     - 添加监测的 socket fd, 并设置读模式, 失败返回 true
+// s_write   - 修改监测的 socket fd, 通过 enable = true 设置写模式
 //
 void s_del(poll_t p, socket_t s) {
     struct fds * begin = p->s, * end = p->s + p->len;
@@ -98,8 +98,8 @@ void s_write(poll_t p, socket_t s, void * u, bool enable) {
 // return   : 返回操作事件长度, < 0 表示失败
 //
 int s_wait(poll_t p, event_t e) {
+    socket_t fd;
     struct fds * s;
-    socket_t fd, max = 0;
     int c, r, i, n, len = p->len;
 
     FD_ZERO(&p->fdr);
@@ -107,9 +107,6 @@ int s_wait(poll_t p, event_t e) {
     FD_ZERO(&p->fde);
     for (i = 0; i < len; ++i) {
         s = p->s + i;
-        if ((fd = s->fd) > max)
-            max = fd;
-
         FD_SET(fd, &p->fdr);
         if (s->write)
             FD_SET(fd, &p->fdw);
@@ -117,7 +114,7 @@ int s_wait(poll_t p, event_t e) {
     }
 
     // wait for you ...
-    n = socket_select(max, &p->fdr, &p->fdw, &p->fde, NULL);
+    n = select(0, &p->fdr, &p->fdw, &p->fde, NULL);
     if (n <= 0) RETURN(-1, "select n = %d error", n);
 
     for (c = i = 0; c < n && c < MAX_EVENT && i < len; ++i) {
