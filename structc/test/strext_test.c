@@ -12,7 +12,7 @@
  */
 
 //
-// estring_test - 测试 estring_test.h 中接口设计
+// strext_test - 测试 estring_test.h 中接口设计
 //
 void strext_test(void) {
     unsigned hash = str_hash(STR(__func__)); 
@@ -28,7 +28,7 @@ void strext_test(void) {
     free(txt);
 
     // 开始字符串构建
-    char * str = str_printf("你好吗 ? double = %0.4f\n", 1.2340);
+    char * str = str_sprintf("你好吗 ? double = %0.4f\n", 1.2340);
     puts(str);
     free(str);
 

@@ -90,9 +90,6 @@
     <ClInclude Include="struct\struct.h">
       <Filter>struct</Filter>
     </ClInclude>
-    <ClInclude Include="struct\tstr.h">
-      <Filter>struct</Filter>
-    </ClInclude>
     <ClInclude Include="system\md5.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -150,6 +147,9 @@
     <ClInclude Include="system\utf8.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="struct\cstr.h">
+      <Filter>struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -165,9 +165,6 @@
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="struct\list.c">
-      <Filter>struct</Filter>
-    </ClCompile>
-    <ClCompile Include="struct\tstr.c">
       <Filter>struct</Filter>
     </ClCompile>
     <ClCompile Include="system\strext.c">
@@ -319,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="system\utf8.c">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\cstr.c">
+      <Filter>struct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

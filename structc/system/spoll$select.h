@@ -107,6 +107,8 @@ int s_wait(poll_t p, event_t e) {
     FD_ZERO(&p->fde);
     for (i = 0; i < len; ++i) {
         s = p->s + i;
+        fd = s->fd;
+
         FD_SET(fd, &p->fdr);
         if (s->write)
             FD_SET(fd, &p->fdw);
@@ -120,6 +122,7 @@ int s_wait(poll_t p, event_t e) {
     for (c = i = 0; c < n && c < MAX_EVENT && i < len; ++i) {
         s = p->s + i;
         fd = s->fd;
+
         e[c].eof = false;
         e[c].read = FD_ISSET(fd, &p->fdr);
         e[c].write = s->write && FD_ISSET(fd, &p->fdw);

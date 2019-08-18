@@ -53,12 +53,12 @@ extern int str_cmpin(const char * ls, const char * rs, size_t n);
 extern char * str_trim(char str[]);
 
 //
-// str_printf - 格化式字符串构建
+// str_sprintf - 格化式字符串构建
 // format   : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存
 //
-extern char * str_printf(const char * format, ...);
+extern char * str_sprintf(const char * format, ...);
 
 //
 // str_freads - 读取整个文件内容返回, 需要事后 free

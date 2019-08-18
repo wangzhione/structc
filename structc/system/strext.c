@@ -99,13 +99,13 @@ str_trim(char str[]) {
 }
 
 //
-// str_printf - 格化式字符串构建
+// str_sprintf - 格化式字符串构建
 // format   : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存
 //
 char * 
-str_printf(const char * format, ...) {
+str_sprintf(const char * format, ...) {
     // 确定待分配内存 size
     va_list arg;
     va_start(arg, format);

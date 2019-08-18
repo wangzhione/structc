@@ -1,7 +1,7 @@
 ﻿#ifndef _JSON_H
 #define _JSON_H
 
-#include "tstr.h"
+#include "cstr.h"
 #include <math.h>
 #include <float.h>
 #include <limits.h>
@@ -21,14 +21,14 @@
 #define JSON_CONST          (1u << 6)
 
 struct json {
-    unsigned char type;     // CJSON_NULL - JSON_ARRAY and JSON_CONST
-    struct json * next;     // type & OBJECT or ARRAY -> 下个结点链表
-    struct json * chid;     // type & OBJECT or ARRAY -> 对象结点数据
+    unsigned char type;     // C JSON_NULL - JSON_ARRAY and JSON_CONST
+    struct json * next;     // type & OBJECT or ARRAY -> 下个节点链表
+    struct json * chid;     // type & OBJECT or ARRAY -> 对象节点数据
 
-    char * key;             // json 结点的 key
+    char * key;             // json 节点的 key
     union {
-        char * str;         // type & STRING -> 字符串
-        double num;         // type & NUMBER -> number
+        char * str;         // type & JSON_STRING -> 字符串
+        double num;         // type & JSON_NUMBER -> number
     };
 };
 
@@ -37,8 +37,8 @@ struct json {
 typedef struct json * json_t;
 
 //
-// json_int - 得到结点的 int 值
-// item     : json 结点
+// json_int - 得到节点的 int 值
+// item     : json 节点
 //          : 返回 number int 值
 //
 #define json_int(item) ((int)(item)->num)
@@ -66,18 +66,18 @@ extern void json_delete(json_t c);
 extern int json_len(json_t c);
 
 //
-// json_array - 通过索引获取 json 数组中子结点
-// arr      : json 数组
+// json_array - 通过索引获取 json 数组中子节点
+// aj       : json 数组
 // i        : [0, json_len()) 索引
-// return   : 返回对应的数组结点
+// return   : 返回对应的数组节点
 //
-extern json_t json_array(json_t arr, int i);
+extern json_t json_array(json_t aj, int i);
 
 //
 // json_object - 获取 json 对象中子对象 
 // obj      : json 对象
 // k        : key
-// return   : 返回对应的对象结点
+// return   : 返回对应的对象节点
 //
 extern json_t json_object(json_t obj, const char * k);
 
@@ -117,14 +117,14 @@ extern char * json_print(json_t c);
 
 //----------------------------------json utils begin--------------------------------
 
-// json_new - 构造 json 对象
+// json_new - 构造 json 对象 (json null node)
 inline json_t json_new(void) {
     return calloc(1, sizeof(struct json));
 }
 
 //
 // json_new_xxxx - 创建对应的对象
-// t        : 创建对象类型
+// t        : 创建对象 JSON define 类型宏
 // v        : 具体的值
 // return   : json_t 创建好的对象
 //
@@ -132,10 +132,6 @@ inline json_t json_new_type(unsigned char t) {
     json_t item = json_new();
     item->type = t;
     return item;
-}
-
-inline json_t json_new_null(void) {
-    return json_new();
 }
 
 inline json_t json_new_bool(bool v) {
@@ -165,23 +161,23 @@ inline json_t json_new_array(void) {
 }
 
 //
-// json_new_arrays - 创建数组类型 json 对象
-// t        : 类型宏
-// arr      : 原数组对象
+// json_create_array - 创建数组类型 json 对象
+// t        : 创建对象 JSON define 类型宏
+// a        : 原数组对象
 // n        : 原数组长度
 // return   : 返回创建好的 json 数组
 //
-extern json_t json_new_arrays(unsigned char t, const void * arr, int n);
+extern json_t json_create_array(unsigned char t, const void * a, int n);
 
 //
 // json_detach_xxxxx - 通过索引分离出 json 子对象
-// arr      : json_t 数组
+// aj       : json_t 数组
 // i        : [0, len()) 索引
 // obj      : json_t 对象
 // k        : key
 // return   : 分离出的 json 对象
 //
-extern json_t json_detach_array(json_t arr, int i);
+extern json_t json_detach_array(json_t aj, int i);
 extern json_t json_detach_object(json_t obj, const char * k);
 
 //----------------------------------json utils end----------------------------------

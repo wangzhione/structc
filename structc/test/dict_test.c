@@ -14,7 +14,7 @@ void dict_test(void) {
     dict_t d = dict_create(_str_die);
 
     for (i = 0; i < 100; ++i) {
-        val = str_printf("youto_%d", i);
+        val = str_sprintf("youto_%d", i);
         snprintf(key, sizeof key, "hello_%d", i);
         dict_set(d, key, val);
     }

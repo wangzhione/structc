@@ -118,7 +118,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="struct\q.h" />
     <ClInclude Include="struct\rtree.h" />
     <ClInclude Include="struct\struct.h" />
-    <ClInclude Include="struct\tstr.h" />
+    <ClInclude Include="struct\cstr.h" />
     <ClInclude Include="system\atom.h" />
     <ClInclude Include="system\atomic$c11.h" />
     <ClInclude Include="system\atomic$cl.h" />
@@ -160,7 +160,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="struct\list.c" />
     <ClCompile Include="struct\q.c" />
     <ClCompile Include="struct\rtree.c" />
-    <ClCompile Include="struct\tstr.c" />
+    <ClCompile Include="struct\cstr.c" />
     <ClCompile Include="system\pipe.c" />
     <ClCompile Include="system\rwlock.c" />
     <ClCompile Include="system\alloc.c" />
