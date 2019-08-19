@@ -59,7 +59,7 @@ extern char * strdup_(const char * str);
 //
 extern void free_(void * restrict ptr);
 
-// :) 内存分配包装层, 莫名伤感 ~
+// :) 内存分配包装层, 些许感怀 ~
 //
 #  ifndef ALLOC_OFF
 #    undef  free

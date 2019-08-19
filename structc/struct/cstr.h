@@ -12,7 +12,7 @@ struct cstr {
 };
 
 // CSTR_INT 构建字符串初始化大小
-#define CSTR_INT    (1 << 8)
+#define CSTR_INT    (1 << 7)
 
 typedef struct cstr * cstr_t;
 

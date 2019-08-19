@@ -23,7 +23,7 @@ typedef struct q {
 inline void q_init(q_t q) {
     q->queue = malloc(sizeof(void *) * Q_INT);
     q->size = Q_INT;
-    q->head = 0;
+    q->head =  0;
     q->tail = -1;
 }
 

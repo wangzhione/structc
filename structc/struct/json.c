@@ -15,7 +15,7 @@ json_delete(json_t c) {
         if ((t & JSON_STRING) && !(t & JSON_CONST))
             free(c->str);
 
-        // 子节点继续走深度递归删除
+        // 子结点继续走深度递归删除
         if (c->chid)
             json_delete(c->chid);
 
@@ -39,10 +39,10 @@ json_len(json_t c) {
 }
 
 //
-// json_array - 通过索引获取 json 数组中子节点
+// json_array - 通过索引获取 json 数组中子结点
 // aj       : json 数组
 // i        : [0, json_len()) 索引
-// return   : 返回对应的数组节点
+// return   : 返回对应的数组结点
 //
 json_t 
 json_array(json_t aj, int i) {
@@ -58,7 +58,7 @@ json_array(json_t aj, int i) {
 // json_object - 获取 json 对象中子对象 
 // obj      : json 对象
 // k        : key
-// return   : 返回对应的对象节点
+// return   : 返回对应的对象结点
 //
 json_t 
 json_object(json_t obj, const char * k) {
@@ -139,7 +139,7 @@ static const char * parse_literal(json_t item, const char * str) {
     // 尝试吃掉 `` 开头第一个和结尾最后一个 \n, 方便整齐划一
     size = '\n' == etr[-1] ? etr - str - 1 : etr - str;
 
-    // 开始构造和填充 json string 节点
+    // 开始构造和填充 json string 结点
     item->type = JSON_STRING;
     item->str = malloc(size + 1);
     memcpy(item->str, str, size);
@@ -271,7 +271,7 @@ err_free:
 
 //
 // parse_value - 递归下降解析
-// item     : json 节点
+// item     : json 结点
 // str      : 语句源串
 // return   : 解析后剩下的串
 //
@@ -605,7 +605,7 @@ static char * print_array(json_t item, cstr_t p) {
 
     *ptr = '['; ++p->len;
 
-    // 处理子节点
+    // 处理子结点
     while (chid) {
         print_value(chid, p);
         if ((chid = chid->next)) {
@@ -627,7 +627,7 @@ static char * print_object(json_t item, cstr_t p) {
 
     *ptr = '{'; ++p->len;
 
-    // 挨个处理子节点
+    // 挨个处理子结点
     while (chid) {
         print_string(chid->key, p);
         p->len += strlen(p->str + p->len);

@@ -77,7 +77,7 @@ inline static int mq_len(mq_t q) {
 
     // 计算当前时间中内存队列的大小
     tail -= head - 1;
-    return tail>0 ? tail : tail+size;
+    return tail > 0 ? tail : tail+size;
 }
 
 #endif//_MQ_H
