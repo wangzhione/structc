@@ -13261,6 +13261,31 @@ g2u8(char d[], size_t n) {
     free(u8s);
 }
 
+// isu8_local - 判断是否是 utf8 串的临时状态
+static bool isu8_local(unsigned char c, unsigned char * byts, bool * ascii) {
+    // ascii 码最高位为 0, 0xxx xxxx
+    if ((c & 0x80)) *ascii = false;
+
+    // 计算字节数
+    if (0 == *byts) {
+        if (c >= 0x80) {
+            if (c >= 0xFC && c <= 0xFD) *byts = 6;
+            else if (c >= 0xF8) *byts = 5;
+            else if (c >= 0xF0) *byts = 4;
+            else if (c >= 0xE0) *byts = 3;
+            else if (c >= 0xC0) *byts = 2;
+            else return false; // 异常编码直接返回
+            --*byts;
+        }
+    } else {
+        // 多字节的非首位字节, 应为 10xx xxxx
+        if ((c & 0xC0) != 0x80) return false;
+        // byts 来回变化, 最终必须为 0
+        --*byts;
+    }    
+    return true;
+}
+
 //
 // isu8s - 判断字符串是否是utf8编码
 // s        : 输入的串
@@ -13269,31 +13294,12 @@ g2u8(char d[], size_t n) {
 bool 
 isu8s(const char * s) {
     bool ascii = true;
-    // byts 表示编码字节数, utf8 [1, 6]字节编码
-    unsigned char c, byts = 0;
+    // byts 表示编码字节数, utf8 [1, 6] 字节编码
+    unsigned char byts = 0;
 
-    while ((c = *s++)) {
-        // ascii 码最高位为 0, 0xxx xxxx
-        if ((c & 0x80)) ascii = false;
-
-        // 计算字节数
-        if (0 == byts) {
-            if (c >= 0x80) {
-                if (c >= 0xFC && c <= 0xFD) byts = 6;
-                else if (c >= 0xF8) byts = 5;
-                else if (c >= 0xF0) byts = 4;
-                else if (c >= 0xE0) byts = 3;
-                else if (c >= 0xC0) byts = 2;
-                else return false; // 异常编码直接返回
-                --byts;
-            }
-        } else {
-            // 多字节的非首位字节, 应为 10xx xxxx
-            if ((c & 0xC0) != 0x80) return false;
-            // byts 来回变化, 最终必须为 0
-            --byts;
-        }
-    }
+    for (unsigned char c; (c = *s); ++s)
+        if (!isu8_local(c, &byts, &ascii)) 
+            return false;
 
     return !ascii && byts == 0;
 }
@@ -13306,34 +13312,13 @@ isu8s(const char * s) {
 //
 bool 
 isu8(const char d[], size_t n) {
-    size_t i = 0;
     bool ascii = true;
-    // byts 表示编码字节数, utf8 [1, 6]字节编码
-    unsigned char c, byts = 0;
+    // byts 表示编码字节数, utf8 [1, 6] 字节编码
+    unsigned char byts = 0;
 
-    while (i < n) {
-        c = d[i++];
-        // ascii 码最高位为 0, 0xxx xxxx
-        if ((c & 0x80)) ascii = false;
-
-        // 计算字节数
-        if (0 == byts) {
-            if (c >= 0x80) {
-                if (c >= 0xFC && c <= 0xFD) byts = 6;
-                else if (c >= 0xF8) byts = 5;
-                else if (c >= 0xF0) byts = 4;
-                else if (c >= 0xE0) byts = 3;
-                else if (c >= 0xC0) byts = 2;
-                else return false; // 异常编码直接返回
-                --byts;
-            }
-        } else {
-            // 多字节的非首位字节, 应为 10xx xxxx
-            if ((c & 0xC0) != 0x80) return false;
-            // byts 来回变化, 最终必须为 0
-            --byts;
-        }
-    }
+    for (size_t i = 0; i < n; ++i)
+        if (!isu8_local(d[i], &byts, &ascii)) 
+            return false;
 
     return !ascii && byts == 0;
 }
