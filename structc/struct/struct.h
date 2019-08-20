@@ -72,7 +72,7 @@ if ((cond)) EXIT(#cond)
 
 //
 // RETURN - 打印错误信息, 并 return 返回指定结果
-// val      : return 的东西, 当需要 return void; 时候填 , or NIL
+// val      : return 的东西. 填 NIL 标识 return void;
 // fmt      : 双引号包裹的格式化字符串
 // ...      : fmt 中对应的参数
 // return   : val

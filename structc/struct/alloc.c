@@ -21,8 +21,7 @@ inline void * check(void * restrict ptr, size_t size) {
 // return   : 返回重新分配的新地址
 //
 inline void * realloc_(void * restrict ptr, size_t size) {
-    void * ntr = je_realloc(ptr, size);
-    return check(ntr, size);
+    return check(je_realloc(ptr, size), size);
 }
 
 //
@@ -32,8 +31,7 @@ inline void * realloc_(void * restrict ptr, size_t size) {
 // return   : 返回可用内存地址, 并置 0
 //
 inline void * calloc_(size_t num, size_t size) {
-    void * ptr = je_calloc(num, size);
-    return check(ptr, size);
+    return check(je_calloc(num, size), size);
 }
 
 //
@@ -42,8 +40,7 @@ inline void * calloc_(size_t num, size_t size) {
 // return   : 返回可使用的内存地址
 //
 inline void * malloc_(size_t size) {
-    void * ptr = je_malloc(size);
-    return check(ptr, size);
+    return check(je_malloc(size), size);
 }
 
 //
@@ -53,9 +50,8 @@ inline void * malloc_(size_t size) {
 //
 inline char * strdup_(const char * str) {
     if (str) {
-        size_t n = strlen(str) + 1;
-        char * ptr = malloc_(n);
-        return memcpy(ptr, str, n);
+        size_t n = strlen(str)+1;
+        return memcpy(malloc_(n), str, n);
     }
     return NULL;
 }

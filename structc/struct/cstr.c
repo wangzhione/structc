@@ -74,7 +74,7 @@ cstr_appendc(cstr_t cs, int c) {
 inline void 
 cstr_appends(cstr_t cs, const char * str) {
     if (cs && str) {
-        unsigned sz = (unsigned)strlen(str);
+        size_t sz = strlen(str);
         if (sz > 0)
             cstr_appendn(cs, str, sz);
         cstr_get(cs);
@@ -83,8 +83,7 @@ cstr_appends(cstr_t cs, const char * str) {
 
 inline void 
 cstr_appendn(cstr_t cs, const char * str, size_t len) {
-    cstr_expand(cs, len);
-    memcpy(cs->str + cs->len, str, len);
+    memcpy(cstr_expand(cs, len), str, len);
     cs->len += len;
 }
 
@@ -95,10 +94,7 @@ cstr_appendn(cstr_t cs, const char * str, size_t len) {
 //
 inline char * 
 cstr_get(cstr_t cs) {
-    if (cs->len <= 0 || cs->str[cs->len - 1]) {
-        cstr_expand(cs, 1);
-        cs->str[cs->len] = '\0';
-    }
+    *cstr_expand(cs, 1) = '\0';
     return cs->str;
 }
 
@@ -109,15 +105,12 @@ cstr_get(cstr_t cs) {
 //
 inline char * 
 cstr_dup(cstr_t cs) {
-    if (cs && cs->len > 0) {
-        // 构造内存, 返回最终结果
-        size_t len = cs->len + !!cs->str[cs->len - 1];
-        char * str = malloc(len * sizeof(char));
-        memcpy(str, cs->str, len - 1);
-        str[len - 1] = '\0';
-        return str;
-    }
-    return NULL;
+    // 构造内存, 返回最终结果
+    size_t len = cs->len + (!cs->len||cs->str[cs->len-1]);
+    char * str = malloc(len * sizeof(char));
+    memcpy(str, cs->str, len - 1);
+    str[len - 1] = '\0';
+    return str;
 }
 
 //

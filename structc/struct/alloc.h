@@ -28,7 +28,7 @@ enum {
 // size     : 重新分配的内存大小
 // return   : 返回重新分配的新地址
 //
-extern void * realloc_(void * restrict ptr, size_t size);
+extern void * realloc_(void * restrict otr, size_t size);
 
 //
 // calloc_  - calloc 包装函数
@@ -62,18 +62,18 @@ extern void free_(void * restrict ptr);
 // :) 内存分配包装层, 些许感怀 ~
 //
 #  ifndef ALLOC_OFF
-#    undef  free
-#    define free      free_
+#    undef     free
+#    define    free     free_
 
-#    undef  strdup
-#    define strdup    strdup_
+#    undef   strdup
+#    define  strdup   strdup_
 
-#    undef  malloc
-#    define malloc    malloc_
-#    undef  calloc
-#    define calloc    calloc_
+#    undef   malloc
+#    define  malloc   malloc_
+#    undef   calloc
+#    define  calloc   calloc_
 #    undef  realloc
-#    define realloc   realloc_
+#    define realloc  realloc_
 #  endif//ALLOC_OFF
 
 #endif//_ALLOC_H

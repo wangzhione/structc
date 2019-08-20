@@ -33,19 +33,19 @@ free((var)->str)
 #endif//CSTR_CREATE
 
 //
-// cstr_delete - cstr_t 释放函数
-// cs       : 待释放的串对象
-// return   : void
-//
-extern void cstr_delete(cstr_t cs);
-
-//
 // cstr_expand - low level 字符串扩容 api
 // cs       : 可变字符串
 // len      : 扩容的长度
 // return   : cstr::str + cstr::len 位置的串
 //
 char * cstr_expand(cstr_t cs, size_t len);
+
+//
+// cstr_delete - cstr_t 释放函数
+// cs       : 待释放的串对象
+// return   : void
+//
+extern void cstr_delete(cstr_t cs);
 
 //
 // cstr_create - cstr_t 创建函数, 根据 C 串创建 cstr_t 字符串
