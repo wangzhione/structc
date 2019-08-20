@@ -42,7 +42,7 @@ heap_create(cmp_f fcmp) {
 //
 void 
 heap_delete(heap_t h, node_f fdie) {
-    if (NULL == h || h->data == NULL) return;
+    if (!h || !h->data) return;
     if (fdie && h->len > 0)
         for (unsigned i = 0; i < h->len; ++i)
             fdie(h->data[i]);
@@ -55,7 +55,7 @@ heap_delete(heap_t h, node_f fdie) {
 // down - 堆结点下沉, 从上到下沉一遍
 static void down(cmp_f fcmp, void * data[], unsigned len, unsigned x) {
     void * m = data[x];
-    for (unsigned i = x * 2 + 1; i < len; i = x * 2 + 1) {
+    for (unsigned i = (x << 1) + 1; i < len; i = (x << 1) + 1) {
         if (i + 1 < len && fcmp(data[i+1], data[i]) < 0)
             ++i;
         if (fcmp(m, data[i]) <= 0)
@@ -99,7 +99,7 @@ heap_insert(heap_t h, void * node) {
 //
 void * 
 heap_remove(heap_t h, void * arg, cmp_f fcmp) {
-    if (h == NULL || h->len <= 0)
+    if (!h || h->len <= 0)
         return NULL;
 
     // 开始查找这个结点

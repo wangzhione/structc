@@ -5,9 +5,9 @@
 //
 const unsigned primes[][2] = {
     { (1<<6)-1  ,         53 },
-    { (1<<7)-1  ,         97 },
-    { (1<<8)-1  ,        193 },
-    { (1<<9)-1  ,        389 },
+    { (1<< 7)-1 ,         97 },
+    { (1<< 8)-1 ,        193 },
+    { (1<< 9)-1 ,        389 },
     { (1<<10)-1 ,        769 },
     { (1<<11)-1 ,       1543 },
     { (1<<12)-1 ,       3079 },
@@ -102,10 +102,9 @@ static void dict_resize(struct dict * d) {
 //
 void 
 dict_delete(dict_t d) {
-    unsigned i, size;
-    if (NULL == d) return;
-    size = primes[d->idx][1];
-    for (i = 0; i < size; ++i) {
+    if (!d) return;
+    unsigned size = primes[d->idx][1];
+    for (unsigned i = 0; i < size; ++i) {
         struct keypair * pair = d->table[i];
         while (pair) {
             struct keypair * next = pair->next;
@@ -143,7 +142,7 @@ void *
 dict_get(dict_t d, const char * k) {
     unsigned hash, index;
     struct keypair * pair;
-    assert(NULL != d && k != NULL);
+    assert(d && k);
 
     hash = str_hash(k);
     index = hash % primes[d->idx][1];
@@ -169,7 +168,7 @@ void
 dict_set(dict_t d, const char * k, void * v) {
     unsigned hash, index;
     struct keypair * pair, * prev;
-    assert(NULL != d && k != NULL);
+    assert(d && k);
 
     // 检查一下内存, 看是否要扩充
     dict_resize(d);
@@ -188,8 +187,8 @@ dict_set(dict_t d, const char * k, void * v) {
                 return;
 
             // 删除操作
-            if (NULL == v) {
-                if (NULL == prev)
+            if (!v) {
+                if (!prev)
                     d->table[index] = pair->next;
                 else
                     prev->next = pair->next;
@@ -210,7 +209,7 @@ dict_set(dict_t d, const char * k, void * v) {
     }
 
     // 没有找见设置操作, 直接插入数据
-    if (NULL != v) {
+    if (v) {
         pair = keypair_create(hash, v, k);
         pair->next = d->table[index];
         d->table[index] = pair;

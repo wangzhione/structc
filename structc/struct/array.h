@@ -19,15 +19,14 @@ typedef struct array * array_t;
 // var          : 创建动态数组对象名字
 // ARRAY_UINT   - 数组初始化默认大小
 #define ARRAY_UINT      (1u<<5)
-#define ARRAY_CREATE(type, var)             \
-struct array var[1] = { {                   \
-    sizeof(type),                           \
-    ARRAY_UINT,                             \
-    0,                                      \
-    malloc(sizeof(type) * ARRAY_UINT)       \
+#define ARRAY_CREATE(type, var)                 \
+struct array var[1] = { {                       \
+    .size = sizeof(type),                       \
+    .cap = ARRAY_UINT,                          \
+    .data = malloc(sizeof(type) * ARRAY_UINT)   \
 } }
 
-#define ARRAY_DELETE(var)                   \
+#define ARRAY_DELETE(var)                       \
 free((var)->data)
 
 //

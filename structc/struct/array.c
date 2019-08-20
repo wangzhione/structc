@@ -8,7 +8,7 @@
 inline array_t 
 array_create(unsigned size) {
     struct array * a = malloc(sizeof(struct array));
-    assert(NULL != a && size > 0);
+    assert(a && size > 0);
     // set default cap size
     a->cap = ARRAY_UINT;
     a->data = malloc(size * a->cap);
@@ -53,7 +53,7 @@ array_push(array_t a) {
 //
 inline void * 
 array_pop(array_t a) {
-    assert(NULL != a && a->len > 0);
+    assert(a && a->len > 0);
     --a->len;
     return (char *)a->data + a->size * a->len;
 }
@@ -65,7 +65,7 @@ array_pop(array_t a) {
 //
 inline void * 
 array_top(array_t a) {
-    assert(NULL != a && a->len > 0);
+    assert(a && a->len > 0);
     return (char *)a->data + a->size * (a->len - 1);
 }
 
@@ -77,7 +77,7 @@ array_top(array_t a) {
 //
 inline void * 
 array_get(array_t a, unsigned idx) {
-    assert(NULL != a && idx < a->len);
+    assert(a && idx < a->len);
     return (char *)a->data + a->size * idx;
 }
 
@@ -115,7 +115,7 @@ array_swap(array_t a, array_t b) {
 //
 inline void 
 array_sort(array_t a, cmp_f fcmp) {
-    assert(NULL != a && a->len && fcmp != NULL);
+    assert(a && a->len && fcmp);
     qsort(a->data, a->len, a->size, 
          (int (*)(const void *, const void *))fcmp);
 }
@@ -128,9 +128,9 @@ array_sort(array_t a, cmp_f fcmp) {
 //
 int 
 array_each(array_t a, each_f func, void * arg) {
-    assert(NULL != a && func != NULL);
-    char * s = a->data;
-    char * e = s + a->size * a->len;
+    assert(a && func);
+
+    char * s = a->data, * e = s + a->size * a->len;
     while (s < e) {
         int ret = func(s, arg);
         if (ret < 0)

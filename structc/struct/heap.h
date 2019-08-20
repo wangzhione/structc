@@ -4,7 +4,7 @@
 #include "struct.h"
 
 //
-// head_t 堆的类型结构
+// head_t 堆的数据结构
 //
 typedef struct heap * heap_t;
 
