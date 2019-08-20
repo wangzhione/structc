@@ -126,9 +126,6 @@
     <ClInclude Include="base\check.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="system\alloc.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="struct\heap.h">
       <Filter>struct</Filter>
     </ClInclude>
@@ -148,6 +145,9 @@
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="struct\cstr.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\alloc.h">
       <Filter>struct</Filter>
     </ClInclude>
   </ItemGroup>
@@ -296,9 +296,6 @@
     <ClCompile Include="system\strerr.c">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="system\alloc.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="test\alloc_test.c">
       <Filter>test</Filter>
     </ClCompile>
@@ -318,6 +315,9 @@
       <Filter>base</Filter>
     </ClCompile>
     <ClCompile Include="struct\cstr.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\alloc.c">
       <Filter>struct</Filter>
     </ClCompile>
   </ItemGroup>
