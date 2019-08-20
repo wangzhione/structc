@@ -23,7 +23,7 @@ str_hash(const char * str) {
 // return   : 返回字符串长度
 //
 int 
-str_cpyn(char * restrict src, const char * tar, size_t n) {
+str_cpyn(char * src, const char * tar, size_t n) {
     size_t i;
     if (!src || !tar || !n) return EParam;
     for (i = 1; 

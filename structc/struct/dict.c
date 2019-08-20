@@ -103,6 +103,7 @@ static void dict_resize(struct dict * d) {
 void 
 dict_delete(dict_t d) {
     if (!d) return;
+
     unsigned size = primes[d->idx][1];
     for (unsigned i = 0; i < size; ++i) {
         struct keypair * pair = d->table[i];

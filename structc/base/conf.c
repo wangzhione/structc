@@ -14,19 +14,10 @@ conf_instance(void) {
     return &conf;
 }
 
-// locals - 本地字符串特殊处理, winds 会把 utf8 转 gbk
-inline char * locals(char utf8s[]) {
-#ifdef _MSC_VER
-    if (isu8s(utf8s))
-        u82g(utf8s);
-#endif
-    return utf8s;
-}
-
 // CONFIG_PARSE_JSON_STR - json field -> conf field
 #define CONFIG_PARSE_JSON_STR(json, conf, field)            \
 json_t $##field = json_object(json, #field);                \
-if (NULL == $##field || $##field->type != JSON_STRING) {    \
+if (!$##field || $##field->type != JSON_STRING) {           \
     RETURN(false, "json_object err "#field" %p", $##field); \
 }                                                           \
 free(conf->field);                                          \
@@ -49,7 +40,7 @@ bool conf_parse(json_t json, struct conf * conf) {
 bool 
 conf_init(const char * path) {
     json_t json = json_file(path);
-    if (NULL == json) {
+    if (!json) {
         RETURN(false, "json_file err path is %s", path);
     }
 

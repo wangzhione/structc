@@ -5,7 +5,7 @@
 #include <jemalloc/jemalloc.h>
 
 // check 内存检测并处理
-inline void * check(void * restrict ptr, size_t size) {
+inline void * check(void * ptr, size_t size) {
     if (!ptr) {
         fprintf(stderr, "check memory collapse %zu\n", size);
         fflush(stderr);
@@ -20,7 +20,7 @@ inline void * check(void * restrict ptr, size_t size) {
 // size     : 重新分配的内存大小
 // return   : 返回重新分配的新地址
 //
-inline void * realloc_(void * restrict ptr, size_t size) {
+inline void * realloc_(void * ptr, size_t size) {
     return check(je_realloc(ptr, size), size);
 }
 
@@ -61,6 +61,6 @@ inline char * strdup_(const char * str) {
 // ptr      : 内存首地址
 // return   : void
 //
-inline void free_(void * restrict ptr) {
+inline void free_(void * ptr) {
     je_free(ptr);
 }

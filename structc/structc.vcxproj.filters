@@ -141,14 +141,17 @@
     <ClInclude Include="base\buf.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="system\utf8.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="struct\cstr.h">
       <Filter>struct</Filter>
     </ClInclude>
-    <ClInclude Include="struct\alloc.h">
-      <Filter>struct</Filter>
+    <ClInclude Include="system\alloc.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\stdext.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\utf8.h">
+      <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -311,14 +314,20 @@
     <ClCompile Include="system\thread.c">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="system\utf8.c">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="struct\cstr.c">
       <Filter>struct</Filter>
     </ClCompile>
-    <ClCompile Include="struct\alloc.c">
-      <Filter>struct</Filter>
+    <ClCompile Include="system\alloc.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\stdext.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="test\stdext_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\utf8.c">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

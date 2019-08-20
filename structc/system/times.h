@@ -70,7 +70,7 @@ typedef char times_t[INT_TIMES];
 // om       : 返回得到的时间结构体
 // return   : 返回 true 表示构造成功
 //
-extern bool times_get(times_t ns, time_t * restrict ot, struct tm * om);
+extern bool times_get(times_t ns, time_t * ot, struct tm * om);
 
 //
 // time_get - 解析时间串, 返回时间戳

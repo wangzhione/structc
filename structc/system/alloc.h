@@ -28,7 +28,7 @@ enum {
 // size     : 重新分配的内存大小
 // return   : 返回重新分配的新地址
 //
-extern void * realloc_(void * restrict otr, size_t size);
+extern void * realloc_(void * otr, size_t size);
 
 //
 // calloc_  - calloc 包装函数
@@ -57,7 +57,7 @@ extern char * strdup_(const char * str);
 // ptr      : 内存首地址
 // return   : void
 //
-extern void free_(void * restrict ptr);
+extern void free_(void * ptr);
 
 // :) 内存分配包装层, 些许感怀 ~
 //

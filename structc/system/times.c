@@ -100,7 +100,7 @@ bool times_tm(times_t ns, struct tm * om) {
 // return   : 返回 true 表示构造成功
 //
 bool
-times_get(times_t ns, time_t * restrict ot, struct tm * om) {
+times_get(times_t ns, time_t * ot, struct tm * om) {
     time_t t;
     struct tm m;
 

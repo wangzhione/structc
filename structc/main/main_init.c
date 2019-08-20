@@ -5,8 +5,8 @@
 // CONF_PATH_STR - 配置文件路径
 // LOG_PATH_STR  - 日志文件路径
 // 
-#define CONF_PATH_STR       "conf/conf.conf"
-#define LOG_PATH_STR        "logs/structc.log"
+#define CONF_PATH_STR       "/conf/conf.conf"
+#define LOG_PATH_STR        "/logs/structc.log"
 
 //
 // main_init - 模块初始化
@@ -14,8 +14,8 @@
 //
 void main_init(void) {
     char r[BUFSIZ];
-    int n = getawd(r, sizeof r);
-    assert(0 < n && n < sizeof r);
+    // 一切皆有可能 🙂
+    size_t n = strlen(getcwd(r, LEN(r)));
 
     // thread 模块初始化
     EXTERN_RUN(pthread_init);
@@ -31,7 +31,7 @@ void main_init(void) {
 
     // 日志模块初始化
     memcpy(r + n, LOG_PATH_STR, LEN(LOG_PATH_STR));
-    mkfdir(r);
+    fmkdir(r);
     EXTERN_RUN(log_init, r);
 }
 
@@ -39,7 +39,7 @@ void main_init(void) {
 static void rand_nationalism(void) {
     struct timespec s; 
     (void)timespec_get(&s, TIME_UTC);
-    EXTERN_RUN(r_init, s.tv_nsec + s.tv_sec);
+    EXTERN_RUN(r_init, s.tv_nsec+s.tv_sec);
     for (int32_t i = BUFSIZ; i > 0 ; --i) {
         (void)timespec_get(&s, TIME_UTC);
         EXTERN_RUN(r_init, s.tv_nsec + i);
@@ -63,7 +63,7 @@ static void rand_livelihood(void) {
         r_rand();
 }
 
-// rand_restrict - 希望对得起那不及格的政治 😭
+// rand_restrict - 愿对得起, 那么多年 😭 不及格的政治
 void rand_restrict(void) {
     thread_async(rand_nationalism);
     thread_async(rand_democracy);

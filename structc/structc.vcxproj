@@ -109,7 +109,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\buf.h" />
     <ClInclude Include="base\timer.h" />
     <ClInclude Include="base\url.h" />
-    <ClInclude Include="struct\alloc.h" />
     <ClInclude Include="struct\array.h" />
     <ClInclude Include="struct\heap.h" />
     <ClInclude Include="struct\json.h" />
@@ -120,14 +119,15 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="struct\rtree.h" />
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\cstr.h" />
+    <ClInclude Include="system\alloc.h" />
     <ClInclude Include="system\atom.h" />
     <ClInclude Include="system\atomic$c11.h" />
     <ClInclude Include="system\atomic$cl.h" />
     <ClInclude Include="system\atomic.h" />
     <ClInclude Include="system\rwlock.h" />
     <ClInclude Include="system\spoll$kqueue.h" />
+    <ClInclude Include="system\stdext.h" />
     <ClInclude Include="system\strerr.h" />
-    <ClInclude Include="system\utf8.h" />
     <ClInclude Include="system\md5.h" />
     <ClInclude Include="system\pipe.h" />
     <ClInclude Include="system\rand.h" />
@@ -138,6 +138,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\strext.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
+    <ClInclude Include="system\utf8.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\check.c" />
@@ -153,7 +154,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="main\main_init.c" />
     <ClCompile Include="main\main_run.c" />
     <ClCompile Include="main\main_test.c" />
-    <ClCompile Include="struct\alloc.c" />
     <ClCompile Include="struct\array.c" />
     <ClCompile Include="struct\heap.c" />
     <ClCompile Include="struct\json.c" />
@@ -162,17 +162,19 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="struct\q.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\cstr.c" />
+    <ClCompile Include="system\alloc.c" />
     <ClCompile Include="system\pipe.c" />
     <ClCompile Include="system\rwlock.c" />
+    <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strerr.c" />
     <ClCompile Include="system\thread.c" />
-    <ClCompile Include="system\utf8.c" />
     <ClCompile Include="system\md5.c" />
     <ClCompile Include="system\rand.c" />
     <ClCompile Include="system\socket.c" />
     <ClCompile Include="system\spoll.c" />
     <ClCompile Include="system\strext.c" />
     <ClCompile Include="system\times.c" />
+    <ClCompile Include="system\utf8.c" />
     <ClCompile Include="test\array_test.c" />
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\buf_test.c" />
@@ -180,6 +182,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\file_test.c" />
     <ClCompile Include="test\loop_test.c" />
     <ClCompile Include="test\reuseport_test.c" />
+    <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\timer_test.c" />
     <ClCompile Include="test\url_test.c" />
     <ClCompile Include="test\utf8_test.c" />
