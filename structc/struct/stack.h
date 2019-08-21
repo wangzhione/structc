@@ -30,7 +30,7 @@ inline void stack_init(struct stack * s) {
 //
 // stack_create - 创建 stack 对象栈
 // var      : stack 对象栈
-// 
+// return   : NIL
 //
 #define stack_create(var)                           \
 struct stack var[1] = {{                            \
@@ -51,6 +51,15 @@ inline void stack_delete(struct stack * s, node_f fdie) {
             fdie(s->data[s->tail--]);
     }
     free(s->data);
+}
+
+//
+// stack_empty - 判断 stack 对象栈是否 empty
+// s        : stack 对象栈
+// return   : true 表示 empty
+//
+inline bool stack_empty(struct stack * s) {
+    return s->tail < 0;
 }
 
 //
