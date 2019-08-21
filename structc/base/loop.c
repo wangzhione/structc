@@ -103,8 +103,8 @@ loop_create(void * frun, void * fdie) {
     sem_init(&p->block, 0, 0);
     if (pthread_run(&p->id, loop_run, p)) {
         sem_destroy(&p->block);
-        free(p->rq->queue);
-        free(p->wq->queue);
+        free(p->rq->data);
+        free(p->wq->data);
         free(p); p = NULL;
     }
     return p;    

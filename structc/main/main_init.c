@@ -5,8 +5,8 @@
 // CONF_PATH_STR - 配置文件路径
 // LOG_PATH_STR  - 日志文件路径
 // 
-#define CONF_PATH_STR       "/conf/conf.conf"
-#define LOG_PATH_STR        "/logs/structc.log"
+#define CONF_PATH_STR       "conf/conf.conf"
+#define LOG_PATH_STR        "logs/structc.log"
 
 //
 // main_init - 模块初始化
@@ -15,7 +15,7 @@
 void main_init(void) {
     char r[BUFSIZ];
     // 一切皆有可能 🙂
-    size_t n = strlen(getcwd(r, LEN(r)));
+    size_t n = getawd(r, LEN(r));
 
     // thread 模块初始化
     EXTERN_RUN(pthread_init);
@@ -30,7 +30,7 @@ void main_init(void) {
     IF(!conf_init(strcat(r, CONF_PATH_STR)));
 
     // 日志模块初始化
-    memcpy(r + n, LOG_PATH_STR, LEN(LOG_PATH_STR));
+    memcpy(r+n, LOG_PATH_STR, LEN(LOG_PATH_STR));
     fmkdir(r);
     EXTERN_RUN(log_init, r);
 }

@@ -5,7 +5,7 @@
 #include "atom.h"
 
 struct mq {
-    q_t q;             // 队列
+    q_t       q;       // 队列
     atom_t lock;       // 自旋锁
 };
 
@@ -64,20 +64,20 @@ inline void mq_push(mq_t q, void * m) {
 // return   : 返回消息队列长度
 //
 inline static int mq_len(mq_t q) {
-    int head, tail, size;
+    int cap, head, tail;
     atom_lock(q->lock);
     if ((tail = q->q->tail) == -1) {
         atom_unlock(q->lock);
         return 0;
     }
 
+    cap = q->q->cap;
     head = q->q->head;
-    size = q->q->size;
     atom_unlock(q->lock);
 
     // 计算当前时间中内存队列的大小
     tail -= head - 1;
-    return tail > 0 ? tail : tail+size;
+    return tail > 0 ? tail : tail+cap;
 }
 
 #endif//_MQ_H

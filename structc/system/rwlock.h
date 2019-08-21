@@ -12,15 +12,15 @@ struct rwlock {
 };
 
 // rwlock_rlock - add read lock
-extern void rwlock_rlock(struct rwlock * restrict rw);
+extern void rwlock_rlock(struct rwlock * rw);
 
 // rwlock_wlock - add write lock
-extern void rwlock_wlock(struct rwlock * restrict rw);
+extern void rwlock_wlock(struct rwlock * rw);
 
 // rwlock_unwlock - unlock write lock
-extern void rwlock_unwlock(struct rwlock * restrict rw);
+extern void rwlock_unwlock(struct rwlock * rw);
 
 // rwlock_unrlock - unlock read lock
-extern void rwlock_unrlock(struct rwlock * restrict rw);
+extern void rwlock_unrlock(struct rwlock * rw);
 
 #endif//_RWLOCK_H

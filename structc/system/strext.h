@@ -6,9 +6,9 @@
     功能 : 扩展 string.h 中部分功能, 方便业务层调用
  */
 
-#include "alloc.h"
 #include <ctype.h>
 #include <stdio.h>
+#include "stdext.h"
 #include <stdarg.h>
 #include <string.h>
 

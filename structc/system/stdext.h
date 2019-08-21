@@ -22,31 +22,29 @@
 mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 
 // getch - 立即得到用户输入的一个字符
-inline static int getch(void) {
+inline int getch(void) {
     struct termios now, old;
-    // 得到当前终端(0表示标准输入)的设置
-    if (tcgetattr(0, &old))
+    // 得到当前终端标准输入的设置
+    if (tcgetattr(STDIN_FILENO, &old))
         return EOF;
     now = old;
 
-    // 设置终端为 Raw 原始模式，该模式下输入数据全以字节单位被处理
+    // 设置终端为 Raw 原始模式，让输入数据全以字节单位被处理
     cfmakeraw(&now);
     // 设置上更改之后的设置
-    if (tcsetattr(0, TCSANOW, &now))
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &now))
         return EOF;
 
     int c = getchar();
 
     // 设置还原成老的模式
-    if (tcsetattr(0, TCSANOW, &old))
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &old))
         return EOF;
     return c;
 }
 
 // cls - 屏幕清除, 依赖系统脚本
-inline void cls(void) {
-    printf("\ec");
-}
+inline void cls(void) { printf("\ec"); }
 
 #endif
 
@@ -72,9 +70,7 @@ inline void cls(void) {
 #endif
 
 // cls - 屏幕清除, 依赖系统脚本
-inline void cls(void) {
-    system("cls");
-}
+inline void cls(void) { system("cls"); }
 
 #endif
 
@@ -87,22 +83,22 @@ inline void spause(void) {
 }
 
 //
-// st_mtime - 得到文件最后修改时间
+// fmtime - 得到文件最后修改时间
 // path     : 文件路径
 // return   : 返回时间戳, -1 表示失败
 //
-inline time_t st_mtime(const char * path) {
+inline time_t fmtime(const char * path) {
     struct stat st;
     // 数据最后的修改时间
     return stat(path, &st) ? -1 : st.st_mtime;
 }
 
 //
-// st_size - 得到文件内容内存大小
+// fsize - 得到文件内容内存大小
 // path     : 文件路径
 // return   : 返回文件内存
 //
-inline int64_t st_size(const char * path) {
+inline int64_t fsize(const char * path) {
     struct stat st;
     // 数据最后的修改时间
     return stat(path, &st) ? -1 : st.st_size;
@@ -128,5 +124,13 @@ extern int mkdirs(const char * path);
 // return   : < 0 is error, 0 is success
 //
 extern int fmkdir(const char * path);
+
+//
+// getawd - 得到程序运行目录, \\ or / 结尾
+// buf      : 存储地址
+// size     : 存储大小
+// return   : 返回长度, -1 is error 
+//
+extern int getawd(char * buf, size_t size);
 
 #endif//_STDEXT_H

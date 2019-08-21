@@ -133,50 +133,31 @@ str_sprintf(const char * format, ...) {
 //
 char * 
 str_freads(const char * path) {
-    size_t n, cap, len;
-    char * str, buf[BUFSIZ];
+    int64_t size = fsize(path);
+    if (size < 0)
+        return NULL;
+    if (size == 0) 
+        return calloc(1, sizeof (char));
 
+    // 尝试打开文件读取处理
     FILE * txt = fopen(path, "rb");
-    if (NULL == txt) 
+    if (!txt) 
         return NULL;
 
-    // 读取数据
-    n = fread(buf, sizeof(char), BUFSIZ, txt);
+    // 构建最终内存
+    char * str = malloc(size + 1);
+    str[size] = '\0';
+
+    fread(str, sizeof(char), size, txt);
     if (ferror(txt)) {
+        free(str);
         fclose(txt);
         return NULL;
     }
-
-    // 由于分配内存足够, 读取完毕就直接构造返回内容
-    if (feof(txt)) {
-        fclose(txt);
-        str = malloc(n + 1);
-        str[n] = '\0';
-        return memcpy(str, buf, n);
-    }
-
-    str = malloc((cap = n << 1));
-    memcpy(str, buf, len = n);
-    do {
-        n = fread(buf, sizeof(char), BUFSIZ, txt);
-        if (ferror(txt)) {
-            fclose(txt);
-            free(str);
-            return NULL;
-        }
-
-        // 填充数据
-        if (len + n >= cap)
-            str = realloc(str, cap <<= 1);
-        memcpy(str + len, buf, n);
-        len += n;
-    } while (!feof(txt));
 
     fclose(txt);
 
-    // 设置结尾, 并返回结果
-    str[len] = '\0';
-    return realloc(str, len + 1);
+    return str;
 }
 
 // str_fwrite - 按照约定输出数据到文件中

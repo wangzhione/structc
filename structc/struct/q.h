@@ -4,14 +4,14 @@
 #include "struct.h"
 
 //
-// pop empty  <=> tail == -1 ( head == 0 )
-// push full  <=> head == (tail + 1) % size
+// pop empty <=> tail == -1 ( head == 0 )
+// push full <=> head == (tail + 1) % cap
 //
 typedef struct q {
-    void ** queue;      // 队列实体
-    int size;           // 队列大小
-    int head;           // 头结点
-    int tail;           // 尾结点
+    void ** data;       // 队列实体
+    int      cap;       // 队列容量
+    int     head;       // 头结点
+    int     tail;       // 尾结点
 } q_t[1];
 
 //
@@ -21,8 +21,8 @@ typedef struct q {
 // Q_INT  - 队列初始大小, 必须是 2 的幂
 #define Q_INT     (1<< 6)
 inline void q_init(q_t q) {
-    q->queue = malloc(sizeof(void *) * Q_INT);
-    q->size = Q_INT;
+    q->data = malloc(sizeof(void *) * Q_INT);
+    q->cap = Q_INT;
     q->head =  0;
     q->tail = -1;
 }

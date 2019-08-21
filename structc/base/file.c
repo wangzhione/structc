@@ -19,7 +19,7 @@ static struct files {
 // files add 
 static void f_s_add(const char * p, unsigned h, file_f func, void * arg) {
     struct file * fu;
-    if (st_mtime(p) == -1) {
+    if (fmtime(p) == -1) {
         RETNIL("mtime error p = %s", p);
     }
 
@@ -93,7 +93,7 @@ file_update(void) {
             free(fu->path);
             free(fu);
         } else {
-            time_t last = st_mtime(fu->path);
+            time_t last = fmtime(fu->path);
             if (fu->last != last && last != -1) {
                 FILE * c = fopen(fu->path, "rb+");
                 if (!c) {
