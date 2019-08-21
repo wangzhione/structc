@@ -1,7 +1,7 @@
 ﻿#ifndef _RTREE_H
 #define _RTREE_H
 
-#include "struct.h"
+#include "stack.h"
 
 //
 // 红黑树通用结构, 需要将 $RTREE 放在结构开头部位
@@ -25,8 +25,8 @@ typedef struct {
 
 //
 // rtee_create - 创建一个红黑树对象
-// fcmp     : cmp_f 结点插入时比较行为
-// fnew     : new_f 结点插入时构造行为
+// fcmp     :  cmp_f 结点插入时比较行为
+// fnew     :  new_f 结点插入时构造行为
 // fdie     : node_f 结点删除时销毁行为
 // return   : 返回构建红黑树对象
 //

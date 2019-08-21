@@ -13,7 +13,7 @@ q_pop(q_t q) {
         if (q->tail != q->head)
             q->head = (q->head + 1) & (q->cap - 1);
         else {
-            q->head = 0; // empty 情况, 重置 tail 和 head
+            q->head =  0; // empty 情况, 重置 tail 和 head
             q->tail = -1;
         }
     }

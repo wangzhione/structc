@@ -700,7 +700,7 @@ json_print(json_t c) {
 //
 json_t 
 json_create_array(unsigned char t, const void * a, int n) {
-    json_t node = NULL, near = NULL, aj = NULL;
+    json_t node = NULL, foll = NULL, aj = NULL;
 
     // 可以通过模板分拆做优化
     for (int i = 0; i < n; ++i) {
@@ -714,12 +714,12 @@ json_create_array(unsigned char t, const void * a, int n) {
         }
 
         if (i) 
-            near->next = node;
+            foll->next = node;
         else {
             aj = json_new_array();
             aj->chid = node;
         }
-        near = node;
+        foll = node;
     }
 
     return aj;

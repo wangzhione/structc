@@ -27,8 +27,8 @@ inline static int rtree_default_cmp(const void * l, const void * r) {
 
 //
 // rtee_create - 创建一个红黑树对象
-// fcmp     : cmp_f 结点插入时比较行为
-// fnew     : new_f 结点插入时构造行为
+// fcmp     :  cmp_f 结点插入时比较行为
+// fnew     :  new_f 结点插入时构造行为
 // fdie     : node_f 结点删除时销毁行为
 // return   : 返回构建红黑树对象
 //
@@ -59,7 +59,7 @@ static void rtree_die(struct $rtree * root, node_f fdie) {
 //
 inline void 
 rtree_delete(rtree_t tree) {
-    if (NULL == tree) return;
+    if (!tree) return;
     if (tree->root && tree->fdie)
         rtree_die(tree->root, tree->fdie);
     tree->root = NULL;

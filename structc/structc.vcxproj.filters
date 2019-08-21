@@ -153,6 +153,9 @@
     <ClInclude Include="system\utf8.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="struct\stack.h">
+      <Filter>struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="system\utf8.c">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="test\stack_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

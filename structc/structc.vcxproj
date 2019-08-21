@@ -117,6 +117,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="struct\mq.h" />
     <ClInclude Include="struct\q.h" />
     <ClInclude Include="struct\rtree.h" />
+    <ClInclude Include="struct\stack.h" />
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\cstr.h" />
     <ClInclude Include="system\alloc.h" />
@@ -182,6 +183,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="test\file_test.c" />
     <ClCompile Include="test\loop_test.c" />
     <ClCompile Include="test\reuseport_test.c" />
+    <ClCompile Include="test\stack_test.c" />
     <ClCompile Include="test\stdext_test.c" />
     <ClCompile Include="test\timer_test.c" />
     <ClCompile Include="test\url_test.c" />

@@ -8,10 +8,10 @@
 // push full <=> head == (tail + 1) % cap
 //
 typedef struct q {
-    void ** data;       // 队列实体
-    int      cap;       // 队列容量
     int     head;       // 头结点
     int     tail;       // 尾结点
+    int      cap;       // 队列容量
+    void ** data;       // 队列实体
 } q_t[1];
 
 //
