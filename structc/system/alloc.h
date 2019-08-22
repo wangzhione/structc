@@ -5,23 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// enum 状态 >= 0 is Success, < 0 is Error
-//
-enum {
-    SBase       =   +0, // 正确基础类型
-
-    EBase       =   -1, // 错误基础类型
-    EParam      =   -2, // 输入参数错误
-    EFd         =   -3, // 文件打开失败
-    EClose      =   -4, // 文件操作关闭
-    EAccess     =   -5, // 没有操作权限
-    EAlloc      =   -6, // 内存操作错误
-    EParse      =   -7, // 协议解析错误
-    EBig        =   -8, // 过大基础错误
-    ESmall      =   -9, // 过小基础错误
-    ETimeout    =  -10, // 操作超时错误
-};
-
 //
 // realloc_ - realoc 包装函数
 // ptr      : 首地址, NULL 等同于 malloc
@@ -75,5 +58,22 @@ extern void free_(void * ptr);
 #    undef  realloc
 #    define realloc  realloc_
 #  endif//ALLOC_OFF
+
+// enum 状态 >= 0 is Success, < 0 is Error
+//
+enum {
+    SBase       =   +0, // 正确基础类型
+
+    EBase       =   -1, // 错误基础类型
+    EParam      =   -2, // 输入参数错误
+    EFd         =   -3, // 文件打开失败
+    EClose      =   -4, // 文件操作关闭
+    EAccess     =   -5, // 没有操作权限
+    EAlloc      =   -6, // 内存操作错误
+    EParse      =   -7, // 协议解析错误
+    EBig        =   -8, // 过大基础错误
+    ESmall      =   -9, // 过小基础错误
+    ETimeout    =  -10, // 操作超时错误
+};
 
 #endif//_ALLOC_H

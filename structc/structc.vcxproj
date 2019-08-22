@@ -99,7 +99,7 @@ echo e n d init directory $(TargetDir)conf</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base\check.h" />
-    <ClInclude Include="base\head.h" />
+    <ClInclude Include="base\base.h" />
     <ClInclude Include="base\conf.h" />
     <ClInclude Include="base\csv.h" />
     <ClInclude Include="base\file.h" />
@@ -137,6 +137,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\spoll$select.h" />
     <ClInclude Include="system\spoll.h" />
     <ClInclude Include="system\strext.h" />
+    <ClInclude Include="system\system.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
     <ClInclude Include="system\utf8.h" />
