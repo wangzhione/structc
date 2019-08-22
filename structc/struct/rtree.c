@@ -45,16 +45,14 @@ rtree_create(void * fcmp, void * fnew, void * fdie) {
 
 // rtree_die - 后序删除树结点
 static void rtree_die(struct $rtree * root, node_f fdie) {
-    stack_create(s);
     struct $rtree * pre = NULL;
 
+    stack_create(s);
     stack_push(s, root);
-
     do {
         struct $rtree * cur = stack_top(s);
-
         if ((!cur->left && !cur->right) 
-        || ((cur->left == pre || cur->right == pre) && pre)) {
+         || ((cur->left == pre || cur->right == pre) && pre)) {
             fdie(cur);
             pre = stack_pop(s);
         } else {
@@ -64,7 +62,6 @@ static void rtree_die(struct $rtree * root, node_f fdie) {
                 stack_push(s, cur->left);
         }
     } while (!stack_empty(s));
-
     stack_delete(s, NULL);
 }
 
@@ -75,11 +72,12 @@ static void rtree_die(struct $rtree * root, node_f fdie) {
 //
 inline void 
 rtree_delete(rtree_t tree) {
-    if (!tree) return;
-    if (tree->root && tree->fdie)
-        rtree_die(tree->root, tree->fdie);
-    tree->root = NULL;
-    free(tree);
+    if (tree) {
+        if (tree->root && tree->fdie)
+            rtree_die(tree->root, tree->fdie);
+        tree->root = NULL;
+        free(tree);
+    }
 }
 
 //
@@ -91,7 +89,6 @@ void *
 rtree_search(rtree_t tree, void * pack) {
     cmp_f fcmp;
     struct $rtree * node;
-    if (!tree) return NULL;
 
     fcmp = tree->fget ? tree->fget : tree->fcmp;
     node = tree->root;
@@ -119,7 +116,7 @@ rtree_search(rtree_t tree, void * pack) {
  详细的可以查看, 下面博主的红黑树系列文章
     https://www.cnblogs.com/skywang12345/p/3624177.html
 
-*/
+ */
 
 /* 
  * 对红黑树的结点 [x] 进行左旋转
@@ -129,10 +126,10 @@ rtree_search(rtree_t tree, void * pack) {
  *       px                             px
  *      /                              /
  *     x                              y
- *    /  \       --- (左旋) -->       / \
- *   lx   y                         x  ry
- *      /   \                      /  \
- *     ly   ry                    lx  ly  
+ *    /  \       --- (左旋) -->      / \
+ *   lx   y                         x   ry
+ *      /   \                     /   \
+ *     ly   ry                   lx   ly  
  *
  */
 static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
@@ -143,13 +140,13 @@ static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
     // 将 [y的左孩子] 设为 [x的右孩子]；
     x->right = y->left;
     // 如果 y的左孩子 非空，将 [x] 设为 [y的左孩子的父亲]
-    if (y->left != NULL)
+    if (y->left)
         rtree_set_parent(y->left, x);
 
     // 将 [x的父亲] 设为 [y的父亲]
     rtree_set_parent(y, xparent);
 
-    if (xparent == NULL) {
+    if (!xparent) {
         // 如果 [x的父亲] 是空结点, 则将 [y] 设为根结点
         tree->root = y;
     } else {
@@ -190,12 +187,12 @@ static void rtree_right_rotate(rtree_t tree, struct $rtree * y) {
     // 将 [x的右孩子] 设为 [y的左孩子]
     y->left = x->right;
     // 如果 x的右孩子 不为空的话，将 [y] 设为 [x的右孩子的父亲]
-    if (x->right != NULL)
+    if (x->right)
         rtree_set_parent(x->right, y);
 
     // 将 [y的父亲] 设为 [x的父亲]
     rtree_set_parent(x, yparent);
-    if (yparent == NULL) {
+    if (!yparent) {
         // 如果 [y的父亲] 是空结点, 则将 [x] 设为根结点
         tree->root = x;
     } else {
@@ -300,8 +297,6 @@ static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
 //
 void 
 rtree_insert(rtree_t tree, void * pack) {
-    if (!tree || !pack) return;
-
     cmp_f fcmp = tree->fcmp;
     struct $rtree * x = tree->root, * y = NULL;
     // 1. 构造插入结点, 并设置结点的颜色为红色
@@ -317,7 +312,7 @@ rtree_insert(rtree_t tree, void * pack) {
     }
     rtree_set_parent(node, y);
 
-    if (NULL == y) {
+    if (!y) {
         // 情况 1: 若 y是空结点, 则将 node设为根
         tree->root = node;
     } else {
@@ -428,28 +423,33 @@ static void rtree_remove_fixup(rtree_t tree,
 void 
 rtree_remove(rtree_t tree, void * pack) {
     int color;
-    struct $rtree * child, * parent, * node = pack;
-    if (NULL != tree) return;
+    struct $rtree * child, * parent, * node;
+
+    // 查看 pack 关键词是否存在 rb tree 中
+    if (!(node = rtree_search(tree, pack)))
+        return;
 
     // 被删除结点的 "左右孩子都不为空" 的情况
-    if (NULL != node->left && node->right != NULL) {
+    if (node->left && node->right) {
         // 被删结点的后继结点. (称为 "取代结点")
         // 用它来取代 "被删结点" 的位置, 然后再将 "被删结点" 去掉
         struct $rtree * replace = node;
 
         // 获取后继结点
         replace = replace->right;
-        while (replace->left != NULL)
+        while (replace->left)
             replace = replace->left;
 
-        // "node结点" 不是根结点(只有根结点不存在父结点)
-        if ((parent = rtree_parent(node))) {
+        // "node结点" 是根结点, 更新根结点
+        if (!(parent = rtree_parent(node)))
+            tree->root = replace;
+        else {
+            // "node结点" 不是根结点(只有根结点不存在父结点)
             if (parent->left == node)
                 parent->left = replace;
             else
                 parent->right = replace;
-        } else // "node结点" 是根结点, 更新根结点
-            tree->root = replace;
+        }
 
         // child 是 "取代结点" 的右孩子, 也是需要 "调整的结点"
         // "取代结点" 肯定不存在左孩子! 因为它是一个后继结点
@@ -479,7 +479,7 @@ rtree_remove(rtree_t tree, void * pack) {
         goto ret_out;
     }
 
-    if (NULL != node->left)
+    if (node->left)
         child = node->left;
     else 
         child = node->right;
@@ -492,7 +492,7 @@ rtree_remove(rtree_t tree, void * pack) {
         rtree_set_parent(child, parent);
 
     // "node结点" 不是根结点
-    if (NULL == parent)
+    if (!parent)
         tree->root = child;
     else {
         if (parent->left == node)

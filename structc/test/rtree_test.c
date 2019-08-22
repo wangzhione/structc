@@ -53,7 +53,7 @@ void rtree_test(void) {
     // 获取数据
     struct names node = { .name = "正直" };
     struct names * name = rtree_search(names, &node);
-    IF(NULL == name);
+    IF(!name);
     printf("get->name: %p | %s\n", name, name->name);
 
     // 继续获取数据
@@ -63,11 +63,12 @@ void rtree_test(void) {
     // 继续查找
     names->fget = (cmp_f)names_get;
     name = rtree_search(names, "追求");
-    IF(NULL == name);
+    IF(!name);
     printf("get->name: %p | %s\n", name, name->name);
 
     // 删除数据
     rtree_remove(names, "bbb");
 
+    puts("rtree_delete");
     rtree_delete(names);
 }
