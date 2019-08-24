@@ -6,40 +6,37 @@
 // p    : 父结点
 // c    : 当前结点颜色, 1 is black, 0 is red
 //
-#define rtree_parent(r)      ((struct $rtree *)((r)->parentc & ~3))
+#define rtree_parent(r)      ((struct $rtree *)((r)->parentc & ~1))
 #define rtree_color(r)       ((r)->parentc & 1)
 #define rtree_is_red(r)      (!rtree_color(r))
 #define rtree_is_black(r)    rtree_color(r)
 #define rtree_set_red(r)     (r)->parentc &= ~1
-#define rtree_set_black(r)   (r)->parentc |= 1
+#define rtree_set_black(r)   (r)->parentc |=  1
 
 inline void rtree_set_parent(struct $rtree * r, struct $rtree * p) {
-    r->parentc = (r->parentc & 3) | (uintptr_t)p;
+    r->parentc = (r->parentc & 1) | (uintptr_t)p;
 }
 
 inline void rtree_set_color(struct $rtree * r, int color) {
     r->parentc = (r->parentc & ~1) | (1 & color);
 }
 
-inline static int rtree_default_cmp(const void * l, const void * r) {
+inline static int rtree_cmp_default(const void * l, const void * r) {
     return (int)((intptr_t)l - (intptr_t)r);
 }
 
 //
 // rtee_create - 创建一个红黑树对象
-// fcmp     :  cmp_f 结点插入时比较行为
-// fnew     :  new_f 结点插入时构造行为
-// fdie     : node_f 结点删除时销毁行为
+// fcmp     :  cmp_f 结点的比较行为
+// fdie     : node_f 结点的销毁行为
 // return   : 返回构建红黑树对象
 //
 inline rtree_t 
-rtree_create(void * fcmp, void * fnew, void * fdie) {
+rtree_create(void * fcmp, void * fdie) {
     rtree_t tree = malloc(sizeof *tree);
     tree->root = NULL;
-    tree->fcmp = fcmp ? fcmp : rtree_default_cmp;
-    tree->fnew = fnew;
+    tree->fcmp = fcmp ? fcmp : rtree_cmp_default;
     tree->fdie = fdie;
-    tree->fget = NULL;
     return tree;
 }
 
@@ -82,15 +79,13 @@ rtree_delete(rtree_t tree) {
 //
 // rtree_search - 红黑树查找函数
 // tree     : 待查找的红黑树结构
+// pack     : 树结点, fcmp(x, pack)
 // return   : 返回查找的结点
 //
 void * 
 rtree_search(rtree_t tree, void * pack) {
-    cmp_f fcmp;
-    struct $rtree * node;
-
-    fcmp = tree->fget ? tree->fget : tree->fcmp;
-    node = tree->root;
+    cmp_f fcmp = tree->fcmp;
+    struct $rtree * node = tree->root;
     while (node) {
         int diff = fcmp(node, pack);
         if (diff == 0)
@@ -281,13 +276,6 @@ static void rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
     rtree_set_black(tree->root);
 }
 
-// rtree_new - 插入时候构造一个新结点 | static 用于解决符号重定义
-static inline struct $rtree * rtree_new(rtree_t tree, void * pack) {
-    struct $rtree * node = tree->fnew ? tree->fnew(pack) : pack;
-    // 默认构建结点是红色的
-    return  memset(node, 0, sizeof *node);
-}
-
 //
 // rtree_insert - 红黑树中插入结点 fnew(pack)
 // tree     : 红黑树结构
@@ -299,7 +287,7 @@ rtree_insert(rtree_t tree, void * pack) {
     cmp_f fcmp = tree->fcmp;
     struct $rtree * x = tree->root, * y = NULL;
     // 1. 构造插入结点, 并设置结点的颜色为红色
-    struct $rtree * node = rtree_new(tree, pack);
+    struct $rtree * node = memset(pack, 0, sizeof(struct $rtree));
 
     // 2. 将红黑树当作一颗二叉查找树, 将结点添加到二叉查找树中. 默认 从小到大
     while (x) {
@@ -416,17 +404,13 @@ static void rtree_remove_fixup(rtree_t tree,
 //
 // rtree_remove - 红黑树中删除结点
 // tree     : 红黑树结构
-// pack     : 待删除基础结构
+// pack     : 此树中待删除结点
 // return   : void
 //
 void 
 rtree_remove(rtree_t tree, void * pack) {
     int color;
-    struct $rtree * child, * parent, * node;
-
-    // 查看 pack 关键词是否存在 rb tree 中
-    if (!(node = rtree_search(tree, pack)))
-        return;
+    struct $rtree * child, * parent, * node = pack;
 
     // 被删除结点的 "左右孩子都不为空" 的情况
     if (node->left && node->right) {

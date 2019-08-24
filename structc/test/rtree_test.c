@@ -22,8 +22,10 @@ inline static int names_cmp(struct names * left, struct names * right) {
     return strcmp(left->name, right->name);
 }
 
-inline static int names_get(struct names * node, char * name) {
-    return strcmp(node->name, name);
+// names_search - names rtree search
+inline struct names * names_search(rtree_t tree, char * name) {
+    struct names key = { .name = name };
+    return rtree_search(tree, &key);
 }
 
 // names_print - 测试打印处理
@@ -39,36 +41,38 @@ void names_print(struct names * root) {
 // rtree test
 //
 void rtree_test(void) {
-    rtree_t names = rtree_create(names_cmp, names_new, names_die);
+    rtree_t tree = rtree_create(names_cmp, names_die);
 
     // 插入数据
-    rtree_insert(names, "aaa");
-    rtree_insert(names, "bbb");
-    rtree_insert(names, "ccc");
-    rtree_insert(names, "正直");
+    rtree_insert(tree, names_new("aaa"));
+    rtree_insert(tree, names_new("bbb"));
+    rtree_insert(tree, names_new("ccc"));
+    rtree_insert(tree, names_new("正直"));
 
     // 测试数据
-    names_print((struct names *)names->root);
+    names_print((struct names *)tree->root);
 
     // 获取数据
-    struct names node = { .name = "正直" };
-    struct names * name = rtree_search(names, &node);
+    struct names * name = names_search(tree, "正直");
     IF(!name);
     printf("get->name: %p | %s\n", name, name->name);
 
     // 继续获取数据
-    rtree_insert(names, "ddd");
-    rtree_insert(names, "追求");
+    rtree_insert(tree, names_new("ddd"));
+    rtree_insert(tree, names_new("追求"));
 
     // 继续查找
-    names->fget = (cmp_f)names_get;
-    name = rtree_search(names, "追求");
+    name = names_search(tree, "追求");
     IF(!name);
     printf("get->name: %p | %s\n", name, name->name);
 
     // 删除数据
-    rtree_remove(names, "bbb");
+    name = names_search(tree, "bbb");
+    if (name) {
+        printf("name = %p, %s\n", name, name->name);
+        rtree_remove(tree, name);
+    }
 
     puts("rtree_delete");
-    rtree_delete(names);
+    rtree_delete(tree);
 }
