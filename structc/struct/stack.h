@@ -18,26 +18,19 @@ struct stack {
 
 //
 // stack_init - 初始化 stack 对象栈
+// stack_free - 清除掉 stack 对象栈
 // return   : void
 //
 inline void stack_init(struct stack * s) {
     assert(s && INT_STACK > 0);
     s->tail = -1;
-    s->cap = INT_STACK;
+    s->cap  = INT_STACK;
     s->data = malloc(sizeof(void *) * INT_STACK);
 }
 
-//
-// stack_create - 创建 stack 对象栈
-// var      : stack 对象栈
-// return   : NIL
-//
-#define stack_create(var)                           \
-struct stack var[1] = {{                            \
-    .tail = -1,                                     \
-     .cap = INT_STACK,                              \
-    .data = malloc(sizeof(void *) * INT_STACK),     \
-}}
+inline void stack_free(struct stack * s) {
+    free(s->data);
+}
 
 //
 // stack_delete - 删除 stack 对象栈
@@ -46,11 +39,13 @@ struct stack var[1] = {{                            \
 // return   : void
 //
 inline void stack_delete(struct stack * s, node_f fdie) {
-    if (fdie) {
-        while (s->tail >= 0)
-            fdie(s->data[s->tail--]);
+    if (s) {
+        if (fdie) {
+            while (s->tail >= 0)
+                fdie(s->data[s->tail--]);
+        }
+        stack_free(s);
     }
-    free(s->data);
 }
 
 //
@@ -59,7 +54,7 @@ inline void stack_delete(struct stack * s, node_f fdie) {
 // return   : true 表示 empty
 //
 inline bool stack_empty(struct stack * s) {
-    return s->tail < 0;
+    return s->tail <  0;
 }
 
 //
@@ -74,10 +69,10 @@ inline void * stack_top(struct stack * s) {
 //
 // stack_pop - 弹出栈顶元素
 // s        : stack 对象栈
-// return   : 栈顶弹出后的对象
+// return   : void
 //
-inline void * stack_pop(struct stack * s) {
-    return s->tail >= 0 ? s->data[s->tail--] : NULL;
+inline stack_pop(struct stack * s) {
+    if (s->tail >= 0) --s->tail;
 }
 
 //
@@ -87,7 +82,7 @@ inline void * stack_pop(struct stack * s) {
 // return   : void
 // 
 inline void stack_push(struct stack * s, void * m) {
-    if (s->tail >= s->cap) {
+    if (s->cap <= s->tail) {
         s->cap <<= 1;
         s->data = realloc(s->data, sizeof(void *) * s->cap);
     }
