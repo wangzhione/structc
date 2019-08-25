@@ -9,7 +9,7 @@
 // 
 char * 
 url_encode(const char * s, int len, int * nen) {
-	static const unsigned char code[] = "0123456789ABCDEF";
+    static const unsigned char code[] = "0123456789ABCDEF";
 
     if (!s || !*s || len <= 0) {
         if (nen) *nen = 0;
