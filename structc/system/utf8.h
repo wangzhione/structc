@@ -35,16 +35,4 @@ extern bool isu8s(const char * s);
 //
 extern bool isu8(const char d[], size_t n);
 
-// locals - winds 本地将 utf8 转 gbk, 兼容 zh
-// s        : 待过滤的本地字符串
-// return   : utf8 c char *
-//
-inline char * locals(char s[]) {
-#ifdef _MSC_VER
-    if (isu8s(s))
-        u82g(s);
-#endif
-    return s;
-}
-
 #endif//_UTF8_H

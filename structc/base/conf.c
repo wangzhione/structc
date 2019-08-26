@@ -21,8 +21,7 @@ if (!$##field || $##field->type != JSON_STRING) {           \
     RETURN(false, "json_object err "#field" %p", $##field); \
 }                                                           \
 free(conf->field);                                          \
-conf->field = json_str($##field);                           \
-locals(conf->field)
+conf->field = json_str($##field);
 
 // conf_parse - 解析内容, 并返回解析结果
 bool conf_parse(json_t json, struct conf * conf) {

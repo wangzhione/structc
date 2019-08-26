@@ -99,12 +99,18 @@
         项目右击 -> [属性] -> [生成事件] -> [后期生成事件] -> [命令行]
 
         echo begin init directory $(TargetDir)conf
-        if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
+        if not exist $(TargetDir)conf mkdir $(TargetDir)conf
         xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
-        if not exist  $(TargetDir)test mkdir $(TargetDir)test
-        if not exist  $(TargetDir)test\conf mkdir $(TargetDir)test\conf
+        if not exist $(TargetDir)test mkdir $(TargetDir)test
+        if not exist $(TargetDir)test\conf mkdir $(TargetDir)test\conf
         xcopy /D /S /E /Y $(ProjectDir)test\conf $(TargetDir)test\conf
         echo e n d init directory $(TargetDir)conf
+
+    h). 区域环境配置
+
+        项目右击 -> [配置属性] -> [高级] -> [字符集] -> [未设置]
+
+        windows 10 -> [设置] -> [区域] -> [区域设置] -> [Beta 版: UTF-8]
 
 ## 2. linux 部署
 

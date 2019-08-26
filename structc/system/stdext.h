@@ -74,14 +74,6 @@ inline void cls(void) { system("cls"); }
 
 #endif
 
-// spause - 模拟 system("pause") or pause() 行为等待
-inline void spause(void) {
-    rewind(stdin);
-    fflush(stderr); fflush(stdout);
-    printf("Press any key to continue . . .");
-    (void)getch();
-}
-
 //
 // fmtime - 得到文件最后修改时间
 // path     : 文件路径

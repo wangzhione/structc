@@ -21,11 +21,9 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -65,10 +63,10 @@
     </Link>
     <PostBuildEvent>
       <Command>echo begin init directory $(TargetDir)conf
-if not exist  $(TargetDir)conf mkdir $(TargetDir)conf
+if not exist $(TargetDir)conf mkdir $(TargetDir)conf
 xcopy /D /S /E /Y $(ProjectDir)conf $(TargetDir)conf
-if not exist  $(TargetDir)test mkdir $(TargetDir)test
-if not exist  $(TargetDir)test\conf mkdir $(TargetDir)test\conf
+if not exist $(TargetDir)test mkdir $(TargetDir)test
+if not exist $(TargetDir)test\conf mkdir $(TargetDir)test\conf
 xcopy /D /S /E /Y $(ProjectDir)test\conf $(TargetDir)test\conf
 echo e n d init directory $(TargetDir)conf</Command>
     </PostBuildEvent>
