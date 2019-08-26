@@ -1,6 +1,6 @@
 # STRUCT C 基础库
 
-    开发背景 : 构建可用的 C 基础库
+    开发背景 : 构建 C 入门的华山剑法
     适用人群 : 喜欢 C 的选手
 
 ## 一切都是刚刚开始
@@ -10,10 +10,11 @@
         q.h         队  列
         mq.h        原子 q
         dict.h      字  典
-        tstr.h      字符串
+        cstr.h      字符串
         list.h      单链表
         rtree.h     红黑树
         array.h     数  组
+        stack.h     对象栈
 
     总设计:
 
