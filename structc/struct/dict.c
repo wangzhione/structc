@@ -59,7 +59,7 @@ inline struct keypair * keypair_create(unsigned hash,
 
 struct dict {
     node_f fdie;                // 结点注册的销毁函数
-    unsigned idx;               // 使用 _primes 质数表索引
+    unsigned idx;               // 使用 primes 质数表索引
     unsigned used;              // 用户已经使用的结点个数
     struct keypair ** table;    // size = primes[idx][0]
 };
