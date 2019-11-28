@@ -115,13 +115,17 @@ str_sprintf(const char * format, ...) {
     if (n < 0) 
         return NULL;
 
-    // 获取待分配内存
+    // 获取待分配内存, 尝试填充格式化数据
     char * ret = malloc(++n);
 
-    // 数据转换, 预设 vsnprintf 二次安全
     va_start(arg, format);
-    vsnprintf(ret, n, format, arg);
+    n = vsnprintf(ret, n, format, arg);
     va_end(arg);
+
+    if (n < 0) {
+        free(ret);
+        return NULL;
+    }
 
     return ret;
 }

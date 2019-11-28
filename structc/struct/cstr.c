@@ -147,13 +147,17 @@ cstr_sprintf(cstr_t cs, const char * format, ...) {
     if (n <= 0) 
         return cstr_get(cs);
 
-    // 预备待分配内存
+    // 获取待分配内存, 尝试填充格式化数据
     cstr_expand(cs, ++n);
 
     // 数据转换, 预设 vsnprintf 二次安全
     va_start(arg, format);
-    cs->len += vsnprintf(cs->str + cs->len, n, format, arg);
+    n = vsnprintf(cs->str + cs->len, n, format, arg);
     va_end(arg);
 
+    if (n <= 0) 
+        return cstr_get(cs);
+
+    cs->len += n;
     return cs->str;
 }
