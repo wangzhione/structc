@@ -9,8 +9,6 @@
 // 
 char * 
 url_encode(const char * s, int len, int * nen) {
-    static const unsigned char code[] = "0123456789ABCDEF";
-
     if (!s || !*s || len <= 0) {
         if (nen) *nen = 0;
         return NULL;
@@ -34,8 +32,8 @@ url_encode(const char * s, int len, int * nen) {
             (c > 'Z' && c  < 'a' && c != '_') ||
             (c > 'z')) {
             to[0] = '%';
-            to[1] = code[c >> 4];
-            to[2] = code[c & 15];
+            to[1] = "0123456789ABCDEF"[c >> 4];
+            to[2] = "0123456789ABCDEF"[c & 15];
             to += 3;
             continue;
         }

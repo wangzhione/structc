@@ -7,9 +7,9 @@
 //
 #define EXTERN_TEST(ftest, ...)                              \
 do {                                                         \
-    extern void ftest();                                     \
     clock_t $s = clock();                                    \
-    ftest (__VA_ARGS__);                                     \
+    extern void ftest ();                                    \
+    ftest ( __VA_ARGS__);                                    \
     double $e = (double)clock();                             \
     printf(STR(ftest)" run %lfs\n", ($e-$s)/CLOCKS_PER_SEC); \
 } while(0)
@@ -23,9 +23,9 @@ void main_test(void) {
     puts("*--------------------------------** main test *--------------------------------*");
 
     //
-    // 开始你的表演, 单元测试
+    // 单元测试, 开始你的表演 show time
     //
-    EXTERN_RUN(rtree_test);
+    EXTERN_RUN(md5_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

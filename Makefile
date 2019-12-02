@@ -14,7 +14,7 @@ DSTRUCT	    ?= $(ROOT)/struct
 DBASE 	    ?= $(ROOT)/base
 
 DOUT        ?= Out
-DOBJ        ?= $(DOUT)/Obj
+DOBJ        ?= $(DOUT)/.obj
 
 #
 # DIRS      : 所有可变编译文件目录

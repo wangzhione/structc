@@ -5,8 +5,8 @@
 // CONF_PATH_STR - 配置文件路径
 // LOG_PATH_STR  - 日志文件路径
 // 
-#define CONF_PATH_STR       "conf/conf.conf"
-#define LOG_PATH_STR        "logs/structc.log"
+#define CONF_PATH_STR           "conf/conf.conf"
+#define LOG_PATH_STR            "logs/structc.log"
 
 //
 // main_init - 模块初始化

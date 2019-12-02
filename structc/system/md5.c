@@ -17,25 +17,25 @@ struct md5c {
 
 /* MD5_FF, MD5_GG, MD5_HH, and MD5_II transformations for */
 /* rounds 1, 2, 3, and 4. Rotation is separate from addition to prevent recomputation */
-#define MD5_FF(a, b, c, d, x, s, ac) {                   \
+#define MD5_FF(a, b, c, d, x, s, ac) do {                \
     (a) += MD5_F ((b), (c), (d)) + (x) + (uint32_t)(ac); \
     (a) = ROTATE ((a), (s)); (a) += (b);                 \
-}
+} while (0)
 
-#define MD5_GG(a, b, c, d, x, s, ac) {                   \
+#define MD5_GG(a, b, c, d, x, s, ac) do {                \
     (a) += MD5_G ((b), (c), (d)) + (x) + (uint32_t)(ac); \
     (a) = ROTATE ((a), (s)); (a) += (b);                 \
-}
+} while (0)
 
-#define MD5_HH(a, b, c, d, x, s, ac) {                   \
+#define MD5_HH(a, b, c, d, x, s, ac) do {                \
     (a) += MD5_H ((b), (c), (d)) + (x) + (uint32_t)(ac); \
     (a) = ROTATE ((a), (s)); (a) += (b);                 \
-}
+} while (0)
 
-#define MD5_II(a, b, c, d, x, s, ac) {                   \
+#define MD5_II(a, b, c, d, x, s, ac) do {                \
     (a) += MD5_I ((b), (c), (d)) + (x) + (uint32_t)(ac); \
     (a) = ROTATE ((a), (s)); (a) += (b);                 \
-}
+} while (0)
 
 /* Constants for transformation */
 #define MD5_S11  7 /* Round 1 */
@@ -136,20 +136,18 @@ extern void md5_transform(struct md5c * ctx, const uint32_t in[static 16]) {
 
 // Set pseudoRandomNumber to zero for RFC MD5 implementation
 extern inline void md5_init(struct md5c * ctx) {
-    ctx->nl = ctx->nh = 0;
-
     /* Load magic initialization constants */
     ctx->a = 0x67452301;
     ctx->b = 0xefcdab89;
     ctx->c = 0x98badcfe;
     ctx->d = 0x10325476;
+    ctx->nl = ctx->nh = 0;
 }
 
-extern void md5_update(struct md5c * ctx, const void * buf, size_t n) {
+extern void md5_update(struct md5c * ctx, const uint8_t * data, size_t n) {
     uint32_t in[16];
     uint32_t i, ii, mdi;
     uint32_t len = (uint32_t)n;
-    const uint8_t * input = buf;
 
     /* Compute number of bytes mod 64 */
     mdi =  (ctx->nl >> 3) & 0x3F;
@@ -162,7 +160,7 @@ extern void md5_update(struct md5c * ctx, const void * buf, size_t n) {
 
     while (len--) {
         /* Add new character to buffer, increment mdi */
-        ctx->in[mdi++] = *input++;
+        ctx->in[mdi++] = *data++;
 
         /* Transform if necessary */
         if (mdi == 0x40) {
@@ -224,69 +222,66 @@ extern void md5_final(struct md5c * ctx, uint8_t digest[static 16]) {
     digest[4 * 3 + 3] = (uint8_t)((ctx->d >> 3 * 8) & 0xFF);
 }
 
-// md5_convert 将 16 byte md5 转成 32 byte md5 码
-uint8_t * md5_convert(md5_t m, const uint8_t digest[static 16]) {
-    static const uint8_t code[] = "0123456789abcdef";
-
+// md5_convert 将 16 byte md5 转成 33 byte md5 C 字符串码
+static uint8_t * md5_convert(md5_t m, const uint8_t digest[static 16]) {
     uint8_t * o = m, i = 0;
     while (i < 16) {
         uint8_t x = digest[i++];
-        // 潜规则走小写 md5
-        *o++ = code[x >> 4];
-        *o++ = code[x & 15];
+        // md5 潜规则走小写
+        *o++ = "0123456789abcdef"[x >> 4];
+        *o++ = "0123456789abcdef"[x & 15];
     }
     *o = '\0';
-
     return m;
 }
 
 //
-// md5_strs - 得到字符串的 md5 串
+// md5_file - 得到文件的 md5 串
 // m        : 存储 md5 串地址
-// d        : 内存块数据
-// n        : 内存块长度
-// return   : m 首地址
-//
-inline uint8_t * 
-md5_data(md5_t m, const void * d, size_t n) {
-    struct md5c ctx;
-    uint8_t digest[16];
-
-    md5_init(&ctx);
-    md5_update(&ctx, d, n);
-    md5_final(&ctx, digest);
-
-    return md5_convert(m, digest);
-}
-
-//
-// md5_strs - 得到字符串的 md5 串
-// m        : 存储 md5 串地址
-// p        : 文件的路径
+// path     : 文件的路径
 // return   : m 首地址
 //
 uint8_t * 
-md5_file(md5_t m, const char * p) {
+md5_file(md5_t m, const char * path) {
     size_t n;
-    FILE * txt;
+    FILE * stream;
     struct md5c ctx;
     uint8_t digest[16], d[BUFSIZ];
-    if (!(txt = fopen(p, "rb")))
+    if (!(stream = fopen(path, "rb")))
         return m;
 
     md5_init(&ctx);
 
     do {
         // 读取数据
-        n = fread(d, sizeof(uint8_t), sizeof d, txt);
-        if (ferror(txt)) {
-            fclose(txt);
+        n = fread(d, sizeof(uint8_t), sizeof d, stream);
+        if (ferror(stream)) {
+            fclose(stream);
             return m;
         }
         md5_update(&ctx, d, n);
-    } while (!feof(txt));
-    fclose(txt);
+    } while (!feof(stream));
+    fclose(stream);
 
+    md5_final(&ctx, digest);
+
+    return md5_convert(m, digest);
+}
+
+//
+// md5_data - 得到数据块的 md5 串
+// m        : 存储 md5 串地址
+// data     : 内存块数据
+// n        : 内存块长度
+// return   : m 首地址
+//
+inline uint8_t * 
+md5_data(md5_t m, const void * data, size_t n) {
+    struct md5c ctx;
+    uint8_t digest[16];
+
+    md5_init(&ctx);
+    md5_update(&ctx, data, n);
     md5_final(&ctx, digest);
 
     return md5_convert(m, digest);
