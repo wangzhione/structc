@@ -71,7 +71,7 @@ inline void * stack_top(struct stack * s) {
 // s        : stack 对象栈
 // return   : void
 //
-inline stack_pop(struct stack * s) {
+inline void stack_pop(struct stack * s) {
     if (s->tail >= 0) --s->tail;
 }
 

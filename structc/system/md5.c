@@ -56,7 +56,7 @@ struct md5c {
 #define MD5_S44 21
 
 /* Basic MD5 step. MD5_Transform buf based on in */
-extern void md5_transform(struct md5c * ctx, const uint32_t * in) {
+extern void md5_transform(struct md5c * ctx, const uint32_t in[static 16]) {
     uint32_t a = ctx->a, b = ctx->b, c = ctx->c, d = ctx->d;
 
     /* Round 1 */
@@ -178,7 +178,7 @@ extern void md5_update(struct md5c * ctx, const void * buf, size_t n) {
     }
 }
 
-extern void md5_final(struct md5c * ctx, uint8_t digest[16]) {
+extern void md5_final(struct md5c * ctx, uint8_t digest[static 16]) {
     uint32_t in[16];
     uint32_t mdi, i, ii, padn;
     static uint8_t padding[64] = { 0x80 };
@@ -225,7 +225,7 @@ extern void md5_final(struct md5c * ctx, uint8_t digest[16]) {
 }
 
 // md5_convert 将 16 byte md5 转成 32 byte md5 码
-uint8_t * md5_convert(md5_t m, const uint8_t digest[16]) {
+uint8_t * md5_convert(md5_t m, const uint8_t digest[static 16]) {
     static const uint8_t code[] = "0123456789abcdef";
 
     uint8_t * o = m, i = 0;

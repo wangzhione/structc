@@ -3,8 +3,8 @@
 
 #include "log.h"
 #include "rand.h"
-#include "conf.h"
 #include "file.h"
+#include "conf.h"
 #include "check.h"
 #include "thread.h"
 
