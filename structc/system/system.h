@@ -1,5 +1,5 @@
-﻿#ifndef _SYSTEM_H
-#define _SYSTEM_H
+﻿#ifndef __STRUCTC_SYSTEM_SYSTEM_H
+#define __STRUCTC_SYSTEM_SYSTEM_H
 
 #include <stdint.h>
 #include <stddef.h>
@@ -43,4 +43,4 @@ inline uint32_t small(uint32_t x) {
 #  endif
 }
 
-#endif//_SYSTEM_H
+#endif//__STRUCTC_SYSTEM_SYSTEM_H

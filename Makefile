@@ -38,7 +38,11 @@ CC       = gcc
 CFLAGS   = -g -O2 -Wall -Wno-unused-result
 LIB      = -lm -lpthread
 
-RHAD     = $(CC) $(CFLAGS) $(D)
+RHAD    := $(CC) $(CFLAGS)
+ifneq ( , $(D))
+	RHAD+=$(D)
+endif
+
 RTAL     = $(foreach v, $^,$(DOBJ)/$(v)) $(LIB)
 RUNO     = $(RHAD) $(IINC) -c -o $(DOBJ)/$@ $<
 RUN      = $(RHAD) $(IINC) -o $(DOUT)/$@ $(RTAL)

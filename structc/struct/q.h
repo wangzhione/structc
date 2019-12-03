@@ -1,5 +1,5 @@
-﻿#ifndef _Q_H
-#define _Q_H
+﻿#ifndef __STRUCTC_STRUCT_Q_H
+#define __STRUCTC_STRUCT_Q_H
 
 #include "struct.h"
 
@@ -63,4 +63,4 @@ extern void q_push(q_t q, void * m);
 //
 extern void q_delete(q_t q, node_f fdie);
 
-#endif//_Q_H
+#endif//__STRUCTC_STRUCT_Q_H

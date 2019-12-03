@@ -111,9 +111,12 @@ inline void pthread_end(pthread_t id) {
        Search Linux 部分添加如下内容
 
 ```json
+{
+    "configurations": [
+        {
             "name": "Linux",
             "includePath": [
-                ...
+                "${workspaceFolder}/**",
                 "${workspaceRoot}/structc/base",
                 "${workspaceRoot}/structc/struct",
                 "${workspaceRoot}/structc/system"
@@ -121,12 +124,15 @@ inline void pthread_end(pthread_t id) {
             "defines": [
                 "_DEBUG",
                 "__GNUC__",
+                "__linux__",
                 "_GNU_SOURCE"
             ],
             "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "gcc-x64"
+            "cStandard": "c11"
+        }
+    ],
+    "version": 4
+}
 ```
 
     2. F5 -> launch.json

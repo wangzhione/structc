@@ -1,5 +1,5 @@
-﻿#ifndef _RWLOCK_H
-#define _RWLOCK_H
+﻿#ifndef __STRUCTC_SYSTEM_RWLOCK_H
+#define __STRUCTC_SYSTEM_RWLOCK_H
 
 #include "atom.h"
 
@@ -12,10 +12,10 @@ struct rwlock {
 };
 
 // rwlock_rlock - add read lock
-extern void rwlock_rlock(struct rwlock * rw);
+extern void rwlock_rlock  (struct rwlock * rw);
 
 // rwlock_wlock - add write lock
-extern void rwlock_wlock(struct rwlock * rw);
+extern void rwlock_wlock  (struct rwlock * rw);
 
 // rwlock_unwlock - unlock write lock
 extern void rwlock_unwlock(struct rwlock * rw);
@@ -23,4 +23,4 @@ extern void rwlock_unwlock(struct rwlock * rw);
 // rwlock_unrlock - unlock read lock
 extern void rwlock_unrlock(struct rwlock * rw);
 
-#endif//_RWLOCK_H
+#endif//__STRUCTC_SYSTEM_RWLOCK_H

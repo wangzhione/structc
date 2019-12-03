@@ -1,5 +1,5 @@
-﻿#ifndef _CSTR_H
-#define _CSTR_H
+﻿#ifndef __STRUCTC_STRUCT_CSTR_H
+#define __STRUCTC_STRUCT_CSTR_H
 
 #include "strext.h"
 
@@ -99,4 +99,4 @@ extern void cstr_popup(cstr_t cs, size_t len);
 //
 extern char * cstr_sprintf(cstr_t cs, const char * format, ...);
 
-#endif//_CSTR_H
+#endif//__STRUCTC_STRUCT_CSTR_H

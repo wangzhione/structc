@@ -1,5 +1,5 @@
-﻿#ifndef _STDEXT_H
-#define _STDEXT_H
+﻿#ifndef __STRUCTC_SYSTEM_STDEXT_H
+#define __STRUCTC_SYSTEM_STDEXT_H
 
 #include "alloc.h"
 #include <fcntl.h>
@@ -125,4 +125,4 @@ extern int fmkdir(const char * path);
 //
 extern int getawd(char * buf, size_t size);
 
-#endif//_STDEXT_H
+#endif//__STRUCTC_SYSTEM_STDEXT_H

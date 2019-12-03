@@ -1,5 +1,5 @@
-﻿#ifndef _THREAD_H
-#define _THREAD_H
+﻿#ifndef __STRUCTC_SYSTEM_THREAD_H
+#define __STRUCTC_SYSTEM_THREAD_H
 
 #include "struct.h"
 #include <pthread.h>
@@ -42,4 +42,4 @@ inline void pthread_end(pthread_t id) {
     pthread_join(id, NULL);
 }
 
-#endif//_THREAD_H
+#endif//__STRUCTC_SYSTEM_THREAD_H

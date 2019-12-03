@@ -1,5 +1,5 @@
-﻿#ifndef _LOG_H
-#define _LOG_H
+﻿#ifndef __STRUCTC_BASE_LOG_H
+#define __STRUCTC_BASE_LOG_H
 
 #include "times.h"
 #include <stdlib.h>
@@ -33,4 +33,4 @@ log_printf(pre"[%s:%s:%d]"fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 //
 void log_printf(const char * fmt, ...);
 
-#endif//_LOG_H
+#endif//__STRUCTC_BASE_LOG_H

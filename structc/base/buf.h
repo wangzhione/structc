@@ -1,5 +1,5 @@
-﻿#ifndef _BUF_H
-#define _BUF_H
+﻿#ifndef __STRUCTC_BASE_BUF_H
+#define __STRUCTC_BASE_BUF_H
 
 #include "msg.h"
 
@@ -33,4 +33,4 @@ extern int msg_buf_append(msg_buf_t q,
                           const void * data, uint32_t sz,
                           msg_t * p);
 
-#endif//_BUF_H
+#endif//__STRUCTC_BASE_BUF_H

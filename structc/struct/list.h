@@ -1,13 +1,13 @@
-﻿#ifndef _LIST_H
-#define _LIST_H
+﻿#ifndef __STRUCTC_STRUCT_LIST_H
+#define __STRUCTC_STRUCT_LIST_H
 
 #include "struct.h"
 
 //
-// list.h 通用单链表库, 魔鬼的步伐
-// $LIST 必须嵌入在 struct 中第一行
-// void * list = NULL 创建 list 对象
-// [可选] list_delete(list, fide) 删除操作
+// list.h 似魔鬼的步伐, 单链表库
+// $LIST 需要嵌入 struct 的第一行
+// void * list = NULL;      //        创建 list
+// list_delete(list, fide); // [可选] 删除 list
 //
 struct $list {
     struct $list * next;
@@ -63,4 +63,4 @@ extern void * list_get(void * list, void * fget, const void * left);
 //
 extern void * list_pop(void * pist, void * fget, const void * left);
 
-#endif//_LIST_H
+#endif//__STRUCTC_STRUCT_LIST_H

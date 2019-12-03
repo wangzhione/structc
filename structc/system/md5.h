@@ -1,5 +1,5 @@
-﻿#ifndef __MD5_H
-#define __MD5_H
+﻿#ifndef __STRUCTC_SYSTEM_MD5_H
+#define __STRUCTC_SYSTEM_MD5_H
 
 #include <stdio.h>
 #include <stddef.h>
@@ -24,4 +24,4 @@ inline uint8_t * md5_str(md5_t m, const char * str) {
     return md5_data(m, str, strlen(str));
 }
 
-#endif//__MD5_H
+#endif//__STRUCTC_SYSTEM_MD5_H

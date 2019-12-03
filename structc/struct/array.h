@@ -1,5 +1,5 @@
-﻿#ifndef _ARRAY_H
-#define _ARRAY_H
+﻿#ifndef __STRUCTC_STRUCT_ARRAY_H
+#define __STRUCTC_STRUCT_ARRAY_H
 
 #include "struct.h"
 
@@ -104,4 +104,4 @@ extern void array_sort(array_t a, cmp_f fcmp);
 //
 extern int array_each(array_t a, each_f func, void * arg);
 
-#endif//_ARRAY_H
+#endif//__STRUCTC_STRUCT_ARRAY_H

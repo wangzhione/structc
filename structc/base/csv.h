@@ -1,5 +1,5 @@
-﻿#ifndef _CSV_H
-#define _CSV_H
+﻿#ifndef __STRUCTC_BASE_CSV_H
+#define __STRUCTC_BASE_CSV_H
 
 //
 // csv readonly parse
@@ -51,4 +51,4 @@ inline void csv_delete(csv_t csv) {
 //
 extern csv_t csv_create(const char * path);
 
-#endif//_CSV_H
+#endif//__STRUCTC_BASE_CSV_H

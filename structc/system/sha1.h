@@ -1,5 +1,5 @@
-#ifndef __SHA1_H
-#define __SHA1_H
+#ifndef __STRUCTC_SYSTEM_SHA1_H
+#define __STRUCTC_SYSTEM_SHA1_H
 
 #include <stdio.h>
 #include <string.h>
@@ -24,4 +24,4 @@ inline uint8_t * sha1_str(sha1_t a, const char * str) {
     return sha1_data(a, str, strlen(str));
 }
 
-#endif//__SHA1_H
+#endif//__STRUCTC_SYSTEM_SHA1_H

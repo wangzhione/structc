@@ -1,5 +1,5 @@
-﻿#ifndef _UTF8_H
-#define _UTF8_H
+﻿#ifndef __STRUCTC_SYSTEM_UTF8_H
+#define __STRUCTC_SYSTEM_UTF8_H
 
 #include "struct.h"
 
@@ -35,4 +35,4 @@ extern bool isu8s(const char * s);
 //
 extern bool isu8(const char d[], size_t n);
 
-#endif//_UTF8_H
+#endif//__STRUCTC_SYSTEM_UTF8_H

@@ -1,4 +1,4 @@
-﻿#include <head.h>
+﻿#include <base.h>
 
 /*
  单元功能测试要求 : 
@@ -7,7 +7,7 @@
  {接口}.h -> {接口}_test.c -> void {接口}_test(void) { ... }
 
  调用规律 :
- head.h :: TEST_FUNC({接口}_test) 放入 structc.c :: test_structc 
+{接口}_test.c :: {接口}_test 放入 main_test.c :: main_test 
 
  */
 

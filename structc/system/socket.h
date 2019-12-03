@@ -1,5 +1,5 @@
-﻿#ifndef _SOCKET_H
-#define _SOCKET_H
+﻿#ifndef __STRUCTC_SYSTEM_SOCKET_H
+#define __STRUCTC_SYSTEM_SOCKET_H
 
 #include "struct.h"
 #include "strerr.h"
@@ -267,4 +267,4 @@ extern socket_t socket_connects(const char * host);
 //
 extern socket_t socket_connectos(const char * host, int ms);
 
-#endif//_SOCKET_H
+#endif//__STRUCTC_SYSTEM_SOCKET_H

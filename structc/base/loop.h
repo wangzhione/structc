@@ -1,5 +1,5 @@
-﻿#ifndef _LOOP_H
-#define _LOOP_H
+﻿#ifndef __STRUCTC_BASE_LOOP_H
+#define __STRUCTC_BASE_LOOP_H
 
 #include "q.h"
 #include "atom.h"
@@ -30,4 +30,4 @@ extern void loop_push(loop_t p, void * m);
 //
 extern loop_t loop_create(void * frun, void * fdie);
 
-#endif//_LOOP_H
+#endif//__STRUCTC_BASE_LOOP_H

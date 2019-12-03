@@ -1,5 +1,5 @@
-﻿#ifndef _STACK_H
-#define _STACK_H
+﻿#ifndef __STRUCTC_STRUCT_STACK_H
+#define __STRUCTC_STRUCT_STACK_H
 
 #include "struct.h"
 
@@ -89,4 +89,4 @@ inline void stack_push(struct stack * s, void * m) {
     s->data[++s->tail] = m;
 }
 
-#endif//_STACK_H
+#endif//__STRUCTC_STRUCT_STACK_H

@@ -1,5 +1,5 @@
-﻿#ifndef _TIMER_H
-#define _TIMER_H
+﻿#ifndef __STRUCTC_BASE_TIMER_H
+#define __STRUCTC_BASE_TIMER_H
 
 #include "atom.h"
 #include "list.h"
@@ -22,4 +22,4 @@ extern void timer_del(int id);
 //
 extern int timer_add(int ms, void * ftimer, void * arg);
 
-#endif//_TIMER_H
+#endif//__STRUCTC_BASE_TIMER_H

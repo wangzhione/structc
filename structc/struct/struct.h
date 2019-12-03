@@ -1,5 +1,5 @@
-﻿#ifndef _STRUCT_H
-#define _STRUCT_H
+﻿#ifndef __STRUCTC_STRUCT_STRUCT_H
+#define __STRUCTC_STRUCT_STRUCT_H
 
 #include <math.h>
 #include "alloc.h"
@@ -90,4 +90,4 @@ RETURN(NIL , fmt, ##__VA_ARGS__)
 #define RETNUL(fmt, ...)                                              \
 RETURN(NULL, fmt, ##__VA_ARGS__)
 
-#endif//_STRUCT_H
+#endif//__STRUCTC_STRUCT_STRUCT_H

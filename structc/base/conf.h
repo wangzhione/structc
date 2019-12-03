@@ -1,5 +1,5 @@
-﻿#ifndef _CONF_H
-#define _CONF_H
+﻿#ifndef __STRUCTC_BASE_CONF_H
+#define __STRUCTC_BASE_CONF_H
 
 #include "utf8.h"
 #include "json.h"
@@ -25,4 +25,4 @@ extern struct conf * conf_instance(void);
 //
 bool conf_init(const char * path);
 
-#endif//_CONF_H
+#endif//__STRUCTC_BASE_CONF_H

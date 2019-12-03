@@ -1,5 +1,5 @@
-﻿#ifndef _CHECK_H
-#define _CHECK_H
+﻿#ifndef __STRUCTC_BASE_CHECK_H
+#define __STRUCTC_BASE_CHECK_H
 
 #include <stdbool.h>
 
@@ -17,4 +17,4 @@ extern bool is_ipv4(const char * ips);
 //
 extern bool is_email(const char * mail);
 
-#endif//_CHECK_H
+#endif//__STRUCTC_BASE_CHECK_H

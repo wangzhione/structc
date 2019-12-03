@@ -2,7 +2,7 @@
 
 // rwlock_rlock - add read lock
 void
-rwlock_rlock(struct rwlock * rw) {
+rwlock_rlock  (struct rwlock * rw) {
     for (;;) {
         // 等待读完毕, 并设置内存屏障
         while (rw->wlock)
@@ -22,7 +22,7 @@ rwlock_rlock(struct rwlock * rw) {
 
 // rwlock_wlock - add write lock
 void
-rwlock_wlock(struct rwlock * rw) {
+rwlock_wlock  (struct rwlock * rw) {
     atom_lock(rw->wlock);
     // 等待读锁释放
     while (rw->rlock)

@@ -1,5 +1,5 @@
-﻿#ifndef _ATOM_H
-#define _ATOM_H
+﻿#ifndef __STRUCTC_SYSTEM_ATOM_H
+#define __STRUCTC_SYSTEM_ATOM_H
 
 #include "atomic.h"
 
@@ -87,4 +87,4 @@ static inline void store_release(atom_t * x) {
 
 #endif
 
-#endif//_ATOM_H
+#endif//__STRUCTC_SYSTEM_ATOM_H

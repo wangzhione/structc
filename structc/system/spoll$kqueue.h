@@ -1,5 +1,5 @@
-﻿#if !defined(_SPOLL$KQUEUE_H) && !defined(_WIN32) && !defined(__linux__)
-#define _SPOLL$KQUEUE_H
+﻿#if !defined __STRUCTC_SYSTEM_SPOLL$KQUEUE_H && !defined __linux__ && !defined _WIN32
+#define __STRUCTC_SYSTEM_SPOLL$KQUEUE_H
 
 #include <sys/event.h>
 
@@ -9,7 +9,7 @@
 // s_delete   - 销毁创建的 poll 对象
 //
 inline poll_t s_create(void) {
-    return epoll_create1(EPOLL_CLOEXEC);
+    return kqueue();
 }
 
 inline bool s_invalid(poll_t p) {
@@ -47,7 +47,7 @@ bool s_add(poll_t p, socket_t s, void * u) {
     }
     EV_SET(&t, s, EVFILT_WRITE, EV_DISABLE, 0, 0, u);
     if (kevent(p, &t, 1, NULL, 0, NULL) < 0 || t.flags & EV_ERROR) {
-        s_del(p, sock);
+        s_del(p, s);
         return 1;
     }
     return false;
@@ -75,7 +75,7 @@ int s_wait(poll_t p, event_t e) {
         bool eof = v[i].flags & EV_EOF;
         e[i].u = v[i].udata;
         e[i].write = filter == EVFILT_WRITE && !eof;
-        e[i].read = filter == EVFILT_READ && !eof;
+        e[i].read = filter == EVFILT_READ;
         e[i].error = v[i].flags & EV_ERROR;
         e[i].eof = eof;
     }
@@ -83,4 +83,4 @@ int s_wait(poll_t p, event_t e) {
     return n;
 }
 
-#endif//_SPOLL$KQUEUE_H
+#endif /* __STRUCTC_SYSTEM_SPOLL$KQUEUE_H */

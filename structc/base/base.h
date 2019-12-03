@@ -1,5 +1,5 @@
-﻿#ifndef _HEAD_H
-#define _HEAD_H
+﻿#ifndef __STRUCTC_BASE_BASE_H
+#define __STRUCTC_BASE_BASE_H
 
 #include "log.h"
 #include "rand.h"
@@ -10,14 +10,14 @@
 
 //
 // STR - 添加双引号的宏 
-// v        : 待添加双引号的量
+// v        : 变量标识
 //
 #define STR(v)  S_R(v)
 #define S_R(v)  #v
 
 //
-// LEN - 获取数组长度
-// a        : 数组名
+// LEN - 计算获取数组长度
+// a        : 数组变量
 //
 #define LEN(a)  (sizeof(a)/sizeof(*(a)))
 
@@ -45,4 +45,4 @@ do {                                                   \
 } while(0)
 
 
-#endif//_HEAD_H
+#endif//__STRUCTC_BASE_BASE_H

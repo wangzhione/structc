@@ -15,23 +15,12 @@ inline void * check(void * ptr, size_t size) {
 }
 
 //
-// realloc_ - realoc 包装函数
-// ptr      : 首地址, NULL 等同于 malloc
-// size     : 重新分配的内存大小
-// return   : 返回重新分配的新地址
+// free_    - free 包装函数
+// ptr      : 内存首地址
+// return   : void
 //
-inline void * realloc_(void * ptr, size_t size) {
-    return check(je_realloc(ptr, size), size);
-}
-
-//
-// calloc_  - calloc 包装函数
-// num      : 数量
-// size     : 大小
-// return   : 返回可用内存地址, 并置 0
-//
-inline void * calloc_(size_t num, size_t size) {
-    return check(je_calloc(num, size), size);
+inline void free_(void * ptr) {
+    je_free(ptr);
 }
 
 //
@@ -57,10 +46,21 @@ inline char * strdup_(const char * str) {
 }
 
 //
-// free_    - free 包装函数
-// ptr      : 内存首地址
-// return   : void
+// calloc_  - calloc 包装函数
+// num      : 数量
+// size     : 大小
+// return   : 返回可用内存地址, 并置 0
 //
-inline void free_(void * ptr) {
-    je_free(ptr);
+inline void * calloc_(size_t num, size_t size) {
+    return check(je_calloc(num, size), size);
+}
+
+//
+// realloc_ - realoc 包装函数
+// ptr      : 首地址, NULL 等同于 malloc
+// size     : 重新分配的内存大小
+// return   : 返回重新分配的新地址
+//
+inline void * realloc_(void * ptr, size_t size) {
+    return check(je_realloc(ptr, size), size);
 }

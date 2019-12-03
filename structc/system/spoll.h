@@ -1,5 +1,5 @@
-﻿#ifndef _SPOLL_H
-#define _SPOLL_H
+﻿#ifndef __STRUCTC_SYSTEM_SPOLL_H
+#define __STRUCTC_SYSTEM_SPOLL_H
 
 #include "socket.h"
 
@@ -15,10 +15,10 @@ struct event {
     bool eof;
 };
 
-#ifndef _WIN32
-typedef int           poll_t;
-#else
+#ifdef _WIN32
 typedef struct poll * poll_t;
+#else
+typedef int           poll_t;
 #endif
 
 typedef struct event  event_t[MAX_EVENT];
@@ -49,4 +49,4 @@ extern void s_write(poll_t p, socket_t s, void * u, bool enable);
 //
 extern int s_wait(poll_t p, event_t e);
 
-#endif//_SPOLL_H
+#endif//__STRUCTC_SYSTEM_SPOLL_H

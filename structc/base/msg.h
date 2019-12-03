@@ -1,5 +1,5 @@
-﻿#ifndef _MSG_H
-#define _MSG_H
+﻿#ifndef __STRUCTC_BASE_MSG_H
+#define __STRUCTC_BASE_MSG_H
 
 #include "struct.h"
 #include "system.h"
@@ -59,4 +59,4 @@ inline static void msg_delete(msg_t msg) {
     if (msg) free(msg);
 }
 
-#endif//_MSG_H
+#endif//__STRUCTC_BASE_MSG_H

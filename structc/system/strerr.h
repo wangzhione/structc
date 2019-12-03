@@ -1,5 +1,5 @@
-﻿#ifndef _STRERR_H
-#define _STRERR_H
+﻿#ifndef __STRUCTC_SYSTEM_STRERR_H
+#define __STRUCTC_SYSTEM_STRERR_H
 
 #include <errno.h>
 #include <string.h>
@@ -24,4 +24,4 @@ extern const char * strerr(int no);
 
 #endif
 
-#endif//_STRERR_H
+#endif//__STRUCTC_SYSTEM_STRERR_H

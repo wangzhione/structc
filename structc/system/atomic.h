@@ -1,5 +1,5 @@
-﻿#ifndef _ATOMIC_H
-#define _ATOMIC_H
+﻿#ifndef __STRUCTC_SYSTEM_ATOMIC_H
+#define __STRUCTC_SYSTEM_ATOMIC_H
 
 #include <assert.h>
 #include <stddef.h>
@@ -62,4 +62,4 @@ GENERIC_INT_ATOMIC(size_t, zu, PTR_SIZEOF)
 
 GENERIC_INT_ATOMIC(ssize_t, zd, PTR_SIZEOF)
 
-#endif//_ATOMIC_H
+#endif//__STRUCTC_SYSTEM_ATOMIC_H
