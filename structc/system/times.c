@@ -26,28 +26,33 @@ usleep(unsigned usec) {
     return ret;
 }
 
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
+
 //
 // gettimeofday - 实现 Linux sys/time.h 得到微秒时间
 // tv       : 返回秒数和微秒数
-// tz       : 返回时区, winds 上这个变量没有作用
+// tz       : 返回时区结构
 // return   : success is 0
 //
 int 
-gettimeofday(struct timeval * tv, void * tz) {
-    struct tm m;
-    SYSTEMTIME se;
-    GetLocalTime(&se);
+gettimeofday(struct timeval * tv, struct timezone * tz) {
+    if (tv) {
+        FILETIME t;
+        GetSystemTimeAsFileTime(&t);
 
-    m.tm_year = se.wYear - 1900;
-    m.tm_mon = se.wMonth - 1;
-    m.tm_mday = se.wDay;
-    m.tm_hour = se.wHour;
-    m.tm_min = se.wMinute;
-    m.tm_sec = se.wSecond;
-    m.tm_isdst = -1; // 不考虑夏令时
+        uint64_t tm = (uint64_t)t.dwHighDateTime << 32 | t.dwLowDateTime;
+        // convert into microseconds, converting file time to unix epoch
+        tm = tm / 10 - DELTA_EPOCH_IN_MICROSECS;
 
-    tv->tv_sec = (long)mktime(&m);
-    tv->tv_usec = se.wMilliseconds * 1000;
+        tv->tv_sec  = (long)(tm / 1000000UL);
+        tv->tv_usec = (long)(tm % 1000000UL);
+    }
+
+    if (tz) {
+        tz->tz_minuteswest = _timezone / 60;
+        tz->tz_dsttime = _daylight;
+    }
+
     return 0;
 }
 
@@ -150,17 +155,6 @@ time_day(time_t n, time_t t) {
     n = (n + 8UL * 3600) / (24 * 3600);
     t = (t + 8UL * 3600) / (24 * 3600);
     return n == t;
-}
-
-//
-// time_now - 判断时间戳是否是今天
-// t        : 待判断的时间戳
-// return   : 返回当前时间戳, < 0 is error
-//
-inline time_t
-time_now(time_t t) {
-    time_t n = time(NULL);
-    return time_day(n, t) ? n : -1;
 }
 
 //

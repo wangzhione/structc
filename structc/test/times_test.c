@@ -11,10 +11,6 @@ void times_test(void) {
     time_t n = time_get(nsr);
     IF(t < 0 || n < 0);
 
-    time_t now = time_now(t);
-    if (now < 0)
-        RETNIL("times test error tsr = %s", tsr);
-
     printf("tsr = %s -> t = %zd\n", tsr, t);
     printf("nsr = %s -> n = %zd\n", nsr, n);
 
@@ -22,4 +18,11 @@ void times_test(void) {
     time_t e = time_get(esr);
     if (e < 0)
         printf("esr = %s -> e = %zd\n", esr, e);
+
+    struct timeval tv;
+    struct timezone tz;
+    int status = gettimeofday(&tv, &tz);
+    printf("status = %d\n", status);
+    printf("tv_sec = %ld, tv_usec = %ld\n", (long)tv.tv_sec, (long)tv.tv_usec);
+    printf("tz_minuteswest = %d, tz_dsttime = %d\n", tz.tz_minuteswest, tz.tz_dsttime);
 }

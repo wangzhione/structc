@@ -57,16 +57,16 @@ inline void cls(void) { printf("\ec"); }
 
 // int access(const char * path, int mode /* 四个检测宏 */);
 #ifndef     F_OK
-#   define  F_OK    (0)
+#  define   F_OK    (0)
 #endif
 #ifndef     X_OK
-#   define  X_OK    (1)
+#  define   X_OK    (1)
 #endif       
 #ifndef     W_OK
-#   define  W_OK    (2)
+#  define   W_OK    (2)
 #endif       
 #ifndef     R_OK
-#   define  R_OK    (4)
+#  define   R_OK    (4)
 #endif
 
 // cls - 屏幕清除, 依赖系统脚本
@@ -116,13 +116,5 @@ extern int mkdirs(const char * path);
 // return   : < 0 is error, 0 is success
 //
 extern int fmkdir(const char * path);
-
-//
-// getawd - 得到程序运行目录, \\ or / 结尾
-// buf      : 存储地址
-// size     : 存储大小
-// return   : 返回长度, -1 is error 
-//
-extern int getawd(char * buf, size_t size);
 
 #endif//__STRUCTC_SYSTEM_STDEXT_H

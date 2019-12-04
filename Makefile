@@ -73,7 +73,7 @@ $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 #
 # 生成 structc.a 静态库, 方便处理所有问题
 #
-structc.a : $(OBJO) $(TESTO) main.o main_init.o main_run.o main_test.o
+structc.a : $(OBJO) $(TESTO) main.o init.o exec.o test.o
 	ar cr $(DOBJ)/$@ $(DOBJ)/*.o
 
 #

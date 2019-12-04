@@ -124,6 +124,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\atomic$cl.h" />
     <ClInclude Include="system\atomic.h" />
     <ClInclude Include="system\rwlock.h" />
+    <ClInclude Include="system\sha1.h" />
     <ClInclude Include="system\spoll$kqueue.h" />
     <ClInclude Include="system\stdext.h" />
     <ClInclude Include="system\strerr.h" />
@@ -151,9 +152,9 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="base\timer.c" />
     <ClCompile Include="base\url.c" />
     <ClCompile Include="main\main.c" />
-    <ClCompile Include="main\main_init.c" />
-    <ClCompile Include="main\main_run.c" />
-    <ClCompile Include="main\main_test.c" />
+    <ClCompile Include="main\init.c" />
+    <ClCompile Include="main\exec.c" />
+    <ClCompile Include="main\test.c" />
     <ClCompile Include="struct\array.c" />
     <ClCompile Include="struct\heap.c" />
     <ClCompile Include="struct\json.c" />
@@ -165,6 +166,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="system\alloc.c" />
     <ClCompile Include="system\pipe.c" />
     <ClCompile Include="system\rwlock.c" />
+    <ClCompile Include="system\sha1.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strerr.c" />
     <ClCompile Include="system\thread.c" />

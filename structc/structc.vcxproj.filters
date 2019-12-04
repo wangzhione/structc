@@ -159,15 +159,12 @@
     <ClInclude Include="base\base.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="system\sha1.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\main.c">
-      <Filter>main</Filter>
-    </ClCompile>
-    <ClCompile Include="main\main_run.c">
-      <Filter>main</Filter>
-    </ClCompile>
-    <ClCompile Include="main\main_test.c">
       <Filter>main</Filter>
     </ClCompile>
     <ClCompile Include="test\strext_test.c">
@@ -241,9 +238,6 @@
     </ClCompile>
     <ClCompile Include="system\md5.c">
       <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="main\main_init.c">
-      <Filter>main</Filter>
     </ClCompile>
     <ClCompile Include="test\md5_test.c">
       <Filter>test</Filter>
@@ -337,6 +331,18 @@
     </ClCompile>
     <ClCompile Include="test\stack_test.c">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="system\sha1.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="main\init.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\test.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\exec.c">
+      <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

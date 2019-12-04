@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdbool.h>
 
 //
@@ -13,6 +14,8 @@
 #ifdef _WIN32
 
 #include <winsock2.h>
+
+inline void times_init(void) { _tzset(); }
 
 //
 // msleep - 睡眠函数, 颗粒度是毫秒.
@@ -30,13 +33,20 @@ inline void msleep(int ms) {
 //
 extern int usleep(unsigned usec);
 
+/* Structure crudely representing a timezone.
+   This is obsolete and should never be used.  */
+struct timezone {
+    int tz_minuteswest; /* Minutes west of GMT.  */
+    int tz_dsttime;     /* Nonzero if DST is ever in effect.  */
+};
+
 //
 // gettimeofday - 实现 Linux sys/time.h 得到微秒时间
 // tv       : 返回秒数和微秒数
-// tz       : 返回时区, winds 上这个变量没有作用
+// tz       : 返回时区结构
 // return   : success is 0
 //
-extern int gettimeofday(struct timeval * tv, void * tz);
+extern int gettimeofday(struct timeval * tv, struct timezone * tz);
 
 //
 // localtime_r - 获取当前时间, 线程安全
@@ -53,8 +63,10 @@ inline struct tm * localtime_r(const time_t * timep, struct tm * result) {
 #include <unistd.h>
 #include <sys/time.h>
 
-inline void msleep(int ms) {
-    usleep(ms * 1000);
+inline void times_init(void) { }
+
+inline void msleep(int ms) { 
+    usleep(ms * 1000); 
 }
 
 #endif
@@ -86,13 +98,6 @@ extern time_t time_get(times_t ns);
 // return   : true 表示同一天
 //
 extern bool time_day(time_t n, time_t t);
-
-//
-// time_now - 判断时间戳是否是今天
-// t        : 待判断的时间戳
-// return   : 返回当前时间戳, < 0 is error
-//
-extern time_t time_now(time_t t);
 
 //
 // time_week - 判断时间戳是否是同一周

@@ -5,17 +5,20 @@
 // CONF_PATH_STR - 配置文件路径
 // LOG_PATH_STR  - 日志文件路径
 // 
-#define CONF_PATH_STR           "conf/conf.conf"
-#define LOG_PATH_STR            "logs/structc.log"
+#define CONF_PATH_STR           "/conf/conf.conf"
+#define LOG_PATH_STR            "/logs/structc.log"
 
 //
-// main_init - 模块初始化
+// init     - 模块初始化
 // return   : void
 //
-void main_init(void) {
+void init(void) {
     char path[BUFSIZ];
     // 一切皆有可能 🙂
-    size_t n = getawd(path, LEN(path));
+    size_t n = strlen(getcwd(path, LEN(path)));
+
+    // time zone init
+    // times_init();
 
     // thread 模块初始化
     EXTERN_RUN(pthread_init);
@@ -46,13 +49,12 @@ static void rand_nationalism(void) {
 }
 
 static void rand_democracy(void) {
-    int32_t x, y, z, w;
+    int32_t n, d, l;
     do {
-        x = r_rand();
-        y = r_rand();
-        z = r_rand();
-        w = r_rand();
-    } while (!(x > y && y > z && z > w && w > INT16_MAX));
+        n = r_rand();
+        d = r_rand();
+        l = r_rand();
+    } while (!(n > d && d > l && l > INT16_MAX));
 }
 
 static void rand_livelihood(void) {

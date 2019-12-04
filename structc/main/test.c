@@ -16,16 +16,16 @@ do {                                                         \
 
 
 //
-// main_test - main run test
-// return    : void
+// test     - main run test
+// return   : void
 //
-void main_test(void) {
+void test(void) {
     puts("*--------------------------------** main test *--------------------------------*");
 
     //
     // 单元测试, 开始你的表演 show time
     //
-    EXTERN_RUN(md5_test);
+    EXTERN_RUN(times_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

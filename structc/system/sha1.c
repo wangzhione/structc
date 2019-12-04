@@ -1,10 +1,4 @@
-#include "sha1.h"
-
-struct sha1 {
-    uint8_t buffer[64];     // 64 byte * 8 = 512 bit 消息块
-    uint32_t state[ 5];     // 32 byte * 5 = 160 bit 消息摘要
-    uint32_t count[ 2];     // 消息 bit 级别的长度, 1 是高位
-};
+﻿#include "sha1.h"
 
 // rol 宏 让 val 循环左移 bits
 #define rol(val, bits) (((val) << (bits)) | ((val) >> (32 - (bits))))
@@ -46,7 +40,7 @@ struct sha1 {
 } while(0) 
 
 /* Hash a single 512-bit block. This is the core of the algorithm. */
-extern void sha1_transform(uint32_t state[static 5], const uint8_t buffer[static 64]) {
+extern void sha1_transform(uint32_t state[5], const uint8_t buffer[64]) {
     /* Copy context->state[] to working vars */
     uint32_t a = state[0], b = state[1], c = state[2], d = state[3], e = state[4];
 
@@ -98,9 +92,9 @@ extern void sha1_init(struct sha1 * ctx) {
 extern void sha1_update(struct sha1 * ctx, const uint8_t * data, size_t len) {
     // 设置 count bits 数
     size_t i, j = ctx->count[0];
-    if ((ctx->count[0] += len << 3) < j)
+    if ((ctx->count[0] += (uint32_t)(len << 3)) < j)
         ctx->count[1]++;
-    ctx->count[1] += len >> 29;
+    ctx->count[1] += (uint32_t)(len >> 29);
 
     // 获取低 6 位 byte 值
     j = (j >> 3) & 63;
@@ -117,7 +111,7 @@ extern void sha1_update(struct sha1 * ctx, const uint8_t * data, size_t len) {
 }
 
 /* Add padding and return the message digest. */
-extern void sha1_final(struct sha1 * ctx, uint8_t digest[static 20]) {
+extern void sha1_final(struct sha1 * ctx, uint8_t digest[20]) {
     unsigned i;
     uint8_t c, finalcount[8];
 
@@ -139,7 +133,7 @@ extern void sha1_final(struct sha1 * ctx, uint8_t digest[static 20]) {
 }
 
 // sha1_convert 将 20 byte sha1 转成 41 byte sha1 C 字符串码
-static uint8_t * sha1_convert(sha1_t a, const uint8_t digest[static 20]) {
+static uint8_t * sha1_convert(sha1_t a, const uint8_t digest[20]) {
     uint8_t * o = a, i = 0;
     while (i < 20) {
         uint8_t x = digest[i++];

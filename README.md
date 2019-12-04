@@ -91,9 +91,9 @@ inline void pthread_end(pthread_t id) {
 
     - 工程目录述
         - main 目录
-            - main_run.c  业务代码起点
-            - main_init.c 写单例, 各初始化
-            - main_test.c 加 test 目录下单测
+            - main::run.c  业务起点
+            - main::init.c 模块初始化
+            - main::test.c test 单元测试
         - test 目录
             - *_test.c -> void *_test(void) { ... }
 

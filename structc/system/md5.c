@@ -1,11 +1,5 @@
 ﻿#include "md5.h"
 
-struct md5c {
-    uint8_t  in[64];      /* Input data */
-    uint32_t nl, nh;      /* Number of _bits_ handled mod 2^64 */
-    uint32_t a, b, c, d;  /* Scratch buffer a, b, c, d */
-};
-
 /* MD5_F, MD5_G and MD5_H are basic MD5 functions: selection, majority, parity */
 #define MD5_F(x, y, z) (((x) & (y)) | ((~x) & (z)))
 #define MD5_G(x, y, z) (((x) & (z)) | ((y) & (~z)))
@@ -56,7 +50,7 @@ struct md5c {
 #define MD5_S44 21
 
 /* Basic MD5 step. MD5_Transform buf based on in */
-extern void md5_transform(struct md5c * ctx, const uint32_t in[static 16]) {
+extern void md5_transform(struct md5 * ctx, const uint32_t in[16]) {
     uint32_t a = ctx->a, b = ctx->b, c = ctx->c, d = ctx->d;
 
     /* Round 1 */
@@ -135,7 +129,7 @@ extern void md5_transform(struct md5c * ctx, const uint32_t in[static 16]) {
 }
 
 // Set pseudoRandomNumber to zero for RFC MD5 implementation
-extern inline void md5_init(struct md5c * ctx) {
+extern inline void md5_init(struct md5 * ctx) {
     /* Load magic initialization constants */
     ctx->a = 0x67452301;
     ctx->b = 0xefcdab89;
@@ -144,7 +138,7 @@ extern inline void md5_init(struct md5c * ctx) {
     ctx->nl = ctx->nh = 0;
 }
 
-extern void md5_update(struct md5c * ctx, const uint8_t * data, size_t n) {
+extern void md5_update(struct md5 * ctx, const uint8_t * data, size_t n) {
     uint32_t in[16];
     uint32_t i, ii, mdi;
     uint32_t len = (uint32_t)n;
@@ -176,7 +170,7 @@ extern void md5_update(struct md5c * ctx, const uint8_t * data, size_t n) {
     }
 }
 
-extern void md5_final(struct md5c * ctx, uint8_t digest[static 16]) {
+extern void md5_final(struct md5 * ctx, uint8_t digest[16]) {
     uint32_t in[16];
     uint32_t mdi, i, ii, padn;
     static uint8_t padding[64] = { 0x80 };
@@ -223,7 +217,7 @@ extern void md5_final(struct md5c * ctx, uint8_t digest[static 16]) {
 }
 
 // md5_convert 将 16 byte md5 转成 33 byte md5 C 字符串码
-static uint8_t * md5_convert(md5_t m, const uint8_t digest[static 16]) {
+static uint8_t * md5_convert(md5_t m, const uint8_t digest[16]) {
     uint8_t * o = m, i = 0;
     while (i < 16) {
         uint8_t x = digest[i++];
@@ -245,7 +239,7 @@ uint8_t *
 md5_file(md5_t m, const char * path) {
     size_t n;
     FILE * stream;
-    struct md5c ctx;
+    struct md5 ctx;
     uint8_t digest[16], d[BUFSIZ];
     if (!(stream = fopen(path, "rb")))
         return m;
@@ -277,7 +271,7 @@ md5_file(md5_t m, const char * path) {
 //
 inline uint8_t * 
 md5_data(md5_t m, const void * data, size_t n) {
-    struct md5c ctx;
+    struct md5 ctx;
     uint8_t digest[16];
 
     md5_init(&ctx);

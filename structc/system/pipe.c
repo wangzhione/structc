@@ -8,7 +8,7 @@
 // return   : 0 is success -1 is error returned
 //
 int 
-pipe(socket_t pipefd[static 2]) {
+pipe(socket_t pipefd[2]) {
     socket_t s = socket_stream();
     sockaddr_t name = { AF_INET };
     if (s == INVALID_SOCKET)

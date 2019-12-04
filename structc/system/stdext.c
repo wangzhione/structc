@@ -117,33 +117,3 @@ fmkdir(const char * path) {
     free(s);
     return 0;
 }
-
-//
-// getawd - 得到程序运行目录, \\ or / 结尾
-// buf      : 存储地址
-// size     : 存储大小
-// return   : 返回长度, -1 is error 
-//
-int 
-getawd(char * buf, size_t size) {
-    char * tail;
-
-#  ifndef getawe
-#    ifdef _MSC_VER
-#      define getawe(b, s)    (int)GetModuleFileName(NULL, b, (DWORD)s);
-#    else
-#      define getawe(b, s)    (int)readlink("/proc/self/exe", b, s);
-#    endif
-#  endif
-
-    int r = getawe(buf, size);
-    if (r <= 0 || r >= size)
-        return -1;
-
-    for (tail = buf + r - 1; tail > buf; --tail)
-        if ((r = *tail) == '/' || r == '\\')
-            break;
-    // believe getawe return
-    *++tail = '\0';
-    return (int)(tail - buf);
-}

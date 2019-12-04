@@ -10,7 +10,7 @@
 // pipefd   : 索引 0 表示 recv fd, 1 是 send fd
 // return   : 0 is success -1 is error returned
 //
-extern int pipe(socket_t pipefd[static 2]);
+extern int pipe(socket_t pipefd[2]);
 
 // pass_t - 单通道类型
 // pass_close - 单通道类型

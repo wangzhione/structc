@@ -7,7 +7,7 @@
  {接口}.h -> {接口}_test.c -> void {接口}_test(void) { ... }
 
  调用规律 :
-{接口}_test.c :: {接口}_test 放入 main_test.c :: main_test 
+ {接口}_test.c :: {接口}_test 放入 main::test.c :: test 
 
  */
 

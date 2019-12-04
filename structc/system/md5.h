@@ -6,6 +6,12 @@
 #include <stdint.h>
 #include <string.h>
 
+struct md5 {
+    uint8_t  in[64];      /* Input data */
+    uint32_t nl, nh;      /* Number of _bits_ handled mod 2^64 */
+    uint32_t a, b, c, d;  /* Scratch buffer a, b, c, d */
+};
+
 //
 // md5 16 byte, 默认转为 32 位的 C 串
 //

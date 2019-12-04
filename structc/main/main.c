@@ -9,19 +9,19 @@
 int main(int argc, char * argv[]) {
     // 初始化 ... .
     // 
-    EXTERN_RUN(main_init);
+    EXTERN_RUN(init);
 
     // make D=-DNDEBUG
-    // main_test 单元测试才会启动
+    // main test 单元测试才会启动
     //
 #ifndef NDEBUG
-    EXTERN_RUN(main_test);
+    EXTERN_RUN(test);
 #endif
 
     // ... 
-    // ... 业务运行的主函数 ~ 龍
+    // ... 执行业务主 ~ 龍
     //
-    EXTERN_RUN(main_run, argc, argv);
+    EXTERN_RUN(exec, argc, argv);
 
     return EXIT_SUCCESS;
 }
