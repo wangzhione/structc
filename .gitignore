@@ -1,10 +1,12 @@
 # Ignore the uploaded folders
+bin/
 Out/
 logs/
 Outs/
 Output/
 
 # Ignore the project uploaded folders
+.o/
 .vs/
 x64/
 Debug/
