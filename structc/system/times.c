@@ -50,8 +50,8 @@ gettimeofday(struct timeval * tv, struct timezone * tz) {
 
     // 不管 linux or window, gettimeofday 都不是个好的 api 设计
     if (tz) {
-        tz->tz_minuteswest = timezone / 60;
-        tz->tz_dsttime = daylight;
+        tz->tz_minuteswest = _timezone / 60;
+        tz->tz_dsttime = _daylight;
     }
 
     return 0;

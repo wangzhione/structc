@@ -20,20 +20,6 @@
 #undef  tzset
 #define tzset _tzset
 
-// Same as above.  
-// tzname[0] 从 TZ 环境变量派生的时区名称. 默认值为"PST".
-// tzname[1] 从 TZ 环境变量派生的 DST 区域名称. 默认值为"PDT" (太平洋夏令时).
-#undef  tzname
-#define tzname _tzname
-
-// 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为非零; 否则为 0.
-#undef  daylight
-#define daylight _daylight
-
-// 协调世界时与当地时间之间的秒数差. 默认值为 28,800
-#undef  timezone
-#define timezone _timezone
-
 // Structure crudely representing a timezone.
 // This is obsolete and should never be used.
 struct timezone {
@@ -49,6 +35,9 @@ struct timezone {
 inline void msleep(int ms) {
     Sleep(ms);
 }
+
+// timezone 协调世界时与当地时间之间的秒数差. 默认值为 28,800
+inline long timezone_get(void) { return _timezone; }
 
 //
 // usleep - 微秒级别等待函数
@@ -83,6 +72,8 @@ inline struct tm * localtime_r(const time_t * timep, struct tm * result) {
 inline void msleep(int ms) { 
     usleep(ms * 1000); 
 }
+
+inline long timezone_get(void) { return timezone; }
 
 #endif
 

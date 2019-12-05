@@ -25,5 +25,5 @@ void times_test(void) {
     printf("status = %d\n", status);
     printf("tv_sec = %ld, tv_usec = %ld\n", (long)tv.tv_sec, (long)tv.tv_usec);
     printf("tz_minuteswest = %d, tz_dsttime = %d\n", tz.tz_minuteswest, tz.tz_dsttime);
-    printf("timezone = %ld, daylight = %d\n", timezone, daylight);
+    printf("timezone = %ld, daylight = 0\n", timezone_get());
 }
