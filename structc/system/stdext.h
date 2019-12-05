@@ -117,4 +117,12 @@ extern int mkdirs(const char * path);
 //
 extern int fmkdir(const char * path);
 
+//
+// getawd - 得到程序运行目录, \\ or / 结尾
+// buf      : 存储地址
+// size     : 存储大小
+// return   : 返回长度, -1 is error 
+//
+extern int getawd(char * buf, size_t size);
+
 #endif//__STRUCTC_SYSTEM_STDEXT_H

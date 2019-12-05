@@ -14,7 +14,6 @@ do {                                                         \
     printf(STR(ftest)" run %lfs\n", ($e-$s)/CLOCKS_PER_SEC); \
 } while(0)
 
-
 //
 // test     - main run test
 // return   : void

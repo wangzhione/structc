@@ -15,7 +15,31 @@
 
 #include <winsock2.h>
 
-inline void times_init(void) { _tzset(); }
+// Set time conversion information from the TZ environment variable.
+// If TZ is not defined, a locale-dependent default is used.
+#undef  tzset
+#define tzset _tzset
+
+// Same as above.  
+// tzname[0] 从 TZ 环境变量派生的时区名称. 默认值为"PST".
+// tzname[1] 从 TZ 环境变量派生的 DST 区域名称. 默认值为"PDT" (太平洋夏令时).
+#undef  tzname
+#define tzname _tzname
+
+// 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为非零; 否则为 0.
+#undef  daylight
+#define daylight _daylight
+
+// 协调世界时与当地时间之间的秒数差. 默认值为 28,800
+#undef  timezone
+#define timezone _timezone
+
+// Structure crudely representing a timezone.
+// This is obsolete and should never be used.
+struct timezone {
+    int tz_minuteswest; // Minutes west of GMT.
+    int tz_dsttime;     // Nonzero if DST is ever in effect.
+};
 
 //
 // msleep - 睡眠函数, 颗粒度是毫秒.
@@ -32,13 +56,6 @@ inline void msleep(int ms) {
 // return   : 0 on success.  On error, -1 is returned.
 //
 extern int usleep(unsigned usec);
-
-/* Structure crudely representing a timezone.
-   This is obsolete and should never be used.  */
-struct timezone {
-    int tz_minuteswest; /* Minutes west of GMT.  */
-    int tz_dsttime;     /* Nonzero if DST is ever in effect.  */
-};
 
 //
 // gettimeofday - 实现 Linux sys/time.h 得到微秒时间
@@ -62,8 +79,6 @@ inline struct tm * localtime_r(const time_t * timep, struct tm * result) {
 
 #include <unistd.h>
 #include <sys/time.h>
-
-inline void times_init(void) { }
 
 inline void msleep(int ms) { 
     usleep(ms * 1000); 

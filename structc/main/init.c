@@ -2,23 +2,23 @@
 #include "socket.h"
 
 //
-// CONF_PATH_STR - 配置文件路径
-// LOG_PATH_STR  - 日志文件路径
+// CONF_PATH_STR  - 配置文件路径
+// LOGS_PATH_STR  - 日志文件路径
 // 
-#define CONF_PATH_STR           "/conf/conf.conf"
-#define LOG_PATH_STR            "/logs/structc.log"
+#define CONF_PATH_STR               "conf/conf.conf"
+#define LOGS_PATH_STR               "logs/structc.log"
 
 //
 // init     - 模块初始化
 // return   : void
 //
 void init(void) {
+    // Now 'timezome' global is populated. Obtain timezone and daylight info. 
+    tzset();
+
     char path[BUFSIZ];
     // 一切皆有可能 🙂
-    size_t n = strlen(getcwd(path, LEN(path)));
-
-    // time zone init
-    // times_init();
+    size_t n = getawd(path, LEN(path));
 
     // thread 模块初始化
     EXTERN_RUN(pthread_init);
@@ -33,7 +33,7 @@ void init(void) {
     IF(!conf_init(strcat(path, CONF_PATH_STR)));
 
     // 日志模块初始化
-    memcpy(path + n, LOG_PATH_STR, LEN(LOG_PATH_STR));
+    memcpy(path + n, LOGS_PATH_STR, LEN(LOGS_PATH_STR));
     fmkdir(path);
     EXTERN_RUN(log_init, path);
 }
