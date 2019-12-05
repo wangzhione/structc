@@ -34,16 +34,15 @@ struct timer_list {
 // timer_list_sus - 得到等待的微秒事件, <= 0 表示可以执行
 inline int timer_list_sus(struct timer_list * list) {
     struct timespec * v = &list->list->t, t[1];
-    timespec_get(t, TIME_UTC);
+    (void)timespec_get(t, TIME_UTC);
     return (int)((v->tv_sec - t->tv_sec) * 1000000 + 
         (v->tv_nsec - t->tv_nsec) / 1000);
 }
 
 // timer_list_run - 线程安全, 需要再 loop 之后调用
 inline void timer_list_run(struct timer_list * list) {
-    struct timer_node * node;
     atom_lock(list->lock);
-    node = list->list;
+    struct timer_node * node = list->list;
     list->list = list_next(node);
     atom_unlock(list->lock);
 
@@ -56,8 +55,8 @@ static struct timer_list timer;
 
 //
 // timer_del - 删除定时器事件
-// id       : 定时器 id
-// return   : void
+// id        : 定时器 id
+// return    : void
 //
 inline void 
 timer_del(int id) {
@@ -76,7 +75,7 @@ static struct timer_node * timer_new(int s, node_f ftimer, void * arg) {
         node->id = atom_and(timer.id, INT_MAX);
     node->arg = arg;
     node->ftimer = ftimer;
-    timespec_get(&node->t, TIME_UTC);
+    (void)timespec_get(&node->t, TIME_UTC);
     node->t.tv_sec += s / 1000;
     // nano second
     node->t.tv_nsec += (s % 1000) * 1000000;
@@ -102,10 +101,10 @@ static void timer_run(struct timer_list * list) {
 
 //
 // timer_add - 添加定时器事件
-// ms       : 执行间隔毫秒, <= 0 表示立即执行
-// ftimer   : node_f 定时器行为
-// arg      : 定时器参数
-// return   : 定时器 id, < 0 标识 error
+// ms        : 执行间隔毫秒, <= 0 表示立即执行
+// ftimer    : node_f 定时器行为
+// arg       : 定时器参数
+// return    : 定时器 id, < 0 标识 error
 //
 int 
 timer_add(int ms, void * ftimer, void * arg) {

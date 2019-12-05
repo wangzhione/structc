@@ -79,11 +79,11 @@ inline void pthread_end(pthread_t id) {
 
 [structc 环境搭建](./structc/README.md)
 
-    - Winds 双击
+    - winds 双击
         - 只维护 x64 的 Debug 和 Release
         - Best New CL Build
 
-    - Linux 搞起
+    - linux 搞起
         - Debug   : make
         - Clean   : make clean
         - Release : make D=-DNDEBUG

@@ -5,13 +5,15 @@
 // ftest        : 测试函数
 // ...          : 可变参数
 //
-#define EXTERN_TEST(ftest, ...)                              \
-do {                                                         \
-    clock_t $s = clock();                                    \
-    extern void ftest ();                                    \
-    ftest ( __VA_ARGS__);                                    \
-    double $e = (double)clock();                             \
-    printf(STR(ftest)" run %lfs\n", ($e-$s)/CLOCKS_PER_SEC); \
+#define EXTERN_TEST(ftest, ...)                         \
+do {                                                    \
+    printf("> "STR(ftest)" run start ...\n");           \
+    clock_t $s = clock();                               \
+    extern void ftest ();                               \
+    ftest ( __VA_ARGS__);                               \
+    double $e = (double)clock();                        \
+    printf("> "STR(ftest)" run end time is %lfms\n",    \
+          ($e - $s) / (CLOCKS_PER_SEC / 1000));         \
 } while(0)
 
 //
@@ -22,9 +24,9 @@ void test(void) {
     puts("*--------------------------------** main test *--------------------------------*");
 
     //
-    // 单元测试, 开始你的表演 show time
+    // 单元测试 show time 开始你的表演
     //
-    EXTERN_RUN(times_test);
+    EXTERN_TEST(times_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }
