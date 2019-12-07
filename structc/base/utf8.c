@@ -1,5 +1,4 @@
-﻿#include "utf8.h"
-#include "utf8$table.h"
+﻿#include "utf8$table.h"
 
 // u82ue - utf8 串转成 unicode, 返回编码值和长度
 int u82ue(const char * u8s, size_t n, int * ue, int * len) {

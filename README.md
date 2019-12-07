@@ -2,18 +2,13 @@
 
     雕琢 C 的华山剑法, 为入行那会的一时性起 ~>--
 
-## 一切都是刚刚开始
+## 浪花不会一点点
 
     核心点:
-    
-        q.h         队  列
-        mq.h        原子 q
-        dict.h      字  典
-        cstr.h      字符串
-        list.h      单链表
-        rtree.h     红黑树
-        array.h     数  组
-        stack.h     对象栈
+
+        struct 数据结构库
+        system 系统封装库
+        base   业务辅助库
 
     总设计:
 

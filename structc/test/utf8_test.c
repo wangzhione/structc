@@ -27,13 +27,13 @@ void utf8_table_file_test(void) {
     FILE * stream = fopen(filename, "w+");
     IF(!stream);
 
-    fprintf(stream, "#ifndef _STRUCTC_SYSTEM_UTF8$TABLE_H"       "\n");
-    fprintf(stream, "#define _STRUCTC_SYSTEM_UTF8$TABLE_H"       "\n");
-    fprintf(stream,                                              "\n");
-    fprintf(stream,"#include <stdint.h>"                          "\n");
-    fprintf(stream,                                              "\n");
-    fprintf(stream, "// unicode to gbk 编码映射表"               "\n");
-    fprintf(stream, "static uint16_t unicode_gbk_table[] = { "   "\n");
+    fprintf(stream, "#ifndef _STRUCTC_SYSTEM_UTF8$TABLE_H"           "\n");
+    fprintf(stream, "#define _STRUCTC_SYSTEM_UTF8$TABLE_H"           "\n");
+    fprintf(stream,                                                  "\n");
+    fprintf(stream,"#include <stdint.h>"                             "\n");
+    fprintf(stream,                                                  "\n");
+    fprintf(stream, "// unicode to gbk 编码映射表"                   "\n");
+    fprintf(stream, "static const uint16_t unicode_gbk_table[] = { " "\n");
 
     for (i = 1; i <= LEN(unicode_gbk_table); i++) {
         if (i % 10 == 1)
@@ -47,10 +47,10 @@ void utf8_table_file_test(void) {
     if (i % 10 != 0)
         fprintf(stream, "\n");
 
-    fprintf(stream, "};"                                         "\n");
-    fprintf(stream,                                              "\n");
-    fprintf(stream, "// gbk to utf8 编码映射表"                  "\n");
-    fprintf(stream, "static unsigned    gbk_utf8_table[] = { "   "\n");
+    fprintf(stream, "};"                                              "\n");
+    fprintf(stream,                                                   "\n");
+    fprintf(stream, "// gbk to utf8 编码映射表"                       "\n");
+    fprintf(stream, "static const unsigned    gbk_utf8_table[] = { "  "\n");
 
     for (i = 1; i <= LEN(gbk_utf8_table); i++) {
         if (i % 10 == 1)
@@ -64,9 +64,9 @@ void utf8_table_file_test(void) {
     if (i % 10 != 0)
         fprintf(stream, "\n");
 
-    fprintf(stream, "};"                                         "\n");
-    fprintf(stream,                                              "\n");
-    fprintf(stream, "#endif//_STRUCTC_SYSTEM_UTF8$TABLE_H"       "\n");
+    fprintf(stream, "};"                                             "\n");
+    fprintf(stream,                                                  "\n");
+    fprintf(stream, "#endif//_STRUCTC_SYSTEM_UTF8$TABLE_H"           "\n");
 
     fclose(stream);
 }

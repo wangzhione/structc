@@ -1,10 +1,10 @@
-#ifndef _STRUCTC_SYSTEM_UTF8$TABLE_H
+﻿#ifndef _STRUCTC_SYSTEM_UTF8$TABLE_H
 #define _STRUCTC_SYSTEM_UTF8$TABLE_H
 
-#include <stdint.h>
+#include "utf8.h"
 
 // unicode to gbk 编码映射表
-static uint16_t unicode_gbk_table[] = { 
+static const uint16_t unicode_gbk_table[65535] = { 
     0x0       , 0x1       , 0x2       , 0x3       , 0x4       , 0x5       , 0x6       , 0x7       , 0x8       , 0x9       , 
     0xa       , 0xb       , 0xc       , 0xd       , 0xe       , 0xf       , 0x10      , 0x11      , 0x12      , 0x13      , 
     0x14      , 0x15      , 0x16      , 0x17      , 0x18      , 0x19      , 0x1a      , 0x1b      , 0x1c      , 0x1d      , 
@@ -6562,7 +6562,7 @@ static uint16_t unicode_gbk_table[] = {
 };
 
 // gbk to utf8 编码映射表
-static unsigned    gbk_utf8_table[] = { 
+static const unsigned    gbk_utf8_table[65535] = { 
     0x00000000, 0x00000001, 0x00000002, 0x00000003, 0x00000004, 0x00000005, 0x00000006, 0x00000007, 0x00000008, 0x00000009, 
     0x0000000a, 0x0000000b, 0x0000000c, 0x0000000d, 0x0000000e, 0x0000000f, 0x00000010, 0x00000011, 0x00000012, 0x00000013, 
     0x00000014, 0x00000015, 0x00000016, 0x00000017, 0x00000018, 0x00000019, 0x0000001a, 0x0000001b, 0x0000001c, 0x0000001d, 
