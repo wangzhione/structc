@@ -19,7 +19,7 @@
 // LEN - 计算获取数组长度
 // a        : 数组变量
 //
-#define LEN(a)  (sizeof(a)/sizeof(*(a)))
+#define LEN(a)  (sizeof(a) / sizeof(*(a)))
 
 //
 // CODE_RUN - 代码块测试, 并输出运行时间
