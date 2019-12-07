@@ -30,14 +30,16 @@ void utf8_table_file_test(void) {
     fprintf(stream, "#ifndef _STRUCTC_SYSTEM_UTF8$TABLE_H"       "\n");
     fprintf(stream, "#define _STRUCTC_SYSTEM_UTF8$TABLE_H"       "\n");
     fprintf(stream,                                              "\n");
+    fprintf(stream,"#include <stdint.h>"                          "\n");
+    fprintf(stream,                                              "\n");
     fprintf(stream, "// unicode to gbk 编码映射表"               "\n");
-    fprintf(stream, "static unsigned unicode_gbk_table[] = { "   "\n");
+    fprintf(stream, "static uint16_t unicode_gbk_table[] = { "   "\n");
 
     for (i = 1; i <= LEN(unicode_gbk_table); i++) {
         if (i % 10 == 1)
             fprintf(stream, "    ");
 
-        fprintf(stream, "0x%08x, ", unicode_gbk_table[i-1]);
+        fprintf(stream, "0x%-8x, ", unicode_gbk_table[i-1]);
 
         if (i % 10 == 0)
             fprintf(stream, "\n");
