@@ -40,12 +40,12 @@ gettimeofday(struct timeval * tv, struct timezone * tz) {
         FILETIME t;
         GetSystemTimeAsFileTime(&t);
 
-        uint64_t tm = (uint64_t)t.dwHighDateTime << 32 | t.dwLowDateTime;
+        uint64_t m = (uint64_t)t.dwHighDateTime << 32 | t.dwLowDateTime;
         // convert into microseconds, converting file time to unix epoch
-        tm = tm / 10 - DELTA_EPOCH_IN_MICROSECS;
+        m = m / 10 - DELTA_EPOCH_IN_MICROSECS;
 
-        tv->tv_sec  = (long)(tm / 1000000UL);
-        tv->tv_usec = (long)(tm % 1000000UL);
+        tv->tv_sec  = (long)(m / 1000000UL);
+        tv->tv_usec = (long)(m % 1000000UL);
     }
 
     // 不管 linux or window, gettimeofday 都不是个好的 api 设计
@@ -228,7 +228,7 @@ times_fmt(const char * fmt, char out[], size_t sz) {
     struct tm m;
     struct timespec s;
 
-    (void)timespec_get(&s, TIME_UTC);
+    timespec_get(&s, TIME_UTC);
     localtime_r(&s.tv_sec, &m);
 
     return snprintf(out, sz, fmt,

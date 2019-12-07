@@ -34,9 +34,9 @@ struct timer_list {
 // timer_list_sus - 得到等待的微秒事件, <= 0 表示可以执行
 inline int timer_list_sus(struct timer_list * list) {
     struct timespec * v = &list->list->t, t[1];
-    (void)timespec_get(t, TIME_UTC);
-    return (int)((v->tv_sec - t->tv_sec) * 1000000 + 
-        (v->tv_nsec - t->tv_nsec) / 1000);
+    timespec_get(t, TIME_UTC);
+    return (int)((v->tv_sec  - t->tv_sec ) * 1000000 + 
+                 (v->tv_nsec - t->tv_nsec) / 1000);
 }
 
 // timer_list_run - 线程安全, 需要再 loop 之后调用
@@ -75,7 +75,7 @@ static struct timer_node * timer_new(int s, node_f ftimer, void * arg) {
         node->id = atom_and(timer.id, INT_MAX);
     node->arg = arg;
     node->ftimer = ftimer;
-    (void)timespec_get(&node->t, TIME_UTC);
+    timespec_get(&node->t, TIME_UTC);
     node->t.tv_sec += s / 1000;
     // nano second
     node->t.tv_nsec += (s % 1000) * 1000000;

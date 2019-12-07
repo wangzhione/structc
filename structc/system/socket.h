@@ -13,31 +13,31 @@
 
 #include <ws2tcpip.h>
 
-typedef SOCKET socket_t;
-typedef int    socklen_t;
+typedef SOCKET          socket_t;
+typedef int             socklen_t;
 
 #undef  errno
-#define errno                   WSAGetLastError()
+#define errno           WSAGetLastError()
 
 #undef  EINTR
-#define EINTR                   WSAEINTR
+#define EINTR           WSAEINTR
 #undef  EAGAIN
-#define EAGAIN                  WSAEWOULDBLOCK
+#define EAGAIN          WSAEWOULDBLOCK
 #undef  EINPROGRESS
-#define EINPROGRESS             WSAEWOULDBLOCK
+#define EINPROGRESS     WSAEWOULDBLOCK
 
 // WinSock 2 extension manifest constants for shutdown()
 //
-#define SHUT_RD                 SD_RECEIVE
-#define SHUT_WR                 SD_SEND
-#define SHUT_RDWR               SD_BOTH
+#define SHUT_RD         SD_RECEIVE
+#define SHUT_WR         SD_SEND
+#define SHUT_RDWR       SD_BOTH
 
-#define SO_REUSEPORT            SO_REUSEADDR
+#define SO_REUSEPORT    SO_REUSEADDR
 
 // socket_init - 初始化 socket 库初始化方法
 inline void socket_init(void) {
     WSADATA version;
-    (void)WSAStartup(WINSOCK_VERSION, &version);
+    IF(WSAStartup(WINSOCK_VERSION, &version));
 }
 
 // socket_close - 关闭上面创建后的句柄
@@ -74,10 +74,10 @@ inline int socket_set_nonblock(socket_t s) {
 // On now linux EAGAIN and EWOULDBLOCK may be the same value 
 // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
 //
-typedef int    socket_t;
+typedef int             socket_t;
 
-#define INVALID_SOCKET          (~0)
-#define SOCKET_ERROR            (-1)
+#define INVALID_SOCKET  (~0)
+#define SOCKET_ERROR    (-1)
 
 // socket_init - 初始化 socket 库初始化方法
 inline void socket_init(void) {
