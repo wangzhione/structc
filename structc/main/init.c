@@ -40,20 +40,19 @@ void init(void) {
 
 static void rand_nationalism(void) {
     struct timespec s; 
-    (void)timespec_get(&s, TIME_UTC);
+    timespec_get(&s, TIME_UTC);
     EXTERN_RUN(r_init, s.tv_nsec+s.tv_sec);
     for (int32_t i = BUFSIZ; i > 0 ; i--) {
-        (void)timespec_get(&s, TIME_UTC);
-        EXTERN_RUN(r_init, s.tv_nsec + i);
+        int r = r_rand();
+        timespec_get(&s, TIME_UTC);
+        EXTERN_RUN(r_init, s.tv_nsec + i + r);
     }
 }
 
 static void rand_democracy(void) {
     int32_t n, d, l;
     do {
-        n = r_rand();
-        d = r_rand();
-        l = r_rand();
+        n = r_rand(); d = r_rand(); l = r_rand();
     } while (!(n > d && d > l && l > INT16_MAX));
 }
 
