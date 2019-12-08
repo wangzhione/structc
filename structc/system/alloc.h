@@ -61,19 +61,19 @@ extern void * realloc_(void * ptr, size_t size);
 // :) 包装内存分配层, 些许感怀 ~
 //
 #  ifndef ALLOC_OFF
-#    undef  free
-#    define free    free_
+#    undef      free
+#    define     free        free_
 
-#    undef  malloc
-#    define malloc  malloc_
+#    undef      malloc
+#    define     malloc      malloc_
 
-#    undef  strdup
-#    define strdup  strdup_
+#    undef      strdup
+#    define     strdup      strdup_
 
-#    undef  calloc
-#    define calloc  calloc_
-#    undef  realloc
-#    define realloc realloc_
+#    undef      calloc
+#    define     calloc      calloc_
+#    undef      realloc
+#    define     realloc     realloc_
 #  endif//ALLOC_OFF
 
 #endif//__STRUCTC_SYSTEM_ALLOC_H

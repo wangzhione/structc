@@ -3,7 +3,7 @@
 #include <strings.h>
 
 //
-// good hash table primes
+// good hash table prime
 //
 // lwr      upr	    % err       prime
 // 2^5	    2^6     10.416667   53
@@ -32,8 +32,7 @@
 // 2^28     2^29    0.000001    402653189
 // 2^29     2^30    0.000011    805306457
 // 2^30     2^31    0.000000    1610612741
-
-static const unsigned primes[][2] = {
+static const unsigned prime_table[][2] = {
     { (2^6 )-1,         53 },
     { (2^7 )-1,         97 },
     { (2^8 )-1,        193 },
@@ -81,8 +80,8 @@ void strings_test(void) {
     unsigned used = (2^6)-1;
     unsigned pidx = 0;
 
-    unsigned benc = primes[pidx][0];
-    unsigned size = primes[pidx][1];
+    unsigned benc = prime_table[pidx][0];
+    unsigned size = prime_table[pidx][1];
 
     printf("used = %u, pidx = %u, benc = %u, cap = %u\n", 
         used, pidx, benc, size);
@@ -90,8 +89,8 @@ void strings_test(void) {
     if (++used > benc) {
         // 开始重新扩容
         ++pidx;
-        benc = primes[pidx][0];
-        size = primes[pidx][1];
+        benc = prime_table[pidx][0];
+        size = prime_table[pidx][1];
     }
 
     printf("used = %u, pidx = %u, benc = %u, cap = %u\n", 

@@ -1,36 +1,4 @@
-﻿#include "dict.h"
-
-//
-// primes - 质数表
-//
-const unsigned primes[][2] = {
-    { (1<< 6)-1 ,         53 },
-    { (1<< 7)-1 ,         97 },
-    { (1<< 8)-1 ,        193 },
-    { (1<< 9)-1 ,        389 },
-    { (1<<10)-1 ,        769 },
-    { (1<<11)-1 ,       1543 },
-    { (1<<12)-1 ,       3079 },
-    { (1<<13)-1 ,       6151 },
-    { (1<<14)-1 ,      12289 },
-    { (1<<15)-1 ,      24593 },
-    { (1<<16)-1 ,      49157 },
-    { (1<<17)-1 ,      98317 },
-    { (1<<18)-1 ,     196613 },
-    { (1<<19)-1 ,     393241 },
-    { (1<<20)-1 ,     786433 },
-    { (1<<21)-1 ,    1572869 },
-    { (1<<22)-1 ,    3145739 },
-    { (1<<23)-1 ,    6291469 },
-    { (1<<24)-1 ,   12582917 },
-    { (1<<25)-1 ,   25165843 },
-    { (1<<26)-1 ,   50331653 },
-    { (1<<27)-1 ,  100663319 },
-    { (1<<28)-1 ,  201326611 },
-    { (1<<29)-1 ,  402653189 },
-    { (1<<30)-1 ,  805306457 },
-    { UINT_MAX  , 1610612741 },
-};
+﻿#include "dict$table.h"
 
 struct keypair {
     struct keypair * next;
@@ -69,16 +37,16 @@ static void dict_resize(struct dict * d) {
     struct keypair ** table;
     unsigned used = d->used;
 
-    if (used < primes[d->idx][0])
+    if (used < prime_table[d->idx][0])
         return;
     
     // 构造新的内存布局大小
-    size = primes[d->idx][1];
-    prime = primes[++d->idx][1];
+    size = prime_table[d->idx][1];
+    prime = prime_table[++d->idx][1];
     table = calloc(prime, sizeof(struct keypair *));
 
     // 开始转移数据
-    for (i = 0; i < size; ++i) {
+    for (i = 0; i < size; i++) {
         struct keypair * pair = d->table[i];
         while (pair) {
             struct keypair * next = pair->next;
@@ -104,8 +72,8 @@ void
 dict_delete(dict_t d) {
     if (!d) return;
 
-    unsigned size = primes[d->idx][1];
-    for (unsigned i = 0; i < size; ++i) {
+    unsigned size = prime_table[d->idx][1];
+    for (unsigned i = 0; i < size; i++) {
         struct keypair * pair = d->table[i];
         while (pair) {
             struct keypair * next = pair->next;
@@ -125,7 +93,7 @@ dict_delete(dict_t d) {
 inline dict_t 
 dict_create(void * fdie) {
     struct dict * d = malloc(sizeof(struct dict));
-    unsigned size = primes[d->idx = 0][1];
+    unsigned size = prime_table[d->idx = 0][1];
     d->used = 0;
     d->fdie = fdie;
     // 默认构建的第一个素数表 index = 0
@@ -146,7 +114,7 @@ dict_get(dict_t d, const char * k) {
     assert(d && k);
 
     hash = str_hash(k);
-    index = hash % primes[d->idx][1];
+    index = hash % prime_table[d->idx][1];
     pair = d->table[index];
 
     while (pair) {
@@ -176,7 +144,7 @@ dict_set(dict_t d, const char * k, void * v) {
 
     // 开始寻找数据
     hash = str_hash(k);
-    index = hash % primes[d->idx][1];
+    index = hash % prime_table[d->idx][1];
     pair = d->table[index];
     prev = NULL;
 

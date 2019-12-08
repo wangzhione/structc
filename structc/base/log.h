@@ -31,6 +31,6 @@ log_printf(pre"[%s:%s:%d]"fmt"\n", __FILE__, __func__, __LINE__, __VA_ARGS__)
 // ...        : 对映 fmt 参数
 // return     : void
 //
-void log_printf(const char * fmt, ...) __attribute__((format(printf, 1, 2)));
+void log_printf(const char * fmt, ...) __attribute__((format(printf, 1, 2))) ;
 
 #endif//__STRUCTC_BASE_LOG_H

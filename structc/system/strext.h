@@ -59,7 +59,7 @@ extern char * str_trim(char str[]);
 // ...      : 参数集
 // return   : char * 堆上内存
 //
-extern char * str_sprintf(const char * fmt, ...) __attribute__((format(printf, 1, 2)));
+extern char * str_sprintf(const char * fmt, ...) __attribute__((format(printf, 1, 2))) ;
 
 //
 // str_freads - 读取整个文件内容返回, 需要事后 free

@@ -28,7 +28,8 @@ void strext_test(void) {
     free(txt);
 
     // 开始字符串构建
-    char * str = str_sprintf("你好吗 ? double = %0.4f\n", 1.2340);
+    int age = -2;
+    char * str = str_sprintf("你好吗 ? double = %0.4f, d=%d\n", 1.2340, age);
     puts(str);
     free(str);
 
