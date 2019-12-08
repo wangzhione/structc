@@ -1,4 +1,4 @@
-#ifndef __STRUCTC_STRUCT_DICT$TABLE_H
+﻿#ifndef __STRUCTC_STRUCT_DICT$TABLE_H
 #define __STRUCTC_STRUCT_DICT$TABLE_H
 
 #include "dict.h"

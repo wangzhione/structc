@@ -1,5 +1,11 @@
 ﻿#include <struct.h>
 #include <stdext.h>
+#include <system.h>
+
+PACKED(struct sdshdr5 {
+    unsigned char flags; /* 3 lsb of type, and 5 msb of string length */
+    char buf[];
+});
 
 void stdext_test(void) {
     const char * path = "README.md";
@@ -22,4 +28,7 @@ void stdext_test(void) {
     // 获取程序运行目录结构
     char buf[BUFSIZ];
     puts(getcwd(buf, BUFSIZ));
+
+    uint32_t x = 0x12345678;
+    printf("x = 0x%x -> 0x%x\n", x, small(x));
 }

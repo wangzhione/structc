@@ -127,8 +127,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\atomic$c11.h" />
     <ClInclude Include="system\atomic$cl.h" />
     <ClInclude Include="system\atomic.h" />
-    <ClInclude Include="system\packed$begin.h" />
-    <ClInclude Include="system\packed$end.h" />
     <ClInclude Include="system\rwlock.h" />
     <ClInclude Include="system\spoll$kqueue.h" />
     <ClInclude Include="system\stdext.h" />
@@ -143,7 +141,6 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\system.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
-    <ClInclude Include="system\gccl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\check.c" />

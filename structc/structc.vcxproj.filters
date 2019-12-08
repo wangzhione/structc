@@ -28,9 +28,6 @@
     <Filter Include="test\conf">
       <UniqueIdentifier>{2df4e18f-58e4-47dc-8d7c-1e25e963ec09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\gccl">
-      <UniqueIdentifier>{c2e1ac22-2fc9-430d-b067-da7b1101b959}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\atom.h">
@@ -171,17 +168,8 @@
     <ClInclude Include="base\utf8.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="system\packed$begin.h">
-      <Filter>system\gccl</Filter>
-    </ClInclude>
-    <ClInclude Include="system\packed$end.h">
-      <Filter>system\gccl</Filter>
-    </ClInclude>
     <ClInclude Include="system\system.h">
-      <Filter>system\gccl</Filter>
-    </ClInclude>
-    <ClInclude Include="system\gccl.h">
-      <Filter>system\gccl</Filter>
+      <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
