@@ -100,16 +100,16 @@ str_trim(char str[]) {
 
 //
 // str_sprintf - 格化式字符串构建
-// format   : 构建格式参照 printf
+// fmt      : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存
 //
 char * 
-str_sprintf(const char * format, ...) {
+str_sprintf(const char * fmt, ...) {
     // 确定待分配内存 size
     va_list arg;
-    va_start(arg, format);
-    int n = vsnprintf(NULL, 0, format, arg);
+    va_start(arg, fmt);
+    int n = vsnprintf(NULL, 0, fmt, arg);
     va_end(arg);
 
     if (n < 0) 
@@ -118,8 +118,8 @@ str_sprintf(const char * format, ...) {
     // 获取待分配内存, 尝试填充格式化数据
     char * ret = malloc(++n);
 
-    va_start(arg, format);
-    n = vsnprintf(ret, n, format, arg);
+    va_start(arg, fmt);
+    n = vsnprintf(ret, n, fmt, arg);
     va_end(arg);
 
     if (n < 0) {

@@ -1,10 +1,12 @@
-﻿#ifndef __STRUCTC_SYSTEM_SYSTEM_H
-#define __STRUCTC_SYSTEM_SYSTEM_H
+﻿#ifndef __SYSTEM_H
+#define __SYSTEM_H
 
+#include "gccl.h"
 #include <stdint.h>
 #include <stddef.h>
 
 #ifdef _MSC_VER
+
 //
 // CPU 检测 x64 or x86
 // ISX64 defined 表示 x64 否则 x86
@@ -12,22 +14,27 @@
 #  if defined(_M_ARM64) || defined(_M_X64)
 #    define ISX64
 #  endif
+
 //
 // _M_PPC 为 PowerPC 平台定义, 现在已不支持
 //
 #  if defined(_M_PPC)
 #    define ISBIG
 #  endif
+
 #else
+
 #  if defined(__x86_64__)
 #    define ISX64
 #  endif
+
 //
 // 大小端检测 : ISBENIAN defined 表示大端
 //
 #  if defined(__BIG_ENDIAN__) || defined(__BIG_ENDIAN_BITFIELD)
 #    define ISBIG
 #  endif
+
 #endif
 
 // small - 转本地字节序(小端)
@@ -43,4 +50,4 @@ inline uint32_t small(uint32_t x) {
 #  endif
 }
 
-#endif//__STRUCTC_SYSTEM_SYSTEM_H
+#endif//__SYSTEM_H

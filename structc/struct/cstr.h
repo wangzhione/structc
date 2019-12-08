@@ -94,9 +94,9 @@ extern void cstr_popup(cstr_t cs, size_t len);
 // cstr_sprintf - 参照 sprintf 方式填充内容
 // cs       : cstr_t 串
 // fmt      : 待格式化的串
-// ...      : 等待进入的变量
+// ...      : 可变参数列表
 // return   : 返回创建的 C 字符串内容
 //
-extern char * cstr_sprintf(cstr_t cs, const char * format, ...);
+extern char * cstr_sprintf(cstr_t cs, const char * fmt, ...) __attribute__((format(printf, 1, 2)));
 
 #endif//__STRUCTC_STRUCT_CSTR_H

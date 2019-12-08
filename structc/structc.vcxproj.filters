@@ -28,6 +28,9 @@
     <Filter Include="test\conf">
       <UniqueIdentifier>{2df4e18f-58e4-47dc-8d7c-1e25e963ec09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\gccl">
+      <UniqueIdentifier>{c2e1ac22-2fc9-430d-b067-da7b1101b959}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system\atom.h">
@@ -90,9 +93,6 @@
     <ClInclude Include="struct\struct.h">
       <Filter>struct</Filter>
     </ClInclude>
-    <ClInclude Include="system\md5.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="system\pipe.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -147,20 +147,41 @@
     <ClInclude Include="system\stdext.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="system\utf8.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="struct\stack.h">
       <Filter>struct</Filter>
-    </ClInclude>
-    <ClInclude Include="system\system.h">
-      <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="base\base.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="system\sha1.h">
-      <Filter>system</Filter>
+    <ClInclude Include="struct\crc$table.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\crc.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\md5.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="struct\sha1.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="base\utf8$table.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\utf8.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="system\packed$begin.h">
+      <Filter>system\gccl</Filter>
+    </ClInclude>
+    <ClInclude Include="system\packed$end.h">
+      <Filter>system\gccl</Filter>
+    </ClInclude>
+    <ClInclude Include="system\system.h">
+      <Filter>system\gccl</Filter>
+    </ClInclude>
+    <ClInclude Include="system\gccl.h">
+      <Filter>system\gccl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -235,9 +256,6 @@
     </ClCompile>
     <ClCompile Include="test\times_test.c">
       <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="system\md5.c">
-      <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="test\md5_test.c">
       <Filter>test</Filter>
@@ -326,14 +344,8 @@
     <ClCompile Include="test\stdext_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="system\utf8.c">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="test\stack_test.c">
       <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="system\sha1.c">
-      <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="main\init.c">
       <Filter>main</Filter>
@@ -343,6 +355,21 @@
     </ClCompile>
     <ClCompile Include="main\exec.c">
       <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\crc.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\md5.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="struct\sha1.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="base\utf8.c">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="test\crc_test.c">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

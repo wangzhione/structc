@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include "stdext.h"
+#include "system.h"
 #include <stdarg.h>
 #include <string.h>
 
@@ -54,11 +55,11 @@ extern char * str_trim(char str[]);
 
 //
 // str_sprintf - 格化式字符串构建
-// format   : 构建格式参照 printf
+// fmt      : 构建格式参照 printf
 // ...      : 参数集
 // return   : char * 堆上内存
 //
-extern char * str_sprintf(const char * format, ...);
+extern char * str_sprintf(const char * fmt, ...) __attribute__((format(printf, 1, 2)));
 
 //
 // str_freads - 读取整个文件内容返回, 需要事后 free

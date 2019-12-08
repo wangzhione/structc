@@ -94,12 +94,12 @@ extern void sha1_init(struct sha1 * ctx) {
 }
 
 /* Run your data through this. */
-extern void sha1_update(struct sha1 * ctx, const uint8_t * data, size_t len) {
+extern void sha1_update(struct sha1 * ctx, const uint8_t * data, uint32_t len) {
     // 设置 count bits 数
-    size_t i, j = ctx->count[0];
-    if ((ctx->count[0] += (uint32_t)(len << 3)) < j)
+    uint32_t i, j = ctx->count[0];
+    if ((ctx->count[0] += len << 3) < j)
         ctx->count[1]++;
-    ctx->count[1] += (uint32_t)(len >> 29);
+    ctx->count[1] += len >> 29;
 
     // 获取低 6 位 byte 值
     j = (j >> 3) & 63;
@@ -165,7 +165,7 @@ sha1_file(sha1_t a, const char * path) {
             fclose(stream);
             return a;
         }
-        sha1_update(&ctx, data, n);
+        sha1_update(&ctx, data, (uint32_t)n);
     } while (!feof(stream));
     fclose(stream);
     sha1_final(&ctx, digest);
@@ -179,7 +179,7 @@ sha1_data(sha1_t a, const void * data, size_t n) {
     uint8_t digest[20];
 
     sha1_init(&ctx);
-    sha1_update(&ctx, data, n);
+    sha1_update(&ctx, data, (uint32_t)n);
     sha1_final(&ctx, digest);
 
     return sha1_convert(a, digest);    

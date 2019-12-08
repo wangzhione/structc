@@ -3,7 +3,7 @@
 
 #include <time.h>
 #include <stdio.h>
-#include <stdint.h>
+#include "system.h"
 #include <stdbool.h>
 
 //

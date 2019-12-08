@@ -133,15 +133,15 @@ cstr_popup(cstr_t cs, size_t len) {
 // cstr_sprintf - 参照 sprintf 方式填充内容
 // cs       : cstr_t 串
 // fmt      : 待格式化的串
-// ...      : 等待进入的变量
+// ...      : 可变参数列表
 // return   : 返回创建的 C 字符串内容
 //
 char * 
-cstr_sprintf(cstr_t cs, const char * format, ...) {
+cstr_sprintf(cstr_t cs, const char * fmt, ...) {
     // 确定待分配内存 size
     va_list arg;
-    va_start(arg, format);
-    int n = vsnprintf(NULL, 0, format, arg);
+    va_start(arg, fmt);
+    int n = vsnprintf(NULL, 0, fmt, arg);
     va_end(arg);
 
     if (n <= 0) 
@@ -150,8 +150,8 @@ cstr_sprintf(cstr_t cs, const char * format, ...) {
     // 获取待分配内存, 尝试填充格式化数据
     cstr_expand(cs, ++n);
 
-    va_start(arg, format);
-    n = vsnprintf(cs->str + cs->len, n, format, arg);
+    va_start(arg, fmt);
+    n = vsnprintf(cs->str + cs->len, n, fmt, arg);
     va_end(arg);
 
     if (n <= 0) 

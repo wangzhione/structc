@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <system.h>
+#include "system.h"
 
 struct sha1 {
     uint8_t buffer[64];     // 64 byte * 8 = 512 bit 消息块

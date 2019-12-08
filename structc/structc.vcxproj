@@ -54,7 +54,6 @@
       <PreprocessorDefinitions>_DEBUG;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PTW32_STATIC_LIB;JEMALLOC_STATIC;JEMALLOC_EXPORT=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalOptions>/D "restrict=__restrict" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,7 +82,6 @@ echo e n d init directory $(TargetDir)conf</Command>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <Optimization>Full</Optimization>
       <DisableSpecificWarnings>4098;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <AdditionalOptions>/D "restrict=__restrict" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>psapi.lib;user32.lib;shell32.lib;ws2_32.lib;userenv.lib;iphlpapi.lib;advapi32.lib;pthread_lib.lib;jemalloc-vc142-Release-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -107,14 +105,20 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="base\buf.h" />
     <ClInclude Include="base\timer.h" />
     <ClInclude Include="base\url.h" />
+    <ClInclude Include="base\utf8$table.h" />
+    <ClInclude Include="base\utf8.h" />
     <ClInclude Include="struct\array.h" />
+    <ClInclude Include="struct\crc$table.h" />
+    <ClInclude Include="struct\crc.h" />
     <ClInclude Include="struct\heap.h" />
     <ClInclude Include="struct\json.h" />
     <ClInclude Include="struct\dict.h" />
     <ClInclude Include="struct\list.h" />
+    <ClInclude Include="struct\md5.h" />
     <ClInclude Include="struct\mq.h" />
     <ClInclude Include="struct\q.h" />
     <ClInclude Include="struct\rtree.h" />
+    <ClInclude Include="struct\sha1.h" />
     <ClInclude Include="struct\stack.h" />
     <ClInclude Include="struct\struct.h" />
     <ClInclude Include="struct\cstr.h" />
@@ -123,12 +127,12 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\atomic$c11.h" />
     <ClInclude Include="system\atomic$cl.h" />
     <ClInclude Include="system\atomic.h" />
+    <ClInclude Include="system\packed$begin.h" />
+    <ClInclude Include="system\packed$end.h" />
     <ClInclude Include="system\rwlock.h" />
-    <ClInclude Include="system\sha1.h" />
     <ClInclude Include="system\spoll$kqueue.h" />
     <ClInclude Include="system\stdext.h" />
     <ClInclude Include="system\strerr.h" />
-    <ClInclude Include="system\md5.h" />
     <ClInclude Include="system\pipe.h" />
     <ClInclude Include="system\rand.h" />
     <ClInclude Include="system\socket.h" />
@@ -139,7 +143,7 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClInclude Include="system\system.h" />
     <ClInclude Include="system\thread.h" />
     <ClInclude Include="system\times.h" />
-    <ClInclude Include="system\utf8.h" />
+    <ClInclude Include="system\gccl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\check.c" />
@@ -151,35 +155,37 @@ echo e n d init directory $(TargetDir)conf</Command>
     <ClCompile Include="base\buf.c" />
     <ClCompile Include="base\timer.c" />
     <ClCompile Include="base\url.c" />
+    <ClCompile Include="base\utf8.c" />
     <ClCompile Include="main\main.c" />
     <ClCompile Include="main\init.c" />
     <ClCompile Include="main\exec.c" />
     <ClCompile Include="main\test.c" />
     <ClCompile Include="struct\array.c" />
+    <ClCompile Include="struct\crc.c" />
     <ClCompile Include="struct\heap.c" />
     <ClCompile Include="struct\json.c" />
     <ClCompile Include="struct\dict.c" />
     <ClCompile Include="struct\list.c" />
+    <ClCompile Include="struct\md5.c" />
     <ClCompile Include="struct\q.c" />
     <ClCompile Include="struct\rtree.c" />
     <ClCompile Include="struct\cstr.c" />
+    <ClCompile Include="struct\sha1.c" />
     <ClCompile Include="system\alloc.c" />
     <ClCompile Include="system\pipe.c" />
     <ClCompile Include="system\rwlock.c" />
-    <ClCompile Include="system\sha1.c" />
     <ClCompile Include="system\stdext.c" />
     <ClCompile Include="system\strerr.c" />
     <ClCompile Include="system\thread.c" />
-    <ClCompile Include="system\md5.c" />
     <ClCompile Include="system\rand.c" />
     <ClCompile Include="system\socket.c" />
     <ClCompile Include="system\spoll.c" />
     <ClCompile Include="system\strext.c" />
     <ClCompile Include="system\times.c" />
-    <ClCompile Include="system\utf8.c" />
     <ClCompile Include="test\array_test.c" />
     <ClCompile Include="test\atom_test.c" />
     <ClCompile Include="test\buf_test.c" />
+    <ClCompile Include="test\crc_test.c" />
     <ClCompile Include="test\dict_test.c" />
     <ClCompile Include="test\file_test.c" />
     <ClCompile Include="test\loop_test.c" />
