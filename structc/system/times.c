@@ -35,7 +35,7 @@ usleep(unsigned usec) {
 // return   : success is 0
 //
 int 
-gettimeofday(struct timeval * tv, struct timezone * tz) {
+gettimeofday(struct timeval * __restrict tv, struct timezone * __restrict tz) {
     if (tv) {
         FILETIME t;
         GetSystemTimeAsFileTime(&t);

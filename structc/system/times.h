@@ -52,7 +52,7 @@ extern int usleep(unsigned usec);
 // tz       : 返回时区结构
 // return   : success is 0
 //
-extern int gettimeofday(struct timeval * tv, struct timezone * tz);
+extern int gettimeofday(struct timeval * __restrict tv, struct timezone * __restrict tz);
 
 //
 // localtime_r - 获取当前时间, 线程安全
