@@ -80,7 +80,7 @@ gettimeofday(struct timeval * __restrict tv, struct timezone * __restrict tz) {
  * designed to work with what time(NULL) may return, and to support Redis
  * logging of the dates, it's not really a complete implementation. */
 void 
-localtime_get(struct tm * p, time_t t) {
+localtime_get(struct tm * __restrict p, time_t t) {
     t -= timezone_get();                /* Adjust for timezone. */
     t += 3600 * daylight_get();         /* Adjust for daylight time. */
     time_t days = t / (3600 * 24);      /* Days passed since epoch. */
@@ -293,10 +293,10 @@ times_fmt(const char * fmt, char out[], size_t sz) {
     struct timespec s;
 
     timespec_get(&s, TIME_UTC);
-    localtime_r(&s.tv_sec, &m);
+    localtime_get(&m, s.tv_sec);
 
     return snprintf(out, sz, fmt,
                     m.tm_year + 1900, m.tm_mon + 1, m.tm_mday,
                     m.tm_hour, m.tm_min, m.tm_sec,
-                    (int)s.tv_nsec / 1000000);
+                    (int)(s.tv_nsec / 1000000));
 }
