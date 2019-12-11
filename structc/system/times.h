@@ -39,6 +39,9 @@ inline void msleep(int ms) {
 // timezone 协调世界时与当地时间之间的秒数差. 默认值为 28,800
 inline long timezone_get(void) { return _timezone; }
 
+// 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为 1; 否则为 0.
+inline long daylight_get(void) { return _daylight; }
+
 //
 // usleep - 微秒级别等待函数
 // usec     : 等待的微秒
@@ -74,8 +77,23 @@ inline void msleep(int ms) {
 }
 
 inline long timezone_get(void) { return timezone; }
+inline long daylight_get(void) { return daylight; }
 
 #endif
+
+/* A year not divisible by 4 is not leap.
+ * If div by 4 and not 100 is surely leap.
+ * If div by 100 *and* not by 400 is not leap.
+ * If div by 100 and 400 is leap. */
+inline _Bool is_leap_year(time_t year) {
+    if (year % 4  ) return 0;
+    if (year % 100) return 1;
+    return !(year % 400);
+}
+
+/* We use a private localtime implementation which is fork-safe. The logging
+ * function of Redis may be called from other threads. */
+extern void localtime_get(struct tm * __restrict p, time_t t);
 
 // times_t - 时间串类型
 #define INT_TIMES (64)

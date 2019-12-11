@@ -26,4 +26,17 @@ void times_test(void) {
     printf("tv_sec = %ld, tv_usec = %ld\n", (long)tv.tv_sec, (long)tv.tv_usec);
     printf("tz_minuteswest = %d, tz_dsttime = %d\n", tz.tz_minuteswest, tz.tz_dsttime);
     printf("timezone = %ld, daylight = 0\n", timezone_get());
+
+    tzset();
+    times_t nos;
+    time_t now = time(NULL);
+
+    struct tm * p = localtime(&now);
+    strftime(nos, sizeof nos, "%Y/%m/%d %H:%M:%S", p);
+    puts(nos);
+
+    struct tm nom;
+    localtime_get(&nom, now);
+    strftime(nos, sizeof nos, "%Y/%m/%d %H:%M:%S", &nom);
+    puts(nos);
 }

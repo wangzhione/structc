@@ -26,7 +26,7 @@ void test(void) {
     //
     // 单元测试 show time 开始你的表演
     //
-    EXTERN_TEST(stdext_test);
+    EXTERN_TEST(times_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

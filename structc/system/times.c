@@ -59,6 +59,70 @@ gettimeofday(struct timeval * __restrict tv, struct timezone * __restrict tz) {
 
 #endif
 
+/* This is a safe version of localtime() which contains no locks and is
+ * fork() friendly. Even the _r version of localtime() cannot be used safely
+ * in Redis. Another thread may be calling localtime() while the main thread
+ * forks(). Later when the child process calls localtime() again, for instance
+ * in order to log something to the Redis log, it may deadlock: in the copy
+ * of the address space of the forked process the lock will never be released.
+ *
+ * This function takes the timezone 'tz' as argument, and the 'dst' flag is
+ * used to check if daylight saving time is currently in effect. The caller
+ * of this function should obtain such information calling tzset() ASAP in the
+ * main() function to obtain the timezone offset from the 'timezone' global
+ * variable. To obtain the daylight information, if it is currently active or not,
+ * one trick is to call localtime() in main() ASAP as well, and get the
+ * information from the tm_isdst field of the tm structure. However the daylight
+ * time may switch in the future for long running processes, so this information
+ * should be refreshed at safe times.
+ *
+ * Note that this function does not work for dates < 1/1/1970, it is solely
+ * designed to work with what time(NULL) may return, and to support Redis
+ * logging of the dates, it's not really a complete implementation. */
+void 
+localtime_get(struct tm * p, time_t t) {
+    t -= timezone_get();                /* Adjust for timezone. */
+    t += 3600 * daylight_get();         /* Adjust for daylight time. */
+    time_t days = t / (3600 * 24);      /* Days passed since epoch. */
+    time_t seconds = t % (3600 * 24);   /* Remaining seconds. */
+
+    p->tm_isdst = daylight_get();
+    p->tm_hour = seconds / 3600;
+    p->tm_min = (seconds % 3600) / 60;
+    p->tm_sec = (seconds % 3600) % 60;
+
+    /* 1/1/1970 was a Thursday, that is, day 4 from the POV of the tm structure
+     * where sunday = 0, so to calculate the day of the week we have to add 4
+     * and take the modulo by 7. */
+    p->tm_wday = (days + 4) % 7;
+
+    /* Calculate the current year. */
+    p->tm_year = 1970;
+    for (;;) {
+        /* Leap years have one day more. */
+        time_t days_this_year = 365 + is_leap_year(p->tm_year);
+        if (days_this_year > days) break;
+        days -= days_this_year;
+        p->tm_year++;
+    }
+    p->tm_yday = days;  /* Number of day of the current year. */
+
+    /* We need to calculate in which month and day of the month we are. To do
+     * so we need to skip days according to how many days there are in each
+     * month, and adjust for the leap year that has one more day in February. */
+    int mdays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    mdays[1] += is_leap_year(p->tm_year);
+
+    p->tm_mon = 0;
+    while (days >= mdays[p->tm_mon]) {
+        days -= mdays[p->tm_mon];
+        p->tm_mon++;
+    }
+
+    p->tm_mday = days + 1; /* Add 1 since our 'days' is zero-based. */
+    p->tm_year -= 1900;    /* Surprisingly tm_year is year-1900. */
+}
+
 // times_tm - 从时间串中提取出来年月日时分秒
 bool times_tm(times_t ns, struct tm * om) {
     int c, num, * es, * py;
