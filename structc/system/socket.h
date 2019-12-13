@@ -83,6 +83,8 @@ typedef int             socket_t;
 inline void socket_init(void) {
     // 防止管道破裂, 忽略 SIGPIPE 信号
     signal(SIGPIPE, SIG_IGN);
+    // 防止会话关闭, 忽略 SIGHUP  信号
+    signal(SIGHUP , SIG_IGN);
 }
 
 inline int socket_close(socket_t s) {

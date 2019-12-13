@@ -1,24 +1,23 @@
 ﻿#include "base.h"
 
 //
-// main     - 奔跑的起点
-// argc     : 参数个数
-// argv     : 参数数组
-// return   : 状态码
+// main     - 随风奔跑, 追逐闪电 ~ 
+// argc     : 运行参数个数
+// argv     : 运行参数数组
+// return   : 状态码 0 is success
 //
 int main(int argc, char * argv[]) {
-    // 初始化 ... .
+    // 初始化 ~ 虎
     // 
     EXTERN_RUN(init);
 
-    // make D=-DNDEBUG
-    // main test 单元测试才会启动
+    // main test 单元测试消除 ~ 魅
+    // make D=-DNDEBUG Release build
     //
 #ifndef NDEBUG
     EXTERN_RUN(test);
 #endif
 
-    // ... 
     // ... 执行业务主 ~ 龍
     //
     EXTERN_RUN(exec, argc, argv);

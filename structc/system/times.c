@@ -11,7 +11,7 @@ int
 usleep(unsigned usec) {
     int ret = -1;
     // Convert to 100 nanosecond interval, negative value indicates relative time
-    LARGE_INTEGER t = { .QuadPart = -10ll * usec };
+    LARGE_INTEGER t = { .QuadPart = -10LL * usec };
 
     HANDLE timer = CreateWaitableTimer(NULL, TRUE, NULL);
     if (timer) {
