@@ -32,7 +32,6 @@
         iphlpapi.lib
         advapi32.lib
         pthread_lib.lib
-        jemalloc-vc142-Release-static.lib
 
         
     c). 添加包含目录
@@ -60,9 +59,6 @@
         _WINSOCK_DEPRECATED_NO_WARNINGS
 
         PTW32_STATIC_LIB
-
-        JEMALLOC_STATIC
-        JEMALLOC_EXPORT=
 
         [Release]
         NDEBUG
@@ -115,27 +111,6 @@
 
     不妨采用 Best New Ubuntu x64 GCC 环境搭建
 
-    a) 依赖安装
-
-```Bash
-# 开发环境安装
-sudo apt install gcc gdb autogen autoconf libtool
-
-# jemalloc 安装
-cd
-wget https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2
-tar -jxvf jemalloc-5.2.1.tar.bz2
-cd jemalloc-5.2.1
-
-sh autogen.sh
-make -j4
-sudo make install
-sudo ldconfig
-
-cd
-rm -rf jemalloc*
-```
-
-    b) 编译设置
+    a) 编译设置
 
         -lm -lpthread

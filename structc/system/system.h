@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTS_SYSTEM_SYSTEM_H
-#define __STRUCTS_SYSTEM_SYSTEM_H
+﻿#pragma once
 
 #include <stdint.h>
 #include <stddef.h>
@@ -21,18 +20,18 @@
 #  define ISBIG
 #endif
 
-#define __attribute__(x)    /* 开眼不知何处, */
-#define _Noreturn           /* 但听满耳松风。*/
+#define __attribute__(x)        /* 开眼不知何处, */
+#define _Noreturn               /* 但听满耳松风。*/
 
-#define PACKED(declare)     \
-__pragma (pack(push, 1))    \
-declare                     \
+#define PACKED(declare)         \
+__pragma (pack(push, 1))        \
+declare                         \
 __pragma (pack(pop))
 
 #else
 
-#define PACKED(declare)     \
-declare                     \
+#define PACKED(declare)         \
+declare                         \
 __attribute__((__packed__))
 
 #if defined __x86_64__
@@ -59,5 +58,3 @@ inline uint32_t small(uint32_t x) {
 #  endif
     return x;
 }
-
-#endif//__STRUCTS_SYSTEM_SYSTEM_H

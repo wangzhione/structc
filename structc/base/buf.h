@@ -1,7 +1,10 @@
-﻿#ifndef __STRUCTC_BASE_BUF_H
-#define __STRUCTC_BASE_BUF_H
+﻿#pragma once
 
 #include "msg.h"
+
+#define MSG_BUF_OK      ( 0)
+#define MSG_BUF_PARSE   (-7)    // 协议解析错误
+#define MSG_BUF_SMALL   (-9)    // 内容过少, 协议还需要内容
 
 //
 // buffer recv send msg
@@ -27,10 +30,8 @@ extern void msg_buf_delete(msg_buf_t q);
 // p        : return msg
 // data     : 内存数据
 // sz       : 内存数据 size
-// return   : EParse 协议解析错误, ESmall 协议不完整
+// return   : MSG_BUF_PARSE 协议解析错误, MSG_BUF_SMALL 协议不完整
 //
 extern int msg_buf_append(msg_buf_t q,
                           const void * data, uint32_t sz,
                           msg_t * p);
-
-#endif//__STRUCTC_BASE_BUF_H

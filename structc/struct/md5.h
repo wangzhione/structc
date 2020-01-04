@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_MD5_H
-#define __STRUCTC_SYSTEM_MD5_H
+﻿#pragma once
 
 #include <stdio.h>
 #include <stddef.h>
@@ -29,5 +28,3 @@ extern uint8_t * md5_data(md5_t m, const void * data, size_t n);
 inline uint8_t * md5_str(md5_t m, const char * str) {
     return md5_data(m, str, strlen(str));
 }
-
-#endif//__STRUCTC_SYSTEM_MD5_H

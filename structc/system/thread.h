@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_THREAD_H
-#define __STRUCTC_SYSTEM_THREAD_H
+﻿#pragma once
 
 #include "struct.h"
 #include <pthread.h>
@@ -41,5 +40,3 @@ inline int pthread_run(pthread_t * p, void * frun, void * arg) {
 inline void pthread_end(pthread_t id) {
     pthread_join(id, NULL);
 }
-
-#endif//__STRUCTC_SYSTEM_THREAD_H

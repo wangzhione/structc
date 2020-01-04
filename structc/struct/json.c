@@ -19,6 +19,7 @@ json_delete(json_t c) {
         if (c->chid)
             json_delete(c->chid);
 
+        free(c);
         c = next;
     }
 }

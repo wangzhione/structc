@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_TIMES_H
-#define __STRUCTC_SYSTEM_TIMES_H
+﻿#pragma once
 
 #include <time.h>
 #include <stdio.h>
@@ -177,5 +176,3 @@ inline char * times_str(times_t ns) {
     times_buf(ns);
     return ns;
 }
-
-#endif//__STRUCTC_SYSTEM_TIMES_H

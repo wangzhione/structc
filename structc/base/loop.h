@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_LOOP_H
-#define __STRUCTC_BASE_LOOP_H
+﻿#pragma once
 
 #include "q.h"
 #include "atom.h"
@@ -29,5 +28,3 @@ extern void loop_push(loop_t p, void * m);
 // return   : 轮询对象
 //
 extern loop_t loop_create(void * frun, void * fdie);
-
-#endif//__STRUCTC_BASE_LOOP_H

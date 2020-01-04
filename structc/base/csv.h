@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_CSV_H
-#define __STRUCTC_BASE_CSV_H
+﻿#pragma once
 
 //
 // csv readonly parse
@@ -50,5 +49,3 @@ inline void csv_delete(csv_t csv) {
 // return  : 返回 csv_t 对象, NULL is error
 //
 extern csv_t csv_create(const char * path);
-
-#endif//__STRUCTC_BASE_CSV_H

@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_CRC$TABLE_H
-#define __STRUCTC_STRUCT_CRC$TABLE_H
+﻿#pragma once
 
 #include "crc.h"
 
@@ -194,5 +193,3 @@ static const uint64_t crc64_table[256] = {
     UINT64_C(0xa6df411fbfb21ca3), UINT64_C(0xdc0731d78f8795da),
     UINT64_C(0x536fa08fdfd90e51), UINT64_C(0x29b7d047efec8728),
 };
-
-#endif//__STRUCTC_STRUCT_CRC$TABLE_H

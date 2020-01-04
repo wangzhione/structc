@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_SPOLL_H
-#define __STRUCTC_SYSTEM_SPOLL_H
+﻿#pragma once
 
 #include "socket.h"
 
@@ -48,5 +47,3 @@ extern void s_write(poll_t p, socket_t s, void * u, bool enable);
 // return   : 返回操作事件长度, < 0 表示失败
 //
 extern int s_wait(poll_t p, event_t e);
-
-#endif//__STRUCTC_SYSTEM_SPOLL_H

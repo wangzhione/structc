@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_RAND_H
-#define __STRUCTC_SYSTEM_RAND_H
+﻿#pragma once
 
 #include <stdint.h>
 #include <assert.h>
@@ -50,5 +49,3 @@ inline int32_t r_rang(int32_t min, int32_t max) {
     assert(max >= min);
     return r_rand() % (max - min + 1) + min;
 }
-
-#endif//__STRUCTC_SYSTEM_RAND_H

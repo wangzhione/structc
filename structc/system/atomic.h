@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_ATOMIC_H
-#define __STRUCTC_SYSTEM_ATOMIC_H
+﻿#pragma once
 
 #include <assert.h>
 #include <stddef.h>
@@ -61,5 +60,3 @@ GENERIC_INT_ATOMIC(uint64_t, u64, 8)
 GENERIC_INT_ATOMIC(size_t, zu, PTR_SIZEOF)
 
 GENERIC_INT_ATOMIC(ssize_t, zd, PTR_SIZEOF)
-
-#endif//__STRUCTC_SYSTEM_ATOMIC_H

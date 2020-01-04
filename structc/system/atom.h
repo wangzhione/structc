@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_ATOM_H
-#define __STRUCTC_SYSTEM_ATOM_H
+﻿#pragma once
 
 #include "atomic.h"
 
@@ -86,5 +85,3 @@ static inline void store_release(atom_t * x) {
 #define atom_cas(v, c, a)   ((LONG)(c) == InterlockedCompareExchange((volatile LONG *)&(v), (LONG)(a), (LONG)(c)))
 
 #endif
-
-#endif//__STRUCTC_SYSTEM_ATOM_H

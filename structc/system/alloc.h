@@ -1,46 +1,40 @@
-﻿#ifndef __STRUCTC_SYSTEM_ALLOC_H
-#define __STRUCTC_SYSTEM_ALLOC_H
+﻿#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// enum flag >= 0 is Success < 0 is Error
-//
-enum {
-    SBase       =    +0, // 正确基础类型
-    EBase       =    -1, // 错误基础类型
-    EParam      =    -2, // 输入参数错误
-    EFd         =    -3, // 文件打开失败
-    EClose      =    -4, // 文件操作关闭
-    EAccess     =    -5, // 没有操作权限
-    EAlloc      =    -6, // 内存操作错误
-    EParse      =    -7, // 协议解析错误
-    EBig        =    -8, // 过大基础错误
-    ESmall      =    -9, // 过小基础错误
-    ETimeout    =   -10, // 操作超时错误
-};
-
-//
-// free_    - free 包装函数
-// ptr      : 内存首地址
-// return   : void
-//
-extern void free_(void * ptr);
+// check 内存检测并处理
+inline void * check(void * ptr, size_t size) {
+    if (!ptr) {
+        fprintf(stderr, "check memory collapse %zu\n", size);
+        fflush(stderr);
+        abort();
+    }
+    return ptr;
+}
 
 //
 // malloc_  - malloc 包装函数
 // size     : 分配的内存字节
 // return   : 返回可使用的内存地址
 //
-extern void * malloc_(size_t size);
+inline void * malloc_(size_t size) {
+    return check(malloc(size), size);
+}
 
 //
 // strdup_  - strdup 包装函数
 // str      : '\0' 结尾 C 字符串
 // return   : 拷贝后新的 C 字符串
 //
-extern char * strdup_(const char * str);
+inline char * strdup_(const char * str) {
+    if (str) {
+        size_t n = strlen(str)+1;
+        return memcpy(malloc_(n), str, n);
+    }
+    return NULL;
+}
 
 //
 // calloc_  - calloc 包装函数
@@ -48,7 +42,9 @@ extern char * strdup_(const char * str);
 // size     : 大小
 // return   : 返回可用内存地址, 并置 0
 //
-extern void * calloc_(size_t num, size_t size);
+inline void * calloc_(size_t num, size_t size) {
+    return check(calloc(num, size), size);
+}
 
 //
 // realloc_ - realoc 包装函数
@@ -56,14 +52,13 @@ extern void * calloc_(size_t num, size_t size);
 // size     : 重新分配的内存大小
 // return   : 返回重新分配的新地址
 //
-extern void * realloc_(void * ptr, size_t size);
+inline void * realloc_(void * ptr, size_t size) {
+    return check(realloc(ptr, size), size);
+}
 
 // :) 包装内存分配层, 些许感怀 ~
 //
 #  ifndef ALLOC_OFF
-#    undef      free
-#    define     free        free_
-
 #    undef      malloc
 #    define     malloc      malloc_
 
@@ -75,5 +70,3 @@ extern void * realloc_(void * ptr, size_t size);
 #    undef      realloc
 #    define     realloc     realloc_
 #  endif//ALLOC_OFF
-
-#endif//__STRUCTC_SYSTEM_ALLOC_H

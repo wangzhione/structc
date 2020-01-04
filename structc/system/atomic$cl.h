@@ -1,5 +1,6 @@
-﻿#if !defined __STRUCTC_SYSTEM_ATOMIC$CL_H && defined _MSC_VER
-#define __STRUCTC_SYSTEM_ATOMIC$CL_H
+﻿#pragma once
+
+#if defined _MSC_VER
 
 #include <stdbool.h>
 #include <windows.h>
@@ -158,4 +159,4 @@ atomic_fetch_xor_##mark(atomic_##mark##_t * a, type v,              \
            );                                                       \
 }
 
-#endif /* __STRUCTC_SYSTEM_ATOMIC$CL_H */
+#endif /* _MSC_VER */

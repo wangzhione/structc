@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_URL_H
-#define __STRUCTC_BASE_URL_H
+﻿#pragma once
 
 #include "alloc.h"
 #include <ctype.h>
@@ -31,5 +30,3 @@ extern char * url_encode(const char * s, int len, int * nen);
 // return   : 返回解码串的长度, < 0 表示失败
 //
 extern int url_decode(char s[], int len);
-
-#endif//__STRUCTC_BASE_URL_H

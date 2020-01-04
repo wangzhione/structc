@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_TIMER_H
-#define __STRUCTC_BASE_TIMER_H
+﻿#pragma once
 
 #include "atom.h"
 #include "list.h"
@@ -21,5 +20,3 @@ extern void timer_del(int id);
 // return    : 定时器 id, < 0 标识 error
 //
 extern int timer_add(int ms, void * ftimer, void * arg);
-
-#endif//__STRUCTC_BASE_TIMER_H

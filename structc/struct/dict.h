@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_DICT_H
-#define __STRUCTC_STRUCT_DICT_H
+﻿#pragma once
 
 #include "struct.h"
 #include "strext.h"
@@ -39,5 +38,3 @@ extern void * dict_get(dict_t d, const char * k);
 // return   : void
 //
 extern void dict_set(dict_t d, const char * k, void * v);
-
-#endif//__STRUCTC_STRUCT_DICT_H

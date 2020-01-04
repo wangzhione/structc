@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_STACK_H
-#define __STRUCTC_STRUCT_STACK_H
+﻿#pragma once
 
 #include "struct.h"
 
@@ -88,5 +87,3 @@ inline void stack_push(struct stack * s, void * m) {
     }
     s->data[++s->tail] = m;
 }
-
-#endif//__STRUCTC_STRUCT_STACK_H

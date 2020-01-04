@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_MSG_H
-#define __STRUCTC_BASE_MSG_H
+﻿#pragma once
 
 #include "struct.h"
 #include "system.h"
@@ -58,5 +57,3 @@ inline static msg_t msg_create(const void * data, uint32_t len) {
 inline static void msg_delete(msg_t msg) {
     if (msg) free(msg);
 }
-
-#endif//__STRUCTC_BASE_MSG_H

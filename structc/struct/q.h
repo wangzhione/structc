@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_Q_H
-#define __STRUCTC_STRUCT_Q_H
+﻿#pragma once
 
 #include "struct.h"
 
@@ -62,5 +61,3 @@ extern void q_push(q_t q, void * m);
 // return   : void
 //
 extern void q_delete(q_t q, node_f fdie);
-
-#endif//__STRUCTC_STRUCT_Q_H

@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_PIPE_H
-#define __STRUCTC_SYSTEM_PIPE_H
+﻿#pragma once
 
 #include "socket.h"
 
@@ -47,5 +46,3 @@ extern int pipe_open(pipe_t ch);
 // pipe_send - 管道阻塞发送
 extern int pipe_recv(pipe_t ch, void * __restrict buf, int sz);
 extern int pipe_send(pipe_t ch, const void * buf, int sz);
-
-#endif//__STRUCTC_SYSTEM_PIPE_H

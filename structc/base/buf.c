@@ -1,6 +1,6 @@
 ﻿#include "buf.h"
 
-#define BUF_INT         (128)
+#define MSG_BUF_INT         (128)
 
 //
 // msg buffer manager
@@ -34,7 +34,7 @@ inline msg_buf_t
 msg_buf_create(void) {
     struct msg_buf * q = malloc(sizeof(struct msg_buf));
     q->sz = 0;
-    q->data = malloc(q->cap = BUF_INT);
+    q->data = malloc(q->cap = MSG_BUF_INT);
     q->len = 0;
     return q;
 }
@@ -83,7 +83,7 @@ inline void msg_buf_pop_sz(msg_buf_t q) {
 // msg_buf_pop - msg buffer pop
 // q        : msg buffer 
 // p        : return msg
-// return   : EParse 协议解析错误, ESmall 协议不完整
+// return   : MSG_BUF_PARSE 协议解析错误, MSG_BUF_SMALL 协议不完整
 //
 int msg_buf_pop(msg_buf_t q, msg_t * p) {
     // step 1 : 报文长度 buffer q->sz check
@@ -93,13 +93,13 @@ int msg_buf_pop(msg_buf_t q, msg_t * p) {
     int len = MSG_LEN(q->sz);
     if (len <= 0 && q->sz > 0) {
         *p = NULL;
-        return EParse;
+        return MSG_BUF_PARSE;
     }
 
     // step 3 : q->sz > 0 继续看是否有需要的报文内容
     if (len <= 0 || len > q->len) {
         *p = NULL;
-        return ESmall;
+        return MSG_BUF_SMALL;
     }
 
     // step 4: 索要的报文长度存在, 开始构建返回
@@ -109,7 +109,7 @@ int msg_buf_pop(msg_buf_t q, msg_t * p) {
     q->sz = 0;
 
     *p = msg;
-    return SBase;
+    return MSG_BUF_OK;
 }
 
 // msg_data_pop - data pop msg 
@@ -145,7 +145,7 @@ static msg_t msg_buf_data_pop(msg_buf_t q,
 // data     : 内存数据
 // sz       : 内存数据 size
 // p        : return msg
-// return   : EParse 协议解析错误, ESmall 协议不完整
+// return   : MSG_BUF_PARSE 协议解析错误, MSG_BUF_SMALL 协议不完整
 //
 int 
 msg_buf_append(msg_buf_t q,
@@ -160,11 +160,11 @@ msg_buf_append(msg_buf_t q,
         }
     });
 
-    // data, sz 刚好可以解析出 msg 情况处理
-    if (q->sz <= 0 && sz > BUF_INT) {
+    // data, sz 足够, 尝试直接解析出 msg 情况处理
+    if (q->sz <= 0 && sz > MSG_BUF_INT) {
         *p = msg_buf_data_pop(q, data, sz);
         if (*p)
-            return SBase;
+            return MSG_BUF_OK;
     }
 
     msg_buf_push(q, data, sz);

@@ -1,5 +1,6 @@
-﻿#if !defined __STRUCTC_SYSTEM_SPOLL$KQUEUE_H && !defined __linux__ && !defined _WIN32
-#define __STRUCTC_SYSTEM_SPOLL$KQUEUE_H
+﻿#pragma once
+
+#if !defined __linux__ && !defined _WIN32
 
 #include <sys/event.h>
 
@@ -83,4 +84,4 @@ int s_wait(poll_t p, event_t e) {
     return n;
 }
 
-#endif /* __STRUCTC_SYSTEM_SPOLL$KQUEUE_H */
+#endif /* !__linux__ && !_WIN32 */

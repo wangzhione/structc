@@ -1,5 +1,6 @@
-﻿#if !defined __STRUCTC_SYSTEM_ATOMIC$C11_H && !defined _MSC_VER
-#define __STRUCTC_SYSTEM_ATOMIC$C11_H
+﻿#pragma once
+
+#if !defined _MSC_VER
 
 #include <stdbool.h>
 #include <stdatomic.h>
@@ -84,4 +85,4 @@ atomic_fetch_xor_##mark(atomic_##mark##_t * a, type v,              \
     return atomic_fetch_xor_explicit(a, v, o);                      \
 }
 
-#endif /* __STRUCTC_SYSTEM_ATOMIC$C11_H */
+#endif /* !_MSC_VER */

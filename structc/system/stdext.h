@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_STDEXT_H
-#define __STRUCTC_SYSTEM_STDEXT_H
+﻿#pragma once
 
 #include "alloc.h"
 #include <fcntl.h>
@@ -124,5 +123,3 @@ extern int fmkdir(const char * path);
 // return   : 返回长度, -1 or >= size is unusual 
 //
 extern int getawd(char * buf, size_t size);
-
-#endif//__STRUCTC_SYSTEM_STDEXT_H

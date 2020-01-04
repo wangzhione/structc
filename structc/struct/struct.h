@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_STRUCT_H
-#define __STRUCTC_STRUCT_STRUCT_H
+﻿#pragma once
 
 #include <math.h>
 #include "alloc.h"
@@ -57,17 +56,17 @@ typedef int (* each_f)(void * node, void * arg);
 // EXIT - 打印错误信息, 并 exit
 // IF   - 条件判断异常退出的辅助宏
 //
-#define CERR(fmt, ...)                                                 \
-fprintf(stderr, "[%s:%s:%d][%d:%s]"fmt"\n",                            \
+#define CERR(fmt, ...)                                                  \
+fprintf(stderr, "[%s:%s:%d][%d:%s]"fmt"\n",                             \
     __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
 
-#define EXIT(fmt, ...)                                                 \
-do {                                                                   \
-    CERR(fmt, ##__VA_ARGS__);                                          \
-    exit(EXIT_FAILURE);                                                \
+#define EXIT(fmt, ...)                                                  \
+do {                                                                    \
+    CERR(fmt, ##__VA_ARGS__);                                           \
+    exit(EXIT_FAILURE);                                                 \
 } while(0)
 
-#define IF(cond)                                                       \
+#define IF(cond)                                                        \
 if ((cond)) EXIT(#cond)
 
 //
@@ -77,17 +76,18 @@ if ((cond)) EXIT(#cond)
 // ...      : fmt 中对应的参数
 // return   : val
 // 
-#define RETURN(val, fmt, ...)                                         \
-do {                                                                  \
-    CERR(fmt, ##__VA_ARGS__);                                         \
-    return val;                                                       \
+#define RETURN(val, fmt, ...)                                           \
+do {                                                                    \
+    CERR(fmt, ##__VA_ARGS__);                                           \
+    return val;                                                         \
 } while(0)
 
 #define NIL
-#define RETNIL(fmt, ...)                                              \
+#define RETNIL(fmt, ...)                                                \
 RETURN(NIL , fmt, ##__VA_ARGS__)
 
-#define RETNUL(fmt, ...)                                              \
+#define RETNUL(fmt, ...)                                                \
 RETURN(NULL, fmt, ##__VA_ARGS__)
 
-#endif//__STRUCTC_STRUCT_STRUCT_H
+#define RETERR(fmt, ...)                                                \
+RETURN(-1  , fmt, ##__VA_ARGS__)

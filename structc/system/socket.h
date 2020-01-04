@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_SOCKET_H
-#define __STRUCTC_SYSTEM_SOCKET_H
+﻿#pragma once
 
 #include "struct.h"
 #include "strerr.h"
@@ -23,6 +22,8 @@ typedef int             socklen_t;
 #define EINTR           WSAEINTR
 #undef  EAGAIN
 #define EAGAIN          WSAEWOULDBLOCK
+#undef  ETIMEDOUT
+#define ETIMEDOUT       WSAETIMEDOUT
 #undef  EINPROGRESS
 #define EINPROGRESS     WSAEWOULDBLOCK
 
@@ -236,7 +237,7 @@ extern socket_t socket_listens(const char * ip, uint16_t port, int backlog);
 // socket_host - 通过 ip:port 串得到 socket addr 结构
 // host     : ip:port 串
 // a        : 返回最终生成的地址
-// return   : >= EBase 表示成功
+// return   : >= 0 表示成功
 //
 extern int socket_host(const char * host, sockaddr_t a);
 
@@ -268,5 +269,3 @@ extern socket_t socket_connects(const char * host);
 // return   : 返回链接后阻塞套接字
 //
 extern socket_t socket_connectos(const char * host, int ms);
-
-#endif//__STRUCTC_SYSTEM_SOCKET_H

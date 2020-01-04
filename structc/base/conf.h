@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_CONF_H
-#define __STRUCTC_BASE_CONF_H
+﻿#pragma once
 
 #include "utf8.h"
 #include "json.h"
@@ -24,5 +23,3 @@ extern struct conf * conf_instance(void);
 // return   : true 表示解析成功
 //
 bool conf_init(const char * path);
-
-#endif//__STRUCTC_BASE_CONF_H

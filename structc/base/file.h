@@ -1,5 +1,4 @@
-#ifndef __STRUCTC_BASE_FILE_H
-#define __STRUCTC_BASE_FILE_H
+#pragma once
 
 #include "atom.h"
 #include "struct.h"
@@ -25,5 +24,3 @@ extern void file_set(const char * path, file_f func, void * arg);
 // return   : void
 //
 extern void file_update(void);
-
-#endif//__STRUCTC_BASE_FILE_H

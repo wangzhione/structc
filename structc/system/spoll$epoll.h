@@ -1,5 +1,6 @@
-﻿#if !defined __STRUCTC_SYSTEM_SPOLL$EPOLL_H && defined __linux__
-#define __STRUCTC_SYSTEM_SPOLL$EPOLL_H
+﻿#pragma once
+
+#if defined __linux__
 
 #include "spoll.h"
 #include <sys/epoll.h>
@@ -66,4 +67,4 @@ int s_wait(poll_t p, event_t e) {
     return n;
 }
 
-#endif /* __STRUCTC_SYSTEM_SPOLL$EPOLL_H */
+#endif /* __linux__ */

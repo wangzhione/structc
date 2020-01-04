@@ -50,15 +50,16 @@ int socket_addr(char ip[INET6_ADDRSTRLEN], uint16_t port, sockaddr_t a) {
             .ai_socktype = SOCK_STREAM,
         };
 
-        if (getaddrinfo(ip, ports, &req, &rsp))
-            return EParam;
+        if (getaddrinfo(ip, ports, &req, &rsp)) {
+            return -1;
+        }
 
         // 尝试默认第一个 ipv4
         memcpy(a, rsp->ai_addr, rsp->ai_addrlen);
         freeaddrinfo(rsp);
     }
 
-    return SBase;
+    return 0;
 }
 
 // socket_binds - 返回绑定好端口的 socket fd, family is PF_INET PF_INET6
@@ -116,16 +117,18 @@ static int host_parse(const char * host, char ip[INET6_ADDRSTRLEN]) {
         char c;
         // 简单检查字符串是否合法
         size_t n = strlen(host);
-        if (n >= INET6_ADDRSTRLEN)
-            RETURN(EParam, "host err %s", host);
+        if (n >= INET6_ADDRSTRLEN) {
+            RETERR("host err %s", host);
+        }
 
         // 寻找分号
         while ((c = *host++) != ':' && c)
             *ip++ = c;
         *ip = '\0';
         if (c == ':') {
-            if (n > ip - begin + sizeof "65535")
-                RETURN(EParam, "host port err %s", host);
+            if (n > ip - begin + sizeof "65535") {
+                RETERR("host port err %s", host);
+            }
             port = atoi(host);
         }
     }
@@ -137,13 +140,13 @@ static int host_parse(const char * host, char ip[INET6_ADDRSTRLEN]) {
 // socket_host - 通过 ip:port 串得到 socket addr 结构
 // host     : ip:port 串
 // a        : 返回最终生成的地址
-// return   : >= EBase 表示成功
+// return   : >= 0 表示成功
 //
 int 
 socket_host(const char * host, sockaddr_t a) {
     char ip[INET6_ADDRSTRLEN];
     int port = host_parse(host, ip);
-    if (port < SBase)
+    if (port < 0)
         return port;
 
     // 开始构造 sockaddr
@@ -163,7 +166,7 @@ socket_t
 socket_tcp(const char * host) {
     char ip[INET6_ADDRSTRLEN];
     int port = host_parse(host, ip);
-    if (port < SBase)
+    if (port < 0)
         RETURN(INVALID_SOCKET, "host_parse %d, %s", port, host);
     return socket_listens(ip, port, SOMAXCONN);
 }
@@ -177,7 +180,7 @@ socket_t
 socket_udp(const char * host) {
     char ip[INET6_ADDRSTRLEN];
     int port = host_parse(host, ip);
-    if (port < SBase)
+    if (port < 0)
         RETURN(INVALID_SOCKET, "host_parse %d, %s", port, host);
     return socket_binds(ip, port, IPPROTO_UDP, NULL);
 }
@@ -191,13 +194,13 @@ socket_t
 socket_connects(const char * host) {
     sockaddr_t a;
     // 先解析 sockaddr 地址
-    if (socket_host(host, a) < SBase)
+    if (socket_host(host, a) < 0)
         return INVALID_SOCKET;
 
     // 获取 tcp socket 尝试 parse connect
     socket_t s = socket_stream();
     if (s != INVALID_SOCKET) {
-        if (socket_connect(s, a) >= SBase)
+        if (socket_connect(s, a) >= 0)
             return s;
 
         socket_close(s);
@@ -217,33 +220,33 @@ static int socket_connecto(socket_t s, const sockaddr_t a, int ms) {
 
     // 非阻塞登录, 先设置非阻塞模式
     r = socket_set_nonblock(s);
-    if (r < SBase) return r;
+    if (r < 0) return r;
 
     // 尝试连接, connect 返回 -1 并且 errno == EINPROGRESS 表示正在建立链接
     r = socket_connect(s, a);
     // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
-    if (r >= SBase || errno != EINPROGRESS) return r;
+    if (r >= 0 || errno != EINPROGRESS) return r;
 
-    // 超时 timeout, 直接返回结果 EBase = -1 错误
-    if (ms == 0) return EBase;
+    // 超时 timeout, 直接返回结果 -1 错误
+    if (ms == 0) return -1;
 
     FD_ZERO(&rset); FD_SET(s, &rset);
     FD_ZERO(&wset); FD_SET(s, &wset);
     FD_ZERO(&eset); FD_SET(s, &eset);
     timeout.tv_sec = ms / 1000;
     timeout.tv_usec = (ms % 1000) * 1000;
-    n = select((int)(s + 1), &rset, &wset, &eset, &timeout);
+    n = select((int)s + 1, &rset, &wset, &eset, &timeout);
     // 超时直接滚
-    if (n <= 0) return EBase;
+    if (n <= 0) return 0;
 
     // 当连接成功时候,描述符会变成可写
-    if (n == 1 && FD_ISSET(s, &wset)) return SBase;
+    if (n == 1 && FD_ISSET(s, &wset)) return 0;
 
     // 当连接建立遇到错误时候, 描述符变为即可读又可写
     if (FD_ISSET(s, &eset) || n == 2) {
         // 只要最后没有 error 那就链接成功
         if (!socket_get_error(s))
-            r = SBase;
+            r = 0;
     }
 
     return r;
@@ -259,13 +262,13 @@ socket_t
 socket_connectos(const char * host, int ms) {
     sockaddr_t a;
     // 先解析 sockaddr 地址
-    if (socket_host(host, a) < SBase)
+    if (socket_host(host, a) < 0)
         return INVALID_SOCKET;
 
     // 获取 tcp socket 尝试 parse connect
     socket_t s = socket_stream();
     if (s != INVALID_SOCKET) {
-        if (socket_connecto(s, a, ms) >= SBase) {
+        if (socket_connecto(s, a, ms) >= 0) {
             // 设置为阻塞套接字
             socket_set_block(s);
             return s;

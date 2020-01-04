@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_LOG_H
-#define __STRUCTC_BASE_LOG_H
+﻿#pragma once
 
 #include "times.h"
 #include <stdlib.h>
@@ -12,15 +11,15 @@
 // return     : void
 //
 #define LOG_PRINTF(pre, fmt, ...)   \
-log_printf(pre"[%s:%s:%d]"fmt"\n", __FILE__, __func__, __LINE__, __VA_ARGS__)
+log_printf(pre"[%s:%s:%d]"fmt"\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 //
 // log 有些朴实, 迅速 ~
 //
-#define LOG_ERROR(fmt, ...) LOG_PRINTF("[ERROR]", fmt, __VA_ARGS__)
-#define LOG_INFOS(fmt, ...) LOG_PRINTF("[INFOS]", fmt, __VA_ARGS__)
+#define LOG_ERROR(fmt, ...) LOG_PRINTF("[ERROR]", fmt, ##__VA_ARGS__)
+#define LOG_INFOS(fmt, ...) LOG_PRINTF("[INFOS]", fmt, ##__VA_ARGS__)
 #ifndef NDEBUG
-#define LOG_DEBUG(fmt, ...) LOG_PRINTF("[DEBUG]", fmt, __VA_ARGS__)
+#define LOG_DEBUG(fmt, ...) LOG_PRINTF("[DEBUG]", fmt, ##__VA_ARGS__)
 #else
 #define LOG_DEBUG(fmt, ...) /*  (^_−)☆ */
 #endif
@@ -32,5 +31,3 @@ log_printf(pre"[%s:%s:%d]"fmt"\n", __FILE__, __func__, __LINE__, __VA_ARGS__)
 // return     : void
 //
 void log_printf(const char * fmt, ...) __attribute__((format(printf, 1, 2))) ;
-
-#endif//__STRUCTC_BASE_LOG_H

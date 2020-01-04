@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_MQ_H
-#define __STRUCTC_STRUCT_MQ_H
+﻿#pragma once
 
 #include "q.h"
 #include "atom.h"
@@ -79,5 +78,3 @@ inline static int mq_len(mq_t q) {
     tail -= head - 1;
     return tail > 0 ? tail : tail+cap;
 }
-
-#endif//__STRUCTC_STRUCT_MQ_H

@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_LIST_H
-#define __STRUCTC_STRUCT_LIST_H
+﻿#pragma once
 
 #include "struct.h"
 
@@ -62,5 +61,3 @@ extern void * list_get(void * list, void * fget, const void * left);
 // return   : 查找到的结点, NULL 表示没有查到 
 //
 extern void * list_pop(void * pist, void * fget, const void * left);
-
-#endif//__STRUCTC_STRUCT_LIST_H

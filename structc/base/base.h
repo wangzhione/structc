@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_BASE_BASE_H
-#define __STRUCTC_BASE_BASE_H
+﻿#pragma once
 
 #include "log.h"
 #include "rand.h"
@@ -42,6 +41,3 @@ do {                                                   \
     extern void frun();                                \
     frun (__VA_ARGS__);                                \
 } while(0)
-
-
-#endif//__STRUCTC_BASE_BASE_H

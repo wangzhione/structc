@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_CSTR_H
-#define __STRUCTC_STRUCT_CSTR_H
+﻿#pragma once
 
 #include "strext.h"
 
@@ -98,5 +97,3 @@ extern void cstr_popup(cstr_t cs, size_t len);
 // return   : 返回创建的 C 字符串内容
 //
 extern char * cstr_sprintf(cstr_t cs, const char * fmt, ...) __attribute__((format(printf, 2, 3))) ;
-
-#endif//__STRUCTC_STRUCT_CSTR_H

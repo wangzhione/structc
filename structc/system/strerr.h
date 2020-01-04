@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_STRERR_H
-#define __STRUCTC_SYSTEM_STRERR_H
+﻿#pragma once
 
 #include <errno.h>
 #include <string.h>
@@ -23,5 +22,3 @@ extern const char * strerr(int no);
 #define strerror                 ((char * (*)(int))strerr)
 
 #endif
-
-#endif//__STRUCTC_SYSTEM_STRERR_H

@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_SYSTEM_UTF8_H
-#define __STRUCTC_SYSTEM_UTF8_H
+﻿#pragma once
 
 #include "struct.h"
 
@@ -34,5 +33,3 @@ extern bool isu8s(const char * s);
 // return   : true 表示 utf8 编码
 //
 extern bool isu8(const char d[], size_t n);
-
-#endif//__STRUCTC_SYSTEM_UTF8_H

@@ -25,7 +25,7 @@ str_hash(const char * str) {
 int 
 str_cpyn(char * src, const char * tar, size_t n) {
     size_t i;
-    if (!src || !tar || !n) return EParam;
+    if (!src || !tar || !n) return -1;
     for (i = 1; 
         (i < n) && (*src++ = *tar++); ++i)
         ;
@@ -168,11 +168,16 @@ str_freads(const char * path) {
 static int str_fwrite(const char * p, const char * s, const char * m) {
     int len;
     FILE * txt;
-    if (!p || !*p || !s || !m)
-        return EParam;
+    if (!p || !*p || !s || !m) {
+        errno = EINVAL; // 参数无效
+        return -1;
+    }
+
     // 打开文件, 写入消息, 关闭文件
-    if (!(txt = fopen(p, m)))
-        return EFd;
+    if (!(txt = fopen(p, m))) {
+        errno = ENOENT; // 文件或路径不存在
+        return -1;
+    }
 
     len = fputs(s, txt);
     fclose(txt);

@@ -1,5 +1,6 @@
-﻿#if !defined __STRUCTC_SYSTEM_SPOLL$SELECT_H && defined _WIN32
-#define __STRUCTC_SYSTEM_SPOLL$SELECT_H
+﻿#pragma once
+
+#if defined _WIN32
 
 #undef  FD_SETSIZE
 #define FD_SETSIZE      (1024)
@@ -145,4 +146,4 @@ int s_wait(poll_t p, event_t e) {
     return c;
 }
 
-#endif /* __STRUCTC_SYSTEM_SPOLL$SELECT_H */
+#endif /* _WIN32 */

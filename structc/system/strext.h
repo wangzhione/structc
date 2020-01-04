@@ -1,11 +1,11 @@
-﻿#ifndef __STRUCTC_SYSTEM_STREXT_H
-#define __STRUCTC_SYSTEM_STREXT_H
+﻿#pragma once
 
 /*
     继承 : string.h
     功能 : 扩展 string.h 中部分功能, 方便业务层调用
  */
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "stdext.h"
@@ -83,5 +83,3 @@ extern int str_fwrites(const char * path, const char * str);
 // return   : >=0 is success, < 0 is error
 //
 extern int str_fappends(const char * path, const char * str);
-
-#endif//__STRUCTC_SYSTEM_STREXT_H

@@ -32,7 +32,8 @@ mkdirs(const char * path) {
     char c, * p, * s;
 
     // 参数错误直接返回
-    if (!path || !*path) return EParam;
+    if (!path || !*path) return -1;
+
     // 文件存在 or 文件一次创建成功 直接返回
     if (!access(path, F_OK) || !mkdir(path))
         return 0;
@@ -68,7 +69,7 @@ mkdirs(const char * path) {
         return 0;
 
     // 剩下最后文件路径, 开始构建
-    return mkdir(path) ? -1 : 0;
+    return mkdir(path);
 }
 
 //
@@ -80,7 +81,7 @@ int
 fmkdir(const char * path) {
     const char * r;
     char c, * p, * s;
-    if (!path) return EParam;
+    if (!path) return -1;
 
     for (r = path + strlen(path); r >= path; --r)
         if ((c = *r) == '/' || c == '\\')

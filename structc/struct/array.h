@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_ARRAY_H
-#define __STRUCTC_STRUCT_ARRAY_H
+﻿#pragma once
 
 #include "struct.h"
 
@@ -103,5 +102,3 @@ extern void array_sort(array_t a, cmp_f fcmp);
 // return   : >= 0 表示成功, < 0 表示失败
 //
 extern int array_each(array_t a, each_f func, void * arg);
-
-#endif//__STRUCTC_STRUCT_ARRAY_H

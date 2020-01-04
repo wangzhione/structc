@@ -188,9 +188,6 @@
     <ClCompile Include="test\list_test.c">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="test\strings_test.c">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="test\thread_test.c">
       <Filter>test</Filter>
     </ClCompile>
@@ -226,9 +223,6 @@
     </ClCompile>
     <ClCompile Include="system\socket.c">
       <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="test\socket_test.c">
-      <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="system\spoll.c">
       <Filter>system\poll</Filter>

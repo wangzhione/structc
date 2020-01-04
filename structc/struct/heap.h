@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_HEAP_H
-#define __STRUCTC_STRUCT_HEAP_H
+﻿#pragma once
 
 #include "struct.h"
 
@@ -53,5 +52,3 @@ extern void * heap_top(heap_t h);
 // return   : 返回堆顶结点
 //
 extern void * heap_pop(heap_t h);
-
-#endif//__STRUCTC_STRUCT_HEAP_H

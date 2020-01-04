@@ -15,8 +15,8 @@ void buf_test(void) {
     // send阶段, 先发送字符长度
     msg_t msg;
     int ret = msg_buf_append(q, &x, sizeof(uint32_t), &msg);
-    IF (ret == EParse);
-    if (ret == SBase) {
+    IF (ret == MSG_BUF_PARSE);
+    if (ret == MSG_BUF_OK) {
         printf("ret = %d, type = %d, sz = %d, data = %s.\n", 
             ret, MSG_TYPE(msg->sz), MSG_LEN(msg->sz), msg->data);
     }
@@ -24,8 +24,8 @@ void buf_test(void) {
 
     // send 阶段, 后发送详细数据
     ret = msg_buf_append(q, str, len, &msg);
-    IF (ret == EParse);
-    if (ret == SBase) {
+    IF (ret == MSG_BUF_PARSE);
+    if (ret == MSG_BUF_OK) {
         printf("ret = %d, type = %d, sz = %d, data = %s.\n",
             ret, MSG_TYPE(msg->sz), MSG_LEN(msg->sz), msg->data);
         msg_delete(msg);
@@ -37,8 +37,8 @@ void buf_test(void) {
     printf("m = %p, m->sz = %d, m->data = %s.\n", m, m->sz, m->data+4);
     ret = msg_buf_append(q, m->data, m->sz, &msg);
     msg_delete(m);
-    IF (ret == EParse);
-    if (ret == SBase) {
+    IF (ret == MSG_BUF_PARSE);
+    if (ret == MSG_BUF_OK) {
         printf("ret = %d, type = %d, sz = %d, data = %s.\n",
             ret, MSG_TYPE(msg->sz), MSG_LEN(msg->sz), msg->data);
         msg_delete(msg);

@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_DICT$TABLE_H
-#define __STRUCTC_STRUCT_DICT$TABLE_H
+﻿#pragma once
 
 #include "dict.h"
 
@@ -61,6 +60,3 @@ static const unsigned prime_table[][2] = {
     { (1 << 30) - 1,     805306457 },
     {      UINT_MAX,    1610612741 },
 };
-
-
-#endif//__STRUCTC_STRUCT_DICT$TABLE_H

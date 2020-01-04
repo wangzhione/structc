@@ -1,5 +1,4 @@
-﻿#ifndef __STRUCTC_STRUCT_RTREE_H
-#define __STRUCTC_STRUCT_RTREE_H
+﻿#pragma once
 
 #include "stack.h"
 
@@ -59,5 +58,3 @@ extern void rtree_insert(rtree_t tree, void * pack);
 // return   : void
 //
 extern void rtree_remove(rtree_t tree, void * pack);
-
-#endif//__STRUCTC_STRUCT_RTREE_H
