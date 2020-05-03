@@ -1,4 +1,4 @@
-# STRUCT C 基础库
+﻿# STRUCT C 基础库
 
     雕琢 C 的华山剑法, 为入行那会的一时性起 ~>--
 
@@ -138,7 +138,6 @@ inline void pthread_end(pthread_t id) {
     0. 安装 C/C++ Microsoft 插件
 
     1. F1 -> Edit Configurations -> c_cpp_properties.json
-       Search Linux 部分添加如下内容
 
 ```json
 {
@@ -158,14 +157,16 @@ inline void pthread_end(pthread_t id) {
                 "_GNU_SOURCE"
             ],
             "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c11"
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
         }
     ],
     "version": 4
 }
 ```
 
-    2. F5 -> launch.json
+    2. F5 -> C++(GDB/LLDB) -> launch.json
        按照规律改 program 项目生成 和添加 preLaunchTask 前置任务行
 
 ```json
@@ -173,11 +174,13 @@ inline void pthread_end(pthread_t id) {
             "preLaunchTask": "Debug",
 ```
 
-    3. F1 -> [>Tasks: Configure Build] -> [Enter] -> [Others] -> tasks.json
-       建立下面任务
+    3. F1 -> [>Tasks: Configure Task] -> [Others] -> tasks.json
+       构建下面任务
 
 ```json
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {

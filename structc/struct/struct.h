@@ -4,11 +4,10 @@
 #include "alloc.h"
 #include <ctype.h>
 #include <float.h>
-#include <errno.h>
+#include "strerr.h"
 #include <assert.h>
 #include <stdarg.h>
 #include <stdint.h>
-#include <stddef.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <inttypes.h>
@@ -58,7 +57,7 @@ typedef int (* each_f)(void * node, void * arg);
 //
 #define CERR(fmt, ...)                                                  \
 fprintf(stderr, "[%s:%s:%d][%d:%s]"fmt"\n",                             \
-    __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
+    __FILE__, __func__, __LINE__, errno, strerr(errno), ##__VA_ARGS__)
 
 #define EXIT(fmt, ...)                                                  \
 do {                                                                    \

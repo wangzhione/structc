@@ -1,6 +1,6 @@
 ﻿#include <base.h>
 
-volatile static int c;
+static volatile int c;
 
 static void heoo(int index) {
     for (int i = 0; i < 10000; ++i)

@@ -34,7 +34,7 @@ TESTO     = $(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
 # 全局编译的设置
 #
 CC        ?= gcc
-CFLAGS    := -g -O2 -Wall -Wno-unused-result -D_GNU_SOURCE
+CFLAGS    := -g -O2 -Wall -Wextra -Wimplicit-fallthrough=0 -Wno-sign-compare -D_GNU_SOURCE
 LIB       := -lm -lpthread
 
 RHAD    := $(CC) $(CFLAGS)
@@ -51,12 +51,12 @@ RUN       = $(RHAD) $(IINC) -o $(DOUT)/$@ $(RTAL)
 #
 .PHONY : all clean
 
-all : main.exe
+all : main
 
 #
 # 主运行程序main
 #
-main.exe : structc.a
+main : libstructc.a
 	$(RUN)
 
 #
@@ -72,7 +72,7 @@ $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
 #
 # 生成 structc.a 静态库, 方便处理所有问题
 #
-structc.a : $(OBJO) $(TESTO) main.o init.o exec.o test.o
+libstructc.a : $(OBJO) $(TESTO) main.o init.o exec.o test.o
 	ar cr $(DOBJ)/$@ $(DOBJ)/*.o
 
 #

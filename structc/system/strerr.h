@@ -1,16 +1,10 @@
 ﻿#pragma once
 
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
-
-//
-// strerr - strerror 跨平台实现
-// no      : linux errno, winds WSAGetLastError()
-// return  : system os 拔下来的提示 message
-//
-extern const char * strerr(int no);
 
 #ifdef _WIN32
 
@@ -18,7 +12,12 @@ extern const char * strerr(int no);
 
 #undef  errno
 #define errno                    (GetLastError())
-#undef  strerror
-#define strerror                 ((char * (*)(int))strerr)
 
 #endif
+
+//
+// strerr - strerror 线程安全跨平台实现
+// no      : linux errno, winds WSAGetLastError()
+// return  : system os 拔下来的提示 message
+//
+extern const char * strerr(int no);

@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <assert.h>
 #include "stdext.h"
 #include "system.h"
 #include <stdarg.h>

@@ -32,7 +32,10 @@ accept_example(int id) {
     IF(socket_set_reuse(s));
 
     // 构造地址
-    sockaddr_t addr = {{ AF_INET, htons(PORT_UINT) }};
+    sockaddr_t addr = {{ 
+        .sin_family = AF_INET, 
+        .sin_port   = htons(PORT_UINT),
+    }};
 
     // 绑定地址
     IF(socket_bind(s, addr));

@@ -1,9 +1,472 @@
-﻿#ifndef _MSC_VER
+﻿#include "strerr.h"
 
-#include <string.h>
+#ifndef _WIN32
 
-extern inline const char * strerr(int no) {
-    return strerror(no);
+extern const char * strerr(int no) {
+    switch (no) {
+    case 0                                                                        : return "Success";
+
+#  if defined EPERM
+    case EPERM                                                                    : return "Operation not permitted";
+#  endif /* EPERM */
+#  if defined ENOENT
+    case ENOENT                                                                   : return "No such file or directory";
+#  endif /* ENOENT */
+#  if defined ESRCH
+    case ESRCH                                                                    : return "No such process";
+#  endif /* ESRCH */
+#  if defined EINTR
+    case EINTR                                                                    : return "Interrupted system call";
+#  endif /* EINTR */
+#  if defined EIO
+    case EIO                                                                      : return "Input/output error";
+#  endif /* EIO */
+#  if defined ENXIO
+    case ENXIO                                                                    : return "No such device or address";
+#  endif /* ENXIO */
+#  if defined E2BIG
+    case E2BIG                                                                    : return "Argument list too long";
+#  endif /* E2BIG */
+#  if defined ENOEXEC
+    case ENOEXEC                                                                  : return "Exec format error";
+#  endif /* ENOEXEC */
+#  if defined EBADF
+    case EBADF                                                                    : return "Bad file descriptor";
+#  endif /* EBADF */
+#  if defined ECHILD
+    case ECHILD                                                                   : return "No child processes";
+#  endif /* ECHILD */
+#  if defined EDEADLK
+    case EDEADLK                                                                  : return "Resource deadlock avoided";
+#  endif /* EDEADLK */
+#  if defined ENOMEM
+    case ENOMEM                                                                   : return "Cannot allocate memory";
+#  endif /* ENOMEM */
+#  if defined EACCES
+    case EACCES                                                                   : return "Permission denied";
+#  endif /* EACCES */
+#  if defined EFAULT
+    case EFAULT                                                                   : return "Bad address";
+#  endif /* EFAULT */
+#  if defined ENOTBLK
+    case ENOTBLK                                                                  : return "Block device required";
+#  endif /* ENOTBLK */
+#  if defined EBUSY
+    case EBUSY                                                                    : return "Device or resource busy";
+#  endif /* EBUSY */
+#  if defined EEXIST
+    case EEXIST                                                                   : return "File exists";
+#  endif /* EEXIST */
+#  if defined EXDEV
+    case EXDEV                                                                    : return "Invalid cross-device link";
+#  endif /* EXDEV */
+#  if defined ENODEV
+    case ENODEV                                                                   : return "No such device";
+#  endif /* ENODEV */
+#  if defined ENOTDIR
+    case ENOTDIR                                                                  : return "Not a directory";
+#  endif /* ENOTDIR */
+#  if defined EISDIR
+    case EISDIR                                                                   : return "Is a directory";
+#  endif /* EISDIR */
+#  if defined EINVAL
+    case EINVAL                                                                   : return "Invalid argument";
+#  endif /* EINVAL */
+#  if defined EMFILE
+    case EMFILE                                                                   : return "Too many open files";
+#  endif /* EMFILE */
+#  if defined ENFILE
+    case ENFILE                                                                   : return "Too many open files in system";
+#  endif /* ENFILE */
+#  if defined ENOTTY
+    case ENOTTY                                                                   : return "Inappropriate ioctl for device";
+#  endif /* ENOTTY */
+#  if defined ETXTBSY
+    case ETXTBSY                                                                  : return "Text file busy";
+#  endif /* ETXTBSY */
+#  if defined EFBIG
+    case EFBIG                                                                    : return "File too large";
+#  endif /* EFBIG */
+#  if defined ENOSPC
+    case ENOSPC                                                                   : return "No space left on device";
+#  endif /* ENOSPC */
+#  if defined ESPIPE
+    case ESPIPE                                                                   : return "Illegal seek";
+#  endif /* ESPIPE */
+#  if defined EROFS
+    case EROFS                                                                    : return "Read-only file system";
+#  endif /* EROFS */
+#  if defined EMLINK
+    case EMLINK                                                                   : return "Too many links";
+#  endif /* EMLINK */
+#  if defined EPIPE
+    case EPIPE                                                                    : return "Broken pipe";
+#  endif /* EPIPE */
+#  if defined EDOM
+    case EDOM                                                                     : return "Numerical argument out of domain";
+#  endif /* EDOM */
+#  if defined ERANGE
+    case ERANGE                                                                   : return "Numerical result out of range";
+#  endif /* ERANGE */
+#  if defined EAGAIN
+    case EAGAIN                                                                   : return "Resource temporarily unavailable";
+#  endif /* EAGAIN */
+
+#  if defined EWOULDBLOCK && EWOULDBLOCK != EAGAIN
+    case EWOULDBLOCK                                                              : return "Operation would block";
+#  endif /* EWOULDBLOCK */
+
+#  if defined EINPROGRESS
+    case EINPROGRESS                                                              : return "Operation now in progress";
+#  endif /* EINPROGRESS */
+#  if defined EALREADY
+    case EALREADY                                                                 : return "Operation already in progress";
+#  endif /* EALREADY */
+#  if defined ENOTSOCK
+    case ENOTSOCK                                                                 : return "Socket operation on non-socket";
+#  endif /* ENOTSOCK */
+#  if defined EMSGSIZE
+    case EMSGSIZE                                                                 : return "Message too long";
+#  endif /* EMSGSIZE */
+#  if defined EPROTOTYPE
+    case EPROTOTYPE                                                               : return "Protocol wrong type for socket";
+#  endif /* EPROTOTYPE */
+#  if defined ENOPROTOOPT
+    case ENOPROTOOPT                                                              : return "Protocol not available";
+#  endif /* ENOPROTOOPT */
+#  if defined EPROTONOSUPPORT
+    case EPROTONOSUPPORT                                                          : return "Protocol not supported";
+#  endif /* EPROTONOSUPPORT */
+#  if defined ESOCKTNOSUPPORT
+    case ESOCKTNOSUPPORT                                                          : return "Socket type not supported";
+#  endif /* ESOCKTNOSUPPORT */
+#  if defined EOPNOTSUPP
+    case EOPNOTSUPP                                                               : return "Operation not supported";
+#  endif /* EOPNOTSUPP */
+#  if defined EPFNOSUPPORT
+    case EPFNOSUPPORT                                                             : return "Protocol family not supported";
+#  endif /* EPFNOSUPPORT */
+#  if defined EAFNOSUPPORT
+    case EAFNOSUPPORT                                                             : return "Address family not supported by protocol";
+#  endif /* EAFNOSUPPORT */
+#  if defined EADDRINUSE
+    case EADDRINUSE                                                               : return "Address already in use";
+#  endif /* EADDRINUSE */
+#  if defined EADDRNOTAVAIL
+    case EADDRNOTAVAIL                                                            : return "Cannot assign requested address";
+#  endif /* EADDRNOTAVAIL */
+#  if defined ENETDOWN
+    case ENETDOWN                                                                 : return "Network is down";
+#  endif /* ENETDOWN */
+#  if defined ENETUNREACH
+    case ENETUNREACH                                                              : return "Network is unreachable";
+#  endif /* ENETUNREACH */
+#  if defined ENETRESET
+    case ENETRESET                                                                : return "Network dropped connection on reset";
+#  endif /* ENETRESET */
+#  if defined ECONNABORTED
+    case ECONNABORTED                                                             : return "Software caused connection abort";
+#  endif /* ECONNABORTED */
+#  if defined ECONNRESET
+    case ECONNRESET                                                               : return "Connection reset by peer";
+#  endif /* ECONNRESET */
+#  if defined ENOBUFS
+    case ENOBUFS                                                                  : return "No buffer space available";
+#  endif /* ENOBUFS */
+#  if defined EISCONN
+    case EISCONN                                                                  : return "Transport endpoint is already connected";
+#  endif /* EISCONN */
+#  if defined ENOTCONN
+    case ENOTCONN                                                                 : return "Transport endpoint is not connected";
+#  endif /* ENOTCONN */
+#  if defined EDESTADDRREQ
+    case EDESTADDRREQ                                                             : return "Destination address required";
+#  endif /* EDESTADDRREQ */
+#  if defined ESHUTDOWN
+    case ESHUTDOWN                                                                : return "Cannot send after transport endpoint shutdown";
+#  endif /* ESHUTDOWN */
+#  if defined ETOOMANYREFS
+    case ETOOMANYREFS                                                             : return "Too many references: cannot splice";
+#  endif /* ETOOMANYREFS */
+#  if defined ETIMEDOUT
+    case ETIMEDOUT                                                                : return "Connection timed out";
+#  endif /* ETIMEDOUT */
+#  if defined ECONNREFUSED
+    case ECONNREFUSED                                                             : return "Connection refused";
+#  endif /* ECONNREFUSED */
+#  if defined ELOOP
+    case ELOOP                                                                    : return "Too many levels of symbolic links";
+#  endif /* ELOOP */
+#  if defined ENAMETOOLONG
+    case ENAMETOOLONG                                                             : return "File name too long";
+#  endif /* ENAMETOOLONG */
+#  if defined EHOSTDOWN
+    case EHOSTDOWN                                                                : return "Host is down";
+#  endif /* EHOSTDOWN */
+#  if defined EHOSTUNREACH
+    case EHOSTUNREACH                                                             : return "No route to host";
+#  endif /* EHOSTUNREACH */
+#  if defined ENOTEMPTY
+    case ENOTEMPTY                                                                : return "Directory not empty";
+#  endif /* ENOTEMPTY */
+#  if defined EPROCLIM
+    case EPROCLIM                                                                 : return "Too many processes";
+#  endif /* EPROCLIM */
+#  if defined EUSERS
+    case EUSERS                                                                   : return "Too many users";
+#  endif /* EUSERS */
+#  if defined EDQUOT
+    case EDQUOT                                                                   : return "Disk quota exceeded";
+#  endif /* EDQUOT */
+#  if defined ESTALE
+    case ESTALE                                                                   : return "Stale file handle";
+#  endif /* ESTALE */
+#  if defined EREMOTE
+    case EREMOTE                                                                  : return "Object is remote";
+#  endif /* EREMOTE */
+
+#  if defined EBADRPC
+    case EBADRPC                                                                  : return "RPC struct is bad";
+#  endif /* EBADRPC */
+#  if defined ERPCMISMATCH
+    case ERPCMISMATCH                                                             : return "RPC version wrong";
+#  endif /* ERPCMISMATCH */
+#  if defined EPROGUNAVAIL
+    case EPROGUNAVAIL                                                             : return "RPC program not available";
+#  endif /* EPROGUNAVAIL */
+#  if defined EPROGMISMATCH
+    case EPROGMISMATCH                                                            : return "RPC program version wrong";
+#  endif /* EPROGMISMATCH */
+#  if defined EPROCUNAVAIL
+    case EPROCUNAVAIL                                                             : return "RPC bad procedure for program";
+#  endif /* EPROCUNAVAIL */
+
+#  if defined ENOLCK
+    case ENOLCK                                                                   : return "No locks available";
+#  endif /* ENOLCK */
+#  if defined EFTYPE
+    case EFTYPE                                                                   : return "Inappropriate file type or format";
+#  endif /* EFTYPE */
+#  if defined EAUTH
+    case EAUTH                                                                    : return "Authentication error";
+#  endif /* EAUTH */
+#  if defined ENEEDAUTH
+    case ENEEDAUTH                                                                : return "Need authenticator";
+#  endif /* ENEEDAUTH */
+#  if defined ENOSYS
+    case ENOSYS                                                                   : return "Function not implemented";
+#  endif /* ENOSYS */
+
+#  if defined ENOTSUP && ENOTSUP != EOPNOTSUPP
+    case ENOTSUP                                                                  : return "Not supported";
+#  endif /* ENOTSUP */
+
+#  if defined EILSEQ
+    case EILSEQ                                                                   : return "Invalid or incomplete multibyte or wide character";
+#  endif /* EILSEQ */
+#  if defined EBACKGROUND
+    case EBACKGROUND                                                              : return "Inappropriate operation for background process";
+#  endif /* EBACKGROUND */
+#  if defined EDIED
+    case EDIED                                                                    : return "Translator died";
+#  endif /* EDIED */
+#  if defined ED
+    case ED                                                                       : return "?";
+#  endif /* ED */
+#  if defined EGREGIOUS
+    case EGREGIOUS                                                                : return "You really blew it this time";
+#  endif /* EGREGIOUS */
+#  if defined EIEIO
+    case EIEIO                                                                    : return "Computer bought the farm";
+#  endif /* EIEIO */
+#  if defined EGRATUITOUS
+    case EGRATUITOUS                                                              : return "Gratuitous error";
+#  endif /* EGRATUITOUS */
+#  if defined EBADMSG
+    case EBADMSG                                                                  : return "Bad message";
+#  endif /* EBADMSG */
+#  if defined EIDRM
+    case EIDRM                                                                    : return "Identifier removed";
+#  endif /* EIDRM */
+#  if defined EMULTIHOP
+    case EMULTIHOP                                                                : return "Multihop attempted";
+#  endif /* EMULTIHOP */
+#  if defined ENODATA
+    case ENODATA                                                                  : return "No data available";
+#  endif /* ENODATA */
+#  if defined ENOLINK
+    case ENOLINK                                                                  : return "Link has been severed";
+#  endif /* ENOLINK */
+#  if defined ENOMSG
+    case ENOMSG                                                                   : return "No message of desired type";
+#  endif /* ENOMSG */
+#  if defined ENOSR
+    case ENOSR                                                                    : return "Out of streams resources";
+#  endif /* ENOSR */
+#  if defined ENOSTR
+    case ENOSTR                                                                   : return "Device not a stream";
+#  endif /* ENOSTR */
+#  if defined EOVERFLOW
+    case EOVERFLOW                                                                : return "Value too large for defined data type";
+#  endif /* EOVERFLOW */
+#  if defined EPROTO
+    case EPROTO                                                                   : return "Protocol error";
+#  endif /* EPROTO */
+#  if defined ETIME
+    case ETIME                                                                    : return "Timer expired";
+#  endif /* ETIME */
+#  if defined ECANCELED
+    case ECANCELED                                                                : return "Operation canceled";
+#  endif /* ECANCELED */
+#  if defined EOWNERDEAD
+    case EOWNERDEAD                                                               : return "Owner died";
+#  endif /* EOWNERDEAD */
+#  if defined ENOTRECOVERABLE
+    case ENOTRECOVERABLE                                                          : return "State not recoverable";
+#  endif /* ENOTRECOVERABLE */
+#  if defined ERESTART
+    case ERESTART                                                                 : return "Interrupted system call should be restarted";
+#  endif /* ERESTART */
+#  if defined ECHRNG
+    case ECHRNG                                                                   : return "Channel number out of range";
+#  endif /* ECHRNG */
+#  if defined EL2NSYNC
+    case EL2NSYNC                                                                 : return "Level 2 not synchronized";
+#  endif /* EL2NSYNC */
+#  if defined EL3HLT
+    case EL3HLT                                                                   : return "Level 3 halted";
+#  endif /* EL3HLT */
+#  if defined EL3RST
+    case EL3RST                                                                   : return "Level 3 reset";
+#  endif /* EL3RST */
+#  if defined ELNRNG
+    case ELNRNG                                                                   : return "Link number out of range";
+#  endif /* ELNRNG */
+#  if defined EUNATCH
+    case EUNATCH                                                                  : return "Protocol driver not attached";
+#  endif /* EUNATCH */
+#  if defined ENOCSI
+    case ENOCSI                                                                   : return "No CSI structure available";
+#  endif /* ENOCSI */
+#  if defined EL2HLT
+    case EL2HLT                                                                   : return "Level 2 halted";
+#  endif /* EL2HLT */
+#  if defined EBADE
+    case EBADE                                                                    : return "Invalid exchange";
+#  endif /* EBADE */
+#  if defined EBADR
+    case EBADR                                                                    : return "Invalid request descriptor";
+#  endif /* EBADR */
+#  if defined EXFULL
+    case EXFULL                                                                   : return "Exchange full";
+#  endif /* EXFULL */
+#  if defined ENOANO
+    case ENOANO                                                                   : return "No anode";
+#  endif /* ENOANO */
+#  if defined EBADRQC
+    case EBADRQC                                                                  : return "Invalid request code";
+#  endif /* EBADRQC */
+#  if defined EBADSLT
+    case EBADSLT                                                                  : return "Invalid slot";
+#  endif /* EBADSLT */
+
+#  if defined EDEADLOCK && EDEADLOCK != EDEADLK
+    case EDEADLOCK                                                                : return "File locking deadlock error";
+#  endif /* EDEADLOCK */
+
+#  if defined EBFONT
+    case EBFONT                                                                   : return "Bad font file format";
+#  endif /* EBFONT */
+#  if defined ENONET
+    case ENONET                                                                   : return "Machine is not on the network";
+#  endif /* ENONET */
+#  if defined ENOPKG
+    case ENOPKG                                                                   : return "Package not installed";
+#  endif /* ENOPKG */
+#  if defined EADV
+    case EADV                                                                     : return "Advertise error";
+#  endif /* EADV */
+#  if defined ESRMNT
+    case ESRMNT                                                                   : return "Srmount error";
+#  endif /* ESRMNT */
+#  if defined ECOMM
+    case ECOMM                                                                    : return "Communication error on send";
+#  endif /* ECOMM */
+#  if defined EDOTDOT
+    case EDOTDOT                                                                  : return "RFS specific error";
+#  endif /* EDOTDOT */
+#  if defined ENOTUNIQ
+    case ENOTUNIQ                                                                 : return "Name not unique on network";
+#  endif /* ENOTUNIQ */
+#  if defined EBADFD
+    case EBADFD                                                                   : return "File descriptor in bad state";
+#  endif /* EBADFD */
+#  if defined EREMCHG
+    case EREMCHG                                                                  : return "Remote address changed";
+#  endif /* EREMCHG */
+#  if defined ELIBACC
+    case ELIBACC                                                                  : return "Can not access a needed shared library";
+#  endif /* ELIBACC */
+#  if defined ELIBBAD
+    case ELIBBAD                                                                  : return "Accessing a corrupted shared library";
+#  endif /* ELIBBAD */
+#  if defined ELIBSCN
+    case ELIBSCN                                                                  : return ".lib section in a.out corrupted";
+#  endif /* ELIBSCN */
+#  if defined ELIBMAX
+    case ELIBMAX                                                                  : return "Attempting to link in too many shared libraries";
+#  endif /* ELIBMAX */
+#  if defined ELIBEXEC
+    case ELIBEXEC                                                                 : return "Cannot exec a shared library directly";
+#  endif /* ELIBEXEC */
+#  if defined ESTRPIPE
+    case ESTRPIPE                                                                 : return "Streams pipe error";
+#  endif /* ESTRPIPE */
+#  if defined EUCLEAN
+    case EUCLEAN                                                                  : return "Structure needs cleaning";
+#  endif /* EUCLEAN */
+#  if defined ENOTNAM
+    case ENOTNAM                                                                  : return "Not a XENIX named type file";
+#  endif /* ENOTNAM */
+#  if defined ENAVAIL
+    case ENAVAIL                                                                  : return "No XENIX semaphores available";
+#  endif /* ENAVAIL */
+#  if defined EISNAM
+    case EISNAM                                                                   : return "Is a named type file";
+#  endif /* EISNAM */
+#  if defined EREMOTEIO
+    case EREMOTEIO                                                                : return "Remote I/O error";
+#  endif /* EREMOTEIO */
+#  if defined ENOMEDIUM
+    case ENOMEDIUM                                                                : return "No medium found";
+#  endif /* ENOMEDIUM */
+#  if defined EMEDIUMTYPE
+    case EMEDIUMTYPE                                                              : return "Wrong medium type";
+#  endif /* EMEDIUMTYPE */
+#  if defined ENOKEY
+    case ENOKEY                                                                   : return "Required key not available";
+#  endif /* ENOKEY */
+#  if defined EKEYEXPIRED
+    case EKEYEXPIRED                                                              : return "Key has expired";
+#  endif /* EKEYEXPIRED */
+#  if defined EKEYREVOKED
+    case EKEYREVOKED                                                              : return "Key has been revoked";
+#  endif /* EKEYREVOKED */
+#  if defined EKEYREJECTED
+    case EKEYREJECTED                                                             : return "Key was rejected by service";
+#  endif /* EKEYREJECTED */
+#  if defined ERFKILL
+    case ERFKILL                                                                  : return "Operation not possible due to RF-kill";
+#  endif /* ERFKILL */
+#  if defined EHWPOISON
+    case EHWPOISON                                                                : return "Memory page has hardware error";
+#  endif /* EHWPOISON */
+    }
+
+    // The aliens are coming, Go tell your favorite people
+    fprintf(stderr, "stderr error errno = %d\n", no);
+
+    return "Unknown error";
 }
 
 #else
@@ -6366,7 +6829,10 @@ extern const char * strerr(int no) {
     case UTC_E_TRY_GET_SCENARIO_TIMEOUT_EXCEEDED                                  : return "Querying a scenario definition exceeded the specified maximum timeout";
     }
 
-    return "The aliens are coming, Go tell your favorite people";
+    // The aliens are coming, Go tell your favorite people
+    fprintf(stderr, "stderr error errno = %d\n", no);
+    
+    return "Unknown error";
 }
 
 #undef  DWORD

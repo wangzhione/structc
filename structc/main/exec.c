@@ -2,11 +2,9 @@
 
 //
 // exec     - 执行业务 🐖🐍🐉
-// argc     : 参数长度
-// argv     : 参数数组
 // return   : void
 //
-void exec(int argc, char * argv[]) {
+void exec(void) {
     //
     // .... .. . 开始你的表演
     //

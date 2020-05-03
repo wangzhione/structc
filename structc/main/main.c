@@ -2,11 +2,9 @@
 
 //
 // main     - 随风奔跑, 追逐闪电 ~ 
-// argc     : 运行参数个数
-// argv     : 运行参数数组
 // return   : 状态码 0 is success
 //
-int main(int argc, char * argv[]) {
+int main(void) {
     // 初始化 ~ 虎
     // 
     EXTERN_RUN(init);
@@ -20,7 +18,7 @@ int main(int argc, char * argv[]) {
 
     // ... 执行业务主 ~ 龍
     //
-    EXTERN_RUN(exec, argc, argv);
+    EXTERN_RUN(exec);
 
     return EXIT_SUCCESS;
 }
