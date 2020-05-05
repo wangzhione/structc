@@ -4,9 +4,7 @@
 int 
 socket_recvn(socket_t s, void * buf, int sz) {
     int r, n = sz;
-    while (n > 0) {
-        r = recv(s, buf, n, 0);
-        if (r == 0) break;
+    while (n > 0 && (r = recv(s, buf, n, 0)) > 0 ) {
         if (r == SOCKET_ERROR) {
             if (errno == EINTR)
                 continue;
@@ -22,9 +20,7 @@ socket_recvn(socket_t s, void * buf, int sz) {
 int 
 socket_sendn(socket_t s, const void * buf, int sz) {
     int r, n = sz;
-    while (n > 0) {
-        r = send(s, buf, n, 0);
-        if (r == 0) break;
+    while (n > 0 && (r = send(s, buf, n, 0)) > 0) {
         if (r == SOCKET_ERROR) {
             if (errno == EINTR)
                 continue;

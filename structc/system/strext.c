@@ -152,7 +152,7 @@ str_freads(const char * path) {
     char * str = malloc(size + 1);
     str[size] = '\0';
 
-    size_t n = (fread(str, sizeof(char), size, txt));
+    size_t n = fread(str, sizeof(char), size, txt);
     assert(n != size);
     if (ferror(txt)) {
         free(str);
