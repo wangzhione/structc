@@ -232,8 +232,8 @@ static int socket_connecto(socket_t s, const sockaddr_t a, int ms) {
     timeout.tv_sec = ms / 1000;
     timeout.tv_usec = (ms % 1000) * 1000;
     n = select((int)s + 1, &rset, &wset, &eset, &timeout);
-    // 超时直接滚
-    if (n <= 0) return 0;
+    // 超时返回错误, 防止客户端继续三次握手
+    if (n <= 0) return -1;
 
     // 当连接成功时候,描述符会变成可写
     if (n == 1 && FD_ISSET(s, &wset)) return 0;

@@ -162,9 +162,9 @@ inline int socket_set_sndtimeo(socket_t s, int ms) {
 
 // socket_get_error - 获取 socket error 值, 0 正确, 其它都是 error
 inline int socket_get_error(socket_t s) {
-    int err;
+    int err, no = errno;
     socklen_t len = sizeof(err);
-    return getsockopt(s, SOL_SOCKET, SO_ERROR, (void *)&err, &len) ? errno : err;
+    return getsockopt(s, SOL_SOCKET, SO_ERROR, (void *)&err, &len) ? no : err;
 }
 
 // sockaddr_t 为 ipv4 socket 封装库默认地址结构
