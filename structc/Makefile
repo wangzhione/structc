@@ -4,76 +4,74 @@
 # Clean   : make clean
 # Release : make D=-DNDEBUG
 #
+
 ROOT      ?= ..
 
-DMAIN     := main
-DTEST     := test
-
 #
+# DMAIN	  : main 启动主目录
+# DTEST	  : test 单元测试目录
+# DSRC	  : 基础源代码目录
 # DIRS    : 所有待编译库文件目录集
 #
-DIRS      := system struct base
+DMAIN     := main
+DTEST     := test
+DSRC      := system struct base
+DIRS      := $(DSRC) $(DTEST) $(DMAIN)
 
+#
+# DOUT    : 项目输出目录
+# DOBJ    : obj 二进制对象输出文件目录
+#
 DOUT      := $(ROOT)/bin
 DOBJ      := $(DOUT)/.o
 
 #
 # IINC    : -I 需要导入的 include 目录
-# SRCC    : 所有 .c 文件
+# SRCC    : 所有 *.c 文件
+# OBJO    : 所有 *.o 文件
 #
-IINC      = $(foreach v, $(DIRS),-I$(v))
-SRCC      = $(wildcard $(foreach v, $(DMAIN) $(DIRS) $(DTEST),$(v)/*.c))
-
-OBJC      = $(wildcard $(foreach v, $(DIRS),$(v)/*.c))
-OBJO      = $(foreach v, $(OBJC), $(notdir $(basename $(v))).o)
-
-TESTC     = $(wildcard $(DTEST)/*.c)
-TESTO     = $(foreach v, $(TESTC), $(notdir $(basename $(v))).o)
+IINC      = $(foreach v, $(DSRC),-I$(v))
+SRCC      = $(wildcard $(foreach v, $(DIRS),$(v)/*.c))
+OBJO      = $(foreach v, $(SRCC),$(DOBJ)/$(notdir $(basename $(v))).o)
 
 #
 # 全局编译的设置
 #
-CC        ?= gcc
-CFLAGS    := -g -O2 -Wall -Wextra -Wimplicit-fallthrough=0 -Wno-sign-compare -D_GNU_SOURCE
+CC        ?= cc
+CFLAGS    := -g -O2 -Wall -Wextra -Wimplicit-fallthrough=0 -Wno-sign-compare -Wno-missing-field-initializers -D_GNU_SOURCE
 LIB       := -lm -lpthread
 
-RHAD    := $(CC) $(CFLAGS)
+HEAD    := $(CC) $(CFLAGS)
 ifneq ( , $(D))
-	RHAD+=$(D)
+	HEAD+=$(D)
 endif
 
-RTAL      = $(foreach v, $^,$(DOBJ)/$(v)) $(LIB)
-RUNO      = $(RHAD) $(IINC) -c -o $(DOBJ)/$@ $<
-RUN       = $(RHAD) $(IINC) -o $(DOUT)/$@ $(RTAL)
+RUNO      = $(HEAD) $(IINC) -c -o $@ $^
+RUN       = $(HEAD) $(IINC) -o $(DOUT)/$@ $^ $(LIB)
 
 #
 # 具体的产品生产
 #
 .PHONY : all clean
 
-all : main
+all : main.exe
 
 #
 # 主运行程序main
 #
-main : libstructc.a
+main.exe : $(OBJO)
 	$(RUN)
+
 
 #
 # 循环产生 -> 所有 - 链接文件 *.o
 #
 define CALL_RUNO
-$(notdir $(basename $(1))).o : $(1) | $$(DOUT)
+$(DOBJ)/$(notdir $(basename $(1))).o : $(1) | $$(DOUT)
 	$$(RUNO)
 endef
 
 $(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
-
-#
-# 生成 structc.a 静态库, 方便处理所有问题
-#
-libstructc.a : $(OBJO) $(TESTO) main.o init.o exec.o test.o
-	ar cr $(DOBJ)/$@ $(DOBJ)/*.o
 
 #
 # 程序的收尾工作,清除,目录构建

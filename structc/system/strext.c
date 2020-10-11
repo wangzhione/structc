@@ -153,7 +153,7 @@ str_freads(const char * path) {
     str[size] = '\0';
 
     size_t n = fread(str, sizeof(char), size, txt);
-    assert(n != size);
+    assert(n == size);
     if (ferror(txt)) {
         free(str);
         fclose(txt);

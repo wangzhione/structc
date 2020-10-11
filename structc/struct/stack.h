@@ -75,6 +75,15 @@ inline void stack_pop(struct stack * s) {
 }
 
 //
+// stack_pop_top - 弹出并返回栈顶元素
+// s        : stack 对象栈
+// return   : 弹出的栈顶对象
+//
+inline void * stack_pop_top(struct stack * s) {
+    return s->tail >= 0 ? s->data[s->tail--] : NULL;
+}
+
+//
 // stack_push - 压入元素到对象栈栈顶
 // s        : stack 对象栈
 // m        : 待压入的对象

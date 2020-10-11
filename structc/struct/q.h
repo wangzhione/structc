@@ -4,7 +4,7 @@
 
 //
 // pop empty <=> tail == -1 ( head == 0 )
-// push full <=> head == (tail + 1) % cap
+// push full <=> head == (tail + 1) % cap && tail >= 0
 //
 typedef struct q {
     int     head;       // 头结点
@@ -24,6 +24,18 @@ inline void q_init(q_t q) {
     q->cap = Q_INT;
     q->head =  0;
     q->tail = -1;
+}
+
+inline void q_free(q_t q) {
+    free(q->data);
+}
+
+inline bool q_empty(q_t q) {
+    return q->tail < 0;
+}
+
+inline bool q_exist(q_t q) {
+    return q->tail >= 0;
 }
 
 //

@@ -8,7 +8,7 @@
 void * 
 q_pop(q_t q) {
     void * m = NULL;
-    if (q->tail >= 0) {
+    if (q_exist(q)) {
         m = q->data[q->head];
         if (q->tail != q->head)
             q->head = (q->head + 1) & (q->cap - 1);
@@ -61,7 +61,7 @@ q_push(q_t q, void * m) {
 void 
 q_delete(q_t q, node_f fdie) {
     // 销毁所有对象
-    if (q->tail >= 0 && fdie) {
+    if (fdie && q_exist(q)) {
         for (;;) {
             fdie(q->data[q->head]);
             if (q->head == q->tail)
@@ -70,5 +70,5 @@ q_delete(q_t q, node_f fdie) {
         }
     }
 
-    free(q->data);
+    q_free(q);
 }
