@@ -488,14 +488,14 @@ json_t
 json_create(const char * str) {
     json_t c = NULL;
     if (str && *str) {
-        CSTR_CREATE(cs);
+        cstr_declare(cs);
         cstr_appends(cs, str);
 
         // 清洗 + 解析
         json_mini(cs->str);
         c = json_parse(cs->str);
 
-        CSTR_DELETE(cs);
+        cstr_free(cs);
     }
     return c;
 }
@@ -680,9 +680,9 @@ print_value(json_t item, cstr_t cs) {
 //
 char * 
 json_print(json_t c) {
-    CSTR_CREATE(cs);
+    cstr_declare(cs);
     if (!print_value(c, cs)) {
-        CSTR_DELETE(cs);
+        cstr_free(cs);
         return NULL;
     }
     return realloc(cs->str, cs->len+1);

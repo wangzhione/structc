@@ -2,7 +2,7 @@
 
 #include "strext.h"
 
-#ifndef CSTR_CREATE
+#ifndef CSTR_INT
 
 struct cstr {
     char * str;     // 字符串
@@ -16,20 +16,34 @@ struct cstr {
 typedef struct cstr * cstr_t;
 
 //
-// CSTR_CREATE - 栈上创建 cstr_t 结构
-// CSTR_DELETE - 释放栈上 cstr_t 结构
+// cstr_declare - 栈上创建 cstr_t 结构
+// cstr_free - 释放栈上 cstr_t 结构
 // var      : 变量名
 //
-#define CSTR_CREATE(var)                \
+#define cstr_declare(var)               \
 struct cstr var[1] = { {                \
     .str = malloc(CSTR_INT),            \
     .cap = CSTR_INT,                    \
 } }
 
-#define CSTR_DELETE(var)                \
-free((var)->str)
+inline void cstr_init(cstr_t cs) {
+    cs->len = 0;
+    // 构建字符串初始化大小
+    cs->cap = CSTR_INT;
+    cs->str = malloc(CSTR_INT);
+}
 
-#endif//CSTR_CREATE
+inline cstr_t cstr_new() {
+    cstr_t cs = malloc(sizeof(struct cstr));
+    cstr_init(cs);
+    return cs;
+}
+
+inline void cstr_free(cstr_t cs) {
+    free(cs->str);
+}
+
+#endif//CSTR_INT
 
 //
 // cstr_expand - low level 字符串扩容 api
@@ -38,22 +52,6 @@ free((var)->str)
 // return   : cstr::str + cstr::len 位置的串
 //
 char * cstr_expand(cstr_t cs, size_t len);
-
-//
-// cstr_delete - cstr_t 释放函数
-// cs       : 待释放的串对象
-// return   : void
-//
-extern void cstr_delete(cstr_t cs);
-
-//
-// cstr_create - cstr_t 创建函数, 根据 C 串创建 cstr_t 字符串
-// str      : 待创建的字符串
-// len      : 创建串的长度
-// return   : 返回创建的字符串
-//
-extern cstr_t cstr_creats(const char * str);
-extern cstr_t cstr_create(const char * str, size_t len);
 
 //
 // cstr_t 串结构中添加字符等
@@ -68,11 +66,42 @@ extern void cstr_appends(cstr_t cs, const char * str);
 extern void cstr_appendn(cstr_t cs, const char * str, size_t len);
 
 //
+// cstr_create - cstr_t 创建函数, 根据 C 串创建 cstr_t 字符串
+// str      : 待创建的字符串
+// len      : 创建串的长度
+// return   : 返回创建的字符串
+//
+inline cstr_t cstr_creats(const char * str) {
+    cstr_t cs = cstr_new();
+    cstr_appends(cs, str);
+    return cs;
+}
+
+inline cstr_t cstr_create(const char * str, size_t len) {
+    cstr_t cs = cstr_new();
+    if (str && len) cstr_appendn(cs, str, len);
+    return cs;
+}
+
+//
+// cstr_delete - cstr_t 释放函数
+// cs       : 待释放的串对象
+// return   : void
+//
+inline void cstr_delete(cstr_t cs) {
+    cstr_free(cs);
+    free(cs);
+}
+
+//
 // cstr_get - 通过 str_t 串得到一个 C 串以'\0'结尾
 // cs       : cstr_t 串
 // return   : 返回构建 C 串, 内存地址 cs->str
 //
-extern char * cstr_get(cstr_t cs);
+inline char * cstr_get(cstr_t cs) {
+    *cstr_expand(cs, 1) = '\0';
+    return cs->str;
+}
 
 //
 // cstr_dup - 得到 C 堆上的串, 需要自行 free

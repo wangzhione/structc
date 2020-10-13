@@ -62,7 +62,7 @@ inline void mq_push(mq_t q, void * m) {
 // q        : 消息队列对象
 // return   : 返回消息队列长度
 //
-inline static int mq_len(mq_t q) {
+extern inline int mq_len(mq_t q) {
     int cap, head, tail;
     atom_lock(q->lock);
     if ((tail = q->q->tail) == -1) {

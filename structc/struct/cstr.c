@@ -20,43 +20,6 @@ cstr_expand(cstr_t cs, size_t len) {
 }
 
 //
-// cstr_delete - cstr_t 释放函数
-// cs       : 待释放的串对象
-// return   : void
-//
-inline void 
-cstr_delete(cstr_t cs) {
-    free(cs->str);
-    free(cs);
-}
-
-//
-// cstr_create - cstr_t 创建函数, 根据 C 串创建 cstr_t 字符串
-// str      : 待创建的字符串
-// len      : 创建串的长度
-// return   : 返回创建的字符串
-//
-inline cstr_t 
-cstr_creats(const char * str) {
-    cstr_t cs = malloc(sizeof(struct cstr));
-    cs->str = malloc(CSTR_INT);
-    cs->cap = CSTR_INT;
-    cs->len = 0;
-    cstr_appends(cs, str);
-    return cs;
-}
-
-inline cstr_t 
-cstr_create(const char * str, size_t len) {
-    cstr_t cs = malloc(sizeof(struct cstr));
-    cs->str = malloc(CSTR_INT);
-    cs->cap = CSTR_INT;
-    cs->len = 0;
-    if (str && len) cstr_appendn(cs, str, len);
-    return cs;
-}
-
-//
 // cstr_t 串结构中添加字符等
 // cs       : cstr_t 串
 // c        : 添加 char
@@ -88,23 +51,12 @@ cstr_appendn(cstr_t cs, const char * str, size_t len) {
 }
 
 //
-// cstr_get - 通过 str_t 串得到一个 C 串以'\0'结尾
-// cs       : cstr_t 串
-// return   : 返回构建 C 串, 内存地址 cs->str
-//
-inline char * 
-cstr_get(cstr_t cs) {
-    *cstr_expand(cs, 1) = '\0';
-    return cs->str;
-}
-
-//
 // cstr_dup - 得到 C 堆上的串, 需要自行 free
 // cs       : cstr_t 串
 // return   : 返回创建好的 C 串
 //
-inline char * 
-cstr_dup(cstr_t cs) {
+inline 
+char * cstr_dup(cstr_t cs) {
     // 构造内存, 返回最终结果
     size_t len = cs->len + (!cs->len||cs->str[cs->len-1]);
     char * str = malloc(len * sizeof(char));
@@ -119,8 +71,8 @@ cstr_dup(cstr_t cs) {
 // len      : 弹出的长度
 // return   : void
 //
-inline void 
-cstr_popup(cstr_t cs, size_t len) {
+inline 
+void cstr_popup(cstr_t cs, size_t len) {
     if (len >= cs->len)
         cs->len = 0;
     else {

@@ -3,7 +3,7 @@
 // array_test - array test
 void array_test(void) {
     // 构建一个在栈上的动态数组
-    ARRAY_CREATE(double, a);
+    array_declare(double, a);
 
     // 开始处理数据
     *(double *)array_push(a) = 1.1234;
@@ -15,5 +15,5 @@ void array_test(void) {
     printf("v = %lf\n", *(double *)array_pop(a));
     printf("v = %lf\n", *(double *)array_pop(a));
 
-    ARRAY_DELETE(a);
+    array_free(a);
 }

@@ -2,8 +2,6 @@
 
 #include "struct.h"
 
-#define INT_STACK   (1 << 8)
-
 // 
 // struct stack 对象栈
 // stack empty <=> tail = -1 
@@ -20,6 +18,7 @@ struct stack {
 // stack_free - 清除掉 stack 对象栈
 // return   : void
 //
+#define INT_STACK   (1 << 8)
 inline void stack_init(struct stack * s) {
     assert(s && INT_STACK > 0);
     s->tail = -1;
