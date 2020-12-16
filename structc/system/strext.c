@@ -170,14 +170,12 @@ static int str_fwrite(const char * p, const char * s, const char * m) {
     int len;
     FILE * txt;
     if (!p || !*p || !s || !m) {
-        errno = EINVAL; // 参数无效
-        return -1;
+        return -EINVAL; // 参数无效
     }
 
     // 打开文件, 写入消息, 关闭文件
     if (!(txt = fopen(p, m))) {
-        errno = ENOENT; // 文件或路径不存在
-        return -1;
+        return -ENOENT; // 文件或路径不存在
     }
 
     len = fputs(s, txt);
