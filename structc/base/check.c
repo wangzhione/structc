@@ -16,7 +16,7 @@ is_ipv4(const char * ips) {
     int i, c, m, d;
     if (!ips || !*ips) return false;
     // 处理前 16 个字符 = sizeof "255.255.255.255"
-    for (d = m = i = 0; i < sizeof "255.255.255.255"; ++i) {
+    for (d = m = i = 0; i < (int) sizeof "255.255.255.255"; ++i) {
         c = ips[i];
         if (c >= '0' && c <= '9') {
             // 00 (x)
@@ -32,7 +32,7 @@ is_ipv4(const char * ips) {
             if (c == '\0') {
                 // . . .
                 // sizeof "0.0.0.0" = 8
-                return d == 3 && i + 1 >= sizeof "0.0.0.0";
+                return d == 3 && i + 1 >= (int) sizeof "0.0.0.0";
             }
             ++d;
             m = 0;

@@ -38,7 +38,13 @@ OBJO      = $(foreach v, $(SRCC),$(DOBJ)/$(notdir $(basename $(v))).o)
 # 全局编译的设置
 #
 CC        ?= cc
-CFLAGS    := -g -O2 -Wall -Wextra -Wimplicit-fallthrough=0 -Wno-sign-compare -Wno-missing-field-initializers -D_GNU_SOURCE
+#
+# -Werror                           : 使所有警告变为错误
+# -Wall -Wextra                     : 启用一些很有用的警告选项
+# -Wimplicit-fallthrough=0          : 忽略 switch case missing break warning
+# -Wno-missing-field-initializers   : 忽略 initializer for field warning
+#
+CFLAGS    := -g -O2 -Werror -Wall -Wextra -Wimplicit-fallthrough=0 -Wno-missing-field-initializers -D_GNU_SOURCE
 LIB       := -lm -lpthread
 
 HEAD    := $(CC) $(CFLAGS)

@@ -19,7 +19,13 @@ inline static void people_each(struct people * node) {
     printf("age = %9.6lf, name = %s\n", node->age, node->name);
 }
 
-#define LEN(a) sizeof(a)/sizeof(*(a))
+#ifndef LEN
+//
+// LEN - 计算获取数组长度
+// a        : 数组变量
+//
+#define LEN(a)  ((int)(sizeof(a) / sizeof(*(a))))
+#endif
 
 //
 // list test demo

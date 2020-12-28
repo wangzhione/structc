@@ -566,7 +566,7 @@ static char * print_string(char * str, cstr_t p) {
     ntr[len+1] = '\0';
 
     // 没有特殊字符直接返回
-    if (len == ptr - str) {
+    if (len == (size_t)(ptr - str)) {
         memcpy(ntr, str, len);
         goto ret_out;
     }

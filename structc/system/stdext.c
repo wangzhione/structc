@@ -139,7 +139,7 @@ getawd(char * buf, size_t size) {
 
     int r = getawe(buf, size);
     if (r <= 0)    return -1;
-    if (r >= size) return  r;
+    if ((size_t)r >= size) return  r;
 
     for (tail = buf + r - 1; tail > buf; --tail)
         if ((r = *tail) == '/' || r == '\\')

@@ -87,7 +87,7 @@ inline void msg_buf_pop_sz(msg_buf_t q) {
 //
 int msg_buf_pop(msg_buf_t q, msg_t * p) {
     // step 1 : 报文长度 buffer q->sz check
-    if (q->sz <= 0 && q->len >= sizeof(uint32_t))
+    if (q->sz <= 0 && q->len >= (int) sizeof(uint32_t))
         msg_buf_pop_sz(q);
     // step 2 : check data parse is true
     int len = MSG_LEN(q->sz);

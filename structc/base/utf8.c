@@ -71,7 +71,7 @@ size_t u82gn(const char * u8s, size_t n, char * gs) {
         }
 
         // 65535 以上编码, gbk 编码没有, 我们默认忽略
-        if (ue >= sizeof unicode_gbk_table / sizeof *unicode_gbk_table) {}
+        if (ue >= (int) (sizeof unicode_gbk_table / sizeof *unicode_gbk_table)) {}
         else {
             gbk = unicode_gbk_table[ue];
             if (len > 1)
