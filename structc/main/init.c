@@ -23,8 +23,10 @@ void init(void) {
     // thread 模块初始化
     EXTERN_RUN(pthread_init);
 
-    // 尝试给随机函数赋能 😂
-    EXTERN_RUN(rand_restrict);
+    // 随机函数 init 😂
+    struct timespec s; 
+    timespec_get(&s, TIME_UTC);
+    EXTERN_RUN(r_init, s.tv_nsec+s.tv_sec);
 
     // socket 模块初始化 ~
     socket_init();
@@ -36,33 +38,4 @@ void init(void) {
     memcpy(path + n, LOGS_PATH_STR, LEN(LOGS_PATH_STR));
     fmkdir(path);
     EXTERN_RUN(log_init, path);
-}
-
-static void rand_nationalism(void) {
-    struct timespec s; 
-    timespec_get(&s, TIME_UTC);
-    EXTERN_RUN(r_init, s.tv_nsec+s.tv_sec);
-    for (int32_t i = BUFSIZ; i > 0 ; i--) {
-        int r = r_rand();
-        timespec_get(&s, TIME_UTC);
-        EXTERN_RUN(r_init, s.tv_nsec + i + r);
-    }
-}
-
-static void rand_democracy(void) {
-    int32_t n, d, l;
-    do {
-        n = r_rand(); d = r_rand(); l = r_rand();
-    } while (!(n > d && d > l && l > INT16_MAX));
-}
-
-static void rand_livelihood(void) {
-    for (int32_t i = r_rand(); i >= 0; i--)
-        r_rand();
-}
-
-void rand_restrict(void) {
-    thread_async(rand_nationalism);
-    thread_async(rand_democracy);
-    thread_async(rand_livelihood);
 }

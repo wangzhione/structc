@@ -10,7 +10,7 @@ int main(void) {
     EXTERN_RUN(init);
 
     // main test 单元测试消除 ~ 魅
-    // make D=-DNDEBUG Release build
+    // Release build: make D=-DNDEBUG
     //
 #ifndef NDEBUG
     EXTERN_RUN(test);
