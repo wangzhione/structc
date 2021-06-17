@@ -31,3 +31,5 @@ extern void * heap_pop(heap_t h);
 // return : 索引为 i 的堆结点
 //
 extern void * heap_remove(heap_t h, int i);
+
+extern void * heap_pop_push(heap_t h, void * node);

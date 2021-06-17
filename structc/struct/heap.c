@@ -3,10 +3,10 @@
 #define HEAP_INIT_INT   (1<<5)
 
 struct heap {
-    cmp_f fcmp;
+    void ** data;
     int len;
     int cap;
-    void ** data;
+    cmp_f fcmp;
 };
 
 heap_t 
@@ -101,15 +101,15 @@ static inline void heap_reduce(struct heap * h) {
 
 void *
 heap_pop(heap_t h) {
-    void * node = heap_top(h);
-    if (node && --h->len > 0) {
+    void * top = heap_top(h);
+    if (top && --h->len > 0) {
         // 尾巴结点一定比(小堆)顶结点大, 那么要下沉
         *h->data = h->data[h->len];
         down(h->fcmp, h->data, h->len, 0);
 
         heap_reduce(h);
     }
-    return node;
+    return top;
 }
 
 void * 
@@ -140,4 +140,18 @@ heap_remove(heap_t h, int i) {
     }
 
     return node;
+}
+
+void * 
+heap_pop_push(heap_t h, void * node) {
+    assert(h != NULL && h->len > 0 && node != NULL);
+
+    // 获取堆顶数据准备弹出
+    void * top = *h->data;
+    
+    // 从堆顶压入新的数据
+    *h->data = node;
+    down(h->fcmp, h->data, h->len, 0);
+
+    return top;
 }
