@@ -77,9 +77,14 @@ rwlock_r_trylock(struct rwlock * rw) {
 // rwlock_w_trylock - try add write lock
 inline bool 
 rwlock_w_trylock(struct rwlock * rw) {
-    if (atom_trylock(rw->wlock) && rw->rlock) {
-        atom_unlock(rw->wlock);
-        return false;
+    // 尝试抢占写锁
+    if (atom_trylock(rw->wlock)) {
+        if (rw->rlock) {
+            // 存在读锁, 释放写锁
+            atom_unlock(rw->wlock);
+            return false;
+        }
+        return true;
     }
-    return true;
+    return false;
 }
