@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="extern">
+      <UniqueIdentifier>{b2496bd5-d993-4b72-967e-19c2ec946ac0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="conf">
+      <UniqueIdentifier>{eaa3a0a9-eec1-47aa-b219-9c13f890c386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{ffd2c1ac-6daa-42a1-b2cd-6a5aa138bc3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="struct">
+      <UniqueIdentifier>{604a4905-184f-4502-8d14-95d70849d974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{49161dbd-2995-4c77-972e-731280ef71ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{8363a239-e461-4a4e-927b-252a5d51274d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\extern\pthread.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\extern\sched.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\extern\semaphore.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\base.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\buf.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\check.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\conf.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\crc$table.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\crc.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\csv.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\file.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\json.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\log.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\loop.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\md5.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\msg.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\pipe.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\rand.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\sha1.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\socket.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\spoll$epoll.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\spoll$select.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\spoll.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\stdext.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\strext.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\system.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\thread.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\timer.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\times.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\url.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\utf8$table.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\system\utf8.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\alloc.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\array.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\cstr.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\dict$table.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\dict.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\heap.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\list.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\mq.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\q.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\rtree.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\spinlock.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\stack.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\struct\struct.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\conf\conf.conf">
+      <Filter>conf</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\main\exec.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\main\init.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\main\main.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\main\test.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\alloc_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\array_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\atom_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\buf_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\crc_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\dict_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\file_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\json_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\list_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\loop_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\md5_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\mq_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\pipe_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\reuseport_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\rtree_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\spinlock_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\spoll_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\stack_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\stdext_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\strext_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\thread_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\timer_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\times_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\url_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\utf8_test.c">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\buf.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\check.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\conf.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\crc.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\csv.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\file.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\json.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\log.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\loop.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\md5.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\pipe.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\rand.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\sha1.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\socket.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\spoll.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\stdext.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\strext.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\thread.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\timer.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\times.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\url.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\system\utf8.c">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\struct\array.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\struct\cstr.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\struct\dict.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\struct\heap.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\struct\list.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\struct\q.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\struct\rtree.c">
+      <Filter>struct</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

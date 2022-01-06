@@ -1,12 +1,13 @@
 ﻿# STRUCT C 基础库
 
-    雕琢 C 的华山剑法, 为入行那会的一时性起 ~>--
+    雕琢 C 的华山剑法, 为那会的一时性起 ~>--
 
-## 预告
+## Update
 
 | 当前时间       | 下步计划                                          | 进展情况 |
 | :------------: | :-----------------------------------------------: | :------: |
 | 2021年02月24日 | 等最新 Visual Studio 正式版发布, 筹备浴火重生     | 等待     |
+| 2021年12月30日 | 回归简单友好 Linux 开发                           | 开始     |
 |                |                                                   |          |
 
 ## 浪花不会一点点
@@ -49,13 +50,13 @@
 
 核心点:
 
-        struct 数据结构库
-        system 系统封装库
-        base   业务辅助库
+        struct 数据结构练习包
+        system 系统封装排练包
+        module 业务模块
 
 总设计:
 
-        json, cas, pipe, errno, socket ...
+        log, json, struct, socket, thread ...
 
     来协助搭建 C 项目, 提供基础数据结构和额外组件的支持 ...
 
@@ -64,14 +65,13 @@
 **代码风格, 希望"最"贴近原生 api**
 
 ```C
+#pragma once
+
 #include <pthread.h>
 #include <semaphore.h>
 
-//
-// node_f - 销毁行为
-// : void list_die(void * node)
-//
-typedef void (* node_f)(void * node);
+#include "struct.h"
+#include "spinlock.h"
 
 //
 // pthread_async - 启动无需等待的线程
@@ -115,11 +115,7 @@ inline void pthread_end(pthread_t id) {
 
 ### 也许要扯些
 
-[structc 环境搭建](./structc/README.md)
-
-    - Winds 双击
-        - 只维护 x64 的 Debug 和 Release
-        - Best New CL Build
+[structc 环境搭建](./modular/README.md)
 
     - Linux 回车
         - Debug   : make
@@ -138,8 +134,6 @@ inline void pthread_end(pthread_t id) {
 
 ### IDE 弱议
 
-    Winds 还是万年不变的 Visual Studio Best Version
-
     Linux 抛砖引玉带大家配哈 VS Code Best Version
 
     0. 安装 C/C++ Microsoft 插件
@@ -153,9 +147,10 @@ inline void pthread_end(pthread_t id) {
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceRoot}/structc/base",
-                "${workspaceRoot}/structc/struct",
-                "${workspaceRoot}/structc/system"
+                "${workspaceRoot}/modular/main",
+                "${workspaceRoot}/modular/module",
+                "${workspaceRoot}/modular/struct",
+                "${workspaceRoot}/modular/system"
             ],
             "defines": [
                 "_DEBUG",
@@ -163,10 +158,7 @@ inline void pthread_end(pthread_t id) {
                 "__linux__",
                 "_GNU_SOURCE"
             ],
-            "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "clang-x64"
+            "compilerPath": "/usr/bin/gcc"
         }
     ],
     "version": 4
@@ -177,7 +169,8 @@ inline void pthread_end(pthread_t id) {
        按照规律改 program 项目生成 和添加 preLaunchTask 前置任务行
 
 ```json
-            "program": "${workspaceFolder}/bin/main.exe",
+            "program": "${workspaceFolder}/bin/main.out",
+            ... .. .
             "preLaunchTask": "Debug",
 ```
 
@@ -186,9 +179,6 @@ inline void pthread_end(pthread_t id) {
 
 ```json
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
     "tasks": [
         {
             "type"    : "shell",
@@ -200,7 +190,8 @@ inline void pthread_end(pthread_t id) {
             "label"   : "Release",
             "command" : "make D=-DNDEBUG"
         },
-    ]
+    ],
+    "version": "2.0.0"
 }
 ```
 
@@ -221,7 +212,7 @@ inline void pthread_end(pthread_t id) {
 
 ***
 
-#### ~ * ~ 写个好手
+## ~ * ~ 为要寻一个写手
 
     为要寻一个明星
     - 徐志摩

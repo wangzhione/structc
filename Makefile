@@ -5,4 +5,4 @@
 default: all
 
 .DEFAULT:
-	cd structc && make $@
+	cd modular && make $@
