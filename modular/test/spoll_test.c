@@ -21,7 +21,7 @@ void spoll_test(void) {
 
     struct userdata user = { .fd = s };
     if (spoll_add(p, s, &user))
-        CERR("spoll_add sock = is error!");
+        PERR("spoll_add sock = is error!");
     else {
         spoll_event_t e;
         // 开始等待数据

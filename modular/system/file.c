@@ -11,23 +11,49 @@ struct file {
     struct file * next;     // 文件下一个结点
 };
 
+static struct file * file_create(const char * path, unsigned h, file_f func, void * arg) {
+    assert(path && func);
+
+    if (fmtime(path) == -1) {
+        RETURN(NULL, "mtime error p = %s", path);
+    }
+
+    struct file * fu = malloc(sizeof(struct file));
+    if (NULL == fu) {
+        return NULL;
+    }
+
+    fu->last = -1;
+    fu->path = strdup(path);
+    if (NULL == fu->path) {
+        free(fu);
+        return NULL;
+    }
+
+    fu->hash = h;
+    fu->func = func;
+    fu->arg = arg;
+
+    // fu->next = NULL;
+
+    return fu;
+}
+
+inline void file_delete(struct file * fu) {
+    free(fu->path);
+    free(fu);
+}
+
 static struct files {
     struct file * list;     // 当前文件对象集
 } f_s;
 
 // files add 
 static void f_s_add(const char * p, unsigned h, file_f func, void * arg) {
-    struct file * fu;
-    if (fmtime(p) == -1) {
-        RETNIL("mtime error p = %s", p);
+    struct file * fu = file_create(p, h, func, arg);
+    if (fu == NULL) {
+        return;
     }
-
-    fu = malloc(sizeof(struct file));
-    fu->last = -1;
-    fu->path = strdup(p);
-    fu->hash = h;
-    fu->func = func;
-    fu->arg = arg;
 
     // 直接插入到头结点部分
     fu->next = f_s.list;
@@ -75,31 +101,35 @@ file_set(const char * path, file_f func, void * arg) {
 //
 void 
 file_update(void) {
-    struct file * fu = f_s.list;
-    while (fu) {
-        struct file * next = fu->next;
+    struct file * prev = NULL;
+    struct file * curr, * next;
+    for (curr = f_s.list; curr; curr = next) {
+        next = curr->next;
 
-        if (!fu->func) {
-            // 删除的是头结点
-            if (f_s.list == fu)
+        // 删除清理操作
+        if (NULL == curr->func) {
+            if (NULL == prev) {
+                // 删除的是头结点
                 f_s.list = next;
-
-            free(fu->path);
-            free(fu);
-        } else {
-            time_t last = fmtime(fu->path);
-            if (fu->last != last && last != -1) {
-                FILE * c = fopen(fu->path, "rb+");
-                if (!c) {
-                    CERR("fopen rb+ error = %s.", fu->path);
-                    continue;
-                }
-                fu->last = last;
-                fu->func(c, fu->arg);
-                fclose(c);
+            } else {
+                prev->next = next;
             }
+
+            file_delete(curr);
+            continue;
         }
 
-        fu = next;
+        // 更新操作
+        time_t last = fmtime(curr->path);
+        if (curr->last != last && last != -1) {
+            FILE * c = fopen(curr->path, "rb+");
+            if (!c) {
+                PERR("fopen %s rb+ error.", curr->path);
+                continue;
+            }
+            curr->last = last;
+            curr->func(c, curr->arg);
+            fclose(c);
+        }
     }
 }

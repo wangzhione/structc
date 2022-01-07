@@ -258,7 +258,7 @@ socket_connect_timeout(const sockaddr_t a, int ms) {
         // 构造 connect 失败日志
         char ip[INET6_ADDRSTRLEN];
         int port = socket_ntop(a, ip);
-        CERR("ip = %s, port = %d, ms = %d", ip, port, ms);
+        PERR("ip = %s, port = %d, ms = %d", ip, port, ms);
 
         socket_close(s);
     }
@@ -277,7 +277,7 @@ socket_connect(const sockaddr_t a) {
         // 构造 connect 失败日志
         char ip[INET6_ADDRSTRLEN];
         int port = socket_ntop(a, ip);
-        CERR("ip = %s, port = %d", ip, port);
+        PERR("ip = %s, port = %d", ip, port);
 
         socket_close(s);
     }

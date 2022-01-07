@@ -37,3 +37,6 @@ extern void * dict_get(dict_t d, const char * k);
 // return   : void
 //
 extern void dict_set(dict_t d, const char * k, void * v);
+
+// d += a ; delete a; return d; 
+extern void dict_add_delete(dict_t * pd, dict_t * pa);

@@ -26,8 +26,7 @@ void test(void) {
     //
     // 单元测试 show time 开始你的表演
     //
-    EXTERN_TEST(pipe_test);
-    EXTERN_TEST(pipe_socket_test);
+    EXTERN_TEST(dict_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

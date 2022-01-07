@@ -76,18 +76,22 @@ typedef int (* each_f)(void * node, void * arg);
 #  endif//NDEBUG
 #endif//DCODE
 
+#define POUT(fmt, ...)                                                  \
+fprintf(stdout, "[%s:%s:%d][%d:%s][stdout]"fmt"\n",                     \
+    __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
+
 //
-// CERR - 打印错误信息
+// PERR - 打印错误信息
 // EXIT - 打印错误信息, 并 exit
 // IF   - 条件判断异常退出的辅助宏
 //
-#define CERR(fmt, ...)                                                  \
-fprintf(stderr, "[%s:%s:%d][%d:%s]"fmt"\n",                             \
+#define PERR(fmt, ...)                                                  \
+fprintf(stderr, "[%s:%s:%d][%d:%s][stderr]"fmt"\n",                     \
     __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
 
 #define EXIT(fmt, ...)                                                  \
 do {                                                                    \
-    CERR(fmt, ##__VA_ARGS__);                                           \
+    PERR(fmt, ##__VA_ARGS__);                                           \
     exit(EXIT_FAILURE);                                                 \
 } while(0)
 
@@ -103,7 +107,7 @@ if ((cond)) EXIT(#cond)
 // 
 #define RETURN(val, fmt, ...)                                           \
 do {                                                                    \
-    CERR(fmt, ##__VA_ARGS__);                                           \
+    PERR(fmt, ##__VA_ARGS__);                                           \
     return val;                                                         \
 } while(0)
 
