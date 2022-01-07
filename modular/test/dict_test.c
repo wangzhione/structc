@@ -39,7 +39,7 @@ void dict_test(void) {
         ++i;
     }
 
-    dict_add_delete(&d, &a);
+    dict_move(d, a);
 
     printf("d = %p, a = %p\n", d, a);
 

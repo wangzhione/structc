@@ -38,5 +38,8 @@ extern void * dict_get(dict_t d, const char * k);
 //
 extern void dict_set(dict_t d, const char * k, void * v);
 
-// d += a ; delete a; return d; 
-extern void dict_add_delete(dict_t * pd, dict_t * pa);
+// a move d; return d; 
+extern void dict_move(dict_t d, dict_t a);
+
+// @see struct.h each_f
+extern int dict_each(dict_t d, void * feach, void * arg);

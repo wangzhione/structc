@@ -34,34 +34,50 @@ struct dict {
     struct keypair ** table;    // 集合
 };
 
-static void dict_resize(struct dict * d) {
-    struct keypair ** table;
+static unsigned dict_get_resize(struct dict * d) {
     unsigned used = d->used;
     unsigned size = d->size;
 
-    // 数据容量变化 按照简单倍率扩张和收缩
+    // 看数据是否需要扩张
     if (used >= size) {
-        size <<= 1;
-    } else {
-        // 拍脑门算法
-        if (used >= size >> 2 || size <= DICT_INIT_UINT)
-            return;
+        return size << 1;
+    }
+
+    // 数据收缩, 拍脑门算法
+    while (used < (size >> 2) && size > DICT_INIT_UINT) {
         size >>= 1;
+    }
+
+    // 没有变化数据不用管
+    return 0;
+}
+
+static void dict_resize(struct dict * d) {
+    unsigned used = 0;
+    struct keypair ** table;
+
+    // 看是否需要收缩
+    unsigned size = dict_get_resize(d);
+    if (size == 0u) {
+        return;
     }
     
     // 构造新的内存布局大小
     table = calloc(size, sizeof(struct keypair *));
 
     // 开始转移数据
-    for (unsigned i = 0; i < d->size; i++) {
+    for (unsigned i = 0; i < d->size && d->used > used; i++) {
         struct keypair * pair = d->table[i];
         while (pair) {
             struct keypair * next = pair->next;
+
             // 取余
             unsigned index = pair->hash & (size - 1);
 
             pair->next = table[index];
             table[index] = pair;
+            ++used;
+
             pair = next;
         }
     }
@@ -258,10 +274,12 @@ void dict_add_keypair(dict_t d, struct keypair * prev) {
     prev->next = d->table[index];
     d->table[index] = prev;
     ++d->used;
-} 
+}
 
-// d += a ; delete a; return d; 
-void dict_add_delete_partial(dict_t d, dict_t a) {
+// a move d; return d; 
+void dict_move(dict_t d, dict_t a) {
+    assert(d && a && d->fdie == a->fdie);
+
     unsigned index;
     struct keypair * pair, * prev;
 
@@ -271,40 +289,34 @@ void dict_add_delete_partial(dict_t d, dict_t a) {
         while (pair) {
             // a 结点 move d 上
             prev = pair;
-            pair = pair->next;
+            a->table[index] = pair = pair->next;
             dict_add_keypair(d, prev);
             --a->used;
         }
     }
-
-    dict_delete_partial(a);
 }
 
-void dict_add_delete(dict_t * pd, dict_t * pa) {
-    assert(pd && pa && (*pd)->fdie == (*pa)->fdie);
+// @see struct.h each_f
+int dict_each(dict_t d, void * feach, void * arg) {
+    int ret;
+    unsigned used, index;
+    struct keypair * pair;
 
-    dict_t d = *pd, a = *pa;
+    assert(d && feach);
 
-    // step 1 : a is NULL, 什么都不需要操作
-    if (NULL == a) {
-        return;
+    for (used = index = 0; index < d->size && d->used > used; ++index) {
+        pair = d->table[index];
+
+        while (pair) {
+            ret = ((each_f)feach)(pair, arg);
+            if (ret < 0) {
+                PERR("ret=%d, used=%u, index=%u, key=%s", ret, used, index, pair->key);
+                return ret;
+            }
+            ++used;
+            pair = pair->next;
+        }
     }
 
-    // pa 提前清理
-    *pa = NULL;
-
-    // step 1 : d is NULL, a -> d
-    if (NULL == d) {
-        *pd = a;
-        return;
-    }
-
-    // step 3 : a not is NULL and d not is NULL
-    // step 3.1 : a 更适合, swap a, b
-    if (d->size < a->size && d->used < a->used) {
-        dict_t temp = d;
-        *pd = d = a;
-        a = temp;
-    }
-    dict_add_delete_partial(d, a);
+    return 0;
 }
