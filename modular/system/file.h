@@ -1,6 +1,6 @@
 #pragma once
 
-#include "struct.h"
+#include "dict.h"
 #include "strext.h"
 
 //

@@ -47,4 +47,6 @@ void init(void) {
     memcpy(path + n, LOGS_PATH_STR, LEN(LOGS_PATH_STR));
     fmkdir(path);
     EXTERN_RUN(log_init, path);
+
+    EXTERN_RUN(file_init);
 }

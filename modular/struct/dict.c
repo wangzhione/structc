@@ -216,8 +216,9 @@ dict_set(dict_t d, const char * k, void * v) {
         // 找见了数据
         if (pair->hash == hash && !strcmp(pair->key, k)) {
             // 相同数据直接返回什么都不操作
-            if (pair->val == v)
+            if (pair->val == v) {
                 return;
+            }
 
             // 更新结点
             if (d->fdie)
@@ -277,7 +278,7 @@ void dict_add_keypair(dict_t d, struct keypair * prev) {
 }
 
 // a move d; return d; 
-void dict_move(dict_t d, dict_t a) {
+void dict_move_filter(dict_t d, dict_t a, void * filter) {
     assert(d && a && d->fdie == a->fdie);
 
     unsigned index;
@@ -290,10 +291,27 @@ void dict_move(dict_t d, dict_t a) {
             // a 结点 move d 上
             prev = pair;
             a->table[index] = pair = pair->next;
-            dict_add_keypair(d, prev);
+
+            if (filter && ((cmp_f)filter)(prev->val) == 0) {
+                // 走 delete 操作
+                dict_del(d, prev->key);
+                keypair_delete(prev, d->fdie);
+            } else {
+                // add 操作
+                dict_add_keypair(d, prev);
+            }
+
             --a->used;
         }
     }
+}
+
+unsigned dict_size(dict_t d) {
+    return d ? d->size : 0u;
+}
+
+unsigned dict_used(dict_t d) {
+    return d ? d->used : 0u;
 }
 
 // @see struct.h each_f
@@ -302,13 +320,16 @@ int dict_each(dict_t d, void * feach, void * arg) {
     unsigned used, index;
     struct keypair * pair;
 
-    assert(d && feach);
+    if (NULL == d || feach == NULL) {
+        POUT("d = %p, used = %u, feach = %p", d, dict_used(d), feach);
+        return 0;
+    }
 
     for (used = index = 0; index < d->size && d->used > used; ++index) {
         pair = d->table[index];
 
         while (pair) {
-            ret = ((each_f)feach)(pair, arg);
+            ret = ((cmp_f)feach)(pair->key, pair->val, arg);
             if (ret < 0) {
                 PERR("ret=%d, used=%u, index=%u, key=%s", ret, used, index, pair->key);
                 return ret;

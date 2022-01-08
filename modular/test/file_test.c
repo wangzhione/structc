@@ -13,7 +13,7 @@ inline void removes_test(const char * path) {
     printf("rm -rf '%s' -> %d\n", path, ret);
 }
 
-#define CONF_STR "conf/config.conf"
+#define CONF_STR "conf/conf.conf"
 
 // conf_update - 简单测试代码
 static void conf_update(FILE * c, void * arg) {

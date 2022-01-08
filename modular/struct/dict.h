@@ -38,8 +38,11 @@ extern void * dict_get(dict_t d, const char * k);
 //
 extern void dict_set(dict_t d, const char * k, void * v);
 
-// a move d; return d; 
-extern void dict_move(dict_t d, dict_t a);
+extern unsigned dict_size(dict_t d);
+extern unsigned dict_used(dict_t d);
 
-// @see struct.h each_f
+// a move d; return d; @see cmp_f filter() == 0 -> remove
+extern void dict_move_filter(dict_t d, dict_t a, void * filter);
+
+// @see struct.h cmp_f feach(const char * key, val, arg) < 0 is error
 extern int dict_each(dict_t d, void * feach, void * arg);

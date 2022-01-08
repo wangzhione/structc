@@ -2,16 +2,11 @@
 
 struct file {
     time_t last;            // 文件最后修改时间点
-    char * path;            // 文件全路径
-    unsigned hash;          // 文件路径 hash 值
-
     file_f func;            // 执行行为
     void * arg;             // 行为参数
-
-    struct file * next;     // 文件下一个结点
 };
 
-static struct file * file_create(const char * path, unsigned h, file_f func, void * arg) {
+static struct file * file_create(const char * path, file_f func, void * arg) {
     assert(path && func);
 
     if (fmtime(path) == -1) {
@@ -24,40 +19,36 @@ static struct file * file_create(const char * path, unsigned h, file_f func, voi
     }
 
     fu->last = -1;
-    fu->path = strdup(path);
-    if (NULL == fu->path) {
-        free(fu);
-        return NULL;
-    }
-
-    fu->hash = h;
     fu->func = func;
     fu->arg = arg;
-
-    // fu->next = NULL;
 
     return fu;
 }
 
-inline void file_delete(struct file * fu) {
-    free(fu->path);
+static inline void file_delete(struct file * fu) {
     free(fu);
 }
 
-static struct files {
-    struct file * list;     // 当前文件对象集
-} f_s;
+struct files {
+    atomic_flag data_lock;
+    // const char * path key -> value struct file
+    // 用于 update 数据
+    volatile dict_t data;
 
-// files add 
-static void f_s_add(const char * path, unsigned hash, file_f func, void * arg) {
-    struct file * fu = file_create(path, hash, func, arg);
-    if (fu == NULL) {
-        return;
-    }
+    atomic_flag backup_lock;
+    // const char * path key -> value struct file
+    // 在 update 兜底备份数据
+    volatile dict_t backup;
+};
 
-    // 直接插入到头结点部分
-    fu->next = f_s.list;
-    f_s.list = fu;
+static struct files F = {
+    .data_lock = ATOMIC_FLAG_INIT,
+    .backup_lock = ATOMIC_FLAG_INIT,
+};
+
+extern void file_init() {
+    F.data = dict_create(file_delete);
+    F.backup = dict_create(file_delete);
 }
 
 //
@@ -69,45 +60,45 @@ static void f_s_add(const char * path, unsigned hash, file_f func, void * arg) {
 //
 void 
 file_set(const char * path, file_f func, void * arg) {
+    struct file * fu = NULL;
     assert(path && *path);
 
-    unsigned hash = BKDHash(path);
-    struct file * curr, * next;
-    struct file * prev = NULL;
-
-    for (curr = f_s.list; curr; curr = next) {
-        next = curr->next;
-
-        // 数据不匹配直接跳过
-        if (curr->hash != hash || strcmp(curr->path, path) != 0) {
-            continue;
+    // step 1 : 尝试竞争 data lock
+    if (atomic_flag_trylock(&F.data_lock)) {
+        if (NULL != func) {
+            fu = file_create(path, func, arg);
         }
-
-        // 找到了 path 相关结点
-        if (NULL == func) {
-            // 尝试删除结点
-            if (NULL == prev) {
-                // 删除的是头结点
-                f_s.list = next;
-            } else {
-                prev->next = next;
-            }
-
-            file_delete(curr);
-        } else {
-            // 走更新操作
-            curr->last = -1;
-            curr->func = func;
-            curr->arg = arg;
-        }
-
-        return;
+        dict_set(F.data, path, fu);
+        return atomic_flag_unlock(&F.data_lock);
     }
 
-    // 没有找到, 我们走插入操作
-    if (NULL != func) {
-        f_s_add(path, hash, func, arg);
+    // step 2 : data lock 没有竞争到, 直接竞争 backup lock
+    atomic_flag_lock(&F.backup_lock);
+    fu = file_create(path, func, arg);
+    dict_set(F.backup, path, fu);
+    atomic_flag_unlock(&F.backup_lock);
+}
+
+static int file_filter(struct file * fu) {
+    return fu->func == NULL ? 0 : 1;
+}
+
+static int file_each(const char * path, struct file * fu, void * arg) {
+    // 更新操作
+    time_t last = fmtime(path);
+    if (fu->last != last && last != -1) {
+        FILE * c = fopen(path, "rb+");
+        if (NULL == c) {
+            PERR("fopen error rb+ %s.", path);
+            return -1;
+        }
+        fu->last = last;
+        fu->func(c, fu->arg);
+        fclose(c);
     }
+
+    (void)arg;
+    return 0;
 }
 
 //
@@ -116,35 +107,22 @@ file_set(const char * path, file_f func, void * arg) {
 //
 void 
 file_update(void) {
-    struct file * prev = NULL;
-    struct file * curr, * next;
-    for (curr = f_s.list; curr; curr = next) {
-        next = curr->next;
+    // step 0 : 抢占 data lock
+    atomic_flag_lock(&F.data_lock);
 
-        // 删除清理操作 | 向后兼容
-        if (NULL == curr->func) {
-            if (NULL == prev) {
-                // 删除的是头结点
-                f_s.list = next;
-            } else {
-                prev->next = next;
-            }
+    // step 1 : backup move data
+    atomic_flag_lock(&F.backup_lock);
+    dict_move_filter(F.data, F.backup, file_filter);
+    atomic_flag_unlock(&F.backup_lock);
 
-            file_delete(curr);
-            continue;
-        }
+    // 尝试更新操作
+    dict_each(F.data, file_each, NULL);
 
-        // 更新操作
-        time_t last = fmtime(curr->path);
-        if (curr->last != last && last != -1) {
-            FILE * c = fopen(curr->path, "rb+");
-            if (!c) {
-                PERR("fopen %s rb+ error.", curr->path);
-                continue;
-            }
-            curr->last = last;
-            curr->func(c, curr->arg);
-            fclose(c);
-        }
-    }
+    atomic_flag_unlock(&F.data_lock);
 }
+
+/*
+ C 的数据结构能力缺乏灵活性. 往往业务代码和底层代码互相交融. 
+ 
+ 很难解放生产力, 当下不吃这个饭的最大作用在于思维训练
+ */
