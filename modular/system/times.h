@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "system.h"
-
 //
 // ~ 力求最小时间业务单元 ~ 
 // 1s 秒 = 1000ms 毫秒 = 1000000us 微秒 = 1000000000ns 纳秒
