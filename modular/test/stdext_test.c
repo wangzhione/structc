@@ -1,6 +1,5 @@
 ﻿#include <struct.h>
 #include <stdext.h>
-#include <system.h>
 #include <msg.h>
 
 PACKED(struct sdshdr5 {

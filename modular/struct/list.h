@@ -22,10 +22,11 @@ struct $list {
 //
 // list_each - 链表循环处理, feach(x)
 // list     : 链表对象
-// feach    : node_f 结点遍历行为
+// feach    : each_f 结点遍历行为
+// arg      : 额外参数
 // return   : void
 //
-extern void list_each(void * list, void * feach);
+extern int list_each(void * list, void * feach, void * arg);
 
 //
 // list_delete - 链表数据销毁操作, fdie(x)

@@ -1,21 +1,18 @@
 ﻿#include "list.h"
 
-//
-// list_each - 链表循环处理, feach(x)
-// list     : 链表对象
-// feach    : node_f 结点遍历行为
-// return   : void
-//
-void 
-list_each(void * list, void * feach) {    
+int 
+list_each(void * list, void * feach, void * arg) {
     if (list && feach) {
         struct $list * head = list;
         while (head) {
             struct $list * next = head->next;
-            ((node_f)feach)(head);
+            int ret = ((each_f)feach)(head, arg);
+            if (ret < 0)
+                return ret;
             head = next;
         }
     }
+    return 0;
 }
 
 //

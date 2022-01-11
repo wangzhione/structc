@@ -6,6 +6,7 @@
 #include <sys/types.h>
 
 #include "alloc.h"
+#include "system.h"
 
 #if defined(__linux__) && defined(__GNUC__)
 
