@@ -78,7 +78,7 @@ __pragma (pack(push, 1))            \
 declare                             \
 __pragma (pack(pop))
 
-#define __attribute__(x)            /* 开眼不知何处, */
+                                    /* 开眼不知何处, */
                                     /* 但听满耳松风。*/
 #define likely(x)    (x)
 #define unlikely(x)  (x)
