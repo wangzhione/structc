@@ -10,7 +10,6 @@ Output/
 .vs/
 x64/
 Debug/
-.vscode/
 Release/
 
 # Ignore the uploaded files

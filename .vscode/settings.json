@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "*.h": "c",
+        "cerrno": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "*.tcc": "c",
+        "optional": "c",
+        "cmath": "c",
+        "iosfwd": "c",
+        "istream": "c",
+        "limits": "c",
+        "stdexcept": "c",
+        "streambuf": "c",
+        "typeinfo": "c",
+        "*.rh": "c",
+        "atomic": "c"
+    }
+}

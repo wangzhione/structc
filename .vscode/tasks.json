@@ -1,0 +1,15 @@
+{
+    "tasks": [
+        {
+            "type"    : "shell",
+            "label"   : "Debug",
+            "command" : "make"
+        },
+        {
+            "type"    : "shell",
+            "label"   : "Release",
+            "command" : "make D=-DNDEBUG"
+        },
+    ],
+    "version": "2.0.0"
+}
