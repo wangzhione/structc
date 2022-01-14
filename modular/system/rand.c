@@ -13,19 +13,6 @@
 #define LOW(x)          ((uint32_t)(x) & MASK)
 #define HIGH(x)         LOW((x) >> N)
 
-//
-// rand_init - 随机函数对象初始化种子
-// r         : 随机函数对象
-// seed      : 种子数
-// return    : void
-//
-inline void 
-rand_init(rand_t r, int64_t seed) {
-    r->x0 = X0; r->x1 = LOW(seed); r->x2 = HIGH(seed);
-    r->a0 = A0; r->a1 = A1; r->a2 = A2;
-    r->c = C;
-}
-
 #define CARRY(x, y)     ((x + y) > MASK) // 基于 16 位判断二者和是否进位
 #define ADDRQ(x, y, z)  z = CARRY(x, y); x = LOW(x + y)
 #define MUL(m, x, y, z) m = (x) * (y); z##0 = LOW(m); z##1 = HIGH(m)
@@ -48,12 +35,23 @@ inline void rand_next(rand_t r) {
 }
 
 //
+// rand_init - 随机函数对象初始化种子
+// r         : 随机函数对象
+// seed      : 种子数
+// return    : void
+//
+inline void rand_init(rand_t r, int64_t seed) {
+    r->x0 = X0; r->x1 = LOW(seed); r->x2 = HIGH(seed);
+    r->a0 = A0; r->a1 = A1; r->a2 = A2;
+    r->c = C;
+}
+
+//
 // rand_get  - 获取一个随机值
 // r         : 随机函数对象
 // return    : 返回 [0, INT32_MAX] 随机数
 //
-inline int32_t 
-rand_get(rand_t r) {
+inline int32_t rand_get(rand_t r) {
     rand_next(r);
     return (r->x2 << (N - 1)) + (r->x1 >> 1);
 }
@@ -68,13 +66,11 @@ extern inline void r_init(int64_t seed) {
     rand_init(r_r, seed);
 }
 
-inline int32_t 
-r_rand(void) {
+inline int32_t r_rand(void) {
     return rand_get(r_r);
 }
 
-inline int64_t 
-r_ranb(void) {
+inline int64_t r_ranb(void) {
     uint64_t x = ((r_rand() << N) ^ r_rand()) & INT32_MAX;
     uint64_t y = ((r_rand() << N) ^ r_rand()) & INT32_MAX;
     return ((x << 2 * N) | y) & INT64_MAX;
