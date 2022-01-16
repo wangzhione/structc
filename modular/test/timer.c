@@ -49,7 +49,7 @@ inline int timer_list_id() {
         // Multiple operations atomic_fetch_and can ensure timer.id >= 0
         atomic_fetch_and(&timer.id, INT_MAX);
 
-        // can ensure id >= 1
+        // again can ensure id >= 1
         id = atomic_fetch_add(&timer.id, 1) + 1;
     }
     return id;
