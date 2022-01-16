@@ -44,11 +44,13 @@ inline int timer_list_id() {
         // INT_MAX + 1 -> INT_MIN
         // 0x01 11 11 11 + 1 -> 0x10 00 00 00
 
-        // INT_MIN + 1 -> -INT_MAX
-        // 0x10 00 00 00 + 1 -> 0x10 00 00 01
-        atomic_fetch_add(&timer.id, 1);
-        // -INT_MAX & INT_MAX => 0x10 00 00 01 & 0x01 11 11 11 => 0x00 00 00 01
-        id = atomic_fetch_and(&timer.id, INT_MAX) & INT_MAX;
+        // INT_MIN & INT_MAX => 0x10 00 00 00 & 0x01 11 11 11 => 0x00 00 00 00
+        // id = atomic_fetch_and(&timer.id, INT_MAX) & INT_MAX;
+        // Multiple operations atomic_fetch_and can ensure timer.id >= 0
+        atomic_fetch_and(&timer.id, INT_MAX);
+
+        // can ensure id >= 1
+        id = atomic_fetch_add(&timer.id, 1) + 1;
     }
     return id;
 }
