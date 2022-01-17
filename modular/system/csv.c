@@ -1,8 +1,9 @@
 ﻿#include "csv.h"
 
-// csv_check - 解析和检查 csv 文件内容, 返回构造的合法串长度
-static int csv_check(char * str, int * pr, int * pc) {
-    int c, rnt = 0, cnt = 0;
+// csv_parse_partial - 解析和检查 csv 文件内容, 返回构造的合法串长度
+static int csv_parse_partial(char * str, int * pr, int * pc) {
+    int c;
+    int rnt = 0, cnt = 0;
     char * tar = str, * s = str;
     while ((c = *tar++) != '\0') {
         // csv 内容解析, 状态机切换
@@ -47,7 +48,7 @@ err_faid:
 // csv_parse - 解析字节流返回 csv 对象
 csv_t csv_parse(char * str) {
     int n, rnt, cnt;
-    if ((n = csv_check(str, &rnt, &cnt)) < 0)
+    if ((n = csv_parse_partial(str, &rnt, &cnt)) < 0)
         return NULL;
     
     // 分配最终内存
