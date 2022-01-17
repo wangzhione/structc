@@ -11,12 +11,14 @@ ROOT      ?= ..
 # DMAIN	  : main 启动主目录
 # DTEST	  : test 单元测试目录
 # DSRC	  : 基础源代码目录
+# DMODULE : module 拓展模块目录集
 # DIRS    : 所有待编译库文件目录集
 #
 DMAIN     := main
 DTEST     := test
-DSRC      := system struct
-DIRS      := $(DSRC) $(DTEST) $(DMAIN)
+DSRC      := system struct module
+DMODULE   := module/conf
+DIRS      := $(DSRC) $(DMODULE) $(DTEST) $(DMAIN)
 
 #
 # DOUT    : 项目输出目录

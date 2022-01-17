@@ -31,14 +31,14 @@ typedef int             socket_t;
 #define SOCKET_ERROR    (-1)
 
 // socket_init - 初始化 socket 库初始化方法
-inline void socket_init(void) {
+inline static void socket_init(void) {
     // 防止管道破裂, 忽略 SIGPIPE 信号
     signal(SIGPIPE, SIG_IGN);
     // 防止会话关闭, 忽略 SIGHUP  信号
     signal(SIGHUP , SIG_IGN);
 }
 
-inline int socket_close(socket_t s) {
+inline static int socket_close(socket_t s) {
     return close(s);
 }
 
@@ -52,7 +52,7 @@ inline static int socket_set_block(socket_t s) {
 }
 
 // socket_set_nonblock - 设置套接字是非阻塞
-inline int socket_set_nonblock(socket_t s) {
+inline static int socket_set_nonblock(socket_t s) {
     int mode = fcntl(s, F_GETFL);
     if (mode == SOCKET_ERROR) {
         return SOCKET_ERROR;

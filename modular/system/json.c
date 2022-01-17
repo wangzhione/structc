@@ -353,8 +353,7 @@ static const char * parse_object(json_t item, const char * str) {
     return '}' == *str ? str + 1 : NULL;
 }
 
-static const char * 
-parse_value(json_t item, const char * str) {
+static const char * parse_value(json_t item, const char * str) {
     if (!str) return NULL;
     switch (*str) {
     // node or N = null, f or F = false, t or T = true ...

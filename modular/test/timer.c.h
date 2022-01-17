@@ -37,7 +37,7 @@ struct timer_list {
 static struct timer_list timer = { .id = 1, .lock = ATOMIC_FLAG_INIT };
 
 // get atomic int 1 -> INT_MAX -> 1
-inline int timer_list_id() {
+static inline int timer_list_id() {
     // 0 -> INT_MAX -> INT_MIN -> 0
     int id = atomic_fetch_add(&timer.id, 1) + 1;
     if (id < 0) {

@@ -1,5 +1,6 @@
 ﻿#include <base.h>
-#include <timer.h>
+
+#include "timer.c.h"
 
 // one - 简单数据打印
 inline static void one(void * arg) {

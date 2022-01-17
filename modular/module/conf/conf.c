@@ -27,6 +27,8 @@ static bool conf_parse(json_t json, struct conf * conf) {
     CONFIG_PARSE_JSON_STR(json, conf, description);
     CONFIG_PARSE_JSON_STR(json, conf, image);
 
+    // ... .. .
+
     return true;
 }
 

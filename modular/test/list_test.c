@@ -15,8 +15,8 @@ inline static int people_add(const struct people * left,
 }
 
 // people_each - 单纯的打印接口信息
-inline static void people_each(struct people * node) {
-    printf("age = %9.6lf, name = %s\n", node->age, node->name);
+inline static void people_each(struct people * node, void * arg) {
+    printf("age = %9.6lf, name = %s, arg = %p\n", node->age, node->name, arg);
 }
 
 #ifndef LEN
@@ -42,5 +42,5 @@ void list_test(void) {
     }
 
     // 这里打印数据
-    list_each(list, people_each);
+    list_each(list, people_each, NULL);
 }
