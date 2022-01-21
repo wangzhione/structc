@@ -25,7 +25,7 @@ void pipe_test(void) {
     r = socket_recv(fd[0], data, sizeof data);
     printf("r = %2d, data = %s\n", r, data);
 
-    socket_close(fd[0]); socket_close(fd[1]);
+    closesocket(fd[0]); closesocket(fd[1]);
 }
 
 //
@@ -62,12 +62,12 @@ int pipe_socket(socket_t pipefd[2]) {
     if (pipefd[1] == INVALID_SOCKET) 
         goto err_pipe;
 
-    socket_close(s);
+    closesocket(s);
     return 0;
 err_pipe:
-    socket_close(pipefd[0]);
+    closesocket(pipefd[0]);
 err_close:
-    socket_close(s);
+    closesocket(s);
     return -1;
 }
 
@@ -82,26 +82,26 @@ int pipe3(socket_t pipefd[2]) {
         return -1;
 
     if (bind(s, &name->s, nlen))
-        return socket_close(s), -1;
+        return closesocket(s), -1;
     if (listen(s, 1))
-        return socket_close(s), -1;
+        return closesocket(s), -1;
 
     // 得到绑定的数据
     if (getsockname(s, &name->s, &nlen))
-        return socket_close(s), -1;
+        return closesocket(s), -1;
 
     // 开始构建互相通信的socket
     if ((pipefd[0] = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET)
-        return socket_close(s), -1;
+        return closesocket(s), -1;
 
     if (connect(pipefd[0], &name->s, nlen))
-        return socket_close(s), -1;
+        return closesocket(s), -1;
 
     // 可以继续添加, 通信协议来避免一些意外
     if ((pipefd[1] = accept(s, &name->s, &nlen)) == INVALID_SOCKET)
-        return socket_close(pipefd[0]), socket_close(s), -1;
+        return closesocket(pipefd[0]), closesocket(s), -1;
 
-    return socket_close(s), 0;
+    return closesocket(s), 0;
 }
 
 void pipe_socket_test(void) {
@@ -116,6 +116,6 @@ void pipe_socket_test(void) {
     r = socket_recv(pipefd[0], data, sizeof data);
     printf("r = %2d, data = %s\n", r, data);
 
-    socket_close(pipefd[0]); 
-    socket_close(pipefd[1]);
+    closesocket(pipefd[0]); 
+    closesocket(pipefd[1]);
 }

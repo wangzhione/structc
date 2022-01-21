@@ -120,10 +120,10 @@ rtree_search(rtree_t tree, void * pack) {
  *       px                             px
  *      /                              /
  *     x                              y
- *    /  \       --- (左旋) -->      / \
- *   lx   y                         x   ry
- *      /   \                     /   \
- *     ly   ry                   lx   ly  
+ *    / \       --- (左旋) -->       / \
+ *   lx  y                          x   ry
+ *      / \                        /     \
+ *    ly   ry                    lx       ly  
  *
  */
 static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
@@ -166,11 +166,11 @@ static void rtree_left_rotate(rtree_t tree, struct $rtree * x) {
  * 
  *         py                            py
  *        /                             /
- *       y                             x                  
- *      /  \      --- (右旋) -->      /  \
- *     x   ry                        lx   y  
- *    / \                                / \
- *   lx  rx                             rx  ry
+ *       y                             x
+ *      / \      --- (右旋) -->       / \
+ *     x   ry                       lx   y  
+ *    / \                               / \
+ *  lx   rx                           rx   ry
  * 
  */
 static void rtree_right_rotate(rtree_t tree, struct $rtree * y) {

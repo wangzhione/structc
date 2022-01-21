@@ -35,5 +35,5 @@ void spoll_test(void) {
     }
 
     spoll_delete(p);
-    socket_close(s);
+    closesocket(s);
 }

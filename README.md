@@ -8,6 +8,7 @@
 | :------------: | :-----------------------------------------------: | :------: |
 | 2021年02月24日 | 等最新 Visual Studio 正式版发布, 筹备浴火重生     | 等待     |
 | 2021年12月30日 | 回归简单友好 Linux 开发                           | 开始     |
+| 2022年01月19日 | C 菜鸟之旅 版本发布                               | 新生     |
 |                |                                                   |          |
 
 ## 浪花不会一点点
@@ -50,13 +51,13 @@
 
 核心点:
 
-        struct 数据结构练习包
-        system 系统封装排练包
-        module 业务模块
+    struct 数据结构练习包
+    system 系统封装排练包
+    module 业务模块
 
 总设计:
 
-        log, json, struct, socket, thread ...
+    struct, json, socket, thread ...
 
     来协助搭建 C 项目, 提供基础数据结构和额外组件的支持 ...
 
@@ -406,6 +407,6 @@ inline void pthread_end(pthread_t id) {
 
 ***
 
--:> [Wuayramanta](Wuayramanta.mp3)
+-:> [Wuayramanta](https://i.y.qq.com/v8/playsong.html?songid=5012912&songtype=0#webchat_redirect)
 
 ***

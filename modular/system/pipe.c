@@ -60,12 +60,12 @@ int pipe(socket_t pipefd[2]) {
     if (pipefd[1] == INVALID_SOCKET) 
         goto err_pipe;
 
-    socket_close(s);
+    closesocket(s);
     return 0;
 err_pipe:
-    socket_close(pipefd[0]);
+    closesocket(pipefd[0]);
 err_close:
-    socket_close(s);
+    closesocket(s);
     return -1;
 }
 

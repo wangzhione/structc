@@ -38,7 +38,8 @@ inline static void socket_init(void) {
     signal(SIGHUP , SIG_IGN);
 }
 
-inline static int socket_close(socket_t s) {
+// 谁傻逼谁有理, 兼容 window, socket_close 命名也不错
+inline static int closesocket(socket_t s) {
     return close(s);
 }
 
@@ -91,11 +92,6 @@ typedef int             socklen_t;
 inline void socket_init(void) {
     WSADATA version;
     IF(WSAStartup(WINSOCK_VERSION, &version));
-}
-
-// socket_close - 关闭上面创建后的句柄
-inline int socket_close(socket_t s) {
-    return closesocket(s);
 }
 
 // socket_set_block - 设置套接字是阻塞

@@ -154,7 +154,7 @@ socket_binds(const char * host, uint16_t port, uint8_t protocol, int * family) {
     return fd;
 
 err_close:
-    socket_close(fd);
+    closesocket(fd);
 err_free:
     freeaddrinfo(rsp);
     return INVALID_SOCKET;
@@ -164,7 +164,7 @@ socket_t
 socket_listen(const char * ip, uint16_t port, int backlog) {
     socket_t fd = socket_binds(ip, port, IPPROTO_TCP, NULL);
     if (INVALID_SOCKET != fd && listen(fd, backlog)) {
-        socket_close(fd);
+        closesocket(fd);
         return INVALID_SOCKET;
     }
     return fd;
@@ -202,7 +202,7 @@ socket_sendn(socket_t s, const void * buf, int sz) {
     return sz - n;
 }
 
-// socket_connect_timeout_partial 带毫秒超时的 connect, 返回非阻塞 socket
+// socket_connect_timeout_partial 带毫秒超时的 connect, 并设置非阻塞 socket
 static int socket_connect_timeout_partial(socket_t s, const sockaddr_t a, int ms) {
     int n, r;
     struct timeval timeout;
@@ -217,7 +217,7 @@ static int socket_connect_timeout_partial(socket_t s, const sockaddr_t a, int ms
 
     // 尝试连接, connect 返回 -1 并且 errno == EINPROGRESS 表示正在建立链接
     r = connect(s, &a->s, a->len);
-    // connect 链接中, linux 是 EINPROGRESS，winds 是 WSAEWOULDBLOCK
+    // connect 链接中, linux 是 EINPROGRESS，window 是 WSAEWOULDBLOCK
     if (r >= 0 || errno != EINPROGRESS) return r;
 
     // 超时 timeout, 直接返回结果 -1 错误
@@ -238,11 +238,14 @@ static int socket_connect_timeout_partial(socket_t s, const sockaddr_t a, int ms
     // 当连接建立遇到错误时候, 描述符变为即可读又可写
     if (FD_ISSET(s, &eset) || n == 2) {
         // 只要最后没有 error 那就链接成功
-        if (!socket_get_error(s))
-            r = 0;
+        r = socket_get_error(s);
+        if (r == 0) {
+            return 0;
+        }
+        PERR("r = %d, ms = %d", r, ms);
     }
 
-    return r;
+    return -1;
 }
 
 socket_t 
@@ -260,7 +263,7 @@ socket_connect_timeout(const sockaddr_t a, int ms) {
         int port = socket_ntop(a, ip);
         PERR("ip = %s, port = %d, ms = %d", ip, port, ms);
 
-        socket_close(s);
+        closesocket(s);
     }
 
     return INVALID_SOCKET;
@@ -279,7 +282,7 @@ socket_connect(const sockaddr_t a) {
         int port = socket_ntop(a, ip);
         PERR("ip = %s, port = %d", ip, port);
 
-        socket_close(s);
+        closesocket(s);
     }
 
     return INVALID_SOCKET;

@@ -63,8 +63,8 @@ accept_example(int id) {
         int port = socket_ntop(cddr, ip);
         printf("[%2d] [%s:%d] accept success ... %s\n", id, ip, port, times_str(v));
 
-        socket_close(c);
+        closesocket(c);
     }
 
-    socket_close(s);
+    closesocket(s);
 }
