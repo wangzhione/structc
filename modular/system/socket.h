@@ -242,10 +242,10 @@ extern int socket_recvn(socket_t s, void * buf, int sz);
 // socket_sendn - socket 发送 sz 个字节
 extern int socket_sendn(socket_t s, const void * buf, int sz);
 
+extern socket_t socket_connect(const sockaddr_t a);
+
 // socket_connect_timeout - 毫秒超时的 connect
 extern socket_t socket_connect_timeout(const sockaddr_t a, int ms);
-
-extern socket_t socket_connect(const sockaddr_t a);
 
 inline socket_t socket_accept(socket_t s, sockaddr_t a) {
     a->len = sizeof(struct sockaddr_in6);
