@@ -46,7 +46,7 @@ CC        ?= cc
 # -Wimplicit-fallthrough=0          : 忽略 switch case missing break warning
 # -Wno-missing-field-initializers   : 忽略 initializer for field warning
 #
-CFLAGS    := -g -O2 -Werror -Wall -Wextra -Wimplicit-fallthrough=0 -Wno-missing-field-initializers -D_GNU_SOURCE
+CFLAGS    := -g -O3 -Werror -Wall -Wextra -Wimplicit-fallthrough=0 -Wno-missing-field-initializers -D_GNU_SOURCE
 LIB       := -lm -lpthread
 
 HEAD    := $(CC) $(CFLAGS)
