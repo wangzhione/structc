@@ -26,6 +26,8 @@ static void main_init(void) {
     struct timespec s; 
     timespec_get(&s, TIME_UTC);
     EXTERN_RUN(r_init, s.tv_nsec+s.tv_sec);
+    // 不提倡系统 rand, 推荐 r_rand()
+    srand(r_rand());
 
     // socket 模块初始化 ~
     socket_init();
