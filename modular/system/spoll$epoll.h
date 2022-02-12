@@ -22,6 +22,7 @@ inline void spoll_del(spoll_t p, socket_t s) {
     epoll_ctl(p, EPOLL_CTL_DEL, s, NULL);
 }
 
+// spoll_add 添加监测的 socket fd, 并设置读模式, 失败返回 true
 inline bool spoll_add(spoll_t p, socket_t s, void * u) {
     struct epoll_event event = {
         .events = EPOLLIN,

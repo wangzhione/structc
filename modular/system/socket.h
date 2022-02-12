@@ -61,6 +61,11 @@ inline static int socket_set_nonblock(socket_t s) {
     return fcntl(s, F_SETFL, mode | O_NONBLOCK);
 }
 
+// socket_recv - 读取数据
+inline int socket_recv(socket_t s, void * buf, int sz) {
+    return (int)recv(s, buf, sz, 0);
+}
+
 #elif defined(_WIN32) && defined(_MSC_VER)
 
 #include <ws2tcpip.h>
@@ -106,8 +111,6 @@ inline int socket_set_nonblock(socket_t s) {
     return ioctlsocket(s, FIONBIO, &ov);
 }
 
-#endif
-
 // socket_recv - 读取数据
 inline int socket_recv(socket_t s, void * buf, int sz) {
     if (likely(sz > 0)) {
@@ -115,6 +118,8 @@ inline int socket_recv(socket_t s, void * buf, int sz) {
     }
     return 0;
 }
+
+#endif
 
 // socket_send - 写入数据
 inline int socket_send(socket_t s, const void * buf, int sz) {
@@ -214,7 +219,8 @@ extern socket_t socket_binds(const char * host, uint16_t port, uint8_t protocol,
 extern socket_t socket_listen(const char * ip, uint16_t port, int backlog);
 
 // socket_recvfrom  - recvfrom 接受函数
-inline int socket_recvfrom(socket_t s, void * buf, int sz, sockaddr_t in) {
+inline int socket_recvfrom(socket_t s, void * restrict buf, int sz, 
+                           void * restrict addr, socklen_t * restrict len) {
     // ssize_t recvfrom(int sockfd, void * buf, size_t len, int flags,
     //                  struct sockaddr * src_addr, socklen_t * addrlen);
     //
@@ -227,13 +233,13 @@ inline int socket_recvfrom(socket_t s, void * buf, int sz, sockaddr_t in) {
     // address.   The  returned  address is truncated if the buffer provided is too
     // small; in this case, addrlen will return a value greater than  was  supplied
     // to the call.
-    in->len = sizeof(in->s6);
-    return (int)recvfrom(s, buf, sz, 0, &in->s, &in->len);
+    return (int)recvfrom(s, buf, sz, 0, addr, len);
 }
 
 // socket_sendto    - sendto 发送函数
-inline int socket_sendto(socket_t s, const void * buf, int sz, const sockaddr_t to) {
-    return (int)sendto(s, buf, sz, 0, &to->s, to->len);
+inline int socket_sendto(socket_t s, const void * buf, int sz, 
+                         void * addr, socklen_t len) {
+    return (int)sendto(s, buf, sz, 0, addr, len);
 }
 
 // socket_recvn - socket 接受 sz 个字节
