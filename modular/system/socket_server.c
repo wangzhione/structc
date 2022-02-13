@@ -1283,3 +1283,65 @@ static int ctrl_cmd(struct socket_server * ss, struct socket_message * result) {
         return -1;
     }
 }
+
+// return -1 (ignore) when error
+static int forward_message_tcp(struct socket_server * ss, struct socket * s, struct socket_lock * sl, struct socket_message * result) {
+    int sz = s->p.size;
+    char * buffer = malloc(sz);
+    int n = socket_recv(s->fd, buffer, sz);
+    if (n < 0) {
+        free(buffer);
+        switch (errno) {
+        case EINTR:
+        case EAGAIN:
+            break;
+        default:
+            return report_error(s, result, strerror(errno));
+        }
+        return -1;
+    }
+    if (n == 0) {
+        free(buffer);
+        if (s->closing) {
+            // Rare case: if s->closing is true, reading event is disable, and SOCKET_CLOSE is raised.
+            if (nomore_sending_data(s)) {
+                force_close(ss, s, sl, result);
+            }
+            return -1;
+        }
+        int type = atomic_load(&s->type);
+        if (type == SOCKET_TYPE_HALFCLOSE_READ) {
+            // Rare case: Already shutdown read.
+            return -1;
+        }
+        if (type == SOCKET_TYPE_HALFCLOSE_WRITE) {
+            // Remote shutdown read (write error) before.
+            force_close(ss, s, sl, result);
+        } else {
+            close_read(ss, s, result);
+        }
+        return SOCKET_CLOSE;
+    }
+
+    if (halfclose_read(s)) {
+        // discard recv data (Rare case : if socket is HALFCLOSE_READ, reading event is disable.)
+        free(buffer);
+        return -1;
+    }
+
+    stat_read(ss, s, n);
+
+    result->opaque = s->opaque;
+    result->id = s->id;
+    result->ud = n;
+    result->data = buffer;
+
+    if (n == sz) {
+        s->p.size *= 2;
+        return SOCKET_MORE;
+    } else if (sz > MIN_READ_BUFFER && n*2 < sz) {
+        s->p.size /= 2;
+    }
+
+    return SOCKET_DATA;
+}
