@@ -29,6 +29,7 @@
 #define MAX_INFO 128
 #define MIN_READ_BUFFER 64
 #define MAX_UDP_PACKAGE 65535
+#define REQUEST_PACKAGE_BUFFER 256
 
 // ipv6 128bit + port 16bit + 1 byte type
 #define UDP_ADDRESS_SIZE 19
@@ -88,7 +89,8 @@ struct socket {
 
 struct socket_server {
     volatile uint64_t time;
-    pipe_t ctrl_fd;
+    socket_t recvctrl_fd;
+    socket_t sendctrl_fd;
     int checkctrl;
     spoll_t event_fd;
     atomic_int alloc_id;
@@ -183,12 +185,13 @@ struct request_udp {
 struct request_package {
     uint8_t header[8]; // 6 bytes dummy
     union {
-        char buffer[256];
+        char buffer[REQUEST_PACKAGE_BUFFER];
         struct request_open open;
         struct request_send send;
         struct request_send_udp send_udp;
         struct request_close close;
         struct request_listen listen;
+        struct request_bind bind;
         struct request_resumepause resumepause;
         struct request_setopt setopt;
         struct request_udp udp;
@@ -347,17 +350,18 @@ socket_server_create(uint64_t time) {
         RETNUL("socket-server: create event pool failed.");
     }
 
-    pipe_t chfd;
-    if (pipe_open(chfd)) {
+    socket_t chfd[2];
+    if (pipe(chfd)) {
         PERR("socket-server: create socket pair failed.");
         spoll_delete(efd);
         return NULL;
     }
 
-    if (spoll_add(efd, chfd->recv, NULL)) {
+    if (spoll_add(efd, chfd[0], NULL)) {
         // add recvctrl_fd (ctrl_fd recv) to event poll
         PERR("socket-server: can't add server fd to event pool.");
-        pipe_close(chfd);
+        closesocket(chfd[0]);
+        closesocket(chfd[1]);
         spoll_delete(efd);
         return NULL;
     }
@@ -365,7 +369,8 @@ socket_server_create(uint64_t time) {
     struct socket_server * ss = malloc(sizeof(struct socket_server));
     ss->time = time;
     ss->event_fd = efd;
-    ss->ctrl_fd[0] = chfd[0];
+    ss->recvctrl_fd = chfd[0];
+    ss->sendctrl_fd = chfd[1];
     ss->checkctrl = 1;
 
     for (int i = 0; i < MAX_SOCKET; ++i) {
@@ -381,7 +386,7 @@ socket_server_create(uint64_t time) {
     ss->event_index = 0;
     memset(&ss->soi, 0, sizeof(ss->soi));
     FD_ZERO(&ss->rfds);
-    assert(ss->ctrl_fd->recv < FD_SETSIZE);
+    assert(ss->recvctrl_fd < FD_SETSIZE);
 
     return ss;
 }
@@ -461,7 +466,8 @@ void socket_server_release(struct socket_server * ss) {
             force_close(ss, s, &sl, &dummy);
         }
     }
-    pipe_close(ss->ctrl_fd);
+    closesocket(ss->sendctrl_fd);
+    closesocket(ss->recvctrl_fd);
     spoll_delete(ss->event_fd);
     free(ss);
 }
@@ -565,7 +571,7 @@ static int open_socket(struct socket_server * ss, struct request_open * request,
         socket_set_nonblock(sock);
         status = connect(sock, ai_ptr->ai_addr, ai_ptr->ai_addrlen);
         if (status != 0 && errno != EINPROGRESS) {
-            close(sock);
+            closesocket(sock);
             sock = INVALID_SOCKET;
             continue;
         }
@@ -575,13 +581,12 @@ static int open_socket(struct socket_server * ss, struct request_open * request,
 
     if (sock == INVALID_SOCKET) {
         result->data = strerror(errno);
-        goto _failed;
+        goto _socket_failed;
     }
 
     struct socket * ns = new_fd(ss, id, sock, PROTOCOL_TCP, request->opaque, true);
     if (ns == NULL) {
         result->data = "reach skynet socket number limit";
-        closesocket(sock);
         goto _failed;
     }
 
@@ -605,8 +610,10 @@ static int open_socket(struct socket_server * ss, struct request_open * request,
     }
     freeaddrinfo(ai_list);
     return -1;
-
 _failed:
+    spoll_del(ss->event_fd, sock);
+    closesocket(sock);
+_socket_failed:
     freeaddrinfo(ai_list);
 _getaddrinfo_failed:
 	atomic_store(&ss->slot[HASH_ID(id)].type, SOCKET_TYPE_INVALID);
@@ -1142,13 +1149,13 @@ static void setopt_socket(struct socket_server * ss, struct request_setopt * req
     setsockopt(s->fd, IPPROTO_TCP, request->what, &v, sizeof(v));
 }
 
-static void block_readpipe(pipe_t pipefd, void * buffer, int sz) {
+static void block_readpipe(socket_t pipefd, void * buffer, int sz) {
     for (;;) {
-        int n = pipe_recv(pipefd, buffer, sz);
+        int n = socket_recv(pipefd, buffer, sz);
         if (n < 0) {
             if (errno == EINTR)
                 continue;
-            PERR("socket-server : read pipe error.");
+            PERR("socket-server: read pipe error.");
             return;
         }
         // must atomic read from a pipe
@@ -1159,8 +1166,8 @@ static void block_readpipe(pipe_t pipefd, void * buffer, int sz) {
 
 static inline int has_cmd(struct socket_server * ss) {
     struct timeval tv = {0,0};
-    FD_SET(ss->ctrl_fd->recv, &ss->rfds);
-    return select(ss->ctrl_fd->recv+1, &ss->rfds, NULL, NULL, &tv);
+    FD_SET(ss->recvctrl_fd, &ss->rfds);
+    return select(ss->recvctrl_fd+1, &ss->rfds, NULL, NULL, &tv);
 }
 
 static void add_udp_socket(struct socket_server * ss, struct request_udp * request) {
@@ -1228,13 +1235,15 @@ static inline void dec_sending_ref(struct socket_server * ss, int id) {
 
 // return type
 static int ctrl_cmd(struct socket_server * ss, struct socket_message * result) {
-    // the length of message is one byte, so 256+8 buffer size is enough
-    uint8_t buffer[256];
+    // the length of message is one byte, so 256(REQUEST_PACKAGE_BUFFER256)+8 buffer size is enough
+    uint8_t buffer[REQUEST_PACKAGE_BUFFER];
     uint8_t header[2];
-    block_readpipe(ss->ctrl_fd, header, sizeof(header));
+    block_readpipe(ss->recvctrl_fd, header, sizeof(header));
     int type = header[0];
     int len = header[1];
-    block_readpipe(ss->ctrl_fd, buffer, len);
+    if (len > 0) {
+        block_readpipe(ss->recvctrl_fd, buffer, len);
+    }
 
     // ctrl command only exist in local fd, so don't worry about endian.
     switch (type) {
@@ -1344,4 +1353,743 @@ static int forward_message_tcp(struct socket_server * ss, struct socket * s, str
     }
 
     return SOCKET_DATA;
+}
+
+static int gen_udp_address(int protocol, union sockaddr_all * sa, uint8_t * udp_address) {
+    int addrsz = 1;
+    udp_address[0] = (uint8_t)protocol;
+    if (protocol == PROTOCOL_UDP) {
+        memcpy(udp_address+addrsz, &sa->s4.sin_port, sizeof(sa->s4.sin_port));
+        addrsz += sizeof(sa->s4.sin_port);
+        memcpy(udp_address+addrsz, &sa->s4.sin_addr, sizeof(sa->s4.sin_addr));
+        addrsz += sizeof(sa->s4.sin_addr);
+    } else {
+        memcpy(udp_address+addrsz, &sa->s6.sin6_port, sizeof(sa->s6.sin6_port));
+        addrsz += sizeof(sa->s6.sin6_port);
+        memcpy(udp_address+addrsz, &sa->s6.sin6_addr, sizeof(sa->s6.sin6_addr));
+        addrsz += sizeof(sa->s6.sin6_addr);
+    }
+    return addrsz;
+}
+
+static int forward_message_udp(struct socket_server * ss, struct socket * s, struct socket_lock * sl, struct socket_message * result) {
+    union sockaddr_all sa;
+    socklen_t slen = sizeof(sa);
+    int n = recvfrom(s->fd, ss->udpbuffer, MAX_UDP_PACKAGE, 0, &sa.s, &slen);
+    if (n < 0) {
+        switch (errno) {
+        case EINTR:
+        case EAGAIN:
+            return -1;
+        }
+        int error = errno;
+        // close when error
+        force_close(ss, s, sl, result);
+        result->data = strerror(error);
+        return SOCKET_ERR;
+    }
+    stat_read(ss, s, n);
+
+    uint8_t * data;
+    if (slen == sizeof(sa.s4)) {
+        if (s->protocol != PROTOCOL_UDP)
+            return -1;
+        data = malloc(n + 1 + 2 + 4);
+        gen_udp_address(PROTOCOL_UDP, &sa, data + n);
+    } else {
+        if (s->protocol != PROTOCOL_UDPv6)
+            return -1;
+        data = malloc(n + 1 + 2 + 16);
+        gen_udp_address(PROTOCOL_UDPv6, &sa, data + n);
+    }
+    memcpy(data, ss->udpbuffer, n);
+
+    result->opaque = s->opaque;
+    result->id = s->id;
+    result->ud = n;
+    result->data = (char *)data;
+
+    return SOCKET_UDP;
+}
+
+static int report_connect(struct socket_server * ss, struct socket * s, struct socket_lock * sl, struct socket_message * result) {
+    int error;
+    socklen_t len = sizeof(error);
+    int code = getsockopt(s->fd, SOL_SOCKET, SO_ERROR, &error, &len);
+    if (code < 0 || error) {
+        error = code < 0 ? errno : error;
+        force_close(ss, s, sl, result);
+        result->data = strerror(error);
+        return SOCKET_ERR;
+    }
+
+    atomic_store(&s->type, SOCKET_TYPE_CONNECTED);
+    result->opaque = s->opaque;
+    result->id = s->id;
+    result->ud = 0;
+    if (nomore_sending_data(s)) {
+        if (enable_write(ss, s, false)) {
+            force_close(ss, s, sl, result);
+            result->data = "disable write failed";
+            return SOCKET_ERR;
+        }
+    }
+    union sockaddr_all sa;
+    socklen_t slen = sizeof(union sockaddr_all);
+    if (getpeername(s->fd, &sa.s, &slen) == 0) {
+        void * sin_addr = sa.s.sa_family == AF_INET ? (void *)&sa.s4.sin_addr : (void *)&sa.s6.sin6_addr;
+        if (inet_ntop(sa.s.sa_family, sin_addr, ss->buffer, sizeof(ss->buffer))) {
+            result->data = ss->buffer;
+            return SOCKET_OPEN;
+        }
+    }
+    result->data = NULL;
+    return SOCKET_OPEN;
+}
+
+static int getname(union sockaddr_all * sa, char * buffer, size_t sz) {
+    char tmp[INET6_ADDRSTRLEN];
+    void * sin_addr = sa->s.sa_family == AF_INET ? (void *)&sa->s4.sin_addr : (void *)&sa->s6.sin6_addr;
+    if (inet_ntop(sa->s.sa_family, sin_addr, tmp, sizeof(tmp))) {
+        int sin_port = ntohs(sa->s.sa_family == AF_INET ? sa->s4.sin_port : sa->s6.sin6_port);
+        snprintf(buffer, sz, "%s:%d", tmp, sin_port);
+        return 1;
+    }
+    buffer[0] = '\0';
+    return 0;
+}
+
+// return 0 when failed, or -1 when file limit
+static int report_accept(struct socket_server * ss, struct socket * s, struct socket_message * result) {
+    union sockaddr_all sa;
+    socklen_t slen = sizeof(sa);
+    socket_t client_fd = accept(s->fd, &sa.s, &slen);
+    if (client_fd == INVALID_SOCKET) {
+        switch (errno) {
+        case EMFILE:
+        case ENFILE:
+            result->opaque = s->opaque;
+            result->id = s->id;
+            result->ud = 0;
+            result->data = strerror(errno);
+            return -1;
+        default:
+            return 0;
+        }
+    }
+
+    int id = reserve_id(ss);
+    if (id < 0) {
+        closesocket(client_fd);
+        return 0;
+    }
+    socket_set_keepalive(client_fd);
+    socket_set_nonblock(client_fd);
+    struct socket * ns = new_fd(ss, id, client_fd, PROTOCOL_TCP, s->opaque, false);
+    if (ns == NULL) {
+        closesocket(client_fd);
+        return 0;
+    }
+    // accept new one connection
+    stat_read(ss, s, 1);
+
+    atomic_store(&ns->type, SOCKET_TYPE_PACCEPT);
+    result->opaque = s->opaque;
+    result->id = s->id;
+    result->ud = id;
+    result->data = NULL;
+
+    if (getname(&sa, ss->buffer, sizeof(ss->buffer))) {
+        result->data = ss->buffer;
+    }
+
+    return 1;
+}
+
+static inline void clear_closed_event(struct socket_server * ss, struct socket_message * result, int type) {
+    if (type == SOCKET_CLOSE || type == SOCKET_ERR) {
+        int id = result->id;
+        for (int i = ss->event_index; i < ss->event_n; i++) {
+            struct spoll_event * e = ss->ev + i;
+            struct socket * s = e->u;
+            if (s) {
+                if (socket_invalid(s, id) && s->id == id) {
+                    e->u = NULL;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+// return type
+int
+socket_server_poll(struct socket_server * ss, struct socket_message * result, int * more) {
+    for (;;) {
+        if (ss->checkctrl) {
+            if (has_cmd(ss)) {
+                int type = ctrl_cmd(ss, result);
+                if (type == -1)
+                    continue;
+                clear_closed_event(ss, result, type);
+                return type;
+            } else {
+                ss->checkctrl = 0;
+            }
+        }
+
+        if (ss->event_index == ss->event_n) {
+            ss->event_n = spoll_wait(ss->event_fd, ss->ev);
+            ss->checkctrl = 1;
+            if (more) {
+                *more = 0;
+            }
+            ss->event_index = 0;
+            if (ss->event_n <= 0) {
+                ss->event_n = 0;
+                int error = errno;
+                if (error != EINTR) {
+                    PERR("socket-server: %d", error);
+                }
+                continue;
+            }
+        }
+        struct spoll_event * e = ss->ev + ss->event_index++;
+        struct socket * s = e->u;
+        if (s == NULL) {
+            // dispatch pipe message at beginning
+            continue;
+        }
+        struct socket_lock sl; socket_lock_init(&sl, s);
+        switch (atomic_load(&s->type)) {
+        case SOCKET_TYPE_CONNECTING:
+            return report_connect(ss, s, &sl, result);
+        case SOCKET_TYPE_LISTEN: {
+            int ok = report_accept(ss, s, result);
+            if (ok > 0) {
+                return SOCKET_ACCEPT;
+            } if (ok < 0) {
+                return SOCKET_ERR;
+            }
+            // when ok == 0, retry
+            break;
+        }
+        case SOCKET_TYPE_INVALID:
+            PERR("socket-server: invalid socket.");
+            break;
+        default:
+            if (e->read) {
+                int type;
+                if (s->protocol == PROTOCOL_TCP) {
+                    type = forward_message_tcp(ss, s, &sl, result);
+                    if (type == SOCKET_MORE) {
+                        --ss->event_index;
+                        return SOCKET_DATA;
+                    }
+                } else {
+                    type = forward_message_udp(ss, s, &sl, result);
+                    if (type == SOCKET_UDP) {
+                        // try read again
+                        --ss->event_index;
+                        return SOCKET_UDP;
+                    }
+                }
+                if (e->write && type != SOCKET_CLOSE && type != SOCKET_ERR) {
+                    // Try to dispatch write message next step if write flag set.
+                    e->read = false;
+                    --ss->event_index;
+                }
+                if (type == -1)
+                    break;
+                return type;
+            }
+
+            if (e->write) {
+                int type = send_buffer(ss, s, &sl, result);
+                if (type == -1)
+                    break;
+                return type;
+            }
+
+            if (e->error) {
+                int error;
+                socklen_t len = sizeof(error);
+                int code = getsockopt(s->fd, SOL_SOCKET, SO_ERROR, &error, &len);
+                const char * err = NULL;
+                if (code < 0) {
+                    err = strerror(errno);
+                } else if (error != 0) {
+                    err = strerror(error);
+                } else {
+                    err = "Unknown error";
+                }
+                return report_error(s, result, err);
+            }
+
+            if (e->eof) {
+                // For epoll (at least), FIN packets are exchanged both ways.
+                // See: https://stackoverflow.com/questions/52976152/tcp-when-is-epollhup-generated
+                int halfclose = halfclose_read(s);
+                force_close(ss, s, &sl, result);
+                if (!halfclose) {
+                    return SOCKET_CLOSE;
+                }
+            }
+        }
+    }
+}
+
+static void send_request(struct socket_server * ss, struct request_package * request, char type, int len) {
+    request->header[6] = (uint8_t)type;
+    request->header[7] = (uint8_t)len;
+    const char * req = (const char *)request + offsetof(struct request_package, header[6]);
+    for (;;) {
+        int n = socket_send(ss->sendctrl_fd, req, len+2);
+        if (n < 0) {
+            if (errno != EINTR) {
+                PERR("socket-server: send ctrl command error.");
+            }
+            continue;
+        }
+        assert(n == len+2);
+        return;
+    }
+}
+
+static int open_request(struct socket_server * ss, struct request_package * req, uintptr_t opaque, const char * addr, int port) {
+    int len = strlen(addr);
+    if (len + sizeof(req->u.open) >= sizeof(req->u.buffer)) {
+        PERR("socket-server: Invalid addr %s.", addr);
+        return -1;
+    }
+    int id = reserve_id(ss);
+    if (id < 0)
+        return -1;
+    req->u.open.opaque = opaque;
+    req->u.open.id = id;
+    req->u.open.port = port;
+    memcpy(req->u.open.host, addr, len);
+    req->u.open.host[len] = '\0';
+
+    return len;
+}
+
+int
+socket_server_connect(struct socket_server * ss, uintptr_t opaque, const char * addr, int port) {
+    struct request_package request;
+    int len = open_request(ss, &request, opaque, addr, port);
+    if (len < 0)
+        return -1;
+    send_request(ss, &request, 'O', sizeof(request.u.open)+len);
+    return request.u.open.id;
+}
+
+static inline int can_direct_write(struct socket * s, int id) {
+    return s->id == id && nomore_sending_data(s) && atomic_load(&s->type) == SOCKET_TYPE_CONNECTED && atomic_load(&s->udpconnecting) == 0;
+}
+
+// return -1 when error, 0 when success
+int
+socket_server_send(struct socket_server * ss, struct socket_sendbuffer * buf) {
+    int id = buf->id;
+    struct socket * s = ss->slot + HASH_ID(id);
+    if (socket_invalid(s, id) || s->closing) {
+        free_buffer(ss, buf);
+        return -1;
+    }
+
+    struct socket_lock sl; socket_lock_init(&sl, s);
+    if (can_direct_write(s, id) && socket_trylock(&sl)) {
+        // may be we can send directly, double check
+        if (can_direct_write(s, id)) {
+            // send directly
+            struct send_object so;
+            send_object_init_from_sendbuffer(ss, &so, buf);
+            int n;
+            if (s->protocol == PROTOCOL_TCP) {
+                n = socket_send(s->fd, so.buffer, so.sz);
+            } else {
+                union sockaddr_all sa;
+                socklen_t sasz = udp_socket_address(s, s->p.udp_address, &sa);
+                if (sasz == 0) {
+                    PERR("socket-server: set udp (%d) address first.", id);
+                    socket_unlock(&sl);
+                    so.free_func((void *)buf->buffer);
+                    return -1;
+                }
+                n = socket_sendto(s->fd, so.buffer, so.sz, &sa.s, sasz);
+            }
+            if (n < 0) {
+                // ignore error, let socket thread try again
+                n = 0;
+            }
+            stat_write(ss, s, n);
+            if ((size_t)n == so.sz) {
+                // write donw
+                socket_unlock(&sl);
+                so.free_func((void *)buf->buffer);
+                return 0;
+            }
+            // write failed, put buffer into s->dw_*, and let socket thread send it, see send_buffer()
+            s->dw_buffer = clone_buffer(buf, &s->dw_size);
+            s->dw_offset = n;
+
+            socket_unlock(&sl);
+
+            struct request_package request;
+            request.u.send.id = id;
+            request.u.send.sz = 0;
+            request.u.send.buffer = NULL;
+
+            // let socket thread enable write event
+            send_request(ss, &request, 'W', sizeof(request.u.send));
+
+            return 0;
+        }
+        socket_unlock(&sl);
+    }
+
+    inc_sending_ref(s, id);
+
+    struct request_package request;
+    request.u.send.id = id;
+    request.u.send.buffer = clone_buffer(buf, &request.u.send.sz);
+
+    send_request(ss, &request, 'D', sizeof(request.u.send));
+    return 0;
+}
+
+// return -1 when error, 0 when success
+int 
+socket_server_send_lowpriority(struct socket_server * ss, struct socket_sendbuffer * buf) {
+    int id = buf->id;
+
+    struct socket * s = ss->slot + HASH_ID(id);
+    if (socket_invalid(s, id)) {
+        free_buffer(ss, buf);
+        return -1;
+    }
+
+    inc_sending_ref(s, id);
+
+    struct request_package request;
+    request.u.send.id = id;
+    request.u.send.buffer = clone_buffer(buf, &request.u.send.sz);
+
+    send_request(ss, &request, 'P', sizeof(request.u.send));
+    return 0;
+}
+
+void 
+socket_server_exit(struct socket_server * ss) {
+    struct request_package request;
+    send_request(ss, &request, 'X', 0);
+}
+
+void
+socket_server_close(struct socket_server * ss, uintptr_t opaque, int id) {
+    struct request_package request;
+    request.u.close.id = id;
+    request.u.close.shutdown = 0;
+    request.u.close.opaque = opaque;
+    send_request(ss, &request, 'K', sizeof(request.u.close));
+}
+
+void
+socket_server_shutdown(struct socket_server * ss, uintptr_t opaque, int id) {
+    struct request_package request;
+    request.u.close.id = id;
+    request.u.close.shutdown = 1;
+    request.u.close.opaque = opaque;
+    send_request(ss, &request, 'K', sizeof(request.u.close));
+}
+
+// return -1 means failed
+// or return AF_INET or AF_INET6
+static socket_t do_bind(const char * host, int port, int protocol, int * family) {
+    socket_t fd;
+    int status;
+    int reuse = 1;
+    struct addrinfo ai_hints;
+    struct addrinfo * ai_list = NULL;
+    char portstr[16];
+    if (host == NULL || host[0] == 0) {
+        host = "0.0.0.0"; // INADDR_ANY
+    }
+    sprintf(portstr, "%d", port);
+    memset(&ai_hints, 0, sizeof(struct addrinfo));
+    ai_hints.ai_family = AF_UNSPEC;
+    if (protocol == IPPROTO_TCP) {
+        ai_hints.ai_socktype = SOCK_STREAM;    
+    } else {
+        assert(protocol == IPPROTO_UDP);
+        ai_hints.ai_socktype = SOCK_DGRAM;
+    }
+    ai_hints.ai_protocol = protocol;
+
+    status = getaddrinfo(host, portstr, &ai_hints, &ai_list);
+    if (status) {
+        return -1;
+    }
+    *family = ai_list->ai_family;
+    fd = socket(ai_list->ai_family, ai_list->ai_socktype, 0);
+    if (fd == INVALID_SOCKET)
+        goto _failed_socket;
+    if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void *)&reuse, sizeof(reuse)))
+        goto _failed;
+    status = bind(fd, (struct sockaddr *)ai_list->ai_addr, ai_list->ai_addrlen);
+    if (status) {
+        goto _failed;
+    }
+
+    freeaddrinfo(ai_list);
+    return fd;
+_failed:
+    closesocket(fd);
+_failed_socket:
+    freeaddrinfo(ai_list);
+    return INVALID_SOCKET;
+}
+
+static socket_t do_listen(const char * host, int port, int backlog) {
+    int family = 0;
+    int listen_fd = do_bind(host, port, IPPROTO_TCP, &family);
+    if (listen_fd == INVALID_SOCKET) {
+        return INVALID_SOCKET;
+    }
+    if (listen(listen_fd, backlog)) {
+        closesocket(listen_fd);
+        return INVALID_SOCKET;
+    }
+    return listen_fd;
+}
+
+int
+socket_server_listen(struct socket_server * ss, uintptr_t opaque, const char * addr, int port, int backlog) {
+    socket_t fd = do_listen(addr, port, backlog);
+    if (fd == INVALID_SOCKET) {
+        return -1;
+    }
+    struct request_package request;
+    int id = reserve_id(ss);
+    if (id < 0) {
+        closesocket(fd);
+        return id;
+    }
+    request.u.listen.opaque = opaque;
+    request.u.listen.id = id;
+    request.u.listen.fd = fd;
+    send_request(ss, &request, 'L', sizeof(request.u.listen));
+    return id;
+}
+
+int
+socket_server_bind(struct socket_server * ss, uintptr_t opaque, socket_t fd) {
+    struct request_package request;
+    int id = reserve_id(ss);
+    if (id < 0)
+        return -1;
+    request.u.bind.opaque = opaque;
+    request.u.bind.id = id;
+    request.u.bind.fd = fd;
+    send_request(ss, &request, 'B', sizeof(request.u.bind));
+    return id;
+}
+
+void
+socket_server_start(struct socket_server * ss, uintptr_t opaque, int id) {
+    struct request_package request;
+    request.u.resumepause.id = id;
+    request.u.resumepause.opaque = opaque;
+    send_request(ss, &request, 'R', sizeof(request.u.resumepause));
+}
+
+void
+socket_server_pause(struct socket_server * ss, uintptr_t opaque, int id) {
+    struct request_package request;
+    request.u.resumepause.id = id;
+    request.u.resumepause.opaque = opaque;
+    send_request(ss, &request, 'S', sizeof(request.u.resumepause));
+}
+
+void
+socket_server_nodelay(struct socket_server * ss, int id) {
+    struct request_package request;
+    request.u.setopt.id = id;
+    request.u.setopt.what = TCP_NODELAY;
+    request.u.setopt.value = 1;
+    send_request(ss, &request, 'T', sizeof(request.u.setopt));
+}
+
+void
+socket_server_userobject(struct socket_server * ss, struct socket_object_interface * soi) {
+    ss->soi = *soi;
+}
+
+// UDP
+
+int
+socket_server_udp(struct socket_server * ss, uintptr_t opaque, const char * addr, int port) {
+    socket_t fd;
+    int family;
+    if (port != 0 || addr != NULL) {
+        // bind
+        fd = do_bind(addr, port, IPPROTO_UDP, &family);
+        if (fd == INVALID_SOCKET) {
+            return -1;
+        }
+    } else {
+        family = AF_INET;
+        fd = socket(AF_INET, SOCK_DGRAM, 0);
+        if (fd == INVALID_SOCKET) {
+            return -1;
+        }
+    }
+    socket_set_nonblock(fd);
+
+    int id = reserve_id(ss);
+    if (id < 0) {
+        closesocket(fd);
+        return -1;
+    }
+
+    struct request_package request;
+    request.u.udp.id = id;
+    request.u.udp.fd = fd;
+    request.u.udp.opaque = opaque;
+    request.u.udp.family = family;
+
+    send_request(ss, &request, 'U', sizeof(request.u.udp));
+    return id;
+}
+
+int
+socket_server_udp_send(struct socket_server * ss, const struct socket_udp_address * addr, struct socket_sendbuffer * buf) {
+    int id = buf->id;
+    struct socket * s = ss->slot + HASH_ID(id);
+    if (socket_invalid(s, id)) {
+        free_buffer(ss, buf);
+        return -1;
+    }
+
+    const uint8_t * udp_address = (const uint8_t *)addr;
+    int addrsz;
+    switch (udp_address[0]) {
+    case PROTOCOL_UDP:
+        addrsz = 1+2+ 4;     // 1 type, 2 port,  4 ipv4
+        break;
+    case PROTOCOL_UDPv6:
+        addrsz = 1+2+16;     // 1 type, 2 port, 16 ipv6
+        break;
+    default:
+        free_buffer(ss, buf);
+        return -1;
+    }
+
+    struct socket_lock sl; socket_lock_init(&sl, s);
+
+    if (can_direct_write(s, id) && socket_trylock(&sl)) {
+        // may be we can send directly, double check
+        if (can_direct_write(s, id)) {
+            // send directly
+            struct send_object so;
+            send_object_init_from_sendbuffer(ss, &so, buf);
+            union sockaddr_all sa;
+            socklen_t sasz = udp_socket_address(s, udp_address, &sa);
+            if (sasz == 0) {
+                socket_unlock(&sl);
+                so.free_func((void *)buf->buffer);
+                return -1;
+            }
+            int n = socket_sendto(s->fd, so.buffer, so.sz, &sa.s, sasz);
+            if (n > 0) {
+                // sendto succuss
+                stat_write(ss, s, n);
+                socket_unlock(&sl);
+                so.free_func((void *)buf->buffer);
+                return 0;
+            }
+        }
+        socket_unlock(&sl);
+        // let socket thread try again, udp doesn't case the order
+    }
+
+    struct request_package request;
+    request.u.send_udp.send.id = id;
+    request.u.send_udp.send.buffer = clone_buffer(buf, &request.u.send_udp.send.sz);
+
+    memcpy(request.u.send_udp.address, udp_address, addrsz);
+
+    send_request(ss, &request, 'A', sizeof(request.u.send_udp.send)+addrsz);
+    return 0;
+}
+
+int
+socket_server_udp_connect(struct socket_server * ss, int id, const char * addr, int port) {
+    struct socket * s = ss->slot + HASH_ID(id);
+    if (socket_invalid(s, id)) {
+        return -1;
+    }
+
+    struct socket_lock sl; socket_lock_init(&sl, s);
+    socket_lock(&sl);
+    if (socket_invalid(s, id)) {
+        socket_unlock(&sl);
+        return -1;
+    }
+    atomic_fetch_add(&s->udpconnecting, 1);
+    socket_unlock(&sl);
+
+    int status;
+    struct addrinfo ai_hints;
+    struct addrinfo * ai_list = NULL;
+    char portstr[16];
+    sprintf(portstr, "%d", port);
+    memset(&ai_hints, 0, sizeof(ai_hints));
+    ai_hints.ai_family = AF_UNSPEC;
+    ai_hints.ai_socktype = SOCK_DGRAM;
+    ai_hints.ai_protocol = IPPROTO_UDP;
+
+    status = getaddrinfo(addr, portstr, &ai_hints, &ai_list);
+    if (status) {
+        return -1;
+    }
+
+    struct request_package request;
+    request.u.set_udp.id = id;
+    int protocol;
+
+    if (ai_list->ai_family == AF_INET) {
+        protocol = PROTOCOL_UDP;
+    } else if (ai_list->ai_family == AF_INET6) {
+        protocol = PROTOCOL_UDPv6;
+    } else {
+        freeaddrinfo(ai_list);
+        return -1;
+    }
+
+    int addrsz = gen_udp_address(protocol, (union sockaddr_all *)ai_list->ai_addr, request.u.set_udp.address);
+
+    freeaddrinfo(ai_list);
+
+    send_request(ss, &request, 'C', sizeof(request.u.set_udp)-sizeof(request.u.set_udp.address)+addrsz);
+
+    return 0;
+}
+
+const struct socket_udp_address *
+socket_server_udp_address(struct socket_message * msg, int * addrsz) {
+    uint8_t * address = (uint8_t *)(msg->data + msg->ud);
+    int type = address[0];
+    switch (type) {
+    case PROTOCOL_UDP:
+        *addrsz = 1+2+ 4;
+        break;
+    case PROTOCOL_UDPv6:
+        *addrsz = 1+2+16;
+        break;
+    default:
+        return NULL;
+    }
+    return (const struct socket_udp_address *)address;
 }

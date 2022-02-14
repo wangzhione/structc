@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "pipe.h"
+#include "spoll.h"
 #include "spinlock.h"
-#include "spoll$epoll.h"
 #include "socket_info.h"
 #include "socket_buffer.h"
 
@@ -63,7 +63,7 @@ extern int socket_server_udp_connect(struct socket_server * ss, int id, const ch
 // You can also use socket_server_send
 extern int socket_server_udp_send(struct socket_server * ss, const struct socket_udp_address * addr, struct socket_sendbuffer * buffer);
 // extract the address of the message, struct socket_message * should be SOCKET_UDP
-extern const struct socket_udp_address * socket_server_udp_address(struct socket_server * ss, struct socket_message * msg, int * addrsz);
+extern const struct socket_udp_address * socket_server_udp_address(struct socket_message * msg, int * addrsz);
 
 struct socket_object_interface {
     const void * (* buffer)(const void * ptr);

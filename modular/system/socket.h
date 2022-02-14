@@ -61,11 +61,6 @@ inline static int socket_set_nonblock(socket_t s) {
     return fcntl(s, F_SETFL, mode | O_NONBLOCK);
 }
 
-// socket_recv - 读取数据
-inline int socket_recv(socket_t s, void * buf, int sz) {
-    return (int)recv(s, buf, sz, 0);
-}
-
 #elif defined(_WIN32) && defined(_MSC_VER)
 
 #include <ws2tcpip.h>
@@ -111,15 +106,14 @@ inline int socket_set_nonblock(socket_t s) {
     return ioctlsocket(s, FIONBIO, &ov);
 }
 
-// socket_recv - 读取数据
-inline int socket_recv(socket_t s, void * buf, int sz) {
-    if (likely(sz > 0)) {
-        return (int)recv(s, buf, sz, 0);
-    }
-    return 0;
-}
-
 #endif
+
+// socket_recv recv data
+// sz == 0 && s is block socket -> Always blocked
+// sz == 0 && s is nonblock socket -> return 0, errno = EAGAIN 
+inline int socket_recv(socket_t s, void * buf, int sz) {
+    return (int)recv(s, buf, sz, 0);
+}
 
 // socket_send - 写入数据
 inline int socket_send(socket_t s, const void * buf, int sz) {
