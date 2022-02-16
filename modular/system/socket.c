@@ -53,6 +53,7 @@ int socket_pton(sockaddr_t a, int family, char ip[INET6_ADDRSTRLEN], uint16_t po
     return -1;
 }
 
+// result socket fd and init sockaddr by family
 socket_t socket_sockaddr_stream(sockaddr_t a, int family) {
     socket_t s;
     assert(family == AF_INET || family == 0 || family == AF_INET6 || family == AF_UNSPEC);
@@ -106,7 +107,9 @@ int socket_sockaddr(sockaddr_t a, const char * host, uint16_t port, int family) 
         .ai_protocol = IPPROTO_TCP,
     };
 
-    if (getaddrinfo(host, ports, &req, &rsp)) {
+    res = getaddrinfo(host, ports, &req, &rsp);
+    if (res) {
+        PERR("getaddrinfo code=%d, error=%s", res, gai_strerror(res));
         return -1;
     }
 

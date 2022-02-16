@@ -47,7 +47,7 @@ int pipe(socket_t pipefd[2]) {
         goto err_close;
 
     // 得到绑定端口和本地地址
-    if (socket_getsockname(s, name))
+    if (getsockname(s, &name->s, &name->len))
         goto err_close;
 
     // 开始构建互相通信的 socket
@@ -56,7 +56,7 @@ int pipe(socket_t pipefd[2]) {
         goto err_close;
 
     // 通过 accept 通信避免一些意外
-    pipefd[1] = socket_accept(s, name);
+    pipefd[1] = accept(s, &name->s, &name->len);
     if (pipefd[1] == INVALID_SOCKET) 
         goto err_pipe;
 

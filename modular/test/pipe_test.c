@@ -49,7 +49,7 @@ int pipe_socket(socket_t pipefd[2]) {
         goto err_close;
 
     // 得到绑定端口和本地地址
-    if (socket_getsockname(s, name))
+    if (getsockname(s, &name->s, &name->len))
         goto err_close;
 
     // 开始构建互相通信的 socket

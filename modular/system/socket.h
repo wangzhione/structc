@@ -193,15 +193,10 @@ extern socket_t socket_sockaddr_stream(sockaddr_t a, int family);
 
 extern int socket_sockaddr(sockaddr_t a, const char * host, uint16_t port, int family);
 
-// socket_getsockname - 获取 socket 的本地地址
-inline int socket_getsockname(socket_t s, sockaddr_t name) {
-    return getsockname(s, &name->s, &name->len);
-}
-
-// socket_getpeername - 获取 client socket 的地址
-inline int socket_getpeername(socket_t s, sockaddr_t name) {
-    return getpeername(s, &name->s, &name->len);
-}
+// 
+// getsockname 获取 socket 的本地地址
+// getpeername 获取 client socket 的地址
+//
 
 // socket_ntop - sin_addr or sin6_addr -> ip 串, return -1 error or port
 extern int socket_ntop(const sockaddr_t a, char ip[INET6_ADDRSTRLEN]);
