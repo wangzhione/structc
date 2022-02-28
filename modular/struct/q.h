@@ -31,7 +31,7 @@ inline void q_free(q_t q) {
 }
 
 inline bool q_empty(q_t q) {
-    return q->tail < 0;
+    return q->tail <  0;
 }
 
 inline bool q_exist(q_t q) {

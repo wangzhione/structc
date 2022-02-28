@@ -55,6 +55,10 @@ inline bool stack_empty(struct stack * s) {
     return s->tail <  0;
 }
 
+inline bool stack_exist(struct stack * s) {
+    return s->tail >= 0;
+}
+
 //
 // stack_top - 获取 stack 栈顶对象
 // s        : stack 对象栈

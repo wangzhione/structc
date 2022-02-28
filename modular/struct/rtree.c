@@ -57,7 +57,7 @@ static void rtree_die(struct $rtree * root, node_f fdie) {
             if (cur->left)
                 stack_push(&s, cur->left);
         }
-    } while (!stack_empty(&s));
+    } while (stack_exist(&s));
     stack_free(&s);
 }
 
