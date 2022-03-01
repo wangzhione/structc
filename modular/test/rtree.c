@@ -50,7 +50,7 @@ static void rtree_die(struct $rtree * root, node_f fdie) {
         if ((!cur->left && !cur->right) 
          || ((cur->left == pre || cur->right == pre) && pre)) {
             fdie(pre = cur);
-            stack_pop(&s);
+            stack_popped(&s);
         } else {
             if (cur->right)
                 stack_push(&s, cur->right);
