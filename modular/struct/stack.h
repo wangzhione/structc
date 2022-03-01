@@ -78,11 +78,11 @@ inline void stack_pop(struct stack * s) {
 }
 
 //
-// stack_pop_top - 弹出并返回栈顶元素
+// stack_pops - 弹出并返回栈顶元素
 // s        : stack 对象栈
 // return   : 弹出的栈顶对象
 //
-inline void * stack_pop_top(struct stack * s) {
+inline void * stack_pops(struct stack * s) {
     return s->tail >= 0 ? s->data[s->tail--] : NULL;
 }
 

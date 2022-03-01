@@ -10,7 +10,7 @@ char *
 cstr_expand(cstr_t cs, size_t len) {
     size_t cap = cs->cap;
     if ((len += cs->len) > cap) {
-        if (cap < CSTR_INT ) {
+        if (cap < CSTR_INT) {
             cap = CSTR_INT;
         } else {
             // 走 1.5 倍内存分配, '合理'降低内存占用

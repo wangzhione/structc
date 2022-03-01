@@ -65,11 +65,11 @@ inline void * realloc_(void * ptr, size_t size) {
 //
 #ifndef ALLOC_OFF
 #  undef    malloc
-#  define   malloc  malloc_
+#  define   malloc   malloc_
 #  undef    strdup
-#  define   strdup  strdup_
+#  define   strdup   strdup_
 #  undef    calloc
-#  define   calloc  calloc_
+#  define   calloc   calloc_
 #  undef    realloc
 #  define   realloc realloc_
 #endif
