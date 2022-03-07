@@ -5,7 +5,7 @@
 
 //
 // msg_t 网络传输协议结构
-// sz -> type + len 本地小端字节序 -> data
+// sz -> type + len 本地大端字节序 -> data
 //
 typedef struct {
     // uint8_t type + uint24_t len + data[]
@@ -22,16 +22,14 @@ typedef struct {
 #define MSG_LEN( sz)  ((uint32_t)(sz)&0xFFFFFF)
 #define MSG_SZ(t, n)  (((uint32_t)(uint8_t)(t)<<24)|(uint32_t)(n))
 
-// small - 转本地字节序(小端)
-inline uint32_t small(uint32_t x) {
+inline uint32_t big(uint32_t x) {
 # ifdef ISBIG
-    uint8_t t;
-    uint8_t * p = (uint8_t *)&x;
-
-    t = p[0]; p[0] = p[3]; p[3] = t;
-    t = p[1]; p[1] = p[2]; p[2] = t;
-# endif
     return x;
+# endif
+    return (((x & 0xFF000000u) >> 24)
+           |((x & 0x00FF0000u) >> 8 )
+           |((x & 0x0000FF00u) << 8 )
+           |((x & 0x000000FFu) << 24));
 }
 
 //
@@ -50,9 +48,10 @@ inline static msg_t msg_create(const void * data, uint32_t len) {
     msg_t msg = malloc(sizeof(*msg) + sz);
     msg->sz = sz;
     
-    // sz -> type + len 本地小端字节序 -> data
+    // sz -> type + len 本地网络大端字节序 -> data
     sz = MSG_SZ(0, len);
-    sz = small(sz);
+    // TCP/IP 协议 RFC1700 规定使用大端(big endian)字节序为网络字节序
+    sz = big(sz);
 
     // 开始内存填充
     memcpy(msg->data, &sz, sizeof(uint32_t));

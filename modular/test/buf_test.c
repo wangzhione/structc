@@ -1,5 +1,29 @@
 ﻿#include <buf.h>
 
+void msg_test(void) {
+    uint32_t x = 0x12345678;
+    uint8_t * ptr = (uint8_t *)&x;
+    printf("0x %x %x %x %x\n", ptr[0], ptr[1], ptr[2], ptr[3]);
+
+    x = big(x);
+    printf("0x %x %x %x %x\n", ptr[0], ptr[1], ptr[2], ptr[3]);
+
+    x = big(x);
+    printf("0x %x %x %x %x\n", ptr[0], ptr[1], ptr[2], ptr[3]);
+}
+
+// small - 转本地字节序(小端)
+inline uint32_t small(uint32_t x) {
+# ifdef ISBIG
+    uint8_t t;
+    uint8_t * p = (uint8_t *)&x;
+
+    t = p[0]; p[0] = p[3]; p[3] = t;
+    t = p[1]; p[1] = p[2]; p[2] = t;
+# endif
+    return x;
+}
+
 //
 // buf_test msg buf test
 //
@@ -11,6 +35,7 @@ void buf_test(void) {
     uint32_t len = (uint32_t)strlen(str) + 1;
     uint32_t x = MSG_SZ(1, len);
     x = small(x);
+    printf("x = 0x%x, len = %u\n", x, MSG_LEN(x));
 
     // send阶段, 先发送字符长度
     msg_t msg;

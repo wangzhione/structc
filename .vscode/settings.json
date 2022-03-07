@@ -15,6 +15,7 @@
         "streambuf": "c",
         "typeinfo": "c",
         "*.rh": "c",
-        "atomic": "c"
+        "atomic": "c",
+        "type_traits": "c"
     }
 }

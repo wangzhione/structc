@@ -7,6 +7,18 @@ PACKED(struct sdshdr5 {
     char buf[];
 });
 
+// small - 转本地字节序(小端)
+inline uint32_t small(uint32_t x) {
+# ifdef ISBIG
+    uint8_t t;
+    uint8_t * p = (uint8_t *)&x;
+
+    t = p[0]; p[0] = p[3]; p[3] = t;
+    t = p[1]; p[1] = p[2]; p[2] = t;
+# endif
+    return x;
+}
+
 void stdext_test(void) {
     const char * path = "README.md";
 
