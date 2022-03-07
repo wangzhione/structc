@@ -38,6 +38,12 @@ inline bool q_exist(q_t q) {
     return q->tail >= 0;
 }
 
+static inline int q_len(q_t q) {
+    return q->tail < 0 ? 0 :( 
+     q->tail >= q->head ? q->tail-q->head+1 : q->tail-q->head+1+q->cap
+    );
+}
+
 //
 // q_swap - q swap
 // r      : q one

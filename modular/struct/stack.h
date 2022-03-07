@@ -68,6 +68,10 @@ inline void * stack_top(struct stack * s) {
     return s->tail >= 0 ? s->data[s->tail] : NULL;
 }
 
+inline int stack_len(struct stack * s) {
+    return s->tail+1;
+}
+
 //
 // stack_popped - 弹出栈顶元素
 // s        : stack 对象栈
