@@ -2,28 +2,30 @@
 
 #include "struct.h"
 
-//
+ // q simple ringlike queue
 // pop empty <=> tail == -1 ( head == 0 )
 // push full <=> head == (tail + 1) % cap && tail >= 0
 //
 typedef struct q {
-    int     head;       // 头结点
-    int     tail;       // 尾结点
+    int     head;       // 头结点索引
+    int     tail;       // 尾结点索引
     int      cap;       // 队列容量
     void ** data;       // 队列实体
 } q_t[1];
+
+// Q_INT  - 队列初始大小, 必须是 2 的幂
+#ifndef Q_INT
+#define Q_INT     (1<< 6)
+#endif
 
 //
 // q_init - 初始化
 // q      : 队列对象
 // return : void
-// Q_INT  - 队列初始大小, 必须是 2 的幂
-#define Q_INT     (1<< 6)
 inline void q_init(q_t q) {
-    q->data = malloc(sizeof(void *) * Q_INT);
+    q->data = malloc(sizeof(void *)*Q_INT);
     q->cap = Q_INT;
-    q->head =  0;
-    q->tail = -1;
+    q->tail = -1; q->head =  0;
 }
 
 inline void q_free(q_t q) {
@@ -40,7 +42,7 @@ inline bool q_exist(q_t q) {
 
 static inline int q_len(q_t q) {
     return q->tail < 0 ? 0 :( 
-     q->tail >= q->head ? q->tail-q->head+1 : q->tail-q->head+1+q->cap
+     q->tail < q->head ? q->cap+q->tail-q->head+1 : q->tail-q->head+1
     );
 }
 
@@ -51,10 +53,7 @@ static inline int q_len(q_t q) {
 // return : void
 //
 inline void q_swap(q_t r, q_t w) {
-    q_t q;
-    q[0] = r[0];
-    r[0] = w[0];
-    w[0] = q[0];
+    q_t q; q[0] = r[0]; r[0] = w[0]; w[0] = q[0];
 }
 
 //

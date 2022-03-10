@@ -2,11 +2,10 @@
 
 #include "struct.h"
 
-// 
 // struct stack 对象栈
 // stack empty <=> tail = -1 
 // stack full  <=> tail == cap
-//
+// 
 struct stack {
     int      tail;  // 尾结点
     int       cap;  // 栈容量
@@ -99,7 +98,7 @@ inline void * stack_pop(struct stack * s) {
 inline void stack_push(struct stack * s, void * m) {
     if (s->cap <= s->tail) {
         s->cap <<= 1;
-        s->data = realloc(s->data, sizeof(void *) * s->cap);
+        s->data = realloc(s->data, sizeof(void *)*s->cap);
     }
     s->data[++s->tail] = m;
 }

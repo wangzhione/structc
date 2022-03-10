@@ -475,6 +475,7 @@ void socket_server_release(struct socket_server * ss) {
 static inline void check_wb_list(struct wb_list * list) {
     assert(list->head == NULL);
     assert(list->tail == NULL);
+    UNUSED(list);
 }
 
 static inline int enable_write(struct socket_server * ss, struct socket * s, bool enable) {

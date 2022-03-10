@@ -16,6 +16,7 @@
         "typeinfo": "c",
         "*.rh": "c",
         "atomic": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "system_error": "c"
     }
 }

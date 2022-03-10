@@ -245,11 +245,11 @@ static const char * parse_string(json_t item, const char * str) {
 
             switch (len) {
             // 10xxxxxx
-            case 4: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6;
+            case 4: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6; __attribute__((fallthrough));
             // 10xxxxxx
-            case 3: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6;
+            case 3: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6; __attribute__((fallthrough));
             // 10xxxxxx
-            case 2: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6;
+            case 2: *--ntr = ((uc | 0x80) & 0xBF); uc >>= 6; __attribute__((fallthrough));
             // depending on the length in bytes this determines the 
             // encoding ofthe first UTF8 byte
             case 1: *--ntr = ((uc | marks[len]));

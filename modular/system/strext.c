@@ -133,30 +133,26 @@ str_sprintf(const char * fmt, ...) {
 char * 
 str_freads(const char * path) {
     int64_t size = fsize(path);
-    if (size < 0)
-        return NULL;
-    if (size == 0) 
-        return calloc(1, sizeof (char));
+    if (size <  0) return NULL;
+    if (size == 0) return calloc(1, sizeof (char));
 
     // 尝试打开文件读取处理
     FILE * txt = fopen(path, "rb");
-    if (!txt) 
-        return NULL;
+    if (txt == NULL) return NULL;
 
     // 构建最终内存
     char * str = malloc(size + 1);
-    str[size] = '\0';
 
     size_t n = fread(str, sizeof(char), size, txt);
-    assert(n == (size_t)size);
+    assert(n == size); UNUSED(n);
     if (ferror(txt)) {
         free(str);
         fclose(txt);
         return NULL;
     }
-
     fclose(txt);
 
+    str[size] = '\0';
     return str;
 }
 

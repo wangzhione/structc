@@ -84,3 +84,7 @@ __pragma (pack(pop))
 #define unlikely(x)  (x)
 
 #endif
+
+#ifndef UNUSED
+#define UNUSED(parameter) (void)(parameter)
+#endif//UNUSED
