@@ -13,6 +13,43 @@
  */
 
 //
+// str_cmpi - 字符串不区分大小写比较函数
+// ls       : 左串
+// rs       : 右串
+// return   : ls > rs 返回 > 0; ... < 0; ... =0
+//
+int str_cmpi(const char * ls, const char * rs) {
+    int l, r;
+    if (!ls || !rs) return (int)(ls - rs);
+    do {
+        if ((l = *ls++) >= 'A' && l <= 'Z')
+            l += 'a' - 'A';
+        if ((r = *rs++) >= 'A' && r <= 'Z')
+            r += 'a' - 'A';
+    } while (l == r && l);
+    return l - r;
+}
+
+//
+// str_cmpin - 字符串不区分小写的限定字符比较函数
+// ls       : 左串
+// rs       : 右串
+// n        : 长度
+// return   : ls > rs 返回 > 0; ... < 0; ... =0
+//
+int str_cmpin(const char * ls, const char * rs, size_t n) {
+    int l, r;
+    if (!ls || !rs || !n) return (int)(ls - rs);
+    do {
+        if ((l = *ls++) >= 'A' && l <= 'Z')
+            l += 'a' - 'A';
+        if ((r = *rs++) >= 'A' && r <= 'Z')
+            r += 'a' - 'A';
+    } while (--n > 0 && l == r && l);
+    return l - r;
+}
+
+//
 // strext_test - 测试 estring_test.h 中接口设计
 //
 void strext_test(void) {
@@ -50,5 +87,10 @@ void strext_test(void) {
     char tar[11] = "1234567891";
 
     int len = str_cpyn(src, tar, sizeof src);
+    printf("len = %d, src = %s\n", len, src);
+
+    // error 发生意外. src[sizeof src] '\0' 会被吃掉
+    // 高性能领域推荐 memcpy
+    len = strlen(strncpy(src, tar, sizeof src));
     printf("len = %d, src = %s\n", len, src);
 }

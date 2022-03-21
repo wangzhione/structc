@@ -10,61 +10,15 @@ unsigned BKDHash(const char * str) {
     return h;
 }
 
-//
-// str_cpyn - tar 复制内容到 src 中
-// src      : 返回保存内容
-// tar      : 目标内容
-// n        : 最大容量
-// return   : 返回字符串长度
-//
 int 
 str_cpyn(char * src, const char * tar, size_t n) {
-    size_t i;
-    if (!src || !tar || !n) return -1;
-    for (i = 1; 
-        (i < n) && (*src++ = *tar++); ++i)
-        ;
-    if (i == n) *src = '\0';
-    return (int)i - 1;
-}
+    if (src == NULL || tar == NULL || n == 0) return -1;
 
-//
-// str_cmpi - 字符串不区分大小写比较函数
-// ls       : 左串
-// rs       : 右串
-// return   : ls > rs 返回 > 0; ... < 0; ... =0
-//
-int 
-str_cmpi(const char * ls, const char * rs) {
-    int l, r;
-    if (!ls || !rs) return (int)(ls - rs);
-    do {
-        if ((l = *ls++) >= 'A' && l <= 'Z')
-            l += 'a' - 'A';
-        if ((r = *rs++) >= 'A' && r <= 'Z')
-            r += 'a' - 'A';
-    } while (l == r && l);
-    return l - r;
-}
-
-//
-// str_cmpin - 字符串不区分小写的限定字符比较函数
-// ls       : 左串
-// rs       : 右串
-// n        : 长度
-// return   : ls > rs 返回 > 0; ... < 0; ... =0
-//
-int 
-str_cmpin(const char * ls, const char * rs, size_t n) {
-    int l, r;
-    if (!ls || !rs || !n) return (int)(ls - rs);
-    do {
-        if ((l = *ls++) >= 'A' && l <= 'Z')
-            l += 'a' - 'A';
-        if ((r = *rs++) >= 'A' && r <= 'Z')
-            r += 'a' - 'A';
-    } while (--n > 0 && l == r && l);
-    return l - r;
+    size_t i = 1;
+    while (i < n && (*src++ = *tar++) != 0)
+        i++;
+    if (i == n) *src = 0;
+    return (int) (i - 1);
 }
 
 //

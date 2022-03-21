@@ -15,7 +15,7 @@ void json_test(void) {
     }
     printf("r type = %d\n", r->type);
 
-    char * str = json_print(r);
+    char * str = json_string(r);
     printf("jstr = %s\n", jstr);
     printf("str  = %s\n", str);
     free(str);
@@ -28,7 +28,7 @@ void json_test(void) {
         fprintf(stderr, "json_create is err jstr %s\n", jstr);
         return;
     }
-    str = json_print(r);
+    str = json_string(r);
     printf("str  = %s\n", str);
     free(str);
     json_delete(r);

@@ -22,30 +22,13 @@
 extern unsigned BKDHash(const char * str);
 
 //
-// str_cpyn - tar 复制内容到 src 中
+// str_cpyn - tar 复制内容到 src 中, 相比 strncpy 安全一点, 推荐 memcpy or memncpy
 // src      : 返回保存内容
 // tar      : 目标内容
 // n        : 最大容量
 // return   : 返回字符串长度
 //
 extern int str_cpyn(char * src, const char * tar, size_t n);
-
-//
-// str_cmpi - 字符串不区分大小写比较函数
-// ls       : 左串
-// rs       : 右串
-// return   : ls > rs 返回 > 0; ... < 0; ... =0
-//
-extern int str_cmpi(const char * ls, const char * rs);
-
-//
-// str_cmpin - 字符串不区分小写的限定字符比较函数
-// ls       : 左串
-// rs       : 右串
-// n        : 长度
-// return   : ls > rs 返回 > 0; ... < 0; ... =0
-//
-extern int str_cmpin(const char * ls, const char * rs, size_t n);
 
 //
 // str_trim - 去除字符数组前后控制字符

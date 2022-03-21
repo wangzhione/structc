@@ -94,7 +94,7 @@ inline long daylight_get(void) { return daylight; }
 inline _Bool is_leap_year(time_t year) {
     if (year % 4  ) return 0;
     if (year % 100) return 1;
-    return !(year % 400);
+    return (year % 400) == 0;
 }
 
 /* We use a private localtime implementation which is fork-safe. The logging

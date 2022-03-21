@@ -21,7 +21,7 @@
 #define CMP_F
 
 //
-// cmp_f - 比较行为 > 0 or = 0  or < 0
+// cmp_f - left now node 比较 right input node 行为 > 0 or = 0  or < 0
 // : int add_cmp(const void * now, const void * node)
 //
 typedef int (* cmp_f)();
@@ -54,7 +54,7 @@ typedef void (* node_f)();
 #define EACH_F
 
 //
-// each_f - 遍历行为, node 是内部结点, arg 是外部参数
+// each_f - 遍历行为, node 是内部结点, arg 是外部参数; 返回值推荐 0 标识正确, -1 标识错误
 // : int echo(void * node, void * arg) { return 0; }
 //
 typedef int (* each_f)(void * node, void * arg);
