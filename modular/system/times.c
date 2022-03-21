@@ -124,14 +124,40 @@ localtime_get(struct tm * restrict p, time_t t) {
 }
 
 // times_tm - 从时间串中提取出来年月日时分秒
-bool times_tm(times_t ns, struct tm * om) {
-    int c, num, * es, * py;
-    if ((!ns) || !(c = *ns) || c < '0' || c > '9')
-        return false;
+bool times_tm(times_t ns, struct tm * outm) {
+    if (ns == NULL) return false;
 
-    num = 0;
-    es = &om->tm_sec;
-    py = &om->tm_year;
+    int c = *ns;
+    if (c == 0 || c < '0' || c > '9') return false;
+
+    int num = 0;
+
+
+    // /* ISO C `broken-down time' structure.  */
+    // struct tm
+    // {
+    //   int tm_sec;			/* Seconds.	[0-60] (1 leap second) */
+    //   int tm_min;			/* Minutes.	[0-59] */
+    //   int tm_hour;			/* Hours.	[0-23] */
+    //   int tm_mday;			/* Day.		[1-31] */
+    //   int tm_mon;			/* Month.	[0-11] */
+    //   int tm_year;			/* Year	- 1900.  */
+    //   int tm_wday;			/* Day of week.	[0-6] */
+    //   int tm_yday;			/* Days in year.[0-365]	*/
+    //   int tm_isdst;			/* DST.		[-1/0/1]*/
+    // 
+    // # ifdef	__USE_MISC
+    //   long int tm_gmtoff;		/* Seconds east of UTC.  */
+    //   const char *tm_zone;		/* Timezone abbreviation.  */
+    // # else
+    //   long int __tm_gmtoff;		/* Seconds east of UTC.  */
+    //   const char *__tm_zone;	/* Timezone abbreviation.  */
+    // # endif
+    // };
+    // 实现深度绑定 tm 结构结构, 构建最小可用实体.
+    // 有些字段没有过度处理, 例如 tm_isdst 和 tm_zone 推荐用 daylight_get 和 timezone_get
+    int * es = &outm->tm_sec;
+    int * py = &outm->tm_year;
     do {
         if (c >= '0' && c <= '9') {
             num = 10 * num + c - '0';
@@ -145,32 +171,35 @@ bool times_tm(times_t ns, struct tm * om) {
 
         // 去掉特殊字符, 重新开始
         for (;;) {
-            if ((c = *++ns) == '\0')
+            if ((c = *++ns) == 0)
                 return false;
             if (c >= '0' && c <= '9')
                 break;
         }
         num = 0;
-    } while (c);
+    } while (c != 0);
 
-    // true : py < es || c == '\0' && py == es
-    if (py < es) return true;
+    // 内存没有从 tm_year 解析到 tm_sec
+    if (py > es) return false;
+    
     if (py == es) {
+        // 补上最后一个缺口
         *es = num;
-        return true;
     }
-    return false;
+    outm->tm_mon -= 1;
+    outm->tm_year -= 1900;
+    return true;
 }
 
 //
 // times_get - 解析时间串, 返回时间戳
 // ns       : 时间串内容 
-// ot       : 返回得到的时间戳
-// om       : 返回得到的时间结构体
+// out      : 返回得到的时间戳
+// outm     : 返回得到的时间结构体
 // return   : 返回 true 表示构造成功
 //
 bool
-times_get(times_t ns, time_t * ot, struct tm * om) {
+times_get(times_t ns, time_t * out, struct tm * outm) {
     time_t t;
     struct tm m;
 
@@ -178,15 +207,13 @@ times_get(times_t ns, time_t * ot, struct tm * om) {
     if (!times_tm(ns, &m))
         return false;
 
-    // 得到时间戳, 失败返回false
-    m.tm_mon -= 1;
-    m.tm_year -= 1900;
+    // 得到时间戳, 失败返回 false
     if ((t = mktime(&m)) < 0)
         return false;
 
     // 返回最终结果
-    if (ot) *ot = t;
-    if (om) *om = m;
+    if (out) *out = t;
+    if (outm) *outm = m;
     return true;
 }
 
@@ -201,38 +228,40 @@ time_get(times_t ns) {
     // 先高效解析出年月日时分秒
     if (!times_tm(ns, &m))
         return -1;
-    // 得到时间戳, 失败返回false
-    m.tm_mon -= 1;
-    m.tm_year -= 1900;
+    // 得到时间戳, < 0 标识失败
     return mktime(&m);
 }
 
 //
-// time_day - 判断时间戳是否是同一天
-// n        : 第一个时间戳
-// t        : 第二个时间戳
+// time_day_equal - 判断时间戳是否是同一天
+// n        : 第一个时间戳 UTC
+// t        : 第二个时间戳 UTC
 // return   : true 表示同一天
 //
 inline bool
-time_day(time_t n, time_t t) {
-    // China local 适用, 得到当前天数
-    // GMT [World] + 8 * 3600 = CST [China]
-    n = (n + 8UL * 3600) / (24 * 3600);
-    t = (t + 8UL * 3600) / (24 * 3600);
+time_day_equal(time_t n, time_t t) {
+    // UTC(世界协调时间)
+    // 世界协调时间(UTC)与世界协调时间(UTC)没有时差.
+    // CST(中国标准时间)
+    // 中国标准时间(CST)比世界协调时间(UTC)早08:00小时. 该时区为标准时区时间, 主要用于 亚洲
+    // UTC [World] + 8 * 3600 = CST [China] | UTC [World] = CST [China] - time_zone (8 * 3600)
+    // 其他地区也类似 UTC 和 CST 关系, 存在 timezone = UTC - LOC -> LOC = UTC - timezone
+    n = (n - timezone_get()) / (24 * 3600);
+    t = (t - timezone_get()) / (24 * 3600);
     return n == t;
 }
 
 //
-// time_week - 判断时间戳是否是同一周
+// time_week_equal - 判断时间戳是否是同一周
 // n        : 第一个时间戳
 // t        : 第二个时间戳
 // return   : true 表示同一周
 //
 bool
-time_week(time_t n, time_t t) {
+time_week_equal(time_t n, time_t t) {
     time_t p;
     struct tm m;
-    // 获取最大时间存在 n 中
+    // n = max(n, t), t = min(n, t)
     if (n < t) {
         p = n; n = t; t = p;
     }
@@ -240,44 +269,42 @@ time_week(time_t n, time_t t) {
     // 得到 n 表示的当前时间
     localtime_r(&n, &m);
     // 得到当前时间到周一起点的时间差
-    m.tm_wday = m.tm_wday ? m.tm_wday - 1 : 6;
-    p = (time_t)m.tm_wday * 24 * 3600 
+    p = (time_t)(m.tm_wday ? m.tm_wday - 1 : 6) * 24 * 3600 
       + (time_t)m.tm_hour * 3600 
       + (time_t)m.tm_min * 60 
       + m.tm_sec;
 
-    // [min, n], n = max(n, t) 表示在同一周内
+    // [week start, n], n = max(n, t), , week start = n - p
+    // t = min(n, t) >= week start 表示在同一周内
     return t >= n - p;
 }
 
 //
-// times_day - 判断时间串是否是同一天
+// times_day_equal - 判断时间串是否是同一天
 // ns       : 第一个时间串
 // ts       : 第二个时间串
 // return   : true 表示同一天
 //
 bool
-times_day(times_t ns, times_t ts) {
-    time_t t, n = time_get(ns);
-    // 解析失败直接返回结果
-    if ((n < 0) || ((t = time_get(ts)) < 0))
-        return false;
-    return time_day(n, t);
+times_day_equal(times_t ns, times_t ts) {
+    time_t n = time_get(ns);
+    if (n < 0) return false;
+    time_t t = time_get(ts);
+    return t < 0 ? false : time_day_equal(n, t);
 }
 
 //
-// times_week - 判断时间串是否是同一周
+// times_week_equal - 判断时间串是否是同一周
 // ns       : 第一个时间串
 // ts       : 第二个时间串
 // return   : true 表示同一周
 //
 bool
-times_week(times_t ns, times_t ts) {
-    time_t t, n = time_get(ns);
-    // 解析失败直接返回结果
-    if ((n < 0) || ((t = time_get(ts)) < 0))
-        return false;
-    return time_week(n, t);
+times_week_equal(times_t ns, times_t ts) {
+    time_t n = time_get(ns);
+    if (n < 0) return false;
+    time_t t = time_get(ts);
+    return t < 0 ? false : time_week_equal(n, t);
 }
 
 //

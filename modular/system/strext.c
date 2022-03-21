@@ -144,7 +144,7 @@ str_freads(const char * path) {
     char * str = malloc(size + 1);
 
     size_t n = fread(str, sizeof(char), size, txt);
-    assert(n == size); UNUSED(n);
+    assert(n == (size_t)size); UNUSED(n);
     if (ferror(txt)) {
         free(str);
         fclose(txt);

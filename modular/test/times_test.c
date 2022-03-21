@@ -25,7 +25,7 @@ void times_test(void) {
     printf("status = %d\n", status);
     printf("tv_sec = %ld, tv_usec = %ld\n", (long)tv.tv_sec, (long)tv.tv_usec);
     printf("tz_minuteswest = %d, tz_dsttime = %d\n", tz.tz_minuteswest, tz.tz_dsttime);
-    printf("timezone = %ld, daylight = 0\n", timezone_get());
+    printf("timezone = %ld, daylight = %ld\n", timezone_get(), daylight_get());
 
     tzset();
     times_t nos;
@@ -39,4 +39,9 @@ void times_test(void) {
     localtime_get(&nom, now);
     strftime(nos, sizeof nos, "%Y/%m/%d %H:%M:%S", &nom);
     puts(nos);
+
+    time_t t1 = 1647835351;
+    time_t t2 = 1647836351;
+    bool equal = time_day_equal(t1, t2);
+    printf("equal = %s\n", equal ? "true" : "false");
 }

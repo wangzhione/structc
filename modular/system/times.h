@@ -8,6 +8,14 @@
 // ~ 力求最小时间业务单元 ~ 
 // 1s 秒 = 1000ms 毫秒 = 1000000us 微秒 = 1000000000ns 纳秒
 //
+// const (
+//     Nanosecond  time_t   = 1
+//     Microsecond          = 1000 * Nanosecond
+//     Millisecond          = 1000 * Microsecond
+//     Second               = 1000 * Millisecond
+//     Minute               = 60 * Second
+//     Hour                 = 60 * Minute
+// )
 
 #if defined(_WIN32) && defined(_MSC_VER)
 
@@ -34,7 +42,7 @@ inline void msleep(int ms) {
     Sleep(ms);
 }
 
-// timezone 协调世界时与当地时间之间的秒数差. 默认值为 28,800
+// timezone 协调世界时 UTC 与当地时间 LOC 之间的秒数差. 例如 中国 UTC - CST 默认值为 -28,800
 inline long timezone_get(void) { return _timezone; }
 
 // 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为 1; 否则为 0.
@@ -100,11 +108,11 @@ typedef char times_t[INT_TIMES];
 //
 // times_get - 解析时间串, 返回时间戳
 // ns       : 时间串内容 
-// ot       : 返回得到的时间戳
-// om       : 返回得到的时间结构体
+// out      : 返回得到的时间戳
+// outm     : 返回得到的时间结构体
 // return   : 返回 true 表示构造成功
 //
-extern bool times_get(times_t ns, time_t * ot, struct tm * om);
+extern bool times_get(times_t ns, time_t * out, struct tm * outm);
 
 //
 // time_get - 解析时间串, 返回时间戳
@@ -114,36 +122,36 @@ extern bool times_get(times_t ns, time_t * ot, struct tm * om);
 extern time_t time_get(times_t ns);
 
 //
-// time_day - 判断时间戳是否是同一天
+// time_day_equal - 判断时间戳是否是同一天
 // n        : 第一个时间戳
 // t        : 第二个时间戳
 // return   : true 表示同一天
 //
-extern bool time_day(time_t n, time_t t);
+extern bool time_day_equal(time_t n, time_t t);
 
 //
-// time_week - 判断时间戳是否是同一周
+// time_week_equal - 判断时间戳是否是同一周
 // n        : 第一个时间戳
 // t        : 第二个时间戳
 // return   : true 表示同一周
 //
-extern bool time_week(time_t n, time_t t);
+extern bool time_week_equal(time_t n, time_t t);
 
 //
-// times_day - 判断时间串是否是同一天
+// times_day_equal - 判断时间串是否是同一天
 // ns       : 第一个时间串
 // ts       : 第二个时间串
 // return   : true 表示同一天
 //
-extern bool times_day(times_t ns, times_t ts);
+extern bool times_day_equal(times_t ns, times_t ts);
 
 //
-// times_week - 判断时间串是否是同一周
+// times_week_equal - 判断时间串是否是同一周
 // ns       : 第一个时间串
 // ts       : 第二个时间串
 // return   : true 表示同一周
 //
-extern bool times_week(times_t ns, times_t ts);
+extern bool times_week_equal(times_t ns, times_t ts);
 
 // TIMES_STR - "{年}.{月}.{日}.{时}.{分}.{秒}.{毫秒}"
 #define TIMES_STR "%04d-%02d-%02d %02d:%02d:%02d %03d"

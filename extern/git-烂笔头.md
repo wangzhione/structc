@@ -97,6 +97,58 @@ git reset --hard {commit id}
 git push origin HEAD --force
 ```
 
+## git config
+
+**查看**
+
+```Bash
+
+# git config 配置操作指令
+git config
+
+# 查看系统 git config
+git config --system --list
+
+# 查看当前用户 global 全局配置
+git config --global  --list
+
+# 查看当前仓库配置信息
+git config --local  --list
+```
+
+**常见操作**
+
+```Bash
+git config --global user.name "[user name]"
+git config --global user.email  "[user email]"
+```
+
+行尾 autocrlf 格式化
+
+```Bash
+git config --global core.autocrlf input
+
+# core.autocrlf true  : Git 可以在你提交时自动地把行结束符 CRLF 转换成 LF, 而在签出代码时把 LF 转换成 CRLF
+# core.autocrlf input : Git 在提交时把 CRLF 转换成 LF, 签出时不转换
+# core.autocrlf false : false 关闭这项功能, 提交和签出都不额外操作.
+```
+
+## git connect github
+
+**生成 ssh 公钥和本地私钥**
+
+```Bash
+ssh-keygen -t rsa -C "[user email]"
+```
+
+找到生成 *.pub 公钥, 放入 github 中. { copy pub -> [Account settings] -> [SSH Keys] -> .. } 随后 ssh -T git@github.com 测试, 想办法看到 **You've successfully**
+
+```Bash
+ssh -T git@github.com
+
+# Hi {user name}! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
 ## 参考手册
 
 🙏 [Pro Git](https://git-scm.com/book/zh/v2)
