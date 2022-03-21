@@ -132,7 +132,7 @@ bool times_tm(times_t ns, struct tm * outm) {
 
     int num = 0;
 
-
+    // https://en.cppreference.com/w/c/chrono/tm#cite_note-leapsecond-1
     // /* ISO C `broken-down time' structure.  */
     // struct tm
     // {
@@ -145,17 +145,9 @@ bool times_tm(times_t ns, struct tm * outm) {
     //   int tm_wday;			/* Day of week.	[0-6] */
     //   int tm_yday;			/* Days in year.[0-365]	*/
     //   int tm_isdst;			/* DST.		[-1/0/1]*/
-    // 
-    // # ifdef	__USE_MISC
-    //   long int tm_gmtoff;		/* Seconds east of UTC.  */
-    //   const char *tm_zone;		/* Timezone abbreviation.  */
-    // # else
-    //   long int __tm_gmtoff;		/* Seconds east of UTC.  */
-    //   const char *__tm_zone;	/* Timezone abbreviation.  */
-    // # endif
     // };
     // 实现深度绑定 tm 结构结构, 构建最小可用实体.
-    // 有些字段没有过度处理, 例如 tm_isdst 和 tm_zone 推荐用 daylight_get 和 timezone_get
+    // 有些字段没有过度处理, 例如 tm_wday, tm_yday 和 tm_isdst 
     int * es = &outm->tm_sec;
     int * py = &outm->tm_year;
     do {
@@ -181,7 +173,7 @@ bool times_tm(times_t ns, struct tm * outm) {
 
     // 内存没有从 tm_year 解析到 tm_sec
     if (py > es) return false;
-    
+
     if (py == es) {
         // 补上最后一个缺口
         *es = num;

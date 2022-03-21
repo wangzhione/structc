@@ -128,8 +128,8 @@ git config --global user.email  "[user email]"
 ```Bash
 git config --global core.autocrlf input
 
-# core.autocrlf true  : Git 可以在你提交时自动地把行结束符 CRLF 转换成 LF, 而在签出代码时把 LF 转换成 CRLF
-# core.autocrlf input : Git 在提交时把 CRLF 转换成 LF, 签出时不转换
+# core.autocrlf true  : Git 在你提交时自动地把行结束符 CRLF 转换成 LF, 而在签出代码时把 LF 转换成 CRLF
+# core.autocrlf input : Git 在你提交时把 CRLF 转换成 LF, 签出时不转换
 # core.autocrlf false : false 关闭这项功能, 提交和签出都不额外操作.
 ```
 
@@ -139,9 +139,13 @@ git config --global core.autocrlf input
 
 ```Bash
 ssh-keygen -t rsa -C "[user email]"
+
+# ssh-keygen 支持 -t 选项指定加密算法, -C 选项指定注释, -f 选项指定密钥文件路径
 ```
 
-找到生成 *.pub 公钥, 放入 github 中. { copy pub -> [Account settings] -> [SSH Keys] -> .. } 随后 ssh -T git@github.com 测试, 想办法看到 **You've successfully**
+找到生成 *.pub 公钥, 放入 github 中. 
+然后 { copy pub -> [Account settings] -> [SSH Keys] -> [Ctrl + V] } 
+随后 ssh -T git@github.com 测试, 想办法看到 **You've successfully**
 
 ```Bash
 ssh -T git@github.com
