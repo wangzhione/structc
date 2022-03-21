@@ -259,7 +259,7 @@ time_week_equal(time_t n, time_t t) {
     }
 
     // 得到 n 表示的当前时间
-    localtime_r(&n, &m);
+    localtime_get(&m, n);
     // 得到当前时间到周一起点的时间差
     p = (time_t)(m.tm_wday ? m.tm_wday - 1 : 6) * 24 * 3600 
       + (time_t)m.tm_hour * 3600 

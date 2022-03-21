@@ -64,7 +64,7 @@ extern int usleep(unsigned usec);
 extern int gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz);
 
 //
-// localtime_r - 获取当前时间, 线程安全
+// localtime_r - 获取当前时间线程加锁版本, 推荐使用 localtime_get
 // timep    : 输入的时间戳指针
 // result   : 返回输出时间结构
 // return   : 失败 NULL, 正常返回 result
