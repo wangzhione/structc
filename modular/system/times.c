@@ -236,7 +236,7 @@ time_day_equal(time_t n, time_t t) {
     // 世界协调时间(UTC)与世界协调时间(UTC)没有时差.
     // CST(中国标准时间)
     // 中国标准时间(CST)比世界协调时间(UTC)早08:00小时. 该时区为标准时区时间, 主要用于 亚洲
-    // UTC [World] + 8 * 3600 = CST [China] | UTC [World] = CST [China] - time_zone (8 * 3600)
+    // UTC [World] + 8 * 3600 = CST [China] | UTC [World] = CST [China] - timezone (8 * 3600)
     // 其他地区也类似 UTC 和 CST 关系, 存在 timezone = UTC - LOC -> LOC = UTC - timezone
     n = (n - timezone) / (24 * 3600);
     t = (t - timezone) / (24 * 3600);
