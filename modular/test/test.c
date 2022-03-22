@@ -29,7 +29,6 @@ void test(void) {
     // 单元测试 show time 开始你的表演
     //
     EXTERN_TEST(json_test);
-    EXTERN_TEST(file_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

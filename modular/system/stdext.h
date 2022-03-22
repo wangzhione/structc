@@ -8,6 +8,13 @@
 #include "alloc.h"
 #include "system.h"
 
+// 这个库对于 目录 相关操作, 并没有很好屏蔽平台相关差异性. 依赖使用者求同存异.
+// 例如 怎么看待目录: logs/heoos/gghh\\gggs/g/
+// window 文件分隔符为 \ , 并且也兼容 /. 所以他看见的是 logs heoos gghh gggs g
+// linux 文件分隔符为 /, 所以他看见的目录是 logs heoos gghh\gggs g
+// 这些差别会影响 remove 和 mkdir 行为, 依赖使用者去怎么用对
+// 
+
 #if defined(__linux__) && defined(__GNUC__)
 
 #include <unistd.h>
@@ -100,7 +107,7 @@ inline int64_t fsize(const char * path) {
 //
 // removes - 删除非空目录 or 文件
 // path     : 文件路径
-// return   : < 0 is error, >=0 is success
+// return   : not 0 is error, equal 0 is success
 //
 extern int removes(const char * path);
 

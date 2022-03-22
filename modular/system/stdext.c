@@ -3,23 +3,34 @@
 //
 // removes - 删除非空目录 or 文件
 // path     : 文件路径
-// return   : < 0 is error, >=0 is success
+// return   : not 0 is error, equal 0 is success
 //
 inline int removes(const char * path) {
+    // On success (all requested permissions granted, or mode is F_OK
+    // and the file exists), zero is returned.  On  error  (at  least
+    // one bit in mode asked for a permission that is denied, or mode
+    // is F_OK and the file does  not  exist,  or  some  other  error
+    // occurred), -1 is returned, and errno is set appropriately.
+    if (access(path, F_OK)) {
+        return 0;
+    }
+
     char s[BUFSIZ];
 
 # ifndef RMRF_STR
 #   if defined(_WIN32) && defined(_MSC_VER)
 #     define RMRF_STR    "rmdir /s /q \"%s\""
 #   else
-#     define RMRF_STR    "rm -rf '%s'"
+#     define RMRF_STR    "rm -rf \"%s\""
 #   endif
 # endif
 
-    // path 超过缓冲区长度, 返回异常
-    if (snprintf(s, sizeof s, RMRF_STR, path) == sizeof s) 
+    // 发生异常 或者 path 超过缓冲区长度, 返回异常
+    int sz = snprintf(s, sizeof s, RMRF_STR, path);
+    if (sz < 0 || sz == sizeof s) 
         return -1;
-    return access(path, F_OK) ? 0 : -system(s);
+    
+    return system(s);
 }
 
 //
@@ -38,7 +49,7 @@ mkdirs(const char * path) {
     if (!access(path, F_OK) || !mkdir(path))
         return 0;
 
-    // 跳过第一个 ['/'|'\\'] 检查是否是多级目录
+    // 跳过第一个 ['/' | '\\'] 检查是否是多级目录
     p = (char *)path;
     while ((c = *++p) != '\0')
         if (c == '/' || c == '\\')
@@ -53,6 +64,7 @@ mkdirs(const char * path) {
 
             if (access(s, F_OK)) {
                 // 文件不存在, 开始创建, 创建失败直接返回错误
+                printf("s = %s\n", s);
                 if (mkdir(s)) {
                     free(s);
                     return -1;
@@ -67,7 +79,7 @@ mkdirs(const char * path) {
     c = p[-1]; free(s);
     if (c == '/' || c == '\\')
         return 0;
-
+    printf("path = %s\n", path);
     // 剩下最后文件路径, 开始构建
     return mkdir(path);
 }

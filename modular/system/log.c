@@ -4,8 +4,8 @@ static FILE * txt;
 
 // log_init - 单例, 日志库初始化
 void log_init(const char * path) {
-    if (!(txt = fopen(path, "ab"))) {
-        fprintf(stderr, "fopen ab path err %s\n", path);
+    if ((txt = fopen(path, "ab")) == NULL) {
+        fprintf(stderr, "fopen ab error time = %ld, path = %s\n", time(NULL), path);
         exit(EXIT_FAILURE);
     }
 }

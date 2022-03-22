@@ -46,12 +46,13 @@ CC        ?= cc
 # -Wimplicit-fallthrough=0          : 忽略 switch case missing break warning
 # -Wno-missing-field-initializers   : 忽略 initializer for field warning
 #
-CFLAGS    := -g -O3 -Werror -Wall -Wextra -Wno-missing-field-initializers -D_GNU_SOURCE
+CFLAGS    := -g -Werror -Wall -Wextra -Wno-missing-field-initializers -D_GNU_SOURCE
 LIB       := -lm -lpthread
 
-HEAD    := $(CC) $(CFLAGS)
 ifneq ( , $(D))
-	HEAD+=$(D)
+	HEAD=$(CC) -O3 $(CFLAGS) $(D)
+else
+	HEAD=$(CC) -O1 $(CFLAGS) $(D)
 endif
 
 RUNO      = $(HEAD) $(IINC) -c -o $@ $^

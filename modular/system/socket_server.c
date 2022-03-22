@@ -344,7 +344,7 @@ static inline void clear_wb_list(struct wb_list * list) {
 }
 
 struct socket_server * 
-socket_server_create(uint64_t time) {
+socket_server_create(uint64_t realtime) {
     spoll_t efd = spoll_create();
     if (spoll_invalid(efd)) {
         RETNUL("socket-server: create event pool failed.");
@@ -367,7 +367,7 @@ socket_server_create(uint64_t time) {
     }
 
     struct socket_server * ss = malloc(sizeof(struct socket_server));
-    ss->time = time;
+    ss->time = realtime;
     ss->event_fd = efd;
     ss->recvctrl_fd = chfd[0];
     ss->sendctrl_fd = chfd[1];
@@ -392,8 +392,8 @@ socket_server_create(uint64_t time) {
 }
 
 void
-socket_server_updatetime(struct socket_server * ss, uint64_t time) {
-    ss->time = time;
+socket_server_updatetime(struct socket_server * ss, uint64_t realtime) {
+    ss->time = realtime;
 }
 
 static void free_wb_list(struct socket_server * ss, struct wb_list * list) {

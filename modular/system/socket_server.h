@@ -29,9 +29,9 @@ struct socket_message {
     char * data;
 };
 
-extern struct socket_server * socket_server_create(uint64_t time);
+extern struct socket_server * socket_server_create(uint64_t realtime);
 extern void socket_server_release(struct socket_server * ss);
-extern void socket_server_updatetime(struct socket_server * ss, uint64_t time);
+extern void socket_server_updatetime(struct socket_server * ss, uint64_t realtime);
 extern int socket_server_poll(struct socket_server * ss, struct socket_message * result, int * more);
 
 extern void socket_server_exit(struct socket_server * ss);

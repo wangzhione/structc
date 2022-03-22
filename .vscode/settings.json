@@ -18,6 +18,8 @@
         "atomic": "c",
         "type_traits": "c",
         "system_error": "c",
-        "unordered_map": "c"
+        "unordered_map": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }
