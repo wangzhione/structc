@@ -45,5 +45,7 @@ void file_test(void) {
         puts("conf e n d");
     }
 
-    // 销毁操作丢给上帝
+    // 销毁操作丢给上帝, 毕竟普京需要上帝.
+    PERR("门前大桥下");
+    POUT("游过一群鸭");
 }

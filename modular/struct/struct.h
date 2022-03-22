@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <math.h>
+#include <time.h>
 #include <ctype.h>
 #include <errno.h>
 #include <float.h>
@@ -76,7 +77,7 @@ typedef int (* each_f)(void * node, void * arg);
 #endif//DCODE
 
 #define POUT(fmt, ...)                                                  \
-fprintf(stdout, "[%s:%s:%d][%d:%s][stdout]"fmt"\n",                     \
+fprintf(stdout, "[%ld][stdout][%s:%s:%d][%d:%s]"fmt"\n", time(NULL),    \
     __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
 
 //
@@ -85,7 +86,7 @@ fprintf(stdout, "[%s:%s:%d][%d:%s][stdout]"fmt"\n",                     \
 // IF   - 条件判断异常退出的辅助宏
 //
 #define PERR(fmt, ...)                                                  \
-fprintf(stderr, "[%s:%s:%d][%d:%s][stderr]"fmt"\n",                     \
+fprintf(stderr, "[%ld][stderr][%s:%s:%d][%d:%s]"fmt"\n", time(NULL),    \
     __FILE__, __func__, __LINE__, errno, strerror(errno), ##__VA_ARGS__)
 
 #define EXIT(fmt, ...)                                                  \

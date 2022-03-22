@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dict.h"
+#include "struct.h"
 #include "strext.h"
 #include "spinlock.h"
 

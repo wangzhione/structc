@@ -17,6 +17,7 @@
         "*.rh": "c",
         "atomic": "c",
         "type_traits": "c",
-        "system_error": "c"
+        "system_error": "c",
+        "unordered_map": "c"
     }
 }

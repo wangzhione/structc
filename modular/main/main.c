@@ -31,9 +31,6 @@ static void main_init(void) {
 
     // socket 模块初始化 ~
     socket_init();
-
-    // file 模块初始化
-    EXTERN_RUN(file_init);
 }
 
 //
