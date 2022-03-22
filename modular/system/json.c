@@ -259,8 +259,8 @@ static const char * parse_string(json_t item, const char * str) {
             case 1: *--cursor = ((uc | marks[len]));
             }
             cursor += len;
+            break;
         }
-        break;
         default : *cursor++ = c;
         }
     }
