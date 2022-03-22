@@ -1,6 +1,8 @@
 ﻿#include <dict.h>
 #include <strext.h>
 
+extern void dict_move_filter(dict_t d, dict_t a, void * filter);
+
 static void str_die(void * node) {
     free(node);
 }

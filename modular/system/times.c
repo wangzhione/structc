@@ -81,12 +81,12 @@ gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz) {
  * logging of the dates, it's not really a complete implementation. */
 void 
 localtime_get(struct tm * restrict p, time_t t) {
-    t -= timezone_get();                /* Adjust for timezone. */
-    t += 3600 * daylight_get();         /* Adjust for daylight time. */
+    t -= timezone;                      /* Adjust for timezone. */
+    t += 3600 * daylight;               /* Adjust for daylight time. */
     time_t days = t / (3600 * 24);      /* Days passed since epoch. */
     time_t seconds = t % (3600 * 24);   /* Remaining seconds. */
 
-    p->tm_isdst = daylight_get();
+    p->tm_isdst = daylight;
     p->tm_hour = seconds / 3600;
     p->tm_min = (seconds % 3600) / 60;
     p->tm_sec = (seconds % 3600) % 60;
@@ -238,8 +238,8 @@ time_day_equal(time_t n, time_t t) {
     // 中国标准时间(CST)比世界协调时间(UTC)早08:00小时. 该时区为标准时区时间, 主要用于 亚洲
     // UTC [World] + 8 * 3600 = CST [China] | UTC [World] = CST [China] - time_zone (8 * 3600)
     // 其他地区也类似 UTC 和 CST 关系, 存在 timezone = UTC - LOC -> LOC = UTC - timezone
-    n = (n - timezone_get()) / (24 * 3600);
-    t = (t - timezone_get()) / (24 * 3600);
+    n = (n - timezone) / (24 * 3600);
+    t = (t - timezone) / (24 * 3600);
     return n == t;
 }
 

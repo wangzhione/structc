@@ -43,10 +43,14 @@ inline void msleep(int ms) {
 }
 
 // timezone 协调世界时 UTC 与当地时间 LOC 之间的秒数差. 例如 中国 UTC - CST 默认值为 -28,800
-inline long timezone_get(void) { return _timezone; }
+#define timezone _timezone
 
 // 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为 1; 否则为 0.
-inline long daylight_get(void) { return _daylight; }
+#define daylight _daylight
+
+// tzname 的值由 TZ 环境变量的值确定. 如果您未显式设置 TZ 的值, 
+// 则 tzname[0] 和 tzname[1] 将分别包含"PST"和"PDT"(太平洋夏令时)的默认设置
+#define tzname _tzname
 
 //
 // usleep - 微秒级别等待函数
@@ -82,9 +86,6 @@ inline void msleep(int ms) {
     usleep(ms * 1000); 
 }
 
-inline long timezone_get(void) { return timezone; }
-inline long daylight_get(void) { return daylight; }
-
 #endif
 
 /* A year not divisible by 4 is not leap.
@@ -92,9 +93,7 @@ inline long daylight_get(void) { return daylight; }
  * If div by 100 *and* not by 400 is not leap.
  * If div by 100 and 400 is leap. */
 inline _Bool is_leap_year(time_t year) {
-    if (year % 4  ) return 0;
-    if (year % 100) return 1;
-    return (year % 400) == 0;
+    return ((year) % 4 == 0 && ((year) % 100 != 0 || (year) % 400 == 0));
 }
 
 /* We use a private localtime implementation which is fork-safe. The logging
