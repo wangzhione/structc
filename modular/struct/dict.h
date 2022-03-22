@@ -7,6 +7,9 @@
 //
 typedef struct dict * dict_t;
 
+extern unsigned dict_size(dict_t d);
+extern unsigned dict_used(dict_t d);
+
 //
 // dict_delete - 字典删除
 // d        : dict_create 创建的字典对象
@@ -37,12 +40,3 @@ extern void * dict_get(dict_t d, const char * k);
 // return   : void
 //
 extern void dict_set(dict_t d, const char * k, void * v);
-
-extern unsigned dict_size(dict_t d);
-extern unsigned dict_used(dict_t d);
-
-// a move d; return d; @see cmp_f filter() == 0 -> remove
-extern void dict_move_filter(dict_t d, dict_t a, void * filter);
-
-// @see struct.h cmp_f feach(const char * key, val, arg) < 0 is error
-extern int dict_each(dict_t d, void * feach, void * arg);

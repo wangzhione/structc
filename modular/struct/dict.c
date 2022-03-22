@@ -34,6 +34,14 @@ struct dict {
     struct keypair ** table;    // 集合
 };
 
+unsigned dict_size(dict_t d) {
+    return d ? d->size : 0u;
+}
+
+unsigned dict_used(dict_t d) {
+    return d ? d->used : 0u;
+}
+
 static unsigned dict_get_resize(struct dict * d) {
     unsigned used = d->used;
     unsigned size = d->size;
@@ -237,14 +245,6 @@ dict_set(dict_t d, const char * k, void * v) {
     ++d->used;
 }
 
-unsigned dict_size(dict_t d) {
-    return d ? d->size : 0u;
-}
-
-unsigned dict_used(dict_t d) {
-    return d ? d->used : 0u;
-}
-
 void dict_add_keypair(dict_t d, struct keypair * prev) {
     // 先检查内存是否够用
     dict_resize(d);
@@ -285,7 +285,7 @@ void dict_add_keypair(dict_t d, struct keypair * prev) {
     ++d->used;
 }
 
-// a move d; return d; 
+// a move d; return d; @see cmp_f filter() == 0 -> remove
 void dict_move_filter(dict_t d, dict_t a, void * filter) {
     assert(d && a && d->fdie == a->fdie);
 
@@ -314,7 +314,7 @@ void dict_move_filter(dict_t d, dict_t a, void * filter) {
     }
 }
 
-// @see struct.h each_f
+// @see struct.h cmp_f feach(const char * key, val, arg) < 0 is error
 int dict_each(dict_t d, void * feach, void * arg) {
     int ret;
     unsigned used, index;
