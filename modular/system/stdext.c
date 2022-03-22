@@ -64,7 +64,6 @@ mkdirs(const char * path) {
 
             if (access(s, F_OK)) {
                 // 文件不存在, 开始创建, 创建失败直接返回错误
-                printf("s = %s\n", s);
                 if (mkdir(s)) {
                     free(s);
                     return -1;
@@ -79,7 +78,6 @@ mkdirs(const char * path) {
     c = p[-1]; free(s);
     if (c == '/' || c == '\\')
         return 0;
-    printf("path = %s\n", path);
     // 剩下最后文件路径, 开始构建
     return mkdir(path);
 }

@@ -14,13 +14,11 @@ void exec_init(void) {
     char path[BUFSIZ];
     // 一切皆有可能 🙂
     size_t n = getawd(path, LEN(path));
-    POUT("path = %s", path);
     // 配置模块初始化
     IF(!conf_init(strcat(path, CONF_PATH_STR)));
 
     // 日志模块初始化
     memcpy(path + n, LOGS_PATH_STR, LEN(LOGS_PATH_STR));
-    POUT("path = %s", path);
     fmkdir(path);
     EXTERN_RUN(log_init, path);
 }
