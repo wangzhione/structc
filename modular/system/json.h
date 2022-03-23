@@ -5,7 +5,7 @@
 #include <limits.h>
 #include <stdbool.h>
 
-#include "cstr.h"
+#include "chars.h"
 #include "strext.h"
 
 //
@@ -88,15 +88,10 @@ size_t json_mini(char * str);
 // json_parse - json 解析函数 low level api
 json_t json_parse(const char * str);
 
-//
-// json_file - 通过文件构造 json 对象
-// json_create  - 通过字符串构造 json 对象
-// str      : 字符串
-// path     : 文件路径
-// return   : json_t 对象
-//
-extern json_t json_file(const char * path);
+// json_create  解析字符串构造 json 对象
 extern json_t json_create(const char * str);
+// json_file 通过文件 path 解析文件内容构造 json 对象
+extern json_t json_file(const char * path);
 
 // json_detach_str - json 字符串分离, 需要自行 free
 inline char * json_detach_str(json_t item) {

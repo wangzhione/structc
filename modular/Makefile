@@ -52,7 +52,7 @@ LIB       := -lm -lpthread
 ifneq ( , $(D))
 	HEAD=$(CC) -O3 $(CFLAGS) $(D)
 else
-	HEAD=$(CC) -O1 $(CFLAGS) $(D)
+	HEAD=$(CC) -O2 $(CFLAGS) $(D)
 endif
 
 RUNO      = $(HEAD) $(IINC) -c -o $@ $^

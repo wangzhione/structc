@@ -460,46 +460,36 @@ size_t json_mini(char * str) {
 //
 json_t json_parse(const char * str) {
     json_t c = json_new();
-    if (!parse_value(c, str)) {
+    if (parse_value(c, str) == NULL) {
         json_delete(c);
         return NULL;
     }
     return c;
 }
 
-//
-// json_file - 通过文件构造 json 对象
-// json_create  - 通过字符串构造 json 对象
-// str      : 字符串
-// path     : 文件路径
-// return   : json_t 对象
-//
 json_t 
-json_file(const char * path) {
-    // 读取文件中内容, 并检查
-    if (!path || !*path) return NULL;
-    char * str = str_freads(path);
-    if (!str) return NULL;
+json_create(const char * str) {
+    if (str == NULL || *str == 0) 
+        return NULL;
 
-    // 返回解析结果
-    json_t c = json_create(str);
-    free(str);
+    char * ss = strdup(str);
+    // 清洗 + 解析
+    json_mini(ss);
+    json_t c = json_parse(ss);
+    free(ss);
     return c;
 }
 
 json_t 
-json_create(const char * str) {
-    json_t c = NULL;
-    if (str && *str) {
-        cstr_declare(p);
-        cstr_appends(p, str);
+json_file(const char * path) {
+    char * str = str_freads(path);
+    // 读取文件中内容, 并事先检查参数
+    if (str == NULL)
+        return NULL;
 
-        // 清洗 + 解析
-        json_mini(p->str);
-        c = json_parse(p->str);
-
-        cstr_free(p);
-    }
+    // 尝试解析结果
+    json_t c = json_create(str);
+    free(str);
     return c;
 }
 
@@ -545,13 +535,13 @@ json_detach_object(json_t obj, const char * k) {
 }
 
 // json_string_number - number 编码
-static char * json_string_number(json_t item, cstr_t p) {
+static char * json_string_number(json_t item, struct chars * p) {
     char * str;
     double d = item->num;
     
     // 普通 0 插入 
     if (d >= -DBL_EPSILON && d <= DBL_EPSILON) {
-        str = cstr_expand(p, 2);
+        str = chars_expand(p, 2);
         str[0] = '0'; str[1] = 0;
         p->len += 1;
         return str;
@@ -559,11 +549,11 @@ static char * json_string_number(json_t item, cstr_t p) {
 
     int i = (int)d;
     if (fabs(d - i) <= DBL_EPSILON && i <= INT_MAX && i >= INT_MIN) {
-        str = cstr_expand(p, 21);
+        str = chars_expand(p, 21);
         sprintf(str, "%d", i); // int 值插入
     } else {
         double n = fabs(d);
-        str = cstr_expand(p, 64); // e 科学记数法
+        str = chars_expand(p, 64); // e 科学记数法
         if (fabs(d - floor(d)) <= DBL_EPSILON && n < 1.0e60)
             sprintf(str, "%.0f", d);
         else if (n < 1.0e-6 || n > 1.0e9)
@@ -577,13 +567,13 @@ static char * json_string_number(json_t item, cstr_t p) {
 }
 
 // json_string_string - string 编码
-static char * json_string_string(char * str, cstr_t p) {
+static char * json_string_string(char * str, struct chars * p) {
     unsigned char c;
     const char * ptr;
     char * cursor, * out;
     // 什么都没有 返回 "" empty string
     if (NULL == str || *str == 0) {
-        out = cstr_expand(p, 3);
+        out = chars_expand(p, 3);
         out[0] = out[1] = '"'; out[2] = '\0';
         p->len += 2;
         return out;
@@ -606,7 +596,7 @@ static char * json_string_string(char * str, cstr_t p) {
     }
 
     // 开始分配内存
-    cursor = out = cstr_expand(p, len+3);
+    cursor = out = chars_expand(p, len+3);
     out[len+2] = 0;
     *cursor++ = '"';
 
@@ -642,13 +632,13 @@ ret_out:
 }
 
 // json_string_value - value 编码 Predeclare these prototypes
-static char * json_string_value(json_t item, cstr_t p);
+static char * json_string_value(json_t item, struct chars * p);
 
 // json_string_array - array 编码
-static char * json_string_array(json_t item, cstr_t p) {
+static char * json_string_array(json_t item, struct chars * p) {
     size_t n = p->len;
     json_t child = item->child;
-    char * ptr = cstr_expand(p, 1);
+    char * ptr = chars_expand(p, 1);
 
     *ptr = '['; ++p->len;
 
@@ -656,22 +646,22 @@ static char * json_string_array(json_t item, cstr_t p) {
     while (child) {
         json_string_value(child, p);
         if ((child = child->next)) {
-            ptr = cstr_expand(p, 1);
+            ptr = chars_expand(p, 1);
             *ptr++ = ','; ++p->len;
         }
     }
 
-    ptr = cstr_expand(p, 2);
+    ptr = chars_expand(p, 2);
     *ptr++ = ']'; ++p->len; 
     *ptr = '\0';
     return p->str + n;
 }
 
 // json_string_object - object 编码
-static char * json_string_object(json_t item, cstr_t p) {
+static char * json_string_object(json_t item, struct chars * p) {
     size_t n = p->len;
     json_t child = item->child;
-    char * ptr = cstr_expand(p, 1);
+    char * ptr = chars_expand(p, 1);
 
     *ptr = '{'; ++p->len;
 
@@ -681,38 +671,38 @@ static char * json_string_object(json_t item, cstr_t p) {
         p->len += strlen(p->str + p->len);
 
         // 加入一个 ':'
-        ptr = cstr_expand(p, 1);
+        ptr = chars_expand(p, 1);
         *ptr++ = ':'; ++p->len;
 
         // 接续打印值
         json_string_value(child, p);
 
         if ((child = child->next)) {
-            ptr = cstr_expand(p, 1);
+            ptr = chars_expand(p, 1);
             *ptr++ = ','; ++p->len;
         }
     }
 
-    ptr = cstr_expand(p, 2);
+    ptr = chars_expand(p, 2);
     *ptr++ = '}'; ++p->len;
     *ptr = '\0';
     return p->str + n;
 }
 
 static char * 
-json_string_value(json_t item, cstr_t p) {
+json_string_value(json_t item, struct chars * p) {
     char * out = NULL;
     switch(item->type) {
     case JSON_NULL  :
-        out = memcpy(cstr_expand(p, sizeof "null"), "null", sizeof "null");
+        out = memcpy(chars_expand(p, sizeof "null"), "null", sizeof "null");
         p->len += sizeof "null" - 1;
         return out;
     case JSON_TRUE  :
-        out = memcpy(cstr_expand(p, sizeof "true"), "true", sizeof "true");
+        out = memcpy(chars_expand(p, sizeof "true"), "true", sizeof "true");
         p->len += sizeof "true" - 1;
         return out;
     case JSON_FALSE :
-        out = memcpy(cstr_expand(p, sizeof "false"), "false", sizeof "false");
+        out = memcpy(chars_expand(p, sizeof "false"), "false", sizeof "false");
         p->len += sizeof "false" - 1;
         return out;
 
@@ -733,12 +723,12 @@ json_string_value(json_t item, cstr_t p) {
 //
 char * 
 json_string(json_t c) {
-    cstr_declare(p);
-    if (NULL == json_string_value(c, p)) {
-        cstr_free(p);
+    struct chars p = {};
+    if (NULL == json_string_value(c, &p)) {
+        free(p.str);
         return NULL;
     }
-    return p->str;
+    return p.str;
 }
 
 json_t 

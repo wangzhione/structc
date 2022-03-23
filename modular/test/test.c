@@ -19,7 +19,9 @@ do {                                                                    \
 } while(0)
 
 //
-// test     - main run test
+// test     - main run test 
+//            DEBUG build: make
+//          Release build: make D=-DNDEBUG
 // return   : void
 //
 void test(void) {
@@ -28,8 +30,8 @@ void test(void) {
     //
     // 单元测试 show time 开始你的表演
     //
-    EXTERN_TEST(times_test);
-    EXTERN_TEST(mkdirs_test, "111/222");
+    EXTERN_TEST(chars_test);
+    EXTERN_TEST(json_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

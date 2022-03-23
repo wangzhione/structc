@@ -86,6 +86,7 @@ str_sprintf(const char * fmt, ...) {
 //
 char * 
 str_freads(const char * path) {
+    if (path == NULL || *path == 0) return NULL;
     int64_t size = fsize(path);
     if (size <  0) return NULL;
     if (size == 0) return calloc(1, sizeof (char));

@@ -32,4 +32,16 @@ void json_test(void) {
     printf("str  = %s\n", str);
     free(str);
     json_delete(r);
+
+    // 第三轮测试
+    jstr = "123456.789";
+    r = json_create(jstr);
+    if (NULL == r) {
+        fprintf(stderr, "json_create is err jstr %s\n", jstr);
+        return;
+    }
+    str = json_string(r);
+    printf("str  = %s\n", str);
+    free(str);
+    json_delete(r);
 }
