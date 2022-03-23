@@ -54,6 +54,7 @@
     struct 数据结构练习包
     system 系统封装排练包
     module 业务模块
+    test   模糊测试
 
 总设计:
 
@@ -64,6 +65,8 @@
     ...
 
 **代码风格, 希望"最"贴近原生 api**
+
+[pthread.h](https://github.com/wangzhione/structc/blob/master/modular/system/thread.h)
 
 ```C
 #pragma once
@@ -114,11 +117,30 @@ inline void pthread_end(pthread_t id) {
 
 ***
 
+[chars.h](https://github.com/wangzhione/structc/blob/master/modular/struct/chars.h)
+
+```C
+// 轻量 char * 串
+//
+// stack declare 构建和释放 : 
+// 构建 struct chars var = {}; 释放 free(var.str);
+// heap  declare 构建和释放 : 
+// 构建 struct chars * cs = calloc(1, sizeof(struct chars)); 释放 chars_delete(cs);
+struct chars {
+    char * str;     // char * 字符串
+    size_t len;     // 长度
+    size_t cap;     // capacity 容量
+};
+```
+
+***
+
+
 ### 也许要扯些
 
 [structc 环境搭建](./modular/README.md)
 
-    - Linux 回车
+    - Linux 构建运行
         - Debug   : make
         - Clean   : make clean
         - Release : make D=-DNDEBUG
@@ -127,7 +149,7 @@ inline void pthread_end(pthread_t id) {
         - main 目录
             - main::exec.c 业务起点
             - main::init.c 模块初始化
-            - main::test.c test 单元测试
+            - test::test.c test 模糊测试
         - test 目录
             - *_test.c -> void *_test(void) { ... }
 
@@ -135,7 +157,7 @@ inline void pthread_end(pthread_t id) {
 
 ### IDE 弱议
 
-    Linux 抛砖引玉带大家配哈 VS Code Best Version
+    Linux 抛砖引玉带大家配哈 VS Code Best Version 详情 @see .vscode
 
     0. 安装 C/C++ Microsoft 插件
 

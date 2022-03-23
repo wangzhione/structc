@@ -2,6 +2,7 @@
 
 #include "struct.h"
 
+// 轻量 char * 串
 //
 // stack declare 构建和释放 : 
 // 构建 struct chars var = {}; 释放 free(var.str);
