@@ -3,7 +3,7 @@
 // pipe_test - test pipe
 void pipe_test(void) {
     pipe_t ch;
-    socket_t fd[2];
+    SOCKET fd[2];
     char data[] = "我爱传承, I support 祖国.";
     int r = puts(data);
     printf("r = %2d, data = %s\n", r, data);
@@ -33,9 +33,9 @@ void pipe_test(void) {
 // pipefd   : 索引 0 表示 recv fd, 1 是 send fd
 // return   : 0 is success -1 is error returned
 //
-int pipe_socket(socket_t pipefd[2]) {
+int pipe_socket(SOCKET pipefd[2]) {
     sockaddr_t name;
-    socket_t s = socket_sockaddr_stream(name, AF_INET6);
+    SOCKET s = socket_sockaddr_stream(name, AF_INET6);
     if (s == INVALID_SOCKET)
         return -1;
     
@@ -71,8 +71,8 @@ err_close:
     return -1;
 }
 
-int pipe3(socket_t pipefd[2]) {
-    socket_t s;
+int _pipe3(SOCKET pipefd[2]) {
+    SOCKET s;
     sockaddr_t name = { {.s = { AF_INET }, .len = sizeof(struct sockaddr_in) } };
     socklen_t nlen = name->len;
     name->s4.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
@@ -104,10 +104,71 @@ int pipe3(socket_t pipefd[2]) {
     return closesocket(s), 0;
 }
 
+int _pipe4(SOCKET pipefd[2]) {
+    struct sockaddr_in6 name;
+    socklen_t len = sizeof(struct sockaddr_in6);
+
+    SOCKET s = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+    if (s == INVALID_SOCKET) {
+        PERR("soccket AF_INET6 SOCK_STREAM error");
+        return -1;
+    }
+
+    memset(&name, 0, sizeof(struct sockaddr_in6));
+    name.sin6_family = AF_INET6;
+    // 绑定默认网卡, 多平台上更容易 connect success
+    name.sin6_addr = in6addr_loopback;
+    if (bind(s, (struct sockaddr *)&name, len)) {
+        PERR("bind in6addr_loopback error");
+        goto fail_socket;
+    }
+
+    // 开始监听
+    if (listen(s, 1)) {
+        PERR("listen backlog = 1 error");
+        goto fail_socket;
+    }
+
+    // 得到 server socket 绑定端口和本地地址
+    if (getsockname(s, (struct sockaddr *)&name, &len)) {
+        PERR("getsockname sockaddr error");
+        goto fail_socket;
+    }
+
+    // 开始尝试构建 client socket connect server socket
+    pipefd[0] = socket(name.sin6_family, SOCK_STREAM, IPPROTO_TCP);
+    if (pipefd[0] == INVALID_SOCKET) {
+        PERR("socket client error");
+        goto fail_socket;
+    }
+    if (connect(pipefd[0], (struct sockaddr *)&name, len)) {
+        PERR("connect error");
+        goto fail_pipe;
+    }
+    // 准备 accept 建立链接
+    pipefd[1] = accept(s, (struct sockaddr *)&name, &len);
+    if (pipefd[1] == INVALID_SOCKET) {
+        PERR("accept error");
+        goto fail_pipe;
+    }
+
+    // pipefd[0] recv fd, pipefd[1] send fd
+    shutdown(pipefd[0], SHUT_WR);
+    shutdown(pipefd[1], SHUT_RD);
+
+    closesocket(s);
+    return 0;
+fail_pipe:
+    closesocket(pipefd[0]);
+fail_socket:
+    closesocket(s);
+    return -1;
+}
+
 void pipe_socket_test(void) {
     int r;
-    socket_t pipefd[2];
-    IF(pipe_socket(pipefd));
+    SOCKET pipefd[2];
+    IF(_pipe4(pipefd));
 
     char data[] = "君子和而不同, I support 自由.";
 
@@ -116,6 +177,6 @@ void pipe_socket_test(void) {
     r = socket_recv(pipefd[0], data, sizeof data);
     printf("r = %2d, data = %s\n", r, data);
 
-    closesocket(pipefd[0]); 
+    closesocket(pipefd[0]);
     closesocket(pipefd[1]);
 }

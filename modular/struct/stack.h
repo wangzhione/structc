@@ -36,8 +36,8 @@ inline void stack_free(struct stack * s) {
 // return   : void
 //
 inline void stack_delete(struct stack * s, node_f fdie) {
-    if (s) {
-        if (fdie) {
+    if (s != NULL) {
+        if (fdie != NULL) {
             while (s->tail >= 0)
                 fdie(s->data[s->tail--]);
         }

@@ -33,17 +33,20 @@ inline void q_free(q_t q) {
 }
 
 inline bool q_empty(q_t q) {
-    return q->tail <  0;
+    return q->tail < 0;
 }
 
 inline bool q_exist(q_t q) {
-    return q->tail >= 0;
+    return q->tail >=0;
 }
 
-static inline int q_len(q_t q) {
-    return q->tail < 0 ? 0 :( 
-     q->tail < q->head ? q->cap+q->tail-q->head+1 : q->tail-q->head+1
-    );
+inline int q_len(q_t q) {
+    // return q->tail < 0 ? 0 :( 
+    //  q->tail < q->head ? q->cap+q->tail-q->head+1 : q->tail-q->head+1
+    // );
+    // q->tail >= 0       ? 1 : 0
+    // q->tail < q-> head ? 1 : 0
+    return (q->tail>=0)*((q->tail<q->head)*q->cap + q->tail-q->head+1);
 }
 
 //

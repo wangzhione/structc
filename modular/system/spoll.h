@@ -36,9 +36,9 @@ extern void spoll_delete(spoll_t p);
 // spoll_add     - 添加监测的 socket fd, 并设置读模式, 失败返回 true
 // spoll_mod     - 修改监测的 socket fd, 通过 true 和 false 设置读写
 //
-extern void spoll_del(spoll_t p, socket_t s);
-extern bool spoll_add(spoll_t p, socket_t s, void * u);
-extern int spoll_mod(spoll_t p, socket_t s, void * u, bool read, bool write);
+extern void spoll_del(spoll_t p, SOCKET s);
+extern bool spoll_add(spoll_t p, SOCKET s, void * u);
+extern int spoll_mod(spoll_t p, SOCKET s, void * u, bool read, bool write);
 
 //
 // spoll_wait    - wait 函数, 守株待兔

@@ -32,6 +32,9 @@ void test(void) {
     //
     EXTERN_TEST(chars_test);
     EXTERN_TEST(json_test);
+    EXTERN_TEST(array_test);
+    EXTERN_TEST(pipe_socket_test);
+    EXTERN_TEST(buf_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }

@@ -18,12 +18,12 @@ inline void spoll_delete(spoll_t p) {
     close(p);
 }
 
-inline void spoll_del(spoll_t p, socket_t s) {
+inline void spoll_del(spoll_t p, SOCKET s) {
     epoll_ctl(p, EPOLL_CTL_DEL, s, NULL);
 }
 
 // spoll_add 添加监测的 socket fd, 并设置读模式, 失败返回 true
-inline bool spoll_add(spoll_t p, socket_t s, void * u) {
+inline bool spoll_add(spoll_t p, SOCKET s, void * u) {
     struct epoll_event event = {
         .events = EPOLLIN,
         .data = {
@@ -33,7 +33,7 @@ inline bool spoll_add(spoll_t p, socket_t s, void * u) {
     return epoll_ctl(p, EPOLL_CTL_ADD, s, &event);
 }
 
-inline int spoll_mod(spoll_t p, socket_t s, void * u, bool read, bool write) {
+inline int spoll_mod(spoll_t p, SOCKET s, void * u, bool read, bool write) {
     struct epoll_event event = {
         .events = (read ? EPOLLIN : 0) | (write ? EPOLLOUT : 0),
         .data = {

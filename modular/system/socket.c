@@ -54,8 +54,8 @@ int socket_pton(sockaddr_t a, int family, char ip[INET6_ADDRSTRLEN], uint16_t po
 }
 
 // result socket fd and init sockaddr by family
-socket_t socket_sockaddr_stream(sockaddr_t a, int family) {
-    socket_t s;
+SOCKET socket_sockaddr_stream(sockaddr_t a, int family) {
+    SOCKET s;
     assert(family == AF_INET || family == 0 || family == AF_INET6 || family == AF_UNSPEC);
     
     if (family == AF_INET) {
@@ -122,9 +122,9 @@ int socket_sockaddr(sockaddr_t a, const char * host, uint16_t port, int family) 
     return 0;
 }
 
-socket_t 
+SOCKET 
 socket_binds(const char * host, uint16_t port, uint8_t protocol, int * family) {
-    socket_t fd;
+    SOCKET fd;
     char ports[sizeof "65535"];
     // 构建 getaddrinfo 请求参数, ipv6 兼容 ipv4
     struct addrinfo * rsp, req = {
@@ -163,9 +163,9 @@ err_free:
     return INVALID_SOCKET;
 }
 
-socket_t 
+SOCKET 
 socket_listen(const char * ip, uint16_t port, int backlog) {
-    socket_t fd = socket_binds(ip, port, IPPROTO_TCP, NULL);
+    SOCKET fd = socket_binds(ip, port, IPPROTO_TCP, NULL);
     if (INVALID_SOCKET != fd && listen(fd, backlog)) {
         closesocket(fd);
         return INVALID_SOCKET;
@@ -175,7 +175,7 @@ socket_listen(const char * ip, uint16_t port, int backlog) {
 
 // socket_recvn - socket 接受 sz 个字节
 int 
-socket_recvn(socket_t s, void * buf, int sz) {
+socket_recvn(SOCKET s, void * buf, int sz) {
     int r, n = sz;
     while (n > 0 && (r = recv(s, buf, n, 0)) != 0 ) {
         if (r == SOCKET_ERROR) {
@@ -191,7 +191,7 @@ socket_recvn(socket_t s, void * buf, int sz) {
 
 // socket_sendn - socket 发送 sz 个字节
 int 
-socket_sendn(socket_t s, const void * buf, int sz) {
+socket_sendn(SOCKET s, const void * buf, int sz) {
     int r, n = sz;
     while (n > 0 && (r = send(s, buf, n, 0)) != 0) {
         if (r == SOCKET_ERROR) {
@@ -205,18 +205,19 @@ socket_sendn(socket_t s, const void * buf, int sz) {
     return sz - n;
 }
 
-socket_t 
+SOCKET 
 socket_connect(const sockaddr_t a) {
-    socket_t s = socket(a->s.sa_family, SOCK_STREAM, IPPROTO_TCP);
+    SOCKET s = socket(a->s.sa_family, SOCK_STREAM, IPPROTO_TCP);
     if (s != INVALID_SOCKET) {
         if (connect(s, &a->s, a->len) >= 0) {
             return s;
         }
 
         // 构造 connect 失败日志
+        int error = errno;
         char ip[INET6_ADDRSTRLEN];
         int port = socket_ntop(a, ip);
-        PERR("ip = %s, port = %d", ip, port);
+        PERROR(error, "ip = %s, port = %d", ip, port);
 
         closesocket(s);
     }
@@ -225,7 +226,7 @@ socket_connect(const sockaddr_t a) {
 }
 
 // socket_connect_timeout_partial 带毫秒超时的 connect, socket 必须是非阻塞的
-int socket_connect_timeout_partial(socket_t s, const sockaddr_t a, int ms) {
+int socket_connect_timeout_partial(SOCKET s, const sockaddr_t a, int ms) {
     int n, r;
     struct timeval timeout;
     fd_set rset, wset, eset;
@@ -263,7 +264,7 @@ int socket_connect_timeout_partial(socket_t s, const sockaddr_t a, int ms) {
     return -1;
 }
 
-socket_t 
+SOCKET 
 socket_connect_timeout(const sockaddr_t a, int ms) {
     // 健壮性代码
     if (ms < 0) {
@@ -271,7 +272,7 @@ socket_connect_timeout(const sockaddr_t a, int ms) {
     }
 
     // 获取 tcp socket 尝试 parse connect
-    socket_t s = socket(a->s.sa_family, SOCK_STREAM, IPPROTO_TCP);
+    SOCKET s = socket(a->s.sa_family, SOCK_STREAM, IPPROTO_TCP);
     if (s == INVALID_SOCKET) {
         PERR("socket %d SOCK_STREAM error", a->s.sa_family);
         return INVALID_SOCKET;
@@ -289,9 +290,10 @@ socket_connect_timeout(const sockaddr_t a, int ms) {
     }
 
     // 构造 connect 失败日志
+    int error = errno;
     char ip[INET6_ADDRSTRLEN];
     int port = socket_ntop(a, ip);
-    PERR("ip = %s, port = %d, ms = %d", ip, port, ms);
+    PERROR(error, "ip = %s, port = %d, ms = %d", ip, port, ms);
 ret_invalid:
     closesocket(s);
     return INVALID_SOCKET;

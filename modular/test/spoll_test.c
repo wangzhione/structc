@@ -1,7 +1,7 @@
 ﻿#include <spoll.h>
 
 struct userdata {
-    socket_t fd;
+    SOCKET fd;
 };
 
 //
@@ -12,7 +12,7 @@ void spoll_test(void) {
     uint16_t port = 8964;
 
     // 开始构建一个 socket
-    socket_t s = socket_listen(host, port, SOMAXCONN);
+    SOCKET s = socket_listen(host, port, SOMAXCONN);
     if (INVALID_SOCKET == s)
         RETNIL("socket_listen is error!");
 

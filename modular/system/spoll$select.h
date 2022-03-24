@@ -10,7 +10,7 @@
 struct fds {
     void * u;
     bool write;
-    socket_t fd;
+    SOCKET fd;
 };
 
 struct spoll {
@@ -33,7 +33,7 @@ inline void spoll_delete(spoll_t p) {
     free(p);
 }
 
-void spoll_del(spoll_t p, socket_t s) {
+void spoll_del(spoll_t p, SOCKET s) {
     struct fds * begin = p->s, * end = p->s + p->len;
     while (begin < end) {
         if (begin->fd == s) {
@@ -48,7 +48,7 @@ void spoll_del(spoll_t p, socket_t s) {
     }
 }
 
-bool spoll_add(spoll_t p, socket_t s, void * u) {
+bool spoll_add(spoll_t p, SOCKET s, void * u) {
     struct fds * begin, * end;
     if (p->len >= FD_SETSIZE)
         return true;
@@ -70,7 +70,7 @@ bool spoll_add(spoll_t p, socket_t s, void * u) {
     return false;
 }
 
-void spoll_write(spoll_t p, socket_t s, void * u, bool enable) {
+void spoll_write(spoll_t p, SOCKET s, void * u, bool enable) {
     struct fds * begin = p->s, * end = p->s + p->len;
     while (begin < end) {
         if (begin->fd == s) {
@@ -83,7 +83,7 @@ void spoll_write(spoll_t p, socket_t s, void * u, bool enable) {
 }
 
 int spoll_wait(spoll_t p, spoll_event_t e) {
-    socket_t fd;
+    SOCKET fd;
     struct fds * s;
     int c, r, i, n, len = p->len;
 

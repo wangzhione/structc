@@ -68,7 +68,7 @@ struct socket {
     int64_t wb_size;
     struct socket_stat stat;
     atomic_ulong sending;
-    socket_t fd;
+    SOCKET fd;
     int id;
     atomic_int type;
     uint8_t protocol;
@@ -89,8 +89,8 @@ struct socket {
 
 struct socket_server {
     volatile uint64_t time;
-    socket_t recvctrl_fd;
-    socket_t sendctrl_fd;
+    SOCKET recvctrl_fd;
+    SOCKET sendctrl_fd;
     int checkctrl;
     spoll_t event_fd;
     atomic_int alloc_id;
@@ -142,7 +142,7 @@ struct request_listen {
 
 struct request_bind {
     int id;
-    socket_t fd;
+    SOCKET fd;
     uintptr_t opaque;
 };
 
@@ -159,7 +159,7 @@ struct request_setopt {
 
 struct request_udp {
     int id;
-    socket_t fd;
+    SOCKET fd;
     int family;
     uintptr_t opaque;
 };
@@ -350,7 +350,7 @@ socket_server_create(uint64_t realtime) {
         RETNUL("socket-server: create event pool failed.");
     }
 
-    socket_t chfd[2];
+    SOCKET chfd[2];
     if (pipe(chfd)) {
         PERR("socket-server: create socket pair failed.");
         spoll_delete(efd);
@@ -494,7 +494,7 @@ static inline int enable_read(struct socket_server * ss, struct socket * s, bool
     return 0;
 }
 
-static struct socket * new_fd(struct socket_server * ss, int id, socket_t fd, int protocol, uintptr_t opaque, bool reading) {
+static struct socket * new_fd(struct socket_server * ss, int id, SOCKET fd, int protocol, uintptr_t opaque, bool reading) {
     struct socket * s = ss->slot + HASH_ID(id);
     assert(atomic_load(&s->type) == SOCKET_TYPE_RESERVE);
 
@@ -560,7 +560,7 @@ static int open_socket(struct socket_server * ss, struct request_open * request,
         goto _getaddrinfo_failed;
     }
 
-    socket_t sock = INVALID_SOCKET;
+    SOCKET sock = INVALID_SOCKET;
     struct addrinfo * ai_ptr = ai_list;
     for (; ai_ptr != NULL; ai_ptr = ai_ptr->ai_next) {
         sock = socket(ai_ptr->ai_family, ai_ptr->ai_socktype, ai_ptr->ai_protocol);
@@ -1003,7 +1003,7 @@ static int send_socket(struct socket_server * ss, struct request_send * request,
 
 static int listen_socket(struct socket_server * ss, struct request_listen * request, struct socket_message * result) {
     int id = request->id;
-    socket_t listen_fd = request->fd;
+    SOCKET listen_fd = request->fd;
     struct socket * s = new_fd(ss, id, listen_fd, PROTOCOL_TCP, request->opaque, false);
     if (s == NULL) {
         goto _failed;
@@ -1150,7 +1150,7 @@ static void setopt_socket(struct socket_server * ss, struct request_setopt * req
     setsockopt(s->fd, IPPROTO_TCP, request->what, &v, sizeof(v));
 }
 
-static void block_readpipe(socket_t pipefd, void * buffer, int sz) {
+static void block_readpipe(SOCKET pipefd, void * buffer, int sz) {
     for (;;) {
         int n = socket_recv(pipefd, buffer, sz);
         if (n < 0) {
@@ -1464,7 +1464,7 @@ static int getname(union sockaddr_all * sa, char * buffer, size_t sz) {
 static int report_accept(struct socket_server * ss, struct socket * s, struct socket_message * result) {
     union sockaddr_all sa;
     socklen_t slen = sizeof(sa);
-    socket_t client_fd = accept(s->fd, &sa.s, &slen);
+    SOCKET client_fd = accept(s->fd, &sa.s, &slen);
     if (client_fd == INVALID_SOCKET) {
         switch (errno) {
         case EMFILE:
@@ -1807,8 +1807,8 @@ socket_server_shutdown(struct socket_server * ss, uintptr_t opaque, int id) {
 
 // return -1 means failed
 // or return AF_INET or AF_INET6
-static socket_t do_bind(const char * host, int port, int protocol, int * family) {
-    socket_t fd;
+static SOCKET do_bind(const char * host, int port, int protocol, int * family) {
+    SOCKET fd;
     int status;
     int reuse = 1;
     struct addrinfo ai_hints;
@@ -1852,7 +1852,7 @@ _failed_socket:
     return INVALID_SOCKET;
 }
 
-static socket_t do_listen(const char * host, int port, int backlog) {
+static SOCKET do_listen(const char * host, int port, int backlog) {
     int family = 0;
     int listen_fd = do_bind(host, port, IPPROTO_TCP, &family);
     if (listen_fd == INVALID_SOCKET) {
@@ -1867,7 +1867,7 @@ static socket_t do_listen(const char * host, int port, int backlog) {
 
 int
 socket_server_listen(struct socket_server * ss, uintptr_t opaque, const char * addr, int port, int backlog) {
-    socket_t fd = do_listen(addr, port, backlog);
+    SOCKET fd = do_listen(addr, port, backlog);
     if (fd == INVALID_SOCKET) {
         return -1;
     }
@@ -1885,7 +1885,7 @@ socket_server_listen(struct socket_server * ss, uintptr_t opaque, const char * a
 }
 
 int
-socket_server_bind(struct socket_server * ss, uintptr_t opaque, socket_t fd) {
+socket_server_bind(struct socket_server * ss, uintptr_t opaque, SOCKET fd) {
     struct request_package request;
     int id = reserve_id(ss);
     if (id < 0)
@@ -1931,7 +1931,7 @@ socket_server_userobject(struct socket_server * ss, struct socket_object_interfa
 
 int
 socket_server_udp(struct socket_server * ss, uintptr_t opaque, const char * addr, int port) {
-    socket_t fd;
+    SOCKET fd;
     int family;
     if (port != 0 || addr != NULL) {
         // bind

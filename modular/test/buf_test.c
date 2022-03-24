@@ -37,8 +37,9 @@ void buf_test(void) {
     x = small(x);
     printf("x = 0x%x, len = %u\n", x, MSG_LEN(x));
 
-    // send阶段, 先发送字符长度
+    // send 阶段, 先发送字符长度
     msg_t msg;
+    x = big(x);
     int ret = msg_buf_append(q, &x, sizeof(uint32_t), &msg);
     IF (ret == MSG_BUF_PARSE);
     if (ret == MSG_BUF_OK) {

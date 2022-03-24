@@ -31,40 +31,63 @@ pipe_send(pipe_t ch, const void * buf, int sz) {
 // pipefd   : 索引 0 表示 recv fd, 1 是 send fd
 // return   : 0 is success -1 is error returned
 //
-int pipe(socket_t pipefd[2]) {
-    sockaddr_t name;
-    socket_t s = socket_sockaddr_stream(name, AF_INET6);
-    if (s == INVALID_SOCKET)
+int pipe(SOCKET pipefd[2]) {
+    struct sockaddr_in6 name;
+    socklen_t len = sizeof(struct sockaddr_in6);
+
+    SOCKET s = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+    if (s == INVALID_SOCKET) {
+        PERR("soccket AF_INET6 SOCK_STREAM error");
         return -1;
+    }
 
+    memset(&name, 0, sizeof(struct sockaddr_in6));
+    name.sin6_family = AF_INET6;
     // 绑定默认网卡, 多平台上更容易 connect success
-    name->s6.sin6_addr = in6addr_loopback;
+    name.sin6_addr = in6addr_loopback;
+    if (bind(s, (struct sockaddr *)&name, len)) {
+        PERR("bind in6addr_loopback error");
+        goto fail_socket;
+    }
 
-    if (bind(s, &name->s, name->len)) 
-        goto err_close;
+    // 开始监听
+    if (listen(s, 1)) {
+        PERR("listen backlog = 1 error");
+        goto fail_socket;
+    }
 
-    if (listen(s, 1))
-        goto err_close;
+    // 得到 server socket 绑定端口和本地地址
+    if (getsockname(s, (struct sockaddr *)&name, &len)) {
+        PERR("getsockname sockaddr error");
+        goto fail_socket;
+    }
 
-    // 得到绑定端口和本地地址
-    if (getsockname(s, &name->s, &name->len))
-        goto err_close;
+    // 开始尝试构建 client socket connect server socket
+    pipefd[0] = socket(name.sin6_family, SOCK_STREAM, IPPROTO_TCP);
+    if (pipefd[0] == INVALID_SOCKET) {
+        PERR("socket client error");
+        goto fail_socket;
+    }
+    if (connect(pipefd[0], (struct sockaddr *)&name, len)) {
+        PERR("connect error");
+        goto fail_pipe;
+    }
+    // 准备 accept 建立链接
+    pipefd[1] = accept(s, (struct sockaddr *)&name, &len);
+    if (pipefd[1] == INVALID_SOCKET) {
+        PERR("accept error");
+        goto fail_pipe;
+    }
 
-    // 开始构建互相通信的 socket
-    pipefd[0] = socket_connect(name);
-    if (pipefd[0] == INVALID_SOCKET)
-        goto err_close;
-
-    // 通过 accept 通信避免一些意外
-    pipefd[1] = accept(s, &name->s, &name->len);
-    if (pipefd[1] == INVALID_SOCKET) 
-        goto err_pipe;
+    // pipefd[0] recv fd, pipefd[1] send fd
+    shutdown(pipefd[0], SHUT_WR);
+    shutdown(pipefd[1], SHUT_RD);
 
     closesocket(s);
     return 0;
-err_pipe:
+fail_pipe:
     closesocket(pipefd[0]);
-err_close:
+fail_socket:
     closesocket(s);
     return -1;
 }

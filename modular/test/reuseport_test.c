@@ -25,7 +25,7 @@ void reuseport_test(void) {
 void 
 accept_example(int id) {
     // 构造 TCP socket
-    socket_t s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    SOCKET s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     IF(s == INVALID_SOCKET);
 
     // 开启地址复用
@@ -52,7 +52,7 @@ accept_example(int id) {
         sockaddr_t cddr;
 
         printf("[%2d] accept start ... %s\n", id, times_str(v));
-        socket_t c = socket_accept(s, cddr);
+        SOCKET c = socket_accept(s, cddr);
         if (s == INVALID_SOCKET) {
             PERR("accept s = %lld is error", (long long)s);
             break;

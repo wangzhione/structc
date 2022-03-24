@@ -61,7 +61,7 @@ q_push(q_t q, void * m) {
 void 
 q_delete(q_t q, node_f fdie) {
     // 销毁所有对象
-    if (fdie && q_exist(q)) {
+    if (fdie != NULL && q_exist(q)) {
         for (;;) {
             fdie(q->data[q->head]);
             if (q->head == q->tail)

@@ -38,7 +38,7 @@ inline uint32_t big(uint32_t x) {
 // len      : data 的长度
 // return   : 创建好的 msg_t 消息体
 //
-inline static msg_t msg_create(const void * data, uint32_t len) {
+static inline msg_t msg_create(const void * data, uint32_t len) {
     DCODE({
         if(!data || len <= 0 || len > 0xFFFFFF)
             EXIT("error data = %p, len = %u.\n", data, len);
@@ -65,6 +65,6 @@ inline static msg_t msg_create(const void * data, uint32_t len) {
 // msg      : msg_t 消息体
 // return   : void
 //
-inline static void msg_delete(msg_t msg) {
-    if (msg) free(msg);
+inline void msg_delete(msg_t msg) {
+    free(msg);
 }

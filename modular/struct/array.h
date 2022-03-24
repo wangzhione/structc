@@ -127,9 +127,7 @@ inline unsigned array_idx(array_t a, void * elem) {
 // return   : void
 //
 inline void array_swap(array_t a, array_t b) {
-    struct array t = *a;
-    *a = *b; 
-    *b = t;
+    struct array t = *a; *a = *b; *b = t;
 }
 
 //
