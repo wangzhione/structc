@@ -4,12 +4,13 @@
 
 ## Update
 
-| 当前时间       | 下步计划                                          | 进展情况 |
-| :------------: | :-----------------------------------------------: | :------: |
-| 2021年02月24日 | 等最新 Visual Studio 正式版发布, 筹备浴火重生     | 等待     |
+| 当前时间        | 下步计划                                        | 进展情况 |
+| :------------: | :---------------------------------------------: | :------: |
+| 2021年02月24日 | 等最新 Visual Studio 正式版发布, 筹备浴火重生      | 等待     |
 | 2021年12月30日 | 回归简单友好 Linux 开发                           | 开始     |
 | 2022年01月19日 | C 菜鸟之旅 版本发布                               | 新生     |
-|                |                                                   |          |
+| 2022年03月24日 | C 菜鸡之旅 全力拥抱 Linux                         | 起点     |
+|                |                                                 |          |
 
 ## 浪花不会一点点
 
@@ -123,9 +124,15 @@ inline void pthread_end(pthread_t id) {
 // 轻量 char * 串
 //
 // stack declare 构建和释放 : 
-// 构建 struct chars var = {}; 释放 free(var.str);
+//
+// struct chars var = {}; // 构建 
+// free(var.str);         // 释放
+//
 // heap  declare 构建和释放 : 
-// 构建 struct chars * cs = calloc(1, sizeof(struct chars)); 释放 chars_delete(cs);
+// 
+// struct chars * cs = calloc(1, sizeof(struct chars));  // 构建 
+// chars_delete(cs);                                     // 释放
+// 
 struct chars {
     char * str;     // char * 字符串
     size_t len;     // 长度

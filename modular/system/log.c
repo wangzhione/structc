@@ -5,7 +5,8 @@ static FILE * txt;
 // log_init - 单例, 日志库初始化
 void log_init(const char * path) {
     if ((txt = fopen(path, "ab")) == NULL) {
-        fprintf(stderr, "fopen ab error time = %ld, path = %s\n", time(NULL), path);
+        // log 初始化失败, 程序默认启动失败.
+        fprintf(stderr, "fopen ab error %"PRId64", %s\n", time(NULL), path);
         exit(EXIT_FAILURE);
     }
 }

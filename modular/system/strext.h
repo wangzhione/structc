@@ -14,6 +14,13 @@
 
 #include "stdext.h"
 
+#if defined(_WIN32) && defined(_MSC_VER)
+
+#define strcasecmp  _stricmp
+#define strncasecmp _strnicmp
+
+#endif
+
 //
 // BKDHash - Brian Kernighan 与 Dennis Ritchie hash 算法
 // str      : 字符串内容

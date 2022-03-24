@@ -1,64 +1,5 @@
 ﻿#include "times.h"
 
-#if defined(_WIN32) && defined(_MSC_VER)
-
-//
-// usleep - 微秒级别等待函数
-// usec     : 等待的微秒
-// return   : 0 on success.  On error, -1 is returned.
-//
-int
-usleep(unsigned usec) {
-    int ret = -1;
-    // Convert to 100 nanosecond interval, negative value indicates relative time
-    LARGE_INTEGER t = { .QuadPart = -10LL * usec };
-
-    HANDLE timer = CreateWaitableTimer(NULL, TRUE, NULL);
-    if (timer) {
-        // 负数以100ns为单位等待, 正数以标准FILETIME格式时间
-        SetWaitableTimer(timer, &t, 0, NULL, NULL, FALSE);
-        WaitForSingleObject(timer, INFINITE);
-        if (GetLastError() == ERROR_SUCCESS)
-            ret = 0;
-        CloseHandle(timer);
-    }
-
-    return ret;
-}
-
-#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
-
-//
-// gettimeofday - 实现 Linux sys/time.h 得到微秒时间
-// tv       : 返回秒数和微秒数
-// tz       : 返回时区结构
-// return   : success is 0
-//
-int 
-gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz) {
-    if (tv) {
-        FILETIME t;
-        GetSystemTimeAsFileTime(&t);
-
-        uint64_t m = (uint64_t)t.dwHighDateTime << 32 | t.dwLowDateTime;
-        // convert into microseconds, converting file time to unix epoch
-        m = m / 10 - DELTA_EPOCH_IN_MICROSECS;
-
-        tv->tv_sec  = (long)(m / 1000000UL);
-        tv->tv_usec = (long)(m % 1000000UL);
-    }
-
-    // 不管 linux or window, gettimeofday 都不是个好的 api 设计
-    if (tz) {
-        tz->tz_minuteswest = _timezone / 60;
-        tz->tz_dsttime = _daylight;
-    }
-
-    return 0;
-}
-
-#endif
-
 /* This is a safe version of localtime() which contains no locks and is
  * fork() friendly. Even the _r version of localtime() cannot be used safely
  * in Redis. Another thread may be calling localtime() while the main thread
@@ -81,7 +22,7 @@ gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz) {
  * logging of the dates, it's not really a complete implementation. */
 void 
 localtime_get(struct tm * restrict p, time_t t) {
-    t -= timezone;                      /* Adjust for timezone. */
+    t -= _timezone;                     /* Adjust for timezone. */
     t += 3600 * daylight;               /* Adjust for daylight time. */
     time_t days = t / (3600 * 24);      /* Days passed since epoch. */
     time_t seconds = t % (3600 * 24);   /* Remaining seconds. */
@@ -238,8 +179,8 @@ time_day_equal(time_t n, time_t t) {
     // 中国标准时间(CST)比世界协调时间(UTC)早08:00小时. 该时区为标准时区时间, 主要用于 亚洲
     // UTC [World] + 8 * 3600 = CST [China] | UTC [World] = CST [China] - timezone (8 * 3600)
     // 其他地区也类似 UTC 和 CST 关系, 存在 timezone = UTC - LOC -> LOC = UTC - timezone
-    n = (n - timezone) / (24 * 3600);
-    t = (t - timezone) / (24 * 3600);
+    n = (n - _timezone) / (24 * 3600);
+    t = (t - _timezone) / (24 * 3600);
     return n == t;
 }
 
@@ -319,3 +260,63 @@ times_fmt(const char * fmt, char out[], size_t sz) {
                     m.tm_hour, m.tm_min, m.tm_sec,
                     (int)(s.tv_nsec / 1000000));
 }
+
+#if defined(_WIN32) && defined(_MSC_VER)
+
+//
+// usleep - 微秒级别等待函数
+// usec     : 等待的微秒
+// return   : 0 on success.  On error, -1 is returned.
+//
+int
+usleep(unsigned usec) {
+    int ret = -1;
+    // Convert to 100 nanosecond interval, negative value indicates relative time
+    LARGE_INTEGER t = { .QuadPart = -10LL * usec };
+
+    HANDLE timer = CreateWaitableTimer(NULL, TRUE, NULL);
+    if (timer) {
+        // 负数以100ns为单位等待, 正数以标准FILETIME格式时间
+        SetWaitableTimer(timer, &t, 0, NULL, NULL, FALSE);
+        WaitForSingleObject(timer, INFINITE);
+        if (GetLastError() == ERROR_SUCCESS)
+            ret = 0;
+        CloseHandle(timer);
+    }
+
+    return ret;
+}
+
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
+
+#undef  timezone
+
+//
+// gettimeofday - 实现 Linux sys/time.h 得到微秒时间
+// tv       : 返回秒数和微秒数
+// tz       : 返回时区结构
+// return   : success is 0
+//
+int gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz) {
+    if (tv) {
+        FILETIME t;
+        GetSystemTimeAsFileTime(&t);
+
+        uint64_t m = (uint64_t)t.dwHighDateTime << 32 | t.dwLowDateTime;
+        // convert into microseconds, converting file time to unix epoch
+        m = m / 10 - DELTA_EPOCH_IN_MICROSECS;
+
+        tv->tv_sec = (long)(m / 1000000UL);
+        tv->tv_usec = (long)(m % 1000000UL);
+    }
+
+    // 不管 linux or window, gettimeofday 都不是个好的 api 设计
+    if (tz) {
+        tz->tz_minuteswest = _timezone / 60;
+        tz->tz_dsttime = _daylight;
+    }
+
+    return 0;
+}
+
+#endif

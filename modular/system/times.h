@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 //
 // ~ 力求最小时间业务单元 ~ 
@@ -21,17 +22,32 @@
 
 #include <winsock2.h>
 
-// Set time conversion information from the TZ environment variable.
-// If TZ is not defined, a locale-dependent default is used.
-#undef  tzset
-#define tzset _tzset
-
 // Structure crudely representing a timezone.
 // This is obsolete and should never be used.
 struct timezone {
     int tz_minuteswest; // Minutes west of GMT.
     int tz_dsttime;     // Nonzero if DST is ever in effect.
 };
+
+//
+// gettimeofday - 实现 Linux sys/time.h 得到微秒时间
+// tv       : 返回秒数和微秒数
+// tz       : 返回时区结构
+// return   : success is 0
+//
+extern int gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz);
+
+// Set time conversion information from the TZ environment variable.
+// If TZ is not defined, a locale-dependent default is used.
+#undef  tzset
+#define tzset _tzset
+
+// 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为 1; 否则为 0.
+#define daylight _daylight
+
+// tzname 的值由 TZ 环境变量的值确定. 如果您未显式设置 TZ 的值, 
+// 则 tzname[0] 和 tzname[1] 将分别包含"PST"和"PDT"(太平洋夏令时)的默认设置
+#define tzname _tzname
 
 //
 // msleep - 睡眠函数, 颗粒度是毫秒.
@@ -42,30 +58,12 @@ inline void msleep(int ms) {
     Sleep(ms);
 }
 
-// timezone 协调世界时 UTC 与当地时间 LOC 之间的秒数差. 例如 中国 UTC - CST 默认值为 -28,800
-#define timezone _timezone
-
-// 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为 1; 否则为 0.
-#define daylight _daylight
-
-// tzname 的值由 TZ 环境变量的值确定. 如果您未显式设置 TZ 的值, 
-// 则 tzname[0] 和 tzname[1] 将分别包含"PST"和"PDT"(太平洋夏令时)的默认设置
-#define tzname _tzname
-
 //
 // usleep - 微秒级别等待函数
 // usec     : 等待的微秒
 // return   : 0 on success.  On error, -1 is returned.
 //
 extern int usleep(unsigned usec);
-
-//
-// gettimeofday - 实现 Linux sys/time.h 得到微秒时间
-// tv       : 返回秒数和微秒数
-// tz       : 返回时区结构
-// return   : success is 0
-//
-extern int gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz);
 
 //
 // localtime_r - 获取当前时间线程加锁版本, 推荐使用 localtime_get
@@ -81,6 +79,9 @@ inline struct tm * localtime_r(const time_t * timep, struct tm * result) {
 
 #include <unistd.h>
 #include <sys/time.h>
+
+// timezone 协调世界时 UTC 与当地时间 LOC 之间的秒数差. 例如 中国 UTC - CST 默认值为 -28,800
+#define _timezone timezone
 
 inline void msleep(int ms) { 
     usleep(ms * 1000); 

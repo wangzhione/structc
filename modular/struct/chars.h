@@ -5,9 +5,15 @@
 // 轻量 char * 串
 //
 // stack declare 构建和释放 : 
-// 构建 struct chars var = {}; 释放 free(var.str);
+//
+// struct chars var = {}; // 构建 
+// free(var.str);         // 释放
+//
 // heap  declare 构建和释放 : 
-// 构建 struct chars * cs = calloc(1, sizeof(struct chars)); 释放 chars_delete(cs);
+// 
+// struct chars * cs = calloc(1, sizeof(struct chars));  // 构建 
+// chars_delete(cs);                                     // 释放
+// 
 struct chars {
     char * str;     // char * 字符串
     size_t len;     // 长度

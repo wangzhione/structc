@@ -47,7 +47,7 @@ int socket_server_send_lowpriority(struct socket_server * ss, struct socket_send
 // ctrl command below returns id
 extern int socket_server_listern(struct socket_server * ss, uintptr_t opaque, const char * addr, int port, int backlog);
 extern int socket_server_connect(struct socket_server * ss, uintptr_t opaque, const char * addr, int port);
-extern int socket_server_bind(struct socket_server * ss, uintptr_t opaque, int fd);
+extern int socket_server_bind(struct socket_server * ss, uintptr_t opaque, SOCKET fd);
 
 // for tcp
 extern void socket_server_nodelay(struct socket_server * ss, int id);

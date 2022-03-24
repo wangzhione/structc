@@ -109,8 +109,10 @@ do {                                                                    \
     frun (__VA_ARGS__);                                                 \
 } while(0)
 
+// PRINT fprintf 包装操作宏. time_t x64 8字节 window %lld, linux %ld
 #define PRINT(stream, error, fmt, ...)                                  \
-fprintf(stream, "[%ld]["#stream"][%s:%s:%d][%d:%s]"fmt"\n", time(NULL), \
+fprintf(stream, "[%"PRId64"]["#stream"][%s:%s:%d][%d:%s]"fmt"\n",       \
+    time(NULL),                                                         \
     __FILE__, __func__, __LINE__, error, strerror(error), ##__VA_ARGS__)
 
 #define POUT(fmt, ...)                                                  \
