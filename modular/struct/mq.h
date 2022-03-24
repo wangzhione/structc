@@ -63,18 +63,8 @@ inline void mq_push(mq_t q, void * m) {
 // return   : 返回消息队列长度
 //
 extern inline int mq_len(mq_t q) {
-    int cap, head, tail;
     atomic_flag_lock(&q->lock);
-    if ((tail = q->q->tail) == -1) {
+    int len = q_len(q);
     atomic_flag_unlock(&q->lock);
-        return 0;
-    }
-
-    cap = q->q->cap;
-    head = q->q->head;
-    atomic_flag_unlock(&q->lock);
-
-    // 计算当前时间中内存队列的大小
-    tail -= head - 1;
-    return tail > 0 ? tail : tail+cap;
+    return len;
 }
