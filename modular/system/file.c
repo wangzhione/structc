@@ -1,17 +1,18 @@
 ﻿#include "file.h"
 
 struct file {
-    file_f func;     // 执行行为, NULL 标识删除
-    void * arg;      // 行为参数
-    char * path;     // 文件路径
-    unsigned hash;   // path hash
-    time_t lasttime; // 文件最后修改时间点
+    file_f func;        // 执行行为, NULL 标识删除
+    void * arg;         // 行为参数
+    char * path;        // 文件路径
+    unsigned hash;      // path hash
+    time_t lasttime;    // 文件最后修改时间点
+
     struct file * next;
 };
 
-static struct file * file_create(const char * path, file_f func, void * arg) {
+static struct file * file_create(unsigned hash, const char * path, file_f func, void * arg) {
     assert(path && func);
-
+    
     if (fmtime(path) == -1) {
         RETURN(NULL, "mtime error p = %s", path);
     }
@@ -29,17 +30,8 @@ static struct file * file_create(const char * path, file_f func, void * arg) {
     fu->lasttime = -1;
     fu->func = func;
     fu->arg = arg;
-    // fu->hash = BKDHash(path);
+    fu->hash = hash;
     fu->next = NULL;
-    return fu;
-}
-
-static inline struct file * file_create_hash(const char * path, file_f func, void * arg) {
-    struct file * fu = file_create(path, func, arg);
-    if (fu == NULL) {
-        RETNUL("file_create error path = %s", path);
-    }
-    fu->hash = BKDHash(path);
     return fu;
 }
 
@@ -109,11 +101,7 @@ static void files_replace(const char * path, file_f func, void * arg) {
     }
     // node == NULL 标识没有找到这个结点
     if (func == NULL) {
-        struct file * fu = file_create(path, func, arg);
-        if (fu != NULL) {
-            fu->hash = hash;
-            prev->next = fu;
-        }
+        prev->next = file_create(hash, path, func, arg);
     }
 }
 
@@ -130,11 +118,7 @@ static void files_add(const char * path, file_f func, void * arg) {
     }
     // node == NULL 标识没有找到这个结点, 触发添加
     if (node == NULL) {
-        struct file * fu = file_create(path, func, arg);
-        if (fu != NULL) {
-            fu->hash = hash;
-            prev->next = fu;
-        }
+        prev->next = file_create(hash, path, func, arg);
         return;
     }
     // node != NULL 标识找到这个结点, 触发更新

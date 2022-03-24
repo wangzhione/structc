@@ -153,6 +153,8 @@ struct chars {
         - test 目录
             - *_test.c -> void *_test(void) { ... }
 
+    推荐使用最新 master 版本
+
 ***
 
 ### IDE 弱议
