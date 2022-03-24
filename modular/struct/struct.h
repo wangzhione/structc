@@ -110,7 +110,7 @@ do {                                                                    \
 } while(0)
 
 #define PRINT(stream, error, fmt, ...)                                  \
-fprintf(stderr, "[%ld]["#stream"][%s:%s:%d][%d:%s]"fmt"\n", time(NULL), \
+fprintf(stream, "[%ld]["#stream"][%s:%s:%d][%d:%s]"fmt"\n", time(NULL), \
     __FILE__, __func__, __LINE__, error, strerror(error), ##__VA_ARGS__)
 
 #define POUT(fmt, ...)                                                  \
