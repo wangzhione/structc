@@ -9,8 +9,9 @@
 
 struct fds {
     void * u;
-    bool write;
     SOCKET fd;
+    bool read;
+    bool write;
 };
 
 struct spoll {
@@ -26,7 +27,7 @@ inline spoll_t spoll_create(void) {
 }
 
 inline bool spoll_invalid(spoll_t p) {
-    return !p;
+    return p == NULL;
 }
 
 inline void spoll_delete(spoll_t p) {
@@ -50,8 +51,9 @@ void spoll_del(spoll_t p, SOCKET s) {
 
 bool spoll_add(spoll_t p, SOCKET s, void * u) {
     struct fds * begin, * end;
-    if (p->len >= FD_SETSIZE)
-        return true;
+    if (p->len >= FD_SETSIZE) {
+        RETURN(true, "too many fd len = %d", p->len);
+    }
 
     begin = p->s;
     end = p->s + p->len;
@@ -64,18 +66,20 @@ bool spoll_add(spoll_t p, SOCKET s, void * u) {
         ++p->len;
         begin->fd = s;
     }
-    begin->write = false;
-    // 风险, u 用户数据赋值用户负责
+    // 风险点, u 用户数据赋值用户负责
     begin->u = u;
+    begin->read = true;
+    begin->write = false;
     return false;
 }
 
-void spoll_write(spoll_t p, SOCKET s, void * u, bool enable) {
+int spoll_mod(spoll_t p, SOCKET s, void * u, bool read, bool write) {
     struct fds * begin = p->s, * end = p->s + p->len;
     while (begin < end) {
         if (begin->fd == s) {
             begin->u = u;
-            begin->write = enable;
+            begin->read = read;
+            begin->write = write;
             break;
         }
         ++begin;
@@ -93,8 +97,9 @@ int spoll_wait(spoll_t p, spoll_event_t e) {
     for (i = 0; i < len; ++i) {
         s = p->s + i;
         fd = s->fd;
-
-        FD_SET(fd, &p->fdr);
+        
+        if (s->read)
+            FD_SET(fd, &p->fdr);
         if (s->write)
             FD_SET(fd, &p->fdw);
         FD_SET(fd, &p->fde);
@@ -109,7 +114,7 @@ int spoll_wait(spoll_t p, spoll_event_t e) {
         fd = s->fd;
 
         e[c].eof = false;
-        e[c].read = FD_ISSET(fd, &p->fdr);
+        e[c].read = s->read && FD_ISSET(fd, &p->fdr);
         e[c].write = s->write && FD_ISSET(fd, &p->fdw);
 
         r = true;
