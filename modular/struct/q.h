@@ -46,7 +46,7 @@ inline int q_len(q_t q) {
     // );
     // q->tail >= 0       ? 1 : 0
     // q->tail < q-> head ? 1 : 0
-    return (q->tail>=0)*((q->tail<q->head)*q->cap + q->tail-q->head+1);
+    return (q->tail >= 0)*((q->tail < q->head)*q->cap + q->tail-q->head+1);
 }
 
 //

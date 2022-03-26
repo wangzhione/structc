@@ -81,6 +81,7 @@ inline struct tm * localtime_r(const time_t * timep, struct tm * result) {
 #include <sys/time.h>
 
 // timezone 协调世界时 UTC 与当地时间 LOC 之间的秒数差. 例如 中国 UTC - CST 默认值为 -28,800
+// fix 适配 window struct timezone
 #define _timezone timezone
 
 inline void msleep(int ms) { 
@@ -102,8 +103,9 @@ inline _Bool is_leap_year(time_t year) {
 extern void localtime_get(struct tm * restrict p, time_t t);
 
 // times_t - 时间串类型
-#define INT_TIMES (64)
-typedef char times_t[INT_TIMES];
+// len = 33 + 1, buf = 2022-03-26 15:38:29.934089326 CST
+// len = 53 + 1, buf = 2022年03月26日 15时38分29秒.934071664纳秒 CST
+typedef char times_t[64];
 
 //
 // times_get - 解析时间串, 返回时间戳
@@ -153,12 +155,12 @@ extern bool times_day_equal(times_t ns, times_t ts);
 //
 extern bool times_week_equal(times_t ns, times_t ts);
 
-// TIMES_STR - "{年}.{月}.{日}.{时}.{分}.{秒}.{毫秒}"
-#define TIMES_STR "%04d-%02d-%02d %02d:%02d:%02d %03d"
+// TIMES_FMT_STR - "{年}.{月}.{日}.{时}.{分}.{秒}.{纳秒} {时区}"
+#define TIMES_FMT_STR "%04d-%02d-%02d %02d:%02d:%02d.%09ld %s"
 
 //
 // times_fmt - 通过 fmt 格式最终拼接一个字符串
-// fmt      : 推荐遵循 TIMES_STR 意图
+// fmt      : 推荐遵循 TIMES_FMT_STR 意图
 // out      : 最终保存的内容
 // sz       : buf 长度
 // return   : 返回生成串长度
@@ -171,15 +173,8 @@ int times_fmt(const char * fmt, char out[], size_t sz);
 // return   : 返回生成串长度
 //
 inline int times_buf(times_t ns) {
-    return times_fmt(TIMES_STR, ns, sizeof(times_t));
+    return times_fmt(TIMES_FMT_STR, ns, sizeof(times_t));
 }
 
-//
-// times_str - 得到带毫秒时间串
-// ns       : 返回生成串
-// return   : 返回生成串
-//
-inline char * times_str(times_t ns) {
-    times_buf(ns);
-    return ns;
-}
+// times TLS time str 版本
+extern const char * times(void);

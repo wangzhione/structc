@@ -48,10 +48,9 @@ accept_example(int id) {
 
     // 等待链接过来, 最多 3 次
     for (int i = 0; i < 3; ++i) {
-        times_t v;
         sockaddr_t cddr;
 
-        printf("[%2d] accept start ... %s\n", id, times_str(v));
+        printf("[%2d] accept start ... %s\n", id, times());
         SOCKET c = socket_accept(s, cddr);
         if (s == INVALID_SOCKET) {
             PERR("accept s = %lld is error", (long long)s);
@@ -61,7 +60,7 @@ accept_example(int id) {
         // 连接成功打印链接消息
         char ip[INET6_ADDRSTRLEN];
         int port = socket_ntop(cddr, ip);
-        printf("[%2d] [%s:%d] accept success ... %s\n", id, ip, port, times_str(v));
+        printf("[%2d] [%s:%d] accept success ... %s\n", id, ip, port, times());
 
         closesocket(c);
     }

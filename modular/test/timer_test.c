@@ -5,8 +5,7 @@
 // one - 简单数据打印
 inline static void one(void * arg) {
     static int m;
-    times_t str; times_str(str);
-    printf("%p | %d => %s\n", arg, ++m, str);
+    printf("%p | %d => %s\n", arg, ++m, times());
 }
 
 // two - 连环施法

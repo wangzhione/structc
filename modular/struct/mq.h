@@ -64,7 +64,7 @@ inline void mq_push(mq_t q, void * m) {
 //
 extern inline int mq_len(mq_t q) {
     atomic_flag_lock(&q->lock);
-    int len = q_len(q);
+    int len = q_len(q->q);
     atomic_flag_unlock(&q->lock);
     return len;
 }

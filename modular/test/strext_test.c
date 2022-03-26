@@ -60,7 +60,7 @@ void strext_test(void) {
 	char * txt = str_freads("README.md");
     IF(txt == NULL);
     puts(txt);
-    u82g(txt);
+    utf82gbk(txt);
     // UTF-8 FILE with BOM
     puts(txt + 2);
     free(txt);

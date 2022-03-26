@@ -1,7 +1,7 @@
 ﻿#include "utf8$table.h"
 
-// u82ue - utf8 串转成 unicode, 返回编码值和长度
-int u82ue(const char * u8s, size_t n, int * ue, int * len) {
+// utf82unicode - utf8 串转成 unicode, 返回编码值和长度
+int utf82unicode(const char * u8s, size_t n, int * ue, int * len) {
     char c = u8s[0];
     if ((c & 0xF8) == 0xF0) { // 4 位
         if ((n < 4) || 
@@ -55,8 +55,8 @@ int u82ue(const char * u8s, size_t n, int * ue, int * len) {
     return 0;
 }
 
-// u82gn - utf8 转 gbk 算法实现
-size_t u82gn(const char * u8s, size_t n, char * gs) {
+// utf82gbkn - utf8 转 gbk 算法实现
+size_t utf82gbkn(const char * u8s, size_t n, char * gs) {
     int ue, len;
     unsigned gbk;
     size_t ui = 0, gi = 0;
@@ -65,7 +65,7 @@ size_t u82gn(const char * u8s, size_t n, char * gs) {
         //
         // 对于错误编码, 跳过, 不做精细控制. 听之任之
         //
-        if (u82ue(u8s + ui, n - ui, &ue, &len)) {
+        if (utf82unicode(u8s + ui, n - ui, &ue, &len)) {
             ++ui;
             continue;
         }
@@ -85,8 +85,8 @@ size_t u82gn(const char * u8s, size_t n, char * gs) {
     return gi;
 }
 
-// g2u8n - gbk 转 utf8 算法实现
-size_t g2u8n(const char * gs, size_t n, char * u8s) {
+// gbk2utf8n - gbk 转 utf8 算法实现
+size_t gbk2utf8n(const char * gs, size_t n, char * u8s) {
     unsigned u, c;
     size_t ui = 0, gi = 0;
 
@@ -114,28 +114,19 @@ size_t g2u8n(const char * gs, size_t n, char * u8s) {
     return ui;
 }
 
-//
-// u82g - utf8 to gbk save d mem
-// g2u8 - gbk to utf8 save d mem by size n
-// d        : mem
-// n        : size
-// return   : void
-//
-inline void
-u82g(char d[]) {
+inline void utf82gbk(char d[]) {
     // len utf8 >= len gbk convert
     size_t n = strlen(d);
     char * gs = malloc(n + 1);
-    size_t m = u82gn(d, n, gs);
+    size_t m = utf82gbkn(d, n, gs);
     memcpy(d, gs, m + 1);
     free(gs);
 }
 
-inline void
-g2u8(char d[], size_t n) {
+inline void gbk2utf8(char d[], size_t n) {
     // 2 * len gbk >= len utf8
     char * u8s = malloc(2 * n + 1);
-    size_t m = g2u8n(d, n, u8s);
+    size_t m = gbk2utf8n(d, n, u8s);
     if (m <= n)
         memcpy(d, u8s, m + 1);
     else {
@@ -145,64 +136,64 @@ g2u8(char d[], size_t n) {
     free(u8s);
 }
 
-// isu8_local - 判断是否是 utf8 串的临时状态
-static bool isu8_local(unsigned char c, unsigned char * byts, bool * ascii) {
+// isutf8_local - 判断是否是 utf8 串的临时状态
+static bool isutf8_local(unsigned char c, unsigned char * bytes, bool * ascii) {
     // ascii 码最高位为 0, 0xxx xxxx
     if ((c & 0x80)) *ascii = false;
 
     // 计算字节数
-    if (0 == *byts) {
+    if (0 == *bytes) {
         if (c >= 0x80) {
-            if (c >= 0xFC && c <= 0xFD) *byts = 6;
-            else if (c >= 0xF8) *byts = 5;
-            else if (c >= 0xF0) *byts = 4;
-            else if (c >= 0xE0) *byts = 3;
-            else if (c >= 0xC0) *byts = 2;
+            if (c >= 0xFC && c <= 0xFD) *bytes = 6;
+            else if (c >= 0xF8) *bytes = 5;
+            else if (c >= 0xF0) *bytes = 4;
+            else if (c >= 0xE0) *bytes = 3;
+            else if (c >= 0xC0) *bytes = 2;
             else return false; // 异常编码直接返回
-            --*byts;
+            --*bytes;
         }
     } else {
         // 多字节的非首位字节, 应为 10xx xxxx
         if ((c & 0xC0) != 0x80) return false;
-        // byts 来回变化, 最终必须为 0
-        --*byts;
+        // bytes 来回变化, 最终必须为 0
+        --*bytes;
     }    
     return true;
 }
 
 //
-// isu8s - 判断字符串是否是utf8编码
+// isutf8s - 判断字符串是否是utf8编码
 // s        : 输入的串
 // return   : true 表示 utf8 编码
 //
 bool 
-isu8s(const char * s) {
+isutf8s(const char * s) {
     bool ascii = true;
-    // byts 表示编码字节数, utf8 [1, 6] 字节编码
-    unsigned char byts = 0;
+    // bytes 表示编码字节数, utf8 [1, 6] 字节编码
+    unsigned char bytes = 0;
 
     for (unsigned char c; (c = *s); ++s)
-        if (!isu8_local(c, &byts, &ascii)) 
+        if (!isutf8_local(c, &bytes, &ascii)) 
             return false;
 
-    return !ascii && byts == 0;
+    return !ascii && bytes == 0;
 }
 
 //
-// isu8 - check is utf8
+// isutf8 - check is utf8
 // d        : mem
 // n        : size
 // return   : true 表示 utf8 编码
 //
 bool 
-isu8(const char d[], size_t n) {
+isutf8(const char d[], size_t n) {
     bool ascii = true;
-    // byts 表示编码字节数, utf8 [1, 6] 字节编码
-    unsigned char byts = 0;
+    // bytes 表示编码字节数, utf8 [1, 6] 字节编码
+    unsigned char bytes = 0;
 
     for (size_t i = 0; i < n; ++i)
-        if (!isu8_local(d[i], &byts, &ascii)) 
+        if (!isutf8_local(d[i], &bytes, &ascii)) 
             return false;
 
-    return !ascii && byts == 0;
+    return !ascii && bytes == 0;
 }

@@ -45,3 +45,23 @@ void times_test(void) {
     bool equal = time_day_equal(t1, t2);
     printf("equal = %s\n", equal ? "true" : "false");
 }
+
+void times_fmt_test(void) {
+    times_t buf;
+    int len;
+
+    printf("timezone = %ld, daylight = %d, tzname=%s, %s\n", _timezone, daylight, tzname[0], tzname[1]);
+
+    len = times_fmt(TIMES_FMT_STR, buf, sizeof buf);
+    printf("len = %d, buf = [%s]\n", len, buf);
+
+    char * time_fmt_str = "%04d年%02d月%02d日 %02d时%02d分%02d秒.%09ld纳秒 %s";    
+    len = times_fmt(time_fmt_str, buf, sizeof buf);
+    printf("len = %d, buf = [%s]\n", len, buf);
+
+    time_fmt_str = "%04d-%02d-%02d %02d:%02d:%02d.%09ld %s";    
+    len = times_fmt(time_fmt_str, buf, sizeof buf);
+    printf("len = %d, buf = [%s]\n", len, buf);
+
+    printf("times() = %s, len = %zu\n", times(), strlen(times()));
+}

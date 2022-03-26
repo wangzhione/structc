@@ -14,6 +14,14 @@ git branch -r | grep -v -E 'master$|preview$|staging$' | sed 's/origin\///g' | x
 git remote prune origin
 ```
 
+构建和上传远端
+
+```Bash
+git checkout {branch name}
+git checkout -b {new branch name}
+git push --set-upstream origin {new branch name}
+```
+
 ## git tag
 
 Git 可以给仓库历史中的某一个提交打上标签, **以示重要**. 比较有代表性的是人们会使用这个功能来**标记发布结点**(v1.0.0, v2.0.0 等等)
