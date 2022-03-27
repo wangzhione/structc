@@ -28,6 +28,11 @@ void pipe_test(void) {
     closesocket(fd[0]); closesocket(fd[1]);
 }
 
+inline SOCKET socket_accept(SOCKET s, sockaddr_t a) {
+    a->len = sizeof(struct sockaddr_in6);
+    return accept(s, &a->s, &a->len);
+}
+
 //
 // pipe - 移植 linux 函数, 通过 WinSock 实现
 // pipefd   : 索引 0 表示 recv fd, 1 是 send fd

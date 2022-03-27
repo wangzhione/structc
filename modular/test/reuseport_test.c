@@ -21,6 +21,11 @@ void reuseport_test(void) {
     accept_example(0);
 }
 
+inline SOCKET socket_accept(SOCKET s, sockaddr_t a) {
+    a->len = sizeof(struct sockaddr_in6);
+    return accept(s, &a->s, &a->len);
+}
+
 // accept_example - SO_REUSEPORT accept example 
 void 
 accept_example(int id) {

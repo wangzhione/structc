@@ -46,7 +46,7 @@ inline int spoll_mod(spoll_t p, SOCKET s, void * u, bool read, bool write) {
 int spoll_wait(spoll_t p, spoll_event_t e) {
     struct epoll_event v[MAX_EVENT];
     
-    int n = epoll_wait(p, v, sizeof v / sizeof *v, -1);
+    int n = epoll_wait(p, v, MAX_EVENT, -1);
 
     for (int i = 0; i < n; ++i) {
         uint32_t flag = v[i].events;

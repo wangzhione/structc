@@ -244,7 +244,14 @@ int socket_connect_timeout_partial(SOCKET s, const sockaddr_t a, int ms) {
     FD_ZERO(&eset); FD_SET(s, &eset);
     timeout.tv_sec = ms / 1000;
     timeout.tv_usec = (ms % 1000) * 1000;
-    n = select((int)s + 1, &rset, &wset, &eset, &timeout);
+
+#ifndef _WIN32
+    // 这种 select 监听 connect 链接完成, 适用面很窄, 正规做法放入全局监听器中等通知
+    // https://stackoverflow.com/questions/1342712/nix-select-and-exceptfds-errorfds-semantics
+    n = select(s + 1, &rset, &wset, &eset, &timeout);
+#else
+    n = select(0, &rset, &wset, &eset, &timeout);
+#endif
     // 超时返回错误, 防止客户端继续三次握手
     if (n <= 0) return -1;
 
@@ -284,7 +291,7 @@ socket_connect_timeout(const sockaddr_t a, int ms) {
     }
 
     if (socket_connect_timeout_partial(s, a, ms) >= 0) {
-        // 返回非阻塞 socket fd
+        // 返回阻塞 socket fd
         if (socket_set_block(s) >= 0)
             return s;
     }

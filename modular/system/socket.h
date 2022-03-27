@@ -240,8 +240,3 @@ extern SOCKET socket_connect(const sockaddr_t a);
 
 // socket_connect_timeout - 毫秒超时的 connect
 extern SOCKET socket_connect_timeout(const sockaddr_t a, int ms);
-
-inline SOCKET socket_accept(SOCKET s, sockaddr_t a) {
-    a->len = sizeof(struct sockaddr_in6);
-    return accept(s, &a->s, &a->len);
-}
