@@ -86,5 +86,5 @@ __pragma (pack(pop))
 #endif
 
 #ifndef UNUSED
-#define UNUSED(parameter) (void)(parameter)
+#define UNUSED(parameter) if (parameter) {}
 #endif//UNUSED
