@@ -22,9 +22,9 @@ q_pop(q_t q) {
 
 // q_expand - expand memory by twice
 static void q_expand(q_t q) {
-    int i, cap = q->cap << 1;
+    int cap = q->cap << 1;
     void ** p = malloc(sizeof(void *)*cap);
-    for (i = 0; i < q->cap; ++i)
+    for (int i = 0; i < q->cap; ++i)
         p[i] = q->data[(q->head+i) & (q->cap-1)];
     free(q->data);
 
@@ -45,7 +45,7 @@ void
 q_push(q_t q, void * m) {
     int tail = (q->tail+1) & (q->cap-1);
     // 队列 full 直接扩容
-    if (q->tail >= 0 && tail == q->head)
+    if (tail == q->head && q->tail >= 0)
         q_expand(q);
     else
         q->tail = tail;
