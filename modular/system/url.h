@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "alloc.h"
 #include <ctype.h>
+#include <stdlib.h>
 
 //
 // URL 编码做了如下操作： 

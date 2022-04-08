@@ -9,14 +9,14 @@
 // 
 char * 
 url_encode(const char * s, int len, int * nen) {
-    if (!s || !*s || len <= 0) {
+    if (s == NULL || *s == '\0' || len <= 0) {
         if (nen) *nen = 0;
         return NULL;
     }
 
     const unsigned char * from = (unsigned char *)s;
-    const unsigned char * end = (unsigned char *)s + len;
-    unsigned char * to = calloc(3 * (size_t)len + 1, sizeof(unsigned char));
+    const unsigned char * end = from + len;
+    unsigned char * to = calloc(3 * len + 1, 1);
     unsigned char * start = to;
 
     while (from < end) {
@@ -69,7 +69,7 @@ inline char htoc(char * s) {
 //
 int 
 url_decode(char s[], int len) {
-    if (!s || !*s || len <= 0)
+    if (s == NULL || *s == '\0' || len <= 0)
         return -1;
 
     char * dest = s,  * data = s;
@@ -85,8 +85,9 @@ url_decode(char s[], int len) {
             data += 2;
             len -= 2;
         }
-        else
+        else {
             *dest = c;
+        }
         ++dest;
     }
     *dest = '\0';

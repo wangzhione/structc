@@ -1,5 +1,4 @@
 ﻿#include <alloc.h>
-#include <stdio.h>
 
 //
 // 简单测试一下内存模块使用
