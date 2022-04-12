@@ -17,27 +17,27 @@ void q_test(void) {
         object[i].value = i;
     }
 
-    q_t q; q_init(q);
+    struct q q = q_create();
     
-    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(q), q->tail, q->head, q->cap);
-    i = 0; q_push(q, object+i);
-    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(q), q->tail, q->head, q->cap);
-    i = 1; q_push(q, object+i);
-    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(q), q->tail, q->head, q->cap);
-    q_pop(q);
-    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(q), q->tail, q->head, q->cap);
+    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(&q), q.tail, q.head, q.cap);
+    i = 0; q_push(&q, object+i);
+    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(&q), q.tail, q.head, q.cap);
+    i = 1; q_push(&q, object+i);
+    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(&q), q.tail, q.head, q.cap);
+    q_pop(&q);
+    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(&q), q.tail, q.head, q.cap);
 
     // 开始填充
     for (i = 0; i < 40; i++) {
-        q_push(q, object+i);
-    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(q), q->tail, q->head, q->cap);
+        q_push(&q, object+i);
+    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(&q), q.tail, q.head, q.cap);
     }
 
     // 弹出
     for (i = 0; i < 44; i++) {
-        q_pop(q);
-    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(q), q->tail, q->head, q->cap);
+        q_pop(&q);
+    printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(&q), q.tail, q.head, q.cap);
     }
 
-    q_free(q);
+    q_release(&q);
 }

@@ -6,7 +6,7 @@
 // return : 若队列 empty, 返回 NULL
 //
 void * 
-q_pop(q_t q) {
+q_pop(struct q * q) {
     if (q_exist(q)) {
         void * m = q->data[q->head];
         if (q->tail != q->head)
@@ -21,7 +21,7 @@ q_pop(q_t q) {
 }
 
 // q_expand - expand memory by twice
-static void q_expand(q_t q) {
+static void q_expand(struct q * q) {
     int cap = q->cap << 1;
     void ** p = malloc(sizeof(void *)*cap);
     for (int i = 0; i < q->cap; ++i)
@@ -42,7 +42,7 @@ static void q_expand(q_t q) {
 // return : void
 // 
 void 
-q_push(q_t q, void * m) {
+q_push(struct q * q, void * m) {
     int tail = (q->tail+1) & (q->cap-1);
     // 队列 full 直接扩容
     if (tail == q->head && q->tail >= 0)
@@ -59,7 +59,7 @@ q_push(q_t q, void * m) {
 // return   : void
 //
 void 
-q_delete(q_t q, node_f fdie) {
+q_delete(struct q * q, node_f fdie) {
     // 销毁所有对象
     if (fdie != NULL && q_exist(q)) {
         for (;;) {
@@ -70,5 +70,5 @@ q_delete(q_t q, node_f fdie) {
         }
     }
 
-    q_free(q);
+    free(q->data);
 }

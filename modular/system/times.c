@@ -29,7 +29,7 @@ usleep(unsigned usec) {
 #define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
 
 //
-// gettimeofday - 实现 Linux sys/time.h 得到微秒时间
+// gettimeofday - 实现 Linux sys/time.h 得到微秒时间, 推荐使用 localtime_get
 // tv       : 返回秒数和微秒数
 // tz       : 返回时区结构
 // return   : success is 0

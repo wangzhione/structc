@@ -4,11 +4,9 @@
 #include "spinlock.h"
 
 struct mq {
-    q_t       q;       // 队列
+    struct q       q;       // 队列
     atomic_flag lock;  // 自旋锁
 };
-
-typedef struct mq * mq_t;
 
 //
 // mq_delete - 消息队列删除
@@ -16,21 +14,20 @@ typedef struct mq * mq_t;
 // fdie     : node_f 行为, 删除 push 进来的结点
 // return   : void
 //
-inline void mq_delete(mq_t q, node_f fdie) {
+inline void mq_delete(struct mq * q, node_f fdie) {
     // 销毁所有对象
-    q_delete(q->q, fdie);
-    free(q);
+    q_delete(&q->q, fdie);
 }
 
 //
 // mq_create - 消息队列创建
 // return   : 消息队列对象
 //
-inline mq_t mq_create(void) {
-    struct mq * q = malloc(sizeof(struct mq));
-    q_init(q->q);
-    q->lock = (atomic_flag)ATOMIC_FLAG_INIT;
-    return q;
+inline struct mq mq_create(void) {
+    return (struct mq) {
+        .q = q_create(),
+        .lock = ATOMIC_FLAG_INIT,
+    };
 }
 
 //
@@ -38,9 +35,9 @@ inline mq_t mq_create(void) {
 // q        : 消息队列对象
 // return   : 若 mq empty return NULL
 //
-inline void * mq_pop(mq_t q) {
+inline void * mq_pop(struct mq * q) {
     atomic_flag_lock(&q->lock);
-    void * m = q_pop(q->q);
+    void * m = q_pop(&q->q);
     atomic_flag_unlock(&q->lock);
     return m;
 }
@@ -51,9 +48,9 @@ inline void * mq_pop(mq_t q) {
 // m        : 压入的消息
 // return   : void
 //
-inline void mq_push(mq_t q, void * m) {
+inline void mq_push(struct mq * q, void * m) {
     atomic_flag_lock(&q->lock);
-    q_push(q->q, m);
+    q_push(&q->q, m);
     atomic_flag_unlock(&q->lock);
 }
 
@@ -62,9 +59,9 @@ inline void mq_push(mq_t q, void * m) {
 // q        : 消息队列对象
 // return   : 返回消息队列长度
 //
-extern inline int mq_len(mq_t q) {
+extern inline int mq_len(struct mq * q) {
     atomic_flag_lock(&q->lock);
-    int len = q_len(q->q);
+    int len = q_len(&q->q);
     atomic_flag_unlock(&q->lock);
     return len;
 }

@@ -26,15 +26,6 @@ chars_expand(struct chars * cs, size_t len) {
     return cs->str + cs->len;
 }
 
-inline void chars_appends(struct chars * cs, const char * str) {
-    if (str != NULL) {
-        size_t sz = strlen(str);
-        if (sz > 0)
-            chars_appendn(cs, str, sz);
-        chars_get(cs);
-    }
-}
-
 //
 // chars_dup - 得到 C 堆上的串, 需要自行 free
 // cs       : struct chars * 串
@@ -42,10 +33,10 @@ inline void chars_appends(struct chars * cs, const char * str) {
 //
 inline char * chars_dup(struct chars * cs) {
     // 构造内存, 返回最终结果
-    size_t len = cs->len + (cs->len || cs->str[cs->len-1]);
+    size_t len = cs->len + (cs->len == 0 || cs->str[cs->len-1] != 0);
     char * str = malloc(len);
-    memcpy(str, cs->str, len - 1);
-    str[len - 1] = '\0';
+    memcpy(str, cs->str, len-1);
+    str[len-1] = 0;
     return str;
 }
 

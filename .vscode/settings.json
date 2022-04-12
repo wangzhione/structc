@@ -20,6 +20,15 @@
         "system_error": "c",
         "unordered_map": "c",
         "tuple": "c",
-        "utility": "c"
+        "utility": "c",
+        "initializer_list": "c",
+        "cstddef": "c",
+        "cstdio": "c",
+        "cwchar": "c",
+        "vector": "c",
+        "memory": "c",
+        "memory_resource": "c",
+        "fstream": "c",
+        "new": "c"
     }
 }

@@ -7,8 +7,8 @@
 // return   : >= 0 表示成功, < 0 表示失败
 //
 int 
-array_each(array_t a, each_f func, void * arg) {
-    assert(a && func);
+array_each(struct array * a, each_f func, void * arg) {
+    assert(a != NULL && func != NULL);
 
     char * s = a->data, * e = s + a->size * a->len;
     while (s < e) {

@@ -12,20 +12,17 @@ struct stack {
     void **  data;  // 栈实体
 };
 
-//
-// stack_init - 初始化 stack 对象栈
-// stack_free - 清除掉 stack 对象栈
-// return   : void
-//
 #define INT_STACK   (1 << 8)
-inline void stack_init(struct stack * s) {
-    assert(s && INT_STACK > 0);
-    s->tail = -1;
-    s->cap  = INT_STACK;
-    s->data = malloc(sizeof(void *) * INT_STACK);
+
+inline struct stack stack_create(void) {
+    return (struct stack) {
+        .tail = -1,
+        .cap = INT_STACK,
+        .data = malloc(sizeof(void *) * INT_STACK),
+    };
 }
 
-inline void stack_free(struct stack * s) {
+inline void stack_release(struct stack * s) {
     free(s->data);
 }
 
@@ -41,7 +38,8 @@ inline void stack_delete(struct stack * s, node_f fdie) {
             while (s->tail >= 0)
                 fdie(s->data[s->tail--]);
         }
-        stack_free(s);
+        // stack_create 和 free 对应
+        free(s->data);
     }
 }
 

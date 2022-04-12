@@ -123,20 +123,13 @@ inline void pthread_end(pthread_t id) {
 ```C
 // 轻量 char * 串
 //
-// stack declare 构建和释放 : 
-//
-// struct chars var = {}; // 构建 
-// free(var.str);         // 释放
-//
-// heap  declare 构建和释放 : 
-// 
-// struct chars * cs = calloc(1, sizeof(struct chars));  // 构建 
-// chars_delete(cs);                                     // 释放
+// declare 构建 : struct chars var = {};
+// free         : free(var.str);
 // 
 struct chars {
-    char * str;     // char * 字符串
     size_t len;     // 长度
     size_t cap;     // capacity 容量
+    char * str;     // char * 字符串
 };
 ```
 
