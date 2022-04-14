@@ -4,13 +4,12 @@
 #define CHARS_INT    (1 << 7)
 
 //
-// chars_expand - low level 字符串扩容 api
+// chars_expand 字符池子扩容 api
 // cs       : 可变字符串
 // len      : 扩容的长度
-// return   : cstr::str + cstr::len 位置的串
+// return   : chars::str + chars::len 位置的串
 //
-char * 
-chars_expand(struct chars * cs, size_t len) {
+char * chars_expand(struct chars * cs, size_t len) {
     size_t cap = cs->cap;
     if ((len += cs->len) > cap) {
         if (cap < CHARS_INT) {

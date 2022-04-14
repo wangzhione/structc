@@ -17,9 +17,20 @@ struct chars {
 // chars_expand 字符池子扩容 api
 // cs       : 可变字符串
 // len      : 扩容的长度
-// return   : cstr::str + cstr::len 位置的串
+// return   : chars::str + chars::len 位置的串
 //
 extern char * chars_expand(struct chars * cs, size_t len);
+
+//
+// chars_get - 通过 struct chars * 串结构得到一个 以 '\0' 结尾 C 串. 
+//            如果你很自信完全可以 chars::str 获取
+// cs       : struct chars * 串
+// return   : 返回构建 C 串, 内存地址 chars::str
+//
+inline char * chars_get(struct chars * cs) {
+    chars_expand(cs, 1)[0] = 0;
+    return cs->str;
+}
 
 inline void chars_appendc(struct chars * cs, int c) {
     assert(cs != NULL && c >= CHAR_MIN && c <= CHAR_MAX);
@@ -35,17 +46,6 @@ inline void chars_appendn(struct chars * cs, const char * str, size_t len) {
 
 inline void chars_appends(struct chars * cs, const char * str) {
     chars_appendn(cs, str, strlen(str));
-}
-
-//
-// chars_get - 通过 struct chars * 串得到一个 C 串以'\0'结尾. 
-//            如果你很自信完全可以 cs->str 获取
-// cs       : struct chars * 串
-// return   : 返回构建 C 串, 内存地址 cs->str
-//
-inline char * chars_get(struct chars * cs) {
-    chars_expand(cs, 1)[0] = 0;
-    return cs->str;
 }
 
 //

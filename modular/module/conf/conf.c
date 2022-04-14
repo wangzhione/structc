@@ -14,12 +14,12 @@ inline struct conf * conf_instance(void) {
 }
 
 // CONFIG_PARSE_JSON_STR - json field -> conf field
-#define CONFIG_PARSE_JSON_STR(json, conf, field)            \
-json_t $##field = json_object(json, #field);                \
-if (!$##field || $##field->type != JSON_STRING) {           \
-    RETURN(false, "json_object err "#field" %p", $##field); \
-}                                                           \
-free(conf->field);                                          \
+#define CONFIG_PARSE_JSON_STR(json, conf, field)              \
+json_t $##field = json_object(json, #field);                  \
+if (!$##field || $##field->type != JSON_STRING) {             \
+    RETURN(false, "json_object error "#field" %p", $##field); \
+}                                                             \
+free(conf->field);                                            \
 conf->field = json_detach_str($##field);
 
 // conf_parse - 解析内容, 并返回解析结果
@@ -40,7 +40,7 @@ static bool conf_parse(json_t json, struct conf * conf) {
 bool conf_init(const char * path) {
     json_t json = json_file(path);
     if (!json) {
-        RETURN(false, "json_file err path is %s", path);
+        RETURN(false, "json_file error path is %s", path);
     }
 
     // 解析 json 内容, 并返回详细配置内容

@@ -1,26 +1,58 @@
 ﻿#include "json.h"
 
+/*
+
+#include "q.h" 
+
+void json_delete(json_t cj) {
+    if (cj == NULL) {
+        return;
+    }
+
+    struct q q = q_create();
+
+    do {
+        json_t next = cj->next;
+        unsigned type = cj->type;
+        
+        free(cj->key);
+        if ((type & JSON_STRING) && !(type & JSON_CONST))
+            free(cj->str);
+
+        if (cj->child) {
+            q_push(&q, cj->child);
+        }
+
+        free(cj);
+        cj = next ? next : q_pop(&q);
+    } while (cj);
+
+    q_release(&q);
+}
+
+ */
+
 //
 // json_delete - json 对象销毁
-// c        : json 对象
+// cj       : json 对象
 // return   : void
 //
 void 
-json_delete(json_t c) {
-    while (c) {
-        json_t next = c->next;
-        unsigned char t = c->type;
+json_delete(json_t cj) {
+    while (cj) {
+        json_t next = cj->next;
+        unsigned type = cj->type;
 
-        free(c->key);
-        if ((t & JSON_STRING) && !(t & JSON_CONST))
-            free(c->str);
+        free(cj->key);
+        if ((type & JSON_STRING) && !(type & JSON_CONST))
+            free(cj->str);
 
         // 子结点继续走深度递归删除
-        if (c->child)
-            json_delete(c->child);
+        if (cj->child)
+            json_delete(cj->child);
 
-        free(c);
-        c = next;
+        free(cj);
+        cj = next;
     }
 }
 
@@ -30,10 +62,10 @@ json_delete(json_t c) {
 // return   : 返回 json 对象长度
 //
 int 
-json_len(json_t c) {
+json_len(json_t cj) {
     register int len = 0;
-    if (c) {
-        for (c = c->child; c; c = c->next)
+    if (cj) {
+        for (cj = cj->child; cj; cj = cj->next)
             ++len;
     }
     return len;
@@ -72,8 +104,6 @@ json_object(json_t obj, const char * k) {
         node = node->next;
     return node;
 }
-
-//----------------------------------json parse begin--------------------------------
 
 // parse_number - number 解析
 static const char * parse_number(json_t item, const char * str) {
@@ -167,7 +197,7 @@ static unsigned parse_hex4(const char str[]) {
         else return 0; // invalid
 
         // shift left to make place for the next nibble
-        if (4 == ++i) break;
+        if (++i == 4) break;
         h <<= 4;
     }
 
@@ -215,21 +245,21 @@ static const char * parse_string(json_t item, const char * str) {
             };
             unsigned oc, uc = parse_hex4(ptr + 1);
             // check for invalid
-            if ((ptr += 4) >= etr) goto err_free;
+            if ((ptr += 4) >= etr) goto faild_free;
             if ((uc >= 0xDC00 && uc <= 0xDFFF) || uc == 0)
-                goto err_free;
+                goto faild_free;
 
             // UTF16 surrogate pairs
             if (uc >= 0xD800 && uc <= 0xDBFF) {
-                if ((ptr + 6) >= etr) goto err_free;
+                if ((ptr + 6) >= etr) goto faild_free;
                 // missing second-half of surrogate
                 if ((ptr[1] != '\\') || (ptr[2] != 'u' && ptr[2] != 'U')) 
-                    goto err_free;
+                    goto faild_free;
 
                 oc = parse_hex4(ptr + 3);
                 ptr += 6; // parse \uXXXX
                 // invalid second-half of surrogate
-                if (oc < 0xDC00 || oc > 0xDFFF) goto err_free;
+                if (oc < 0xDC00 || oc > 0xDFFF) goto faild_free;
                 // calculate unicode codepoint from the surrogate pair
                 uc = 0x10000 + (((uc & 0x3FF) << 10) | (oc & 0x3FF));
             }
@@ -269,7 +299,7 @@ static const char * parse_string(json_t item, const char * str) {
     item->type = JSON_STRING;
     return ptr + 1;
 
-err_free:
+faild_free:
     free(out);
     return NULL;
 }
@@ -293,6 +323,7 @@ static const char * parse_array(json_t item, const char * str) {
     item->child = child = json_new();
     str = parse_value(child, str);
     if (!str) return NULL;
+    item->len++;
 
     // array ',' cut
     while (',' == *str) {
@@ -305,6 +336,7 @@ static const char * parse_array(json_t item, const char * str) {
         // 继续间接递归处理值
         str = parse_value(child, str);
         if (!str) return NULL;
+            item->len++;
     }
 
     return ']' == *str ? str + 1 : NULL;
@@ -332,6 +364,7 @@ static const char * parse_object(json_t item, const char * str) {
     // 再处理 value
     str = parse_value(child, str + 1);
     if (!str) return NULL;
+    item->len++;
 
     // 开始间接递归解析
     while (*str == ',') {
@@ -352,6 +385,7 @@ static const char * parse_object(json_t item, const char * str) {
 
         str = parse_value(child, str + 1);
         if (!str) return NULL;
+        item->len++;
     }
 
     return '}' == *str ? str + 1 : NULL;
@@ -360,7 +394,7 @@ static const char * parse_object(json_t item, const char * str) {
 static const char * parse_value(json_t item, const char * str) {
     if (!str) return NULL;
     switch (*str) {
-    // node or N = null, f or F = false, t or T = true ...
+    // n or N = null, f or F = false, t or T = true
     case 'n': case 'N':
         if (strncasecmp(str + 1, "ull", sizeof "ull" - 1)) return NULL;
         item->type = JSON_NULL;
@@ -459,12 +493,12 @@ size_t json_mini(char * str) {
 // return   : json 对象, NULL 表示解析失败
 //
 json_t json_parse(const char * str) {
-    json_t c = json_new();
-    if (parse_value(c, str) == NULL) {
-        json_delete(c);
+    json_t cj = json_new();
+    if (parse_value(cj, str) == NULL) {
+        json_delete(cj);
         return NULL;
     }
-    return c;
+    return cj;
 }
 
 json_t 
@@ -718,13 +752,13 @@ json_string_value(json_t item, struct chars * p) {
 
 //
 // json_string - 获取 json 对象的打印字符串
-// c        : json_t 对象
+// cj       : json_t 对象
 // return   : 返回生成的 json 字符串, 需要自行 free
 //
 char * 
-json_string(json_t c) {
+json_string(json_t cj) {
     struct chars p = {};
-    if (NULL == json_string_value(c, &p)) {
+    if (NULL == json_string_value(cj, &p)) {
         free(p.str);
         return NULL;
     }
@@ -772,6 +806,7 @@ json_create_array(unsigned type, const void * a, int n) {
             prev->next = node;
         else {
             aj = json_new_array();
+            aj->len = n;
             aj->child = node;
         }
         prev = node;

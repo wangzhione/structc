@@ -9,7 +9,7 @@
 #include "strext.h"
 
 //
-// c json fast parse, type is all design
+// cj json fast parse, type is all design
 // https://www.json.org/json-zh.html
 //
 #ifndef JSON_NULL
@@ -32,13 +32,14 @@
 //                              -> next -> ..
 struct json {
     unsigned type;          // C JSON_NULL - JSON_ARRAY and JSON_CONST
-    struct json * next;     // type & OBJECT or ARRAY -> 下个结点链表
-    struct json * child;    // type & OBJECT or ARRAY -> 对象结点数据
+    struct json * next;     // type & JSON_ARRAY | JSON_OBJECT -> 同级下个结点
+    struct json * child;    // type & JSON_ARRAY | JSON_OBJECT -> 子结点
 
     char * key;             // json 结点的 key
     union {
-        char * str;         // type & JSON_STRING -> 字符串
-        double num;         // type & JSON_NUMBER -> number
+        int len;            // type & JSON_ARRAY | JSON_OBJECT is json child len
+        char * str;         // type & JSON_STRING is 字符串
+        double num;         // type & JSON_NUMBER is number
     };
 };
 
@@ -55,17 +56,17 @@ typedef struct json * json_t;
 
 //
 // json_delete - json 对象销毁
-// c        : json 对象
+// cj        : json 对象
 // return   : void
 //
-extern void json_delete(json_t c);
+extern void json_delete(json_t cj);
 
 //
 // json_len - 获取 json 对象长度
-// c        : json 对象
+// cj        : json 对象
 // return   : 返回 json 对象长度
 //
-extern int json_len(json_t c);
+extern int json_len(json_t cj);
 
 //
 // json_array - 通过索引获取 json 数组中子结点
@@ -105,10 +106,10 @@ extern json_t json_detach_object(json_t obj, const char * k);
 
 //
 // json_string - 生成 json 对象 char * 字符串
-// c        : json_t 对象
+// cj        : json_t 对象
 // return   : 返回生成的 json 字符串, 需要自行 free
 //
-extern char * json_string(json_t c);
+extern char * json_string(json_t cj);
 
 // json_new - 构造 json 对象 (json null node)
 inline json_t json_new(void) {

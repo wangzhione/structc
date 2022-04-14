@@ -30,8 +30,7 @@ void test(void) {
     //
     // 单元测试 show time 开始你的表演
     //
-    EXTERN_TEST(times_fmt_test);
-    EXTERN_TEST(log_test);
+    EXTERN_TEST(json_test);
 
     puts("*--------------------------------** main test *--------------------------------*");
 }
