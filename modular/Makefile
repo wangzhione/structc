@@ -18,7 +18,7 @@ DMAIN     := main
 DTEST     := test
 DSRC      := system struct module
 DMODULE   := module/conf
-DIRS      := $(DSRC) $(DMODULE) $(DTEST) $(DMAIN)
+DIRS      := $(DSRC) $(DMODULE) $(DMAIN)
 
 #
 # DOUT    : 项目输出目录
@@ -36,6 +36,12 @@ IINC      = $(foreach v, $(DSRC),-I$(v))
 SRCC      = $(wildcard $(foreach v, $(DIRS),$(v)/*.c))
 OBJO      = $(foreach v, $(SRCC),$(DOBJ)/$(notdir $(basename $(v))).o)
 
+# src c source filter out main/main.c main/exec.c
+# 
+ALLSRCC   = $(wildcard $(foreach v, $(DIRS) $(DTEST),$(v)/*.c))
+TESTSRCC  = $(filter-out main/main.c main/exec.c, $(ALLSRCC))
+TESTOBJO  = $(foreach v, $(TESTSRCC),$(DOBJ)/$(notdir $(basename $(v))).o)
+
 #
 # 全局编译的设置
 #
@@ -50,20 +56,22 @@ CFLAGS    := -g -Werror -Wall -Wextra -Wno-missing-field-initializers -D_GNU_SOU
 LIB       := -lm -lpthread
 
 ifneq ( , $(D))
-	HEAD=$(CC) -O3 $(CFLAGS) $(D)
+	PREFIX=$(CC) -O3 $(CFLAGS) $(D)
 else
-	HEAD=$(CC) -O2 $(CFLAGS)
+	PREFIX=$(CC) -O2 $(CFLAGS)
 endif
 
-RUNO      = $(HEAD) $(IINC) -c -o $@ $^
-RUN       = $(HEAD) $(IINC) -o $(DOUT)/$@ $^ $(LIB)
+RUNO      = $(PREFIX) $(IINC) -c -o $@ $^
+RUN       = $(PREFIX) $(IINC) -o $(DOUT)/$@ $^ $(LIB)
 
 #
 # 具体的产品生产
 #
-.PHONY : all clean
+.PHONY : all clean test
 
 all : main.out
+
+test : test.out
 
 #
 # 主运行程序 main
@@ -71,6 +79,8 @@ all : main.out
 main.out : $(OBJO)
 	$(RUN)
 
+test.out : $(TESTOBJO)
+	$(RUN)
 
 #
 # 循环产生 -> 所有 - 链接文件 *.o
@@ -80,7 +90,7 @@ $(DOBJ)/$(notdir $(basename $(1))).o : $(1) | $$(DOUT)
 	$$(RUNO)
 endef
 
-$(foreach v, $(SRCC), $(eval $(call CALL_RUNO, $(v))))
+$(foreach v, $(ALLSRCC), $(eval $(call CALL_RUNO, $(v))))
 
 #
 # 程序的收尾工作,清除,目录构建
