@@ -9,14 +9,17 @@ void stack_test(void) {
     stack_push(&s, ++str);
 
     // 数据输出
-    for (char * now; (now = stack_top(&s)); stack_popped(&s))
-        printf("now = %p\n", now);
+    while (stack_exist(&s)) {
+        printf("now = %p\n", stack_top(&s));
+        stack_popped(&s);
+    }
 
     stack_push(&s, ++str);
     stack_push(&s, ++str);
 
-    for (char * now; (now = stack_top(&s)); stack_popped(&s))
-        printf("now = %p\n", now);
+    while (stack_exist(&s)) {
+        printf("now = %p\n", stack_pop(&s));
+    }
 
     stack_release(&s);
 }

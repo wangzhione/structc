@@ -29,6 +29,7 @@
         "memory": "c",
         "memory_resource": "c",
         "fstream": "c",
-        "new": "c"
+        "new": "c",
+        "chrono": "c"
     }
 }

@@ -1,28 +1,5 @@
 ﻿#include <base.h>
 
-//
-// test     - main run test 
-//            test build: make test
-//            DEBUG build: make
-//            Release build: make D=-DNDEBUG
-// return   : exit EXIT_SUCCESS
-//
-int main(int argc, char * argv[]) {
-    // 
-    // 系统初始化 ~ 虎
-    EXTERN_RUN(init, argc, argv);
-
-    puts("*--------------------------------** main test *--------------------------------*");
-
-    // 
-    // unit test ~ 豹
-    EXTERN_TEST(test);
-
-    puts("*--------------------------------** main test *--------------------------------*");
-
-    exit(EXIT_SUCCESS);
-}
-
 static atomic_int id = ATOMIC_VAR_INIT(1);
 
 //
@@ -42,8 +19,30 @@ do {                                                                    \
 } while(0)
 
 //
-// 单元测试 show time 开始你的表演
+// main     - run test
+//            test build: make test
+// return   : exit EXIT_SUCCESS
+//
+int main(int argc, char * argv[]) {
+    // 
+    // 系统初始化 ~ 虎
+    EXTERN_RUN(init, argc, argv);
+
+    puts("*-----------------------** main test *----------------------*");
+
+    // 
+    // unit test ~ 豹
+    EXTERN_RUN(test);
+
+    puts("*-----------------------** main test *----------------------*");
+
+    exit(EXIT_SUCCESS);
+}
+
+//
+// make test 单元测试 show time 开始你的表演
 //
 void test(void) {
-    EXTERN_TEST(json_test);
+    EXTERN_TEST(stack_test);
+    EXTERN_TEST(times_test);
 }

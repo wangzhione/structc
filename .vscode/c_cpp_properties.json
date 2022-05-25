@@ -15,7 +15,8 @@
                 "__linux__",
                 "_GNU_SOURCE"
             ],
-            "compilerPath": "/usr/bin/gcc"
+            "compilerPath": "/usr/bin/gcc",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4

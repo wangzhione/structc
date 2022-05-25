@@ -5,10 +5,17 @@
 // time 业务测试
 //
 void times_test(void) {
+    // Now 'timezome' global is populated. Obtain timezone and daylight info. 
+    tzset();
+
+    printf("daylight = %d, daylight = %d\n", daylight, daylight);
+    printf("daylight = %d, daylight = %d\n", daylight, daylight);
+
     times_t tsr = "2018年3月11日 19点35分59秒";
     times_t nsr = "2018-03-11 19:35:58";
     time_t t = time_get(tsr);
     time_t n = time_get(nsr);
+    printf("t = %lld, n = %lld\n", (long long)t, (long long)n);
     IF(t < 0 || n < 0);
 
     printf("tsr = %s -> t = %zd\n", tsr, t);
@@ -20,12 +27,13 @@ void times_test(void) {
         printf("esr = %s -> e = %zd\n", esr, e);
 
     struct timeval tv;
-    struct timezone tz;
-    int status = gettimeofday(&tv, &tz);
+    // struct timezone tz;
+    // int status = gettimeofday(&tv, &tz);
+    int status = gettimeofday(&tv, NULL);
     printf("status = %d\n", status);
     printf("tv_sec = %ld, tv_usec = %ld\n", (long)tv.tv_sec, (long)tv.tv_usec);
-    printf("tz_minuteswest = %d, tz_dsttime = %d\n", tz.tz_minuteswest, tz.tz_dsttime);
-    printf("timezone = %ld, daylight = %d, tzname=%s%s\n", _timezone, daylight, tzname[0], tzname[1]);
+    // printf("tz_minuteswest = %d, tz_dsttime = %d\n", tz.tz_minuteswest, tz.tz_dsttime);
+    printf("timezone = %ld, daylight = %d, tzname=%s%s\n", timezone, daylight, tzname[0], tzname[1]);
 
     tzset();
     times_t nos;
@@ -50,7 +58,7 @@ void times_fmt_test(void) {
     times_t buf;
     int len;
 
-    printf("timezone = %ld, daylight = %d, tzname=%s, %s\n", _timezone, daylight, tzname[0], tzname[1]);
+    printf("timezone = %ld, daylight = %d, tzname=%s, %s\n", timezone, daylight, tzname[0], tzname[1]);
 
     len = times_fmt(TIMES_FMT_STR, buf, sizeof buf);
     printf("len = %d, buf = [%s]\n", len, buf);

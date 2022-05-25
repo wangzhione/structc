@@ -62,7 +62,8 @@ inline bool stack_exist(struct stack * s) {
 // return   : 栈顶对象
 //
 inline void * stack_top(struct stack * s) {
-    return s->tail >= 0 ? s->data[s->tail] : NULL;
+    assert(s != NULL && s->tail >= 0);
+    return s->data[s->tail];
 }
 
 inline int stack_len(struct stack * s) {
@@ -75,7 +76,8 @@ inline int stack_len(struct stack * s) {
 // return   : void
 //
 inline void stack_popped(struct stack * s) {
-    if (s->tail >= 0) --s->tail;
+    assert(s != NULL && s->tail >= 0);
+    s->tail--;
 }
 
 //
@@ -84,7 +86,8 @@ inline void stack_popped(struct stack * s) {
 // return   : 弹出的栈顶对象
 //
 inline void * stack_pop(struct stack * s) {
-    return s->tail >= 0 ? s->data[s->tail--] : NULL;
+    assert(s != NULL && s->tail >= 0);
+    return s->data[s->tail--];
 }
 
 //

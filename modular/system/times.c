@@ -31,10 +31,10 @@ usleep(unsigned usec) {
 //
 // gettimeofday - 实现 Linux sys/time.h 得到微秒时间, 推荐使用 localtime_get
 // tv       : 返回秒数和微秒数
-// tz       : 返回时区结构
+// tz       : 返回时区结构, 目前默认废弃
 // return   : success is 0
 //
-int gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz) {
+int gettimeofday(struct timeval * restrict tv, void * /* unused */ tz) {
     if (tv) {
         FILETIME t;
         GetSystemTimeAsFileTime(&t);
@@ -47,11 +47,23 @@ int gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz) {
         tv->tv_usec = (long)(m % 1000000UL);
     }
 
+    /*
+
+    // Structure crudely representing a timezone.
+    // This is obsolete and should never be used.
+    struct timezone {
+        int tz_minuteswest; // Minutes west of GMT.
+        int tz_dsttime;     // Nonzero if DST is ever in effect.
+    };
+
     // 不管 linux or window, gettimeofday 都不是个好的 api 设计
     if (tz) {
         tz->tz_minuteswest = _timezone / 60;
         tz->tz_dsttime = _daylight;
     }
+
+    */
+   /* unused */ if (tz) {}
 
     return 0;
 }
@@ -80,17 +92,17 @@ int gettimeofday(struct timeval * restrict tv, struct timezone * restrict tz) {
  * logging of the dates, it's not really a complete implementation. */
 void 
 localtime_get(struct tm * restrict p, time_t t) {
-    t -= _timezone;                     /* Adjust for timezone. */
+    t -= timezone;                      /* Adjust for timezone. */
     // Different countries have different daylight saving time rules, 
     // which are reserved for business
-    // t += 3600 * daylight;            /* Adjust for daylight time. */
-    time_t days = t / (3600 * 24);      /* Days passed since epoch. */
-    time_t seconds = t % (3600 * 24);   /* Remaining seconds. */
+    // t += 3600 * daylight;                /* Adjust for daylight time. */
+    int days = (int)(t / (3600 * 24));      /* Days passed since epoch. */
+    int seconds = (int)(t % (3600 * 24));   /* Remaining seconds. */
 
     p->tm_isdst = daylight;
     p->tm_hour = seconds / 3600;
-    p->tm_min = (seconds % 3600) / 60;
-    p->tm_sec = (seconds % 3600) % 60;
+    p->tm_min = seconds % 3600 / 60;
+    p->tm_sec = seconds % 3600 % 60;
 
     /* 1/1/1970 was a Thursday, that is, day 4 from the POV of the tm structure
      * where sunday = 0, so to calculate the day of the week we have to add 4
@@ -101,7 +113,7 @@ localtime_get(struct tm * restrict p, time_t t) {
     p->tm_year = 1970;
     for (;;) {
         /* Leap years have one day more. */
-        time_t days_this_year = 365 + is_leap_year(p->tm_year);
+        int days_this_year = 365 + is_leap_year(p->tm_year);
         if (days_this_year > days) break;
         days -= days_this_year;
         p->tm_year++;
@@ -181,6 +193,9 @@ bool times_tm(times_t ns, struct tm * outm) {
     }
     outm->tm_mon -= 1;
     outm->tm_year -= 1900;
+    // fix memory dirty data
+    outm->tm_wday = outm->tm_yday = 0;
+    outm->tm_isdst = 0;
     return true;
 }
 
@@ -219,8 +234,13 @@ inline time_t
 time_get(times_t ns) {
     struct tm m;
     // 先高效解析出年月日时分秒
-    if (!times_tm(ns, &m))
+    if (!times_tm(ns, &m)) {
         return -1;
+    }
+
+    // Window or Linux 正常处理, Window 11 WSL2 中库调用存在 BUG
+    // 在 struct tm 中 tm_isdst 为夏令时时候, mktime return -1; 并且会修改 daylight
+    //
     // 得到时间戳, < 0 标识失败
     return mktime(&m);
 }
@@ -239,8 +259,8 @@ time_day_equal(time_t n, time_t t) {
     // 中国标准时间(CST)比世界协调时间(UTC)早08:00小时. 该时区为标准时区时间, 主要用于 亚洲
     // UTC [World] + 8 * 3600 = CST [China] | UTC [World] = CST [China] - timezone (8 * 3600)
     // 其他地区也类似 UTC 和 CST 关系, 存在 timezone = UTC - LOC -> LOC = UTC - timezone
-    n = (n - _timezone) / (24 * 3600);
-    t = (t - _timezone) / (24 * 3600);
+    n = (n - timezone) / (24 * 3600);
+    t = (t - timezone) / (24 * 3600);
     return n == t;
 }
 

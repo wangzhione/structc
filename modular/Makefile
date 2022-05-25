@@ -52,7 +52,7 @@ CC        ?= cc
 # -Wimplicit-fallthrough=0          : 忽略 switch case missing break warning
 # -Wno-missing-field-initializers   : 忽略 initializer for field warning
 #
-CFLAGS    := -g -Werror -Wall -Wextra -Wno-missing-field-initializers -D_GNU_SOURCE
+CFLAGS    := -g -Wall -Wextra -Wno-missing-field-initializers -D_GNU_SOURCE
 LIB       := -lm -lpthread
 
 ifneq ( , $(D))

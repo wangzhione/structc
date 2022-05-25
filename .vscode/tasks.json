@@ -2,6 +2,11 @@
     "tasks": [
         {
             "type"    : "shell",
+            "label"   : "unit test",
+            "command" : "make test"
+        },
+        {
+            "type"    : "shell",
             "label"   : "Debug",
             "command" : "make"
         },
