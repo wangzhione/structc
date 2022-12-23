@@ -16,7 +16,9 @@
                 "_GNU_SOURCE"
             ],
             "compilerPath": "/usr/bin/gcc",
-            "configurationProvider": "ms-vscode.makefile-tools"
+            "cStandard": "gnu17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4

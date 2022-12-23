@@ -2,7 +2,7 @@
     "tasks": [
         {
             "type"    : "shell",
-            "label"   : "unit test",
+            "label"   : "Test",
             "command" : "make test"
         },
         {

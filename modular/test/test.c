@@ -45,6 +45,5 @@ int main(int argc, char * argv[]) {
 // make test 单元测试 show time 开始你的表演
 //
 void test(void) {
-    EXTERN_TEST(stack_test);
-    EXTERN_TEST(times_test);
+    EXTERN_TEST(pipe_test);
 }

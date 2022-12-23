@@ -9,19 +9,19 @@
 //
 inline int 
 pipe_open(pipe_t ch) {
-    return pipe(&ch->recv);
+    return pipe(ch->fd);
 }
 
 // pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
 // pipe_send - 管道阻塞发送
 inline int 
 pipe_recv(pipe_t ch, void * __restrict buf, int sz) {
-    return (int)read(ch->recv, buf, sz);
+    return (int)read (ch->fd[0] /* recv */, buf, sz);
 }
 
 inline int 
 pipe_send(pipe_t ch, const void * buf, int sz) {
-    return (int)write(ch->send, buf, sz);
+    return (int)write(ch->fd[1] /* send */, buf, sz);
 }
 
 #elif defined(_WIN32) && defined(_MSC_VER)
@@ -104,7 +104,7 @@ pipe_open(pipe_t ch) {
         .lpSecurityDescriptor = NULL,
         .bInheritHandle       = TRUE,
     };
-    return CreatePipe(&ch->recv, &ch->send, &a, 0) ? 0 : -1;
+    return CreatePipe(&ch->fd[0], &ch->fd[1], &a, 0) ? 0 : -1;
 }
 
 // pipe_recv - 管道阻塞接收, PIPE_BUF 4K 内原子交换
@@ -112,19 +112,19 @@ pipe_open(pipe_t ch) {
 inline int 
 pipe_recv(pipe_t ch, void * __restrict buf, int sz) {
     DWORD len = 0;
-    BOOL ret = PeekNamedPipe(ch->recv, NULL, 0, NULL, &len, NULL);
+    BOOL ret = PeekNamedPipe(ch->fd[0] /* recv */, NULL, 0, NULL, &len, NULL);
     if (!ret || len <= 0)
         return -1;
 
     // 开始读取数据
-    ret = ReadFile(ch->recv, buf, sz, &len, NULL);
+    ret = ReadFile(ch->fd[0] /* recv */, buf, sz, &len, NULL);
     return ret ? (int)len : -1;
 }
 
 inline int 
 pipe_send(pipe_t ch, const void * buf, int sz) {
     DWORD len = 0;
-    if (WriteFile(ch->send, buf, sz, &len, NULL))
+    if (WriteFile(ch->fd[1] /* send */, buf, sz, &len, NULL))
         return (int)len;
     return -1;
 }

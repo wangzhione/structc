@@ -89,8 +89,10 @@ void strext_test(void) {
     int len = str_cpyn(src, tar, sizeof src);
     printf("len = %d, src = %s\n", len, src);
 
+    // warning: ‘__builtin_strncpy’ output may be truncated copying 10 bytes from a string of length 10 [-Wstringop-truncation]
     // error 发生意外. src[sizeof src] '\0' 会被吃掉
     // 高性能领域推荐 memcpy
-    len = strlen(strncpy(src, tar, sizeof src));
+    // warning: ‘__builtin_strncpy’ output may be truncated copying 10 bytes from a string of length 10 [-Wstringop-truncation]
+    // len = strlen(strncpy(src, tar, sizeof src));
     printf("len = %d, src = %s\n", len, src);
 }

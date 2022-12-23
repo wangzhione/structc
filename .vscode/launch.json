@@ -5,10 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "gcc - 生成和调试活动文件",
+            "name": "(gdb) 启动",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/main.out",
+            "preLaunchTask": "Debug",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -27,8 +28,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "Debug",
-            "miDebuggerPath": "/usr/bin/gdb"
         }
+        
     ]
 }

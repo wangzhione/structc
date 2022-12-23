@@ -1,6 +1,6 @@
 ﻿# STRUCT C 基础库
 
-    雕琢 C 的华山剑法, 为那会的一时性起 ~>--
+    雕琢 C 入门的华山剑法, 为那会的一时性起 ~>--
 
 ## Update
 
@@ -11,11 +11,10 @@
 | 2022年01月19日 | C 菜鸟之旅 版本发布                               | 新生     |
 | 2022年03月24日 | C 菜鸡之旅 全力拥抱 Linux                         | 起点     |
 | 2022年06月26日 | 挖坑                         | 期待欲火     |
+| 2022年12月23日 | 雕琢                         | 手册版本     |
 |                |                                                 |          |
 
 ## 浪花不会一点点
-
-起始点:
 
 | 优先级 | 运算符       | 描述                            |  结合性  |
 | :----: | :----------- | :------------------------------ | :------: |
@@ -51,14 +50,15 @@
 |        | &= ^= \|=    | 以逐位与及异或及或赋值          |          |
 |   15   | ,            | 逗号                            | 从左到右 |
 
-核心点:
+
+**核心 package**
 
     struct 数据结构练习包
     system 系统封装排练包
     module 业务模块
-    test   模糊测试
+    test   模糊测试集
 
-总设计:
+**设计 code**
 
     struct, json, socket, thread ...
 
@@ -153,7 +153,7 @@ struct chars {
         - main 目录
             - main::exec.c 业务起点
             - main::init.c 模块初始化
-            - test::test.c test 模糊测试
+            - test::test.c test 代码模糊测试
         - test 目录
             - *_test.c -> void *_test(void) { ... }
 
@@ -199,7 +199,6 @@ struct chars {
 
 ```json
             "program": "${workspaceFolder}/bin/main.out",
-            ... .. .
             "preLaunchTask": "Debug",
 ```
 
@@ -209,6 +208,11 @@ struct chars {
 ```json
 {
     "tasks": [
+        {
+            "type"    : "shell",
+            "label"   : "Test",
+            "command" : "make test"
+        },
         {
             "type"    : "shell",
             "label"   : "Debug",
@@ -229,7 +233,7 @@ struct chars {
 ```json
 {
     "files.associations": {
-        "*.h": "c",
+        "*.h": "c"
     }
 }
 ```
@@ -242,6 +246,8 @@ struct chars {
 ***
 
 ## ~ * ~ 为要寻一个写手
+
+***
 
     为要寻一个明星
     - 徐志摩
@@ -265,6 +271,10 @@ struct chars {
     荒野里倒着一只牲口，
     黑夜里躺着一具尸首。——
     这回天上透出了水晶似的光明！
+
+***
+
+:) [Wuayramanta](https://i.y.qq.com/v8/playsong.html?songid=5012912&songtype=0#webchat_redirect)
 
 ***
 
@@ -428,13 +438,3 @@ struct chars {
 ...................................顶顶顶顶顶顶顶
 ......................................顶顶顶顶顶
 ```
-
-***
-
-    :)
-
-***
-
--:> [Wuayramanta](https://i.y.qq.com/v8/playsong.html?songid=5012912&songtype=0#webchat_redirect)
-
-***

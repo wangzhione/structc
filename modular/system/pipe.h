@@ -27,12 +27,12 @@ typedef HANDLE pass_t;
 #endif
 
 // chan_t - 管道类型
-typedef struct { pass_t recv, send; } pipe_t[1];
+typedef struct { pass_t fd[2]; /* fd[0] is recv, fd[1] is send */ } pipe_t[1];
 
 // pipe_close - 管道关闭
 inline void pipe_close(pipe_t ch) {
-    pass_close(ch->recv);
-    pass_close(ch->send);
+    pass_close(ch->fd[0] /* recv */);
+    pass_close(ch->fd[1] /* send */);
 }
 
 //
