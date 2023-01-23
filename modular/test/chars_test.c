@@ -14,12 +14,12 @@ void chars_test(void) {
     free(cs.str);
 
     struct cstr {
-        struct chars str;
         atomic_flag lock;
+        struct chars str;
     };
 
     // 初始化
-    struct cstr a = { ATOMIC_FLAG_INIT };
+    struct cstr a = { .lock = ATOMIC_FLAG_INIT };
 
     // 加锁
     atomic_flag_lock(&a.lock);
