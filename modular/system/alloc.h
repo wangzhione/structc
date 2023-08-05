@@ -73,17 +73,3 @@ inline void * ation_realloc(void * ptr, size_t size) {
     return ation_check(realloc(ptr, size), size);
 }
 
-// :) 包裹内存分配层, 些许感怀 ~ 可以通过 define ALLOC_OFF 关闭
-//
-#ifndef ALLOC_OFF
-#  undef    strdup
-#  define   strdup      ation_strdup
-#  undef    strndup
-#  define   strndup     ation_strndup
-#  undef    malloc
-#  define   malloc      ation_malloc
-#  undef    calloc
-#  define   calloc      ation_calloc
-#  undef    realloc
-#  define   realloc     ation_realloc
-#endif

@@ -23,6 +23,7 @@ char * chars_expand(struct chars * cs, size_t len) {
         cs->str = realloc(cs->str, cs->cap = cap);
         assert(cs->str != NULL && cs->cap > len);
     }
+
     return cs->str + cs->len;
 }
 

@@ -17,10 +17,13 @@ inline void keypair_delete(struct keypair * pair, node_f fdie) {
 }
 
 // keypair_create - 创建结点数据
-inline struct keypair * keypair_create(unsigned hash, 
+struct keypair * keypair_create(unsigned hash, 
                                        void * v, const char * k) {
     size_t len = strlen(k) + 1;
     struct keypair * pair = malloc(sizeof(struct keypair) + len);
+    if (pair == NULL) {
+        RETNUL("malloc panic len = %zu", len);
+    }
     pair->hash = hash;
     pair->val = v;
     memcpy(pair->key, k, len);
@@ -72,6 +75,9 @@ static void dict_resize(struct dict * d) {
     
     // 构造新的内存布局大小
     table = calloc(size, sizeof(struct keypair *));
+    if (table == NULL) {
+        RETNIL("calloc panic size = %u", size);
+    }
 
     // 开始转移数据
     for (unsigned i = 0; i < d->size && d->used > used; i++) {
@@ -127,14 +133,23 @@ dict_delete(dict_t d) {
 // fdie     : v 销毁函数
 // return   : dict_t
 //
-inline dict_t 
+dict_t 
 dict_create(void * fdie) {
     struct dict * d = malloc(sizeof(struct dict));
+    if (d == NULL) {
+        RETNUL("malloc panic size = %zu", sizeof(struct dict));
+    }
+
     d->used = 0;
     d->size = DICT_INIT_UINT;
     d->fdie = fdie;
     // 默认构建的第一个素数表 index = 0
     d->table = calloc(DICT_INIT_UINT, sizeof(struct keypair *));
+    if (d->table == NULL) {
+        free(d);
+        RETNUL("calloc panic size = %zu, count=%u", sizeof(struct keypair *), DICT_INIT_UINT);
+    }
+
     return d;
 }
 
@@ -240,6 +255,11 @@ dict_set(dict_t d, const char * k, void * v) {
 
     // 没有找见设置操作, 直接插入数据
     pair = keypair_create(hash, v, k);
+    if (pair == NULL) {
+        // 插入失败, 记录错误日志直接返回
+        RETNIL("keypair_create panic hash=%u, k = %s, v = %p", hash, k, v);
+    }
+
     pair->next = d->table[index];
     d->table[index] = pair;
     ++d->used;
