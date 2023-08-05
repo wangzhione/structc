@@ -30,9 +30,7 @@ inline void thread_async(void * frun) {
 // arg      : 运行参数
 // return   : 0 is success, -1 is error
 //
-inline int pthread_run(pthread_t * p, void * frun, void * arg) {
-    return pthread_create(p, NULL, frun, arg);
-}
+extern int pthread_run(pthread_t * p, void * frun, void * arg);
 
 //
 // pthread_end - 等待线程运行结束

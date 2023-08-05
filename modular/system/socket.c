@@ -143,11 +143,11 @@ socket_binds(const char * host, uint16_t port, uint8_t protocol, int * family) {
 
     fd = socket(rsp->ai_family, rsp->ai_socktype, 0);
     if (fd == INVALID_SOCKET)
-        goto err_free;
+        goto ret_free;
     if (socket_set_reuse(fd))
-        goto err_close;
+        goto ret_close;
     if (bind(fd, rsp->ai_addr, (int)rsp->ai_addrlen))
-        goto err_close;
+        goto ret_close;
 
     // Success return ip family
     if (family) {
@@ -156,9 +156,9 @@ socket_binds(const char * host, uint16_t port, uint8_t protocol, int * family) {
     freeaddrinfo(rsp);
     return fd;
 
-err_close:
+ret_close:
     closesocket(fd);
-err_free:
+ret_free:
     freeaddrinfo(rsp);
     return INVALID_SOCKET;
 }
@@ -245,13 +245,10 @@ int socket_connect_timeout_partial(SOCKET s, const sockaddr_t a, int ms) {
     timeout.tv_sec = ms / 1000;
     timeout.tv_usec = (ms % 1000) * 1000;
 
-#ifndef _WIN32
     // 这种 select 监听 connect 链接完成, 适用面很窄, 正规做法放入全局监听器中等通知
     // https://stackoverflow.com/questions/1342712/nix-select-and-exceptfds-errorfds-semantics
     n = select(s + 1, &rset, &wset, &eset, &timeout);
-#else
-    n = select(0, &rset, &wset, &eset, &timeout);
-#endif
+
     // 超时返回错误, 防止客户端继续三次握手
     if (n <= 0) return -1;
 
@@ -301,6 +298,7 @@ socket_connect_timeout(const sockaddr_t a, int ms) {
     char ip[INET6_ADDRSTRLEN];
     int port = socket_ntop(a, ip);
     PERROR(error, "ip = %s, port = %d, ms = %d", ip, port, ms);
+    
 ret_invalid:
     closesocket(s);
     return INVALID_SOCKET;

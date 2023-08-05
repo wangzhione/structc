@@ -1,5 +1,20 @@
 ﻿#include "q.h"
 
+// Q_INT  - 队列初始大小, 必须是 2 的幂
+#define Q_INT     (1<< 6)
+
+bool q_init(struct q * q) {
+    void * data = malloc(sizeof(void *) * Q_INT);
+    if (data == NULL) {
+        RETURN(false, "malloc panic Q_INT = %d", Q_INT);
+    }
+
+    q->tail = -1;
+    q->cap = Q_INT;
+    q->data = data;
+    return true;
+}
+
 //
 // q_pop - 队列中弹出消息数据
 // q      : 队列对象
@@ -21,9 +36,15 @@ q_pop(struct q * q) {
 }
 
 // q_expand - expand memory by twice
-static void q_expand(struct q * q) {
+static bool q_expand(struct q * q) {
+    assert(q != NULL && q->cap > 0);
+
     int cap = q->cap << 1;
-    void ** p = malloc(sizeof(void *)*cap);
+    void ** p = malloc(sizeof(void *) * cap);
+    if (p == NULL) {
+        RETURN(false, "malloc panic cap = %d", cap); 
+    }
+
     for (int i = 0; i < q->cap; ++i)
         p[i] = q->data[(q->head+i) & (q->cap-1)];
     free(q->data);
@@ -33,23 +54,29 @@ static void q_expand(struct q * q) {
     q->tail = q->cap;
     q->cap = cap;
     q->data = p;
+
+    return true;
 }
 
 //
 // q_push - 队列中压入数据
 // q      : 队列对象
 // m      : 压入消息
-// return : void
+// return : bool true push success
 // 
-void 
+bool 
 q_push(struct q * q, void * m) {
     int tail = (q->tail+1) & (q->cap-1);
     // 队列 full 直接扩容
-    if (tail == q->head && q->tail >= 0)
-        q_expand(q);
-    else
-        q->tail = tail;
+    if (tail == q->head && q->tail >= 0) {
+        if (q_expand(q) == false) {
+            return false;
+        }
+    } else {
+        q->tail = tail;   
+    }
     q->data[q->tail] = m;
+    return true;
 }
 
 //

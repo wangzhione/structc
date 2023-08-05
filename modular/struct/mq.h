@@ -4,8 +4,8 @@
 #include "spinlock.h"
 
 struct mq {
-    struct q       q;       // 队列
-    atomic_flag lock;  // 自旋锁
+    struct q       q;   // 队列
+    atomic_flag lock;   // 自旋锁
 };
 
 //

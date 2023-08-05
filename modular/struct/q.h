@@ -13,18 +13,7 @@ struct q {
     void ** data;       // 队列实体
 };
 
-// Q_INT  - 队列初始大小, 必须是 2 的幂
-#ifndef Q_INT
-#define Q_INT     (1<< 6)
-#endif
-
-inline struct q q_create(void) {
-    return (struct q) {
-        .tail = -1,
-        .cap = Q_INT,
-        .data = malloc(sizeof(void *)*Q_INT),
-    };
-}
+extern bool q_init(struct q * q);
 
 inline void q_release(struct q * q) {
     free(q->data);
@@ -67,9 +56,9 @@ extern void * q_pop(struct q * q);
 // q_push - 队列中压入数据
 // q      : 队列对象
 // m      : 压入消息
-// return : void
+// return : bool true push success
 // 
-extern void q_push(struct q * q, void * m);
+extern bool q_push(struct q * q, void * m);
 
 //
 // q_delete - 队列删除

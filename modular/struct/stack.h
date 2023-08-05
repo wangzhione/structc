@@ -12,15 +12,8 @@ struct stack {
     void **  data;  // 栈实体
 };
 
-#define INT_STACK   (1 << 8)
-
-inline struct stack stack_create(void) {
-    return (struct stack) {
-        .tail = -1,
-        .cap = INT_STACK,
-        .data = malloc(sizeof(void *) * INT_STACK),
-    };
-}
+extern bool stack_init(struct stack * s);
+extern bool stack_push(struct stack * s, void * m);
 
 inline void stack_release(struct stack * s) {
     free(s->data);
@@ -88,18 +81,4 @@ inline void stack_popped(struct stack * s) {
 inline void * stack_pop(struct stack * s) {
     assert(s != NULL && s->tail >= 0);
     return s->data[s->tail--];
-}
-
-//
-// stack_push - 压入元素到对象栈栈顶
-// s        : stack 对象栈
-// m        : 待压入的对象
-// return   : void
-// 
-inline void stack_push(struct stack * s, void * m) {
-    if (s->cap <= s->tail) {
-        s->cap <<= 1;
-        s->data = realloc(s->data, sizeof(void *)*s->cap);
-    }
-    s->data[++s->tail] = m;
 }

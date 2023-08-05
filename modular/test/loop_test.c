@@ -1,7 +1,7 @@
 ﻿#include <loop.h>
 #include <base.h>
 
-#define SLEEP_INT       (1000)
+#define SLEEP_INT       (1000 * 1000)
 
 // run 一直写数据
 inline static void run(char * msg) {
@@ -22,7 +22,7 @@ static void run_write(loop_t s) {
         loop_push(s, msg);
     }
 
-    msleep(SLEEP_INT);
+    usleep(SLEEP_INT);
 
     // 再写五次数据
     for (i = 5; i < 10; ++i) {
@@ -32,7 +32,7 @@ static void run_write(loop_t s) {
         loop_push(s, msg);
     }
 
-    msleep(SLEEP_INT);
+    usleep(SLEEP_INT);
 }
 
 //

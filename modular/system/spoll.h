@@ -15,8 +15,6 @@ struct spoll_event {
 // poll 模型对象
 #if defined(__linux__) && defined(__GNUC__)
 typedef int            spoll_t;
-#elif defined(_WIN32) && defined(_MSC_VER)
-typedef struct spoll * spoll_t;
 #endif
 
 // poll 模型 event 事件集

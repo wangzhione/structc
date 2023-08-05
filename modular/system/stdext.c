@@ -18,9 +18,7 @@ inline int removes(const char * path) {
     char s[BUFSIZ];
 
 # ifndef RMRF_STR
-#   if defined(_WIN32) && defined(_MSC_VER)
-#     define RMRF_STR    "rmdir /s /q \"%s\""
-#   else
+#   if defined(__linux__) && defined(__GNUC__)
 #     define RMRF_STR    "rm -rf \"%s\""
 #   endif
 # endif
@@ -140,9 +138,7 @@ getawd(char * buf, size_t size) {
     char * tail;
 
 # ifndef getawe
-#   if defined(_WIN32) && defined(_MSC_VER)
-#     define getawe(b, s)    (int)GetModuleFileNameA(NULL, b, (DWORD)s);
-#   else
+#   if defined(__linux__) && defined(__GNUC__)
 #     define getawe(b, s)    (int)readlink("/proc/self/exe", b, s);
 #   endif
 # endif

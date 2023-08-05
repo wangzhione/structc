@@ -41,7 +41,7 @@ void file_test(void) {
         puts("conf start");
         file_update();
         // 1s 一测试
-        msleep(1000);
+        usleep(1000 * 1000);
         puts("conf e n d");
     }
 

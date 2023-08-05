@@ -15,7 +15,7 @@ void reuseport_test(void) {
         IF(pthread_async(accept_example, (void *)(intptr_t)i));
     }
 
-    msleep(609);
+    usleep(609 * 1000);
 
     // main accept block
     accept_example(0);

@@ -5,10 +5,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "alloc.h"
 #include "system.h"
 
-// 这个库对于 目录 相关操作, 并没有很好屏蔽平台相关差异性. 依赖使用者求同存异.
+// 此库对于目录相关操作, 并没有較好的屏蔽平台相关差异性. 依赖使用者求同存异.
 // 例如 怎么看待目录: logs/heoos/gghh\\gggs/g/
 // window 文件分隔符为 \ , 并且也兼容 /. 所以他看见的是 logs heoos gghh gggs g
 // linux 文件分隔符为 /, 所以他看见的目录是 logs heoos gghh\gggs g
@@ -52,33 +51,7 @@ inline int getch(void) {
 }
 
 // cls - 屏幕清除, 依赖系统脚本
-inline void cls(void) { printf("\ec"); }
-
-#endif
-
-#if defined(_WIN32) && defined(_MSC_VER)
-
-#include <io.h>
-#include <conio.h>
-#include <direct.h>
-#include <windows.h>
-
-// int access(const char * path, int mode /* 四个检测宏 */);
-#ifndef     F_OK
-#  define   F_OK    (0)
-#endif
-#ifndef     X_OK
-#  define   X_OK    (1)
-#endif       
-#ifndef     W_OK
-#  define   W_OK    (2)
-#endif       
-#ifndef     R_OK
-#  define   R_OK    (4)
-#endif
-
-// cls - 屏幕清除, 依赖系统脚本
-inline void cls(void) { system("cls"); }
+inline void clrscr(void) { printf("\ec"); }
 
 #endif
 

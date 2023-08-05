@@ -100,36 +100,48 @@ static void loop_loop(loop_t p) {
 //
 loop_t 
 loop_create(void * frun, void * fdie) {
+    assert(frun != NULL);
+
     loop_t p = malloc(sizeof(struct loop));
-    assert(p != NULL && frun != NULL);
+    if (p != NULL) {
+        RETNUL("malloc panic %zu", sizeof(struct loop));
+    }
 
     // 初始化 POSIX 互斥锁和条件变量
     if (pthread_mutex_init(&p->lock, NULL)) {
-        PERR("pthread_mutex_init error");
         free(p);
-        return NULL;
+        RETNUL("pthread_mutex_init panic error");
     }
     if (pthread_cond_init(&p->cond, NULL)) {
-        PERR("pthread_cond_init error");
         pthread_cond_destroy(&p->cond);
+        free(p);
+        RETNUL("pthread_cond_init panic error");
+    }
+
+    if (q_init(&p->rq) == false) {
+        pthread_cond_destroy(&p->cond);
+        pthread_mutex_destroy(&p->lock);
         free(p);
         return NULL;
     }
-
-    p->rq = q_create();
-    p->wq = q_create();
+    if (q_init(&p->wq) == false) {
+        free(p->rq.data);
+        pthread_cond_destroy(&p->cond);
+        pthread_mutex_destroy(&p->lock);
+        free(p);
+        return NULL;
+    }
     p->frun = frun;
     p->fdie = fdie;
     p->wait = p->loop = true;
 
     if (pthread_run(&p->id, loop_loop, p)) {
-        PERR("pthread_run error");
-        pthread_cond_destroy(&p->cond);
-        pthread_mutex_destroy(&p->lock);
         free(p->wq.data);
         free(p->rq.data);
+        pthread_cond_destroy(&p->cond);
+        pthread_mutex_destroy(&p->lock);
         free(p);
-        return NULL;
+        RETNUL("pthread_run panic error");
     }
     
     return p;

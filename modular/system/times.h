@@ -19,68 +19,10 @@
 //     Hour                 = 60 * Minute
 // )
 
-#if defined(_WIN32) && defined(_MSC_VER)
-
-#include <winsock2.h>
-
-//
-// gettimeofday - 实现 Linux sys/time.h 得到微秒时间, 推荐使用 localtime_get
-// tv       : 返回秒数和微秒数
-// tz       : 返回时区结构, 目前默认废弃
-// return   : success is 0
-//
-extern int gettimeofday(struct timeval * restrict tv, void * /* unused */ tz);
-
-// Set time conversion information from the TZ environment variable.
-// If TZ is not defined, a locale-dependent default is used.
-#undef  tzset
-#define tzset _tzset
-
-// 如果 TZ 在操作系统中指定或确定了夏令时(DST)区域, 则为 1; 否则为 0.
-#define daylight _daylight
-
-// tzname 的值由 TZ 环境变量的值确定. 如果您未显式设置 TZ 的值, 
-// 则 tzname[0] 和 tzname[1] 将分别包含"PST"和"PDT"(太平洋夏令时)的默认设置
-#define tzname _tzname
-
-// timezone 协调世界时 UTC 与当地时间 LOC 之间的秒数差. 例如 中国 UTC - CST 默认值为 -28,800
-// fix 适配 window struct timezone
-#define timezone _timezone
-
-//
-// msleep - 睡眠函数, 颗粒度是毫秒.
-// ms       : 睡眠的毫秒数
-// return   : void
-//
-inline void msleep(int ms) {
-    Sleep(ms);
-}
-
-//
-// usleep - 微秒级别等待函数
-// usec     : 等待的微秒
-// return   : 0 on success.  On error, -1 is returned.
-//
-extern int usleep(unsigned usec);
-
-//
-// localtime_r - 获取当前时间线程加锁版本, 推荐使用 localtime_get
-// timep    : 输入的时间戳指针
-// result   : 返回输出时间结构
-// return   : 失败 NULL, 正常返回 result
-//
-inline struct tm * localtime_r(const time_t * timep, struct tm * result) {
-    return localtime_s(result, timep) ? NULL : result;
-}
-
-#elif defined(__linux__) && defined(__GNUC__)
+#if defined(__linux__) && defined(__GNUC__)
 
 #include <unistd.h>
 #include <sys/time.h>
-
-inline void msleep(int ms) { 
-    usleep(ms * 1000); 
-}
 
 #endif
 
@@ -88,7 +30,7 @@ inline void msleep(int ms) {
  * If div by 4 and not 100 is surely leap.
  * If div by 100 *and* not by 400 is not leap.
  * If div by 100 and 400 is leap. */
-inline _Bool is_leap_year(time_t year) {
+inline bool is_leap_year(time_t year) {
     return ((year) % 4 == 0 && ((year) % 100 != 0 || (year) % 400 == 0));
 }
 

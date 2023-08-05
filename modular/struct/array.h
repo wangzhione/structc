@@ -9,34 +9,15 @@ struct array {
     void *  data;       // 数组存储
 };
 
-// ARRAY_UINT    - 数组初始化默认大小
-#define ARRAY_UINT      (1u<<5)
-inline struct array array_create(unsigned size) {
-    return (struct array) { 
-        .size = size,
-        // set default cap size 1^x
-        .cap = ARRAY_UINT,
-        .data = malloc(size * ARRAY_UINT),
-     };
-}
+
+// init array success return true, size is 元素大小
+extern bool array_init(struct array * a, unsigned size);
+
+// push array element success return not nullptr
+extern void * array_push(struct array * a);
 
 inline void array_release(struct array * a) {
     free(a->data);
-}
-
-//
-// array_push - 数组中插入一个数据
-// a        : 动态数组对象
-// return   : void * 压入数据首地址
-//
-inline void * array_push(struct array * a) {
-    if (a->len >= a->cap) {
-        /* the array is full; allocate new array */
-        a->cap <<= 1;
-        a->data = realloc(a->data, a->cap * a->size);
-    }
-
-    return (char *)a->data + a->size * a->len++;
 }
 
 //

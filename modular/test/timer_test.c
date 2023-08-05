@@ -26,6 +26,6 @@ void timer_test(void) {
     IF(id < 0);
 
     // 等待 5 秒后关闭 上面永久的定时器事件
-    msleep(5000);
+    usleep(5000 * 1000);
     timer_del(id);
 }

@@ -5,7 +5,6 @@
 #include <signal.h>
 #include <sys/types.h>
 
-#include "system.h"
 #include "struct.h"
 
 #if defined(__linux__) && defined(__GNUC__)
@@ -59,50 +58,6 @@ inline static int socket_set_nonblock(SOCKET s) {
         return SOCKET_ERROR;
     }
     return fcntl(s, F_SETFL, mode | O_NONBLOCK);
-}
-
-#elif defined(_WIN32) && defined(_MSC_VER)
-
-#include <winsock2.h>
-#include <ws2ipdef.h>
-#include <ws2tcpip.h>
-
-#undef  errno
-#define errno           WSAGetLastError()
-
-#undef  EINTR
-#define EINTR           WSAEINTR
-#undef  EAGAIN
-#define EAGAIN          WSAEWOULDBLOCK
-#undef  ETIMEDOUT
-#define ETIMEDOUT       WSAETIMEDOUT
-#undef  EINPROGRESS
-#define EINPROGRESS     WSAEWOULDBLOCK
-
-// WinSock 2 extension manifest constants for shutdown()
-//
-#define SHUT_RD         SD_RECEIVE
-#define SHUT_WR         SD_SEND
-#define SHUT_RDWR       SD_BOTH
-
-#define SO_REUSEPORT    SO_REUSEADDR
-
-// socket_init - 初始化 socket 库初始化方法
-inline void socket_init(void) {
-    WSADATA version;
-    IF(WSAStartup(WINSOCK_VERSION, &version));
-}
-
-// socket_set_block - 设置套接字是阻塞
-inline int socket_set_block(SOCKET s) {
-    u_long ov = 0;
-    return ioctlsocket(s, FIONBIO, &ov);
-}
-
-// socket_set_nonblock - 设置套接字是非阻塞
-inline int socket_set_nonblock(SOCKET s) {
-    u_long ov = 1;
-    return ioctlsocket(s, FIONBIO, &ov);
 }
 
 #endif
