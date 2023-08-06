@@ -66,6 +66,9 @@ str_sprintf(const char * fmt, ...) {
 
     // 获取待分配内存, 尝试填充格式化数据
     char * ret = malloc(++n);
+    if (ret == NULL) {
+        RETNUL("malloc panic n = %d", n);
+    }
 
     va_start(arg, fmt);
     n = vsnprintf(ret, n, fmt, arg);
@@ -97,6 +100,11 @@ str_freads(const char * path) {
 
     // 构建最终内存
     char * str = malloc(size + 1);
+    if (str == NULL) {
+        // 隐含内存不足问题
+        RETNUL("malloc panic return nullptr size = %ld", size);
+    }
+
 
     size_t n = fread(str, sizeof(char), size, txt);
     assert(n == (size_t)size); UNUSED(n);

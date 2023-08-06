@@ -118,6 +118,10 @@ inline void utf82gbk(char d[]) {
     // len utf8 >= len gbk convert
     size_t n = strlen(d);
     char * gs = malloc(n + 1);
+    if (gs == NULL) {
+        RETNIL("malloc panic return nullptr size = %zu", n + 1);
+    }
+
     size_t m = utf82gbkn(d, n, gs);
     memcpy(d, gs, m + 1);
     free(gs);
@@ -126,6 +130,10 @@ inline void utf82gbk(char d[]) {
 inline void gbk2utf8(char d[], size_t n) {
     // 2 * len gbk >= len utf8
     char * u8s = malloc(2 * n + 1);
+    if (u8s == NULL) {
+        RETNIL("malloc panic return nullptr size = %zu", 2 * n + 1);
+    }
+
     size_t m = gbk2utf8n(d, n, u8s);
     if (m <= n)
         memcpy(d, u8s, m + 1);

@@ -1,44 +1,7 @@
 ﻿#include "json.h"
+#include "q.h"
 
-/*
-
-#include "q.h" 
-
-void json_delete(json_t cj) {
-    if (cj == NULL) {
-        return;
-    }
-
-    struct q q = q_create();
-
-    do {
-        json_t next = cj->next;
-        unsigned type = cj->type;
-        
-        free(cj->key);
-        if ((type & JSON_STRING) && !(type & JSON_CONST))
-            free(cj->str);
-
-        if (cj->child) {
-            q_push(&q, cj->child);
-        }
-
-        free(cj);
-        cj = next ? next : q_pop(&q);
-    } while (cj);
-
-    q_release(&q);
-}
-
- */
-
-//
-// json_delete - json 对象销毁
-// cj       : json 对象
-// return   : void
-//
-void 
-json_delete(json_t cj) {
+void json_delete_recursion(json_t cj) {
     while (cj) {
         json_t next = cj->next;
         unsigned type = cj->type;
@@ -54,6 +17,39 @@ json_delete(json_t cj) {
         free(cj);
         cj = next;
     }
+}
+
+void json_delete(json_t cj) {
+    if (cj == NULL) {
+        return;
+    }
+
+    struct q q;
+    if (q_init(&q) == false) {
+        // 把崩溃从堆推向了栈
+        return json_delete_recursion(cj);
+    }
+
+    do {
+        json_t next = cj->next;
+        unsigned type = cj->type;
+        
+        free(cj->key);
+        if ((type & JSON_STRING) && !(type & JSON_CONST))
+            free(cj->str);
+
+        if (cj->child) {
+            if (q_push(&q, cj->child) == false) {
+                // 堆上以及没有内存, 这时候尝试崩溃, 当然这里纯为了学习, 而无中生有
+                EXIT("q_push panic memory");
+            }
+        }
+
+        free(cj);
+        cj = next ? next : q_pop(&q);
+    } while (cj);
+
+    q_release(&q);
 }
 
 //
@@ -177,6 +173,7 @@ static const char * parse_literal(json_t item, const char * str) {
     // 开始构造和填充 json string 结点
     item->type = JSON_STRING;
     item->str = malloc(size + 1);
+    assert(item->str != NULL);
     memcpy(item->str, str, size);
     item->str[size] = '\0';
 
@@ -224,6 +221,7 @@ static const char * parse_string(json_t item, const char * str) {
 
     // 开始复制拷贝内容
     cursor = out = malloc(len);
+    assert(out != NULL);
     for (ptr = str; ptr < etr; ++ptr) {
         // 普通字符直接添加处理
         if ((c = *ptr) != '\\') {

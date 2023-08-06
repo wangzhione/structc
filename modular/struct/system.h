@@ -11,11 +11,13 @@
 //
 
 #include <time.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <limits.h>
 #include <string.h>
+#include <inttypes.h>
 
 // defined(__linux__) && defined(__GNUC__)
 // defined(_WIN32)    && defined(_MSC_VER)

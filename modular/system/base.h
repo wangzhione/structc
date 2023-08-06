@@ -2,6 +2,7 @@
 
 #include "log.h"
 #include "rand.h"
-#include "check.h"
+#include "alloc.h"
 #include "thread.h"
 #include "strext.h"
+#include "sundries.h"

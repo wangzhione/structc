@@ -21,7 +21,7 @@ static int csv_parse_partial(char * str, int * pr, int * pc) {
             }
             // 继续判断,只有是 c == '"' 才会继续, 否则都是异常
             if (c != '"') 
-                goto err_faid;
+                goto ret_faild;
             break;
         case ',' : *s++ = '\0'; ++cnt; break;
         case '\r': break;
@@ -36,7 +36,7 @@ static int csv_parse_partial(char * str, int * pr, int * pc) {
 
     // 检查, 行列个数是否正常
     if (rnt == 0 || cnt % rnt) {
-err_faid:
+ret_faild:
         RETURN(-1, "csv parse error %d, %d, %d.", c, rnt, cnt);
     }
 
@@ -53,6 +53,10 @@ csv_t csv_parse(char * str) {
     
     // 分配最终内存
     csv_t csv = malloc(n + sizeof *csv + sizeof(char *) * cnt);
+    if (csv == NULL) {
+        RETNUL("malloc panic return null, n = %d, cnt = %d", n, cnt);
+    }
+
     char * s = (char *)csv + sizeof *csv + sizeof(char *) * cnt;
     memcpy(s, str, n);
 
