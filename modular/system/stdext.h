@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "system.h"
+#include "struct.h"
 
 // 此库对于目录相关操作, 并没有較好的屏蔽平台相关差异性. 依赖使用者求同存异.
 // 例如 怎么看待目录: logs/heoos/gghh\\gggs/g/

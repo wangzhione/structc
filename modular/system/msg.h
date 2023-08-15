@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "struct.h"
-#include "system.h"
 
 //
 // msg_t 网络传输协议结构

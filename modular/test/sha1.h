@@ -2,7 +2,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "system.h"
+
+#include "struct.h"
 
 //
 // reference redis sha1 code
