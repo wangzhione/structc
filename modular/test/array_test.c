@@ -3,9 +3,11 @@
 // array_test - array test
 void array_test(void) {
     // 构建一个在栈上的动态数组
-    struct array a = array_create(sizeof(double));
+    struct array a;
 
-    // 开始处理数据
+    IF (array_init(&a, sizeof(double)) == false);
+
+    // 开始处理数据, 内存不足返回 NULL 程序会崩溃
     *(double *)array_push(&a) = 1.1234;
     *(double *)array_push(&a) = 2.2345;
     *(double *)array_push(&a) = 4.9876;
