@@ -274,7 +274,7 @@ times_fmt(const char * fmt, char out[], size_t sz) {
 // times TLS time str 版本
 extern const char * times(void) {
     static _Thread_local times_t out;
-    
+
     struct tm m;
     struct timespec s;
 
