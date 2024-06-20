@@ -17,7 +17,7 @@ ROOT      ?= ..
 DMAIN     := main
 DTEST     := test
 DSRC      := system struct module
-DMODULE   := module/conf
+DMODULE   := module/config
 DIRS      := $(DSRC) $(DMODULE) $(DMAIN)
 
 #
@@ -97,8 +97,8 @@ $(foreach v, $(ALLSRCC), $(eval $(call CALL_RUNO, $(v))))
 #
 $(DOUT):
 	mkdir -p $(DOBJ)
-	-if [ -d conf ] ; then cp -r conf $@ ; fi
-	-if [ -d $(DTEST)/conf ] ; then mkdir -p $@/test ; cp -r $(DTEST)/conf $@/test ; fi
+	-if [ -d config ] ; then cp -r config $@ ; fi
+	-if [ -d $(DTEST)/config ] ; then mkdir -p $@/test ; cp -r $(DTEST)/config $@/test ; fi
 
 # 清除操作
 clean :

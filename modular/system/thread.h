@@ -39,4 +39,10 @@ extern int pthread_run(pthread_t * p, void * frun, void * arg);
 //
 inline void pthread_end(pthread_t id) {
     pthread_join(id, NULL);
+
+    /*
+     * or
+     * void * res = NULL; pthread_join(id, &res); 
+     * get frun() return void *
+     */
 }

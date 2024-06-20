@@ -1,6 +1,6 @@
 ﻿#include "base.h"
 
-#include "conf/conf.h"
+#include "config/config.h"
 
 //
 // exec     - 执行业务 🐖🐍🐉
@@ -10,7 +10,7 @@ void exec(void) {
     //
     // .... .. . 开始你的表演
     //
-    struct conf * conf = conf_instance();
+    struct config * conf = config_instance();
 
     PERR("I'm here. Where are you!");
 

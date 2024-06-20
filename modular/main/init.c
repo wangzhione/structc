@@ -1,13 +1,13 @@
 #include "base.h"
 #include "socket.h"
 
-#include "conf/conf.h"
+#include "config/config.h"
 
 //
-// CONF_PATH  - 配置文件路径
-// LOGS_PATH  - 日志文件路径
+// CONFIG_PATH  - 配置文件路径
+// LOGS_PATH    - 日志文件路径
 // 
-#define CONF_PATH               "conf/conf.conf"
+#define CONFIG_PATH             "config/config.json.conf"
 #define LOGS_PATH               "logs/structc.log"
 
 //
@@ -48,10 +48,11 @@ void init(int argc, char * argv[]) {
     // 微笑
 
     char path[BUFSIZ];
+
     // 一切皆有可能 🙂
     size_t n = getawd(path, LEN(path));
     // 配置模块初始化
-    IF(!conf_init(strcat(path, CONF_PATH)));
+    IF(!config_init(strcat(path, CONFIG_PATH)));
 
     // 日志模块初始化
     memcpy(path + n, LOGS_PATH, LEN(LOGS_PATH));

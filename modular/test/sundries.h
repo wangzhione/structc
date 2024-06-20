@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+/*
+  这类编码库被放弃, 学习意义可以具体参照 cURL 顶级网络工具库
+ */
+
 //
 // is_email - 判断是否是邮箱
 // mail     : email 串 
