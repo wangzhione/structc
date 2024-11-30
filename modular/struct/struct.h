@@ -38,51 +38,6 @@
 #define LEN(a)  ((int)(sizeof(a) / sizeof(*(a))))
 #endif
 
-
-#ifndef CMP_F
-#define CMP_F
-
-//
-// cmp_f - left now node 比较 right input node 行为 > 0 or = 0  or < 0
-// : int add_cmp(const void * now, const void * node)
-//
-typedef int (* cmp_f)();
-
-#endif//CMP_F
-
-#ifndef NEW_F
-#define NEW_F
-
-//
-// new_f - 构建行为
-// : void * rtree_new(void * node)
-//
-typedef void * (* new_f)();
-
-#endif//NEW_F
-
-#ifndef NODE_F
-#define NODE_F
-
-//
-// node_f - 销毁行为
-// : void list_die(void * node)
-//
-typedef void (* node_f)();
-
-#endif//NODE_F
-
-#ifndef EACH_F
-#define EACH_F
-
-//
-// each_f - 遍历行为, node 是内部结点, arg 是外部参数; 返回值推荐 0 标识正确, -1 标识错误
-// : int echo(void * node, void * arg) { return 0; }
-//
-typedef int (* each_f)(void * node, void * arg);
-
-#endif//EACH_F
-
 //
 // DCODE - DEBUG 模式下的测试宏
 // DCODE({
@@ -197,15 +152,38 @@ RETURN(-1  , fmt, ##__VA_ARGS__)
 #  define ISBIG
 # endif
 
-# ifndef likely
-#   define likely(x)   __builtin_expect(!!(x), 1)
-# endif
-# ifndef unlikely
-#   define unlikely(x) __builtin_expect(!!(x), 0)
-# endif
-
 #endif
 
+// 消除编译器警告
 #ifndef UNUSED
 #define UNUSED(parameter) if (parameter) {}
 #endif//UNUSED
+
+#ifndef STRUCT_F
+#define STRUCT_F
+
+//
+// cmp_f - left now node 比较 right input node 行为 > 0 or = 0  or < 0
+// 可以类似 int add_cmp(const void * now, const void * node)
+//
+typedef int (* cmp_f)();
+
+//
+// new_f - 构建行为
+// 可以类似 void * rtree_new(void * node)
+//
+typedef void * (* new_f)();
+
+//
+// node_f - 销毁行为
+// 可以类似 void list_die(void * node)
+//
+typedef void (* node_f)();
+
+//
+// each_f - 遍历行为, node 是内部结点, arg 是外部参数; 返回值推荐 0 标识正确, -1 标识错误
+// 可以类似 int echo(void * node, void * arg) { return 0; }
+//
+typedef int (* each_f)(void * node, void * arg);
+
+#endif//STRUCT_F

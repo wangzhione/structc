@@ -77,7 +77,9 @@ inline void array_swap(struct array * a, struct array * b) {
 //
 // array_sort - 动态数组排序
 // a        : 动态数组
-// fcmp     : 数组元素的比较函数
+// fcmp     : 数组元素的比较函数, 类似 __compar_fn_t 类型
+//            typedef int (*__compar_fn_t) (const void * left, const void * right);
+//            left > right return > 0 ; left = right return 0; left < right return < 0
 // return   : void
 //
 inline void array_sort(struct array * a, cmp_f fcmp) {

@@ -2,5 +2,6 @@
     "files.associations": {
         "*.h": "c",
         "atomic": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
