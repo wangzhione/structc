@@ -1,11 +1,11 @@
 ﻿# structc 项目构建说明
 
-    作者 : 喜欢兰花山丘
+    作者 : 喜欢
     邮箱 : csharpwz@outlook.com
 
 ***
 
---> [北方的故事](http://music.163.com/#/song?id=37782112)
+--> [北方的故事](https://music.163.com/#/outchain/1/3412422/)
 
 ***
 
@@ -13,9 +13,9 @@
 
     a). 条理清晰的让 C 去提供服务, 减少开发成本
 
-## 1. linux 部署
+## 1. 使用和部署
 
-    推荐采用 Best New Ubuntu x64 GCC 环境搭建
+    推荐采用 Best New windows + WSL + Visual Studio Code => Ubuntu x64 GCC 环境搭建
 
     a) 编译设置
 
