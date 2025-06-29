@@ -2,7 +2,7 @@
 #include <q.h>
 
 void json_delete1(json_t cj) {
-    if (cj == NULL) {
+    if (cj == nullptr) {
         return;
     }
 
@@ -36,7 +36,7 @@ void json_test(void) {
 
     const char * jstr = "{\"name\" : \"nihao\", \"nums\" : -123,  }";
     json_t r = json_create(jstr);
-    if (NULL == r) {
+    if (nullptr == r) {
         fprintf(stderr, "json_create is err %s\n", jstr);
         return;
     }
@@ -51,7 +51,7 @@ void json_test(void) {
     // 第二轮开始测试
     jstr = "{\n\"name\": \"Jack (\\\"Bee\\\") 你好\", \n\"format\": {\"type\":[1, 3, 4, 5.66], \n\"height\":     1080, \n\"interlace\":  false}\n}";
     r = json_create(jstr);
-    if (NULL == r) {
+    if (nullptr == r) {
         fprintf(stderr, "json_create is err jstr %s\n", jstr);
         return;
     }
@@ -66,7 +66,7 @@ void json_test(void) {
     // 第三轮测试
     jstr = "123456.789";
     r = json_create(jstr);
-    if (NULL == r) {
+    if (nullptr == r) {
         fprintf(stderr, "json_create is err jstr %s\n", jstr);
         return;
     }

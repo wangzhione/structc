@@ -13,7 +13,7 @@ struct array {
 // init array success return true, size is 元素大小
 extern bool array_init(struct array * a, unsigned size);
 
-// push array element success return not nullptr
+// push array element success return not nullptrptr
 extern void * array_push(struct array * a);
 
 inline void array_release(struct array * a) {
@@ -45,7 +45,7 @@ inline void * array_top(struct array * a) {
 // array_get - 索引映射数组元素
 // a        : 动态数组
 // idx      : 索引位置
-// return   : NULL is not found
+// return   : nullptr is not found
 //
 inline void * array_get(struct array * a, unsigned idx) {
     assert(a && idx < a->len);

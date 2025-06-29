@@ -16,7 +16,7 @@ void mq_test(void) {
     mq_push(&q, "456");
 
     const char * n = mq_pop(&q);
-    if (n == NULL)
+    if (n == nullptr)
         printf("mq is empty! q = %p \n", &q);
     else
         printf("mq_pop = %s\n", n);

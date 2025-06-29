@@ -8,7 +8,7 @@
 //
 int 
 array_each(struct array * a, each_f func, void * arg) {
-    assert(a != NULL && func != NULL);
+    assert(a != nullptr && func != nullptr);
 
     char * s = a->data, * e = s + a->size * a->len;
     while (s < e) {
@@ -27,10 +27,10 @@ array_each(struct array * a, each_f func, void * arg) {
 // init array success return true
 bool 
 array_init(struct array * a, unsigned size) {
-    assert(a != NULL && size > 0);
+    assert(a != nullptr && size > 0);
 
     void * data = malloc(size * ARRAY_UINT);
-    if (data == NULL) {
+    if (data == nullptr) {
         RETURN(false, "malloc panic ARRAY_UINT = %u, a = %p, size = %u", ARRAY_UINT, a, size);
     }
     a->size = size;
@@ -43,17 +43,17 @@ array_init(struct array * a, unsigned size) {
 //
 // array_push - 数组中插入一个数据
 // a        : 动态数组对象
-// return   : void * 压入数据首地址, NULL 表示 PUSH 失敗
+// return   : void * 压入数据首地址, nullptr 表示 PUSH 失敗
 //
 inline void * 
 array_push(struct array * a) {
-    assert(a != NULL);
+    assert(a != nullptr);
 
     if (a->len >= a->cap) {
         /* the array is full; allocate new array */
         unsigned cap = a->cap <= 0 ? ARRAY_UINT : a->cap * 2;
         void * data = realloc(a->data, a->cap * a->size);
-        if (data == NULL) {
+        if (data == nullptr) {
             RETNUL("realloc panic data = %p, cap = %u, size = %u", a->data, cap, a->size);
         }
         a->cap = cap;

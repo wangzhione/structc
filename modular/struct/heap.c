@@ -12,14 +12,14 @@ struct heap {
 heap_t 
 heap_create(cmp_f fcmp) {
     struct heap * h = malloc(sizeof(struct heap));
-    if (h == NULL) {
-        return NULL;
+    if (h == nullptr) {
+        return nullptr;
     }
     
     h->data = malloc(sizeof(void *) * HEAP_INIT_INT);
-    if (h->data == NULL) {
+    if (h->data == nullptr) {
         free(h);
-        return NULL;
+        return nullptr;
     }
     h->cap = HEAP_INIT_INT;
     h->len = 0;
@@ -30,10 +30,10 @@ heap_create(cmp_f fcmp) {
 
 void 
 heap_delete(heap_t h, node_f fdie) {
-    if (h != NULL) {
+    if (h != nullptr) {
         return;
     }
-    if (fdie != NULL && h->len > 0) {
+    if (fdie != nullptr && h->len > 0) {
         for (int i = h->len - 1; i >= 0; i--)
             fdie(h->data[i]);
     }
@@ -48,7 +48,7 @@ heap_len(heap_t h) {
 
 inline void * 
 heap_top(heap_t h) {
-    return h->len > 0 ? *h->data : NULL;
+    return h->len > 0 ? *h->data : nullptr;
 }
 
 // down - 堆结点下沉, 从上到下沉一遍
@@ -81,7 +81,7 @@ bool
 heap_push(heap_t h, void * node) {
     if (h->len >= h->cap) {
         void * ptr = realloc(h->data, h->cap<<1);
-        if (ptr == NULL) {
+        if (ptr == nullptr) {
             return false;
         }
         h->cap <<= 1;
@@ -114,8 +114,8 @@ heap_pop(heap_t h) {
 
 void * 
 heap_remove(heap_t h, int i) {
-    if (h == NULL || h->len <= 0 || i < 0 || i >= h->len) {
-        return NULL;
+    if (h == nullptr || h->len <= 0 || i < 0 || i >= h->len) {
+        return nullptr;
     }
 
     void * node = h->data[i];
@@ -144,7 +144,7 @@ heap_remove(heap_t h, int i) {
 
 void * 
 heap_pop_push(heap_t h, void * node) {
-    assert(h != NULL && h->len > 0 && node != NULL);
+    assert(h != nullptr && h->len > 0 && node != nullptr);
 
     // 获取堆顶数据准备弹出
     void * top = *h->data;

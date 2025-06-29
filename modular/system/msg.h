@@ -45,7 +45,7 @@ static inline msg_t msg_create(const void * data, uint32_t len) {
 
     uint32_t sz = len + sizeof(uint32_t);
     msg_t msg = malloc(sizeof(*msg) + sz);
-    assert(msg != NULL);
+    assert(msg != nullptr);
     msg->sz = sz;
     
     // sz -> type + len 本地网络大端字节序 -> data

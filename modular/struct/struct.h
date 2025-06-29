@@ -13,7 +13,6 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include <limits.h>
-#include <stdbool.h>
 #include <inttypes.h>
 
 //
@@ -59,14 +58,14 @@
 //
 #define EXTERN_RUN(frun, ...)                                           \
 do {                                                                    \
-    extern void frun();                                                 \
+    extern void frun(...);                                              \
     frun (__VA_ARGS__);                                                 \
 } while(0)
 
 // PRINTF fprintf 包装操作宏. time_t x64 8字节 window %lld, linux %ld
 #define PRINTF(stream, error, fmt, ...)                                 \
 fprintf(stream, "[%"PRId64"]["#stream"][%s:%s:%d][%d:%s]"fmt"\n",       \
-    time(NULL),                                                         \
+    time(nullptr),                                                      \
     __FILE__, __func__, __LINE__, error, strerror(error), ##__VA_ARGS__)
 
 #define POUT(fmt, ...)                                                  \
@@ -111,7 +110,7 @@ do {                                                                    \
 RETURN(NIL , fmt, ##__VA_ARGS__)
 
 #define RETNUL(fmt, ...)                                                \
-RETURN(NULL, fmt, ##__VA_ARGS__)
+RETURN(nullptr, fmt, ##__VA_ARGS__)
 
 // -1 是系统开发中最常见也算默认 error value 标识
 #define RETERR(fmt, ...)                                                \
@@ -166,19 +165,19 @@ RETURN(-1  , fmt, ##__VA_ARGS__)
 // cmp_f - left now node 比较 right input node 行为 > 0 or = 0  or < 0
 // 可以类似 int add_cmp(const void * now, const void * node)
 //
-typedef int (* cmp_f)();
+typedef int (* cmp_f)(...);
 
 //
 // new_f - 构建行为
 // 可以类似 void * rtree_new(void * node)
 //
-typedef void * (* new_f)();
+typedef void * (* new_f)(...);
 
 //
 // node_f - 销毁行为
 // 可以类似 void list_die(void * node)
 //
-typedef void (* node_f)();
+typedef void (* node_f)(...);
 
 //
 // each_f - 遍历行为, node 是内部结点, arg 是外部参数; 返回值推荐 0 标识正确, -1 标识错误

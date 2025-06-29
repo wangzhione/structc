@@ -6,7 +6,16 @@
 # Release : make D=-DNDEBUG
 #
 
-default: all
+.PHONY: all env
 
-.DEFAULT:
-	cd modular && make $@
+all: env
+	cd modular && $(MAKE)
+
+env:
+	@echo "Operating System: $(shell uname -s)"            # 操作系统
+	@echo "CPU Architecture: $(shell uname -m)"            # CPU 架构
+	@echo "GCC Path: $(shell which gcc)"                   # gcc 编译器的路径
+	@echo -n "GCC Version: " && gcc --version | head -n 1  # gcc 版本信息
+	@echo
+
+default: all

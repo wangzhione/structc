@@ -3,7 +3,7 @@
 void stack_test(void) {
     struct stack s = stack_create();
 
-    char * str = NULL;
+    char * str = nullptr;
     stack_push(&s, ++str);
     stack_push(&s, ++str);
     stack_push(&s, ++str);

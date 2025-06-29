@@ -6,7 +6,7 @@ socket_ntop(const sockaddr_t a, char ip[INET6_ADDRSTRLEN]) {
 
     if (a->s.sa_family == AF_INET || a->len == sizeof(a->s4)) {
         res = inet_ntop(AF_INET, &a->s4.sin_addr, ip, INET_ADDRSTRLEN);
-        if (res != NULL) {
+        if (res != nullptr) {
             return ntohs(a->s4.sin_port); 
         }
         return -1;
@@ -14,7 +14,7 @@ socket_ntop(const sockaddr_t a, char ip[INET6_ADDRSTRLEN]) {
 
     if (a->s.sa_family == AF_INET6 || a->len == sizeof(a->s6)) {
         res = inet_ntop(AF_INET6, &a->s6.sin6_addr, ip, INET6_ADDRSTRLEN);
-        if (res != NULL) {
+        if (res != nullptr) {
             return ntohs(a->s6.sin6_port); 
         }
         return -1;
@@ -131,7 +131,7 @@ socket_binds(const char * host, uint16_t port, uint8_t protocol, int * family) {
         .ai_socktype = protocol == IPPROTO_TCP ? SOCK_STREAM : SOCK_DGRAM,
         .ai_protocol = protocol,
     };
-    if (family != NULL && (*family == AF_INET || *family == AF_INET6)) {
+    if (family != nullptr && (*family == AF_INET || *family == AF_INET6)) {
         req.ai_family = *family;
     } else {
         req.ai_family = AF_UNSPEC;
@@ -165,7 +165,7 @@ ret_free:
 
 SOCKET 
 socket_listen(const char * ip, uint16_t port, int backlog) {
-    SOCKET fd = socket_binds(ip, port, IPPROTO_TCP, NULL);
+    SOCKET fd = socket_binds(ip, port, IPPROTO_TCP, nullptr);
     if (INVALID_SOCKET != fd && listen(fd, backlog)) {
         closesocket(fd);
         return INVALID_SOCKET;

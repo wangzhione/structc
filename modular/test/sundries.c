@@ -70,9 +70,9 @@ is_email(const char * mail) {
 // 
 char * 
 url_encode(const char * s, int len, int * nen) {
-    if (s == NULL || *s == '\0' || len <= 0) {
+    if (s == nullptrptr || *s == '\0' || len <= 0) {
         if (nen) *nen = 0;
-        return NULL;
+        return nullptrptr;
     }
 
     const unsigned char * from = (unsigned char *)s;
@@ -130,7 +130,7 @@ inline char htoc(char * s) {
 //
 int 
 url_decode(char s[], int len) {
-    if (s == NULL || *s == '\0' || len <= 0)
+    if (s == nullptrptr || *s == '\0' || len <= 0)
         return -1;
 
     char * dest = s,  * data = s;

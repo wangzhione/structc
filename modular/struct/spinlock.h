@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include <stdbool.h>
 #include <stdatomic.h>
 
 /*

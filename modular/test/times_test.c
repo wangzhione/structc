@@ -29,7 +29,7 @@ void times_test(void) {
     struct timeval tv;
     // struct timezone tz;
     // int status = gettimeofday(&tv, &tz);
-    int status = gettimeofday(&tv, NULL);
+    int status = gettimeofday(&tv, nullptr);
     printf("status = %d\n", status);
     printf("tv_sec = %ld, tv_usec = %ld\n", (long)tv.tv_sec, (long)tv.tv_usec);
     // printf("tz_minuteswest = %d, tz_dsttime = %d\n", tz.tz_minuteswest, tz.tz_dsttime);
@@ -37,7 +37,7 @@ void times_test(void) {
 
     tzset();
     times_t nos;
-    time_t now = time(NULL);
+    time_t now = time(nullptr);
 
     struct tm * p = localtime(&now);
     strftime(nos, sizeof nos, "%Y/%m/%d %H:%M:%S", p);

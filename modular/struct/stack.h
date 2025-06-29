@@ -26,8 +26,8 @@ inline void stack_release(struct stack * s) {
 // return   : void
 //
 inline void stack_delete(struct stack * s, node_f fdie) {
-    if (s != NULL) {
-        if (fdie != NULL) {
+    if (s != nullptr) {
+        if (fdie != nullptr) {
             while (s->tail >= 0)
                 fdie(s->data[s->tail--]);
         }
@@ -55,7 +55,7 @@ inline bool stack_exist(struct stack * s) {
 // return   : 栈顶对象
 //
 inline void * stack_top(struct stack * s) {
-    assert(s != NULL && s->tail >= 0);
+    assert(s != nullptr && s->tail >= 0);
     return s->data[s->tail];
 }
 
@@ -69,7 +69,7 @@ inline int stack_len(struct stack * s) {
 // return   : void
 //
 inline void stack_popped(struct stack * s) {
-    assert(s != NULL && s->tail >= 0);
+    assert(s != nullptr && s->tail >= 0);
     s->tail--;
 }
 
@@ -79,6 +79,6 @@ inline void stack_popped(struct stack * s) {
 // return   : 弹出的栈顶对象
 //
 inline void * stack_pop(struct stack * s) {
-    assert(s != NULL && s->tail >= 0);
+    assert(s != nullptr && s->tail >= 0);
     return s->data[s->tail--];
 }

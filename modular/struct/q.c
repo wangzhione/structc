@@ -5,7 +5,7 @@
 
 bool q_init(struct q * q) {
     void * data = malloc(sizeof(void *) * Q_INT);
-    if (data == NULL) {
+    if (data == nullptr) {
         RETURN(false, "malloc panic Q_INT = %d", Q_INT);
     }
 
@@ -19,7 +19,7 @@ bool q_init(struct q * q) {
 //
 // q_pop - 队列中弹出消息数据
 // q      : 队列对象
-// return : 若队列 empty, 返回 NULL
+// return : 若队列 empty, 返回 nullptr
 //
 void * 
 q_pop(struct q * q) {
@@ -33,16 +33,16 @@ q_pop(struct q * q) {
         }
         return m;
     }
-    return NULL;
+    return nullptr;
 }
 
 // q_expand - expand memory by twice
 static bool q_expand(struct q * q) {
-    assert(q != NULL && q->cap > 0);
+    assert(q != nullptr && q->cap > 0);
 
     int cap = q->cap << 1;
     void ** p = malloc(sizeof(void *) * cap);
-    if (p == NULL) {
+    if (p == nullptr) {
         RETURN(false, "malloc panic cap = %d", cap); 
     }
 
@@ -89,7 +89,7 @@ q_push(struct q * q, void * m) {
 void 
 q_delete(struct q * q, node_f fdie) {
     // 销毁所有对象
-    if (fdie != NULL && q_exist(q)) {
+    if (fdie != nullptr && q_exist(q)) {
         for (;;) {
             fdie(q->data[q->head]);
             if (q->head == q->tail)

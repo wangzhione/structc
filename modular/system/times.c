@@ -18,7 +18,7 @@
  * should be refreshed at safe times.
  *
  * Note that this function does not work for dates < 1/1/1970, it is solely
- * designed to work with what time(NULL) may return, and to support Redis
+ * designed to work with what time(nullptr) may return, and to support Redis
  * logging of the dates, it's not really a complete implementation. */
 void 
 localtime_get(struct tm * restrict p, time_t t) {
@@ -68,7 +68,7 @@ localtime_get(struct tm * restrict p, time_t t) {
 
 // times_tm - 从时间串中提取出来年月日时分秒
 bool times_tm(times_t ns, struct tm * outm) {
-    if (ns == NULL) return false;
+    if (ns == nullptr) return false;
 
     int c = *ns;
     if (c == 0 || c < '0' || c > '9') return false;

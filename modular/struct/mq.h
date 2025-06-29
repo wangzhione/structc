@@ -20,7 +20,7 @@ struct mq {
 //
 // mq_pop - 消息队列中弹出消息, 并返回数据
 // q        : 消息队列对象
-// return   : 若 mq empty return NULL
+// return   : 若 mq empty return nullptr
 //
 inline void * mq_pop(struct mq * q) {
     atomic_flag_lock(&q->lock);

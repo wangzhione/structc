@@ -101,7 +101,7 @@ inline int
 pipe_open(pipe_t ch) {
     SECURITY_ATTRIBUTES a = { 
         .nLength              = sizeof(SECURITY_ATTRIBUTES),
-        .lpSecurityDescriptor = NULL,
+        .lpSecurityDescriptor = nullptr,
         .bInheritHandle       = TRUE,
     };
     return CreatePipe(&ch->fd[0], &ch->fd[1], &a, 0) ? 0 : -1;
@@ -112,19 +112,19 @@ pipe_open(pipe_t ch) {
 inline int 
 pipe_recv(pipe_t ch, void * __restrict buf, int sz) {
     DWORD len = 0;
-    BOOL ret = PeekNamedPipe(ch->fd[0] /* recv */, NULL, 0, NULL, &len, NULL);
+    BOOL ret = PeekNamedPipe(ch->fd[0] /* recv */, nullptr, 0, nullptr, &len, nullptr);
     if (!ret || len <= 0)
         return -1;
 
     // 开始读取数据
-    ret = ReadFile(ch->fd[0] /* recv */, buf, sz, &len, NULL);
+    ret = ReadFile(ch->fd[0] /* recv */, buf, sz, &len, nullptr);
     return ret ? (int)len : -1;
 }
 
 inline int 
 pipe_send(pipe_t ch, const void * buf, int sz) {
     DWORD len = 0;
-    if (WriteFile(ch->fd[1] /* send */, buf, sz, &len, NULL))
+    if (WriteFile(ch->fd[1] /* send */, buf, sz, &len, nullptr))
         return (int)len;
     return -1;
 }

@@ -46,6 +46,6 @@ inline void csv_delete(csv_t csv) {
 //
 // csv_create - 文件中构建 csv_t 对象
 // path    : 文件路径
-// return  : 返回 csv_t 对象, NULL is error
+// return  : 返回 csv_t 对象, nullptr is error
 //
 extern csv_t csv_create(const char * path);

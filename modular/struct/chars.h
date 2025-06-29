@@ -33,13 +33,13 @@ inline char * chars_get(struct chars * cs) {
 }
 
 inline void chars_appendc(struct chars * cs, int c) {
-    assert(cs != NULL && c >= CHAR_MIN && c <= CHAR_MAX);
+    assert(cs != nullptr && c >= CHAR_MIN && c <= CHAR_MAX);
     chars_expand(cs, 1)[0] = c;
     cs->len++;
 }
 
 inline void chars_appendn(struct chars * cs, const char * str, size_t len) {
-    assert(cs != NULL && str != NULL);
+    assert(cs != nullptr && str != nullptr);
     memcpy(chars_expand(cs, len), str, len);
     cs->len += len;
 }

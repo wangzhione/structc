@@ -58,7 +58,7 @@ void strext_test(void) {
 
 	// 输出数据测试
 	char * txt = str_freads("README.md");
-    IF(txt == NULL);
+    IF(txt == nullptr);
     puts(txt);
     utf82gbk(txt);
     // UTF-8 FILE with BOM
@@ -80,7 +80,7 @@ void strext_test(void) {
     printf("nsr = %s, len = %zu\n", nstr, strlen(nstr));
 
     // 测试字符串匹配
-    printf("str_cmpin = %d\n", str_cmpin("nUlL", "null;xxx", 4));
+    printf("str_cmpin = %d\n", str_cmpin("nullptr", "nullptr;xxx", 4));
 
     // 测试数据复制
     char src[10] = "123456781";

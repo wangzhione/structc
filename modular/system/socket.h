@@ -167,9 +167,9 @@ inline int socket_recvfrom(SOCKET s, void * restrict buf, int sz,
     // ssize_t recvfrom(int sockfd, void * buf, size_t len, int flags,
     //                  struct sockaddr * src_addr, socklen_t * addrlen);
     //
-    // If  src_addr  is  not  NULL, and the underlying protocol provides the source
-    // address, this source address is filled in.  When src_addr is  NULL,  nothing
-    // is  filled  in;  in this case, addrlen is not used, and should also be NULL.
+    // If  src_addr  is  not  nullptr, and the underlying protocol provides the source
+    // address, this source address is filled in.  When src_addr is  nullptr,  nothing
+    // is  filled  in;  in this case, addrlen is not used, and should also be nullptr.
     // The argument addrlen is a value-result argument,  which  the  caller  should
     // initialize  before  the  call  to  the  size  of  the buffer associated with
     // src_addr, and modified on return to indicate the actual size of  the  source

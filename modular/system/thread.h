@@ -20,7 +20,7 @@ extern int pthread_async(void * frun, void * arg);
 // return   : void 
 //
 inline void thread_async(void * frun) {
-    IF(pthread_async(frun, NULL));
+    IF(pthread_async(frun, nullptr));
 }
 
 //
@@ -38,11 +38,11 @@ extern int pthread_run(pthread_t * p, void * frun, void * arg);
 // return   : void
 //
 inline void pthread_end(pthread_t id) {
-    pthread_join(id, NULL);
+    pthread_join(id, nullptr);
 
     /*
      * or
-     * void * res = NULL; pthread_join(id, &res); 
+     * void * res = nullptr; pthread_join(id, &res); 
      * get frun() return void *
      */
 }

@@ -31,7 +31,7 @@ list_delete(void * pist, void * fdie) {
             ((node_f)fdie)(head);
             head = next;
         }
-        *(void **)pist = NULL;
+        *(void **)pist = nullptr;
     }
 }
 
@@ -78,7 +78,7 @@ list_add(void * pist, void * fadd, void * left) {
 // list     : 链表对象
 // fget     : cmp_f 链表中查找数据行为
 // left     : 待查找的辅助数据 
-// return   : 查找到的结点, NULL 表示没有查到
+// return   : 查找到的结点, nullptr 表示没有查到
 //
 void * 
 list_get(void * list, void * fget, const void * left) {
@@ -90,7 +90,7 @@ list_get(void * list, void * fget, const void * left) {
             head = head->next;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -98,12 +98,12 @@ list_get(void * list, void * fget, const void * left) {
 // pist     : void ** 指向链表对象指针
 // fget     : cmp_f 链表中查找数据行为
 // left     : 待查找的辅助数据 
-// return   : 查找到的结点, NULL 表示没有查到 
+// return   : 查找到的结点, nullptr 表示没有查到 
 //
 void * 
 list_pop(void * pist, void * fget, const void * left) {
     if (!pist || !*(void **)pist || !fget) 
-        return NULL;
+        return nullptr;
 
     // 看是否是头结点
     struct $list * head = *(void **)pist;
@@ -120,5 +120,5 @@ list_pop(void * pist, void * fget, const void * left) {
         }
     }
 
-    return NULL;
+    return nullptr;
 }

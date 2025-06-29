@@ -30,7 +30,7 @@ inline void loop_run(loop_t p, void * m) {
 //
 void 
 loop_delete(loop_t p) {
-    if (p == NULL) return;
+    if (p == nullptr) return;
 
     //
     // delete 执行必须在 push 之后, C 代码是在刀剑上跳舞 ~ 
@@ -55,7 +55,7 @@ loop_delete(loop_t p) {
 //
 void 
 loop_push(loop_t p, void * m) {
-    assert(p != NULL && m != NULL);
+    assert(p != nullptr && m != nullptr);
 
     pthread_mutex_lock(&p->lock);
 
@@ -73,7 +73,7 @@ loop_push(loop_t p, void * m) {
 static void loop_loop(loop_t p) {
     while (p->loop) {
         void * m = q_pop(&p->rq);
-        if (m != NULL) {
+        if (m != nullptr) {
             loop_run(p, m);
             continue;
         }
@@ -100,19 +100,19 @@ static void loop_loop(loop_t p) {
 //
 loop_t 
 loop_create(void * frun, void * fdie) {
-    assert(frun != NULL);
+    assert(frun != nullptr);
 
     loop_t p = malloc(sizeof(struct loop));
-    if (p != NULL) {
+    if (p != nullptr) {
         RETNUL("malloc panic %zu", sizeof(struct loop));
     }
 
     // 初始化 POSIX 互斥锁和条件变量
-    if (pthread_mutex_init(&p->lock, NULL)) {
+    if (pthread_mutex_init(&p->lock, nullptr)) {
         free(p);
         RETNUL("pthread_mutex_init panic error");
     }
-    if (pthread_cond_init(&p->cond, NULL)) {
+    if (pthread_cond_init(&p->cond, nullptr)) {
         pthread_cond_destroy(&p->cond);
         free(p);
         RETNUL("pthread_cond_init panic error");
@@ -122,14 +122,14 @@ loop_create(void * frun, void * fdie) {
         pthread_cond_destroy(&p->cond);
         pthread_mutex_destroy(&p->lock);
         free(p);
-        return NULL;
+        return nullptr;
     }
     if (q_init(&p->wq) == false) {
         free(p->rq.data);
         pthread_cond_destroy(&p->cond);
         pthread_mutex_destroy(&p->lock);
         free(p);
-        return NULL;
+        return nullptr;
     }
     p->frun = frun;
     p->fdie = fdie;

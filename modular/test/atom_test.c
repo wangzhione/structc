@@ -10,7 +10,7 @@ void atom_test(void) {
     _Atomic(char *) ptr;
     char * some = "Hello, 世界";
     atomic_store_explicit(&ptr, some, memory_order_relaxed);
-    char * prev = atomic_exchange_explicit(&ptr, NULL, memory_order_acq_rel);
+    char * prev = atomic_exchange_explicit(&ptr, nullptr, memory_order_acq_rel);
     assert(some == prev);
 
     printf("%s\n", prev);

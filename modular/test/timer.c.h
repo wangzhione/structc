@@ -153,7 +153,7 @@ int timer_add(int ms, void * ftimer, void * arg) {
 void timer_del(int id) {
     struct timer_node * node;
 
-    if (id <= 0 || timer.list == NULL) {
+    if (id <= 0 || timer.list == nullptr) {
         POUT("id = %d, list = %p", id, timer.list);
         return;
     }

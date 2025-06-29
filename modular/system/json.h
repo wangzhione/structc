@@ -3,7 +3,6 @@
 #include <math.h>
 #include <float.h>
 #include <limits.h>
-#include <stdbool.h>
 
 #include "chars.h"
 #include "strext.h"
@@ -12,9 +11,9 @@
 // cj json fast parse, type is all design
 // https://www.json.org/json-zh.html
 //
-#ifndef JSON_NULL
+#ifndef JSON_nullptr
 
-#define JSON_NULL           (0u << 0)
+#define JSON_nullptr           (0u << 0)
 #define JSON_TRUE           (1u << 1)
 #define JSON_FALSE          (1u << 2)
 #define JSON_NUMBER         (1u << 3)
@@ -31,7 +30,7 @@
 //                          child
 //                              -> next -> ..
 struct json {
-    unsigned type;          // C JSON_NULL - JSON_ARRAY and JSON_CONST
+    unsigned type;          // C JSON_nullptr - JSON_ARRAY and JSON_CONST
     struct json * next;     // type & JSON_ARRAY | JSON_OBJECT -> 同级下个结点
     struct json * child;    // type & JSON_ARRAY | JSON_OBJECT -> 子结点
 
@@ -52,7 +51,7 @@ typedef struct json * json_t;
 // int 范围 [-2^63, 2^63-1] 即 -2,147,483,648 到 2,147,483,647 约 9 到 10 位
 #define json_int(item) ((int)(item)->num)
 
-#endif//JSON_NULL
+#endif//JSON_nullptr
 
 //
 // json_delete - json 对象销毁
@@ -111,7 +110,7 @@ extern json_t json_detach_object(json_t obj, const char * k);
 //
 extern char * json_string(json_t cj);
 
-// json_new - 构造 json 对象 (json null node)
+// json_new - 构造 json 对象 (json nullptr node)
 inline json_t json_new(void) {
     return calloc(1, sizeof(struct json));
 }

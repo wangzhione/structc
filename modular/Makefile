@@ -43,10 +43,6 @@ TESTSRCC  = $(filter-out main/main.c main/exec.c, $(ALLSRCC))
 TESTOBJO  = $(foreach v, $(TESTSRCC),$(DOBJ)/$(notdir $(basename $(v))).o)
 
 #
-# 全局编译的设置
-#
-CC        ?= cc
-#
 # -Werror                           : 使所有警告变为错误
 # -Wall -Wextra                     : 启用一些很有用的警告选项
 # -Wimplicit-fallthrough=0          : 忽略 switch case missing break warning
@@ -55,10 +51,12 @@ CC        ?= cc
 CFLAGS    := -g -Wall -Wextra -Wno-missing-field-initializers -D_GNU_SOURCE
 LIB       := -lm -lpthread
 
+# 默认统一用 gcc 去编译
+
 ifneq ( , $(D))
-	PREFIX=$(CC) -O3 $(CFLAGS) $(D)
+	PREFIX=gcc -O3 $(CFLAGS) $(D)
 else
-	PREFIX=$(CC) -O2 $(CFLAGS)
+	PREFIX=gcc -O2 $(CFLAGS)
 endif
 
 RUNO      = $(PREFIX) $(IINC) -c -o $@ $^

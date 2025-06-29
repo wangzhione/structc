@@ -22,7 +22,7 @@ static void msg_buf_expand(struct msg_buf * q, int sz) {
     // 开始构建所需内存
     do cap <<= 1; while (len + sz > cap);
     q->data = realloc(q->data, cap);
-    assert(q->data != NULL);
+    assert(q->data != nullptr);
     q->cap = cap;
 }
 
@@ -93,13 +93,13 @@ int msg_buf_pop(msg_buf_t q, msg_t * p) {
     // step 2 : check data parse is true
     int len = MSG_LEN(q->sz);
     if (len <= 0 && q->sz > 0) {
-        *p = NULL;
+        *p = nullptr;
         return MSG_BUF_PARSE;
     }
 
     // step 3 : q->sz > 0 继续看是否有需要的报文内容
     if (len <= 0 || len > q->len) {
-        *p = NULL;
+        *p = nullptr;
         return MSG_BUF_SMALL;
     }
 
@@ -124,7 +124,7 @@ static msg_t msg_buf_data_pop(msg_buf_t q,
     // step 2 : check data len is true
     uint32_t len = MSG_LEN(q->sz);
     if (len <= 0 || len + sizeof(uint32_t) > n)
-        return NULL;
+        return nullptr;
 
     // step 3 : create msg
     msg_t msg = malloc(sizeof(*msg) + len);

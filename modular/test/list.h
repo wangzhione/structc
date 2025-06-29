@@ -5,7 +5,7 @@
 //
 // list.h 似魔鬼的步伐, 单链表库
 // $LIST 需要嵌入 struct 的第一行
-// void * list = NULL;      //        create list
+// void * list = nullptr;      //        create list
 // list_delete(list, fide); // [可选] delete list
 //
 struct $list {
@@ -50,7 +50,7 @@ extern void list_add(void * pist, void * fadd, void * left);
 // list     : 链表对象
 // fget     : cmp_f 链表中查找数据行为
 // left     : 待查找的辅助数据 
-// return   : 查找到的结点, NULL 表示没有查到
+// return   : 查找到的结点, nullptr 表示没有查到
 //
 extern void * list_get(void * list, void * fget, const void * left);
 
@@ -59,6 +59,6 @@ extern void * list_get(void * list, void * fget, const void * left);
 // pist     : void ** 指向链表对象指针
 // fget     : cmp_f 链表中查找数据行为
 // left     : 待查找的辅助数据 
-// return   : 查找到的结点, NULL 表示没有查到 
+// return   : 查找到的结点, nullptr 表示没有查到 
 //
 extern void * list_pop(void * pist, void * fget, const void * left);

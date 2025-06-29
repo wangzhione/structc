@@ -20,7 +20,7 @@ void json_delete_recursion(json_t cj) {
 }
 
 void json_delete(json_t cj) {
-    if (cj == NULL) {
+    if (cj == nullptr) {
         return;
     }
 
@@ -75,7 +75,7 @@ json_len(json_t cj) {
 //
 json_t 
 json_array(json_t aj, int i) {
-    if (aj == NULL || i <= 0) return NULL;
+    if (aj == nullptr || i <= 0) return nullptr;
 
     json_t node = aj->child;
     while (node && i > 0) {
@@ -93,7 +93,7 @@ json_array(json_t aj, int i) {
 //
 json_t 
 json_object(json_t obj, const char * k) {
-    if (obj == NULL || k == NULL) return NULL;
+    if (obj == nullptr || k == nullptr) return nullptr;
 
     json_t node = obj->child;
     while (node && strcasecmp(k, node->key))
@@ -165,7 +165,7 @@ static const char * parse_literal(json_t item, const char * str) {
     // 获取到 '`' 字符结尾处
     while ((c = *etr) != '`' && c)
         ++etr;
-    if ('`' != c) return NULL;
+    if ('`' != c) return nullptr;
 
     // 尝试吃掉 `` 开头第一个和结尾最后一个 \n, 方便整齐划一
     size = '\n' == etr[-1] ? etr - str - 1 : etr - str;
@@ -173,7 +173,7 @@ static const char * parse_literal(json_t item, const char * str) {
     // 开始构造和填充 json string 结点
     item->type = JSON_STRING;
     item->str = malloc(size + 1);
-    assert(item->str != NULL);
+    assert(item->str != nullptr);
     memcpy(item->str, str, size);
     item->str[size] = '\0';
 
@@ -212,16 +212,16 @@ static const char * parse_string(json_t item, const char * str) {
         // 转义字符特殊处理
         if (c == '\\') {
             if (*etr == '\0') 
-                return NULL;
+                return nullptr;
             ++etr;
         }
         ++len;
     }
-    if (c != '"') return NULL;
+    if (c != '"') return nullptr;
 
     // 开始复制拷贝内容
     cursor = out = malloc(len);
-    assert(out != NULL);
+    assert(out != nullptr);
     for (ptr = str; ptr < etr; ++ptr) {
         // 普通字符直接添加处理
         if ((c = *ptr) != '\\') {
@@ -299,7 +299,7 @@ static const char * parse_string(json_t item, const char * str) {
 
 faild_free:
     free(out);
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -320,7 +320,7 @@ static const char * parse_array(json_t item, const char * str) {
     // 开始解析数组中数据
     item->child = child = json_new();
     str = parse_value(child, str);
-    if (!str) return NULL;
+    if (!str) return nullptr;
     item->len++;
 
     // array ',' cut
@@ -333,11 +333,11 @@ static const char * parse_array(json_t item, const char * str) {
         child = child->next;
         // 继续间接递归处理值
         str = parse_value(child, str);
-        if (!str) return NULL;
+        if (!str) return nullptr;
             item->len++;
     }
 
-    return ']' == *str ? str + 1 : NULL;
+    return ']' == *str ? str + 1 : nullptr;
 }
 
 // parse_object - object 解析
@@ -346,7 +346,7 @@ static const char * parse_object(json_t item, const char * str) {
     item->type = JSON_OBJECT;
     if ('}' == *str) return str + 1;
     // "key" check invalid
-    if ('"' != *str && *str != '`') return NULL;
+    if ('"' != *str && *str != '`') return nullptr;
 
     // {"key":value,...} 先处理 key 
     item->child = child = json_new();
@@ -355,20 +355,20 @@ static const char * parse_object(json_t item, const char * str) {
     else 
         str = parse_literal(child, str + 1);
 
-    if (!str || *str != ':') return NULL;
+    if (!str || *str != ':') return nullptr;
     child->key = child->str;
-    child->str = NULL;
+    child->str = nullptr;
 
     // 再处理 value
     str = parse_value(child, str + 1);
-    if (!str) return NULL;
+    if (!str) return nullptr;
     item->len++;
 
     // 开始间接递归解析
     while (*str == ',') {
         // 多行解析直接返回结果
         if ('}' == *++str) return str + 1;
-        if ('"' != *str && *str != '`') return NULL;
+        if ('"' != *str && *str != '`') return nullptr;
 
         child->next = json_new();
         child = child->next;
@@ -377,32 +377,32 @@ static const char * parse_object(json_t item, const char * str) {
         else 
             str = parse_literal(child, str + 1);
 
-        if (!str || *str != ':') return NULL;
+        if (!str || *str != ':') return nullptr;
         child->key = child->str;
-        child->str = NULL;
+        child->str = nullptr;
 
         str = parse_value(child, str + 1);
-        if (!str) return NULL;
+        if (!str) return nullptr;
         item->len++;
     }
 
-    return '}' == *str ? str + 1 : NULL;
+    return '}' == *str ? str + 1 : nullptr;
 }
 
 static const char * parse_value(json_t item, const char * str) {
-    if (!str) return NULL;
+    if (!str) return nullptr;
     switch (*str) {
-    // n or N = null, f or F = false, t or T = true
+    // n or N = nullptr, f or F = false, t or T = true
     case 'n': case 'N':
-        if (strncasecmp(str + 1, "ull", sizeof "ull" - 1)) return NULL;
-        item->type = JSON_NULL;
+        if (strncasecmp(str + 1, "ull", sizeof "ull" - 1)) return nullptr;
+        item->type = JSON_nullptr;
         return str + sizeof "ull"; // exists invalid is you!
     case 't': case 'T':
-        if (strncasecmp(str + 1, "rue", sizeof "rue" - 1)) return NULL;
+        if (strncasecmp(str + 1, "rue", sizeof "rue" - 1)) return nullptr;
         item->type = JSON_TRUE; item->num = true;
         return str + sizeof "rue";
     case 'f': case 'F':
-        if (strncasecmp(str + 1, "alse", sizeof "alse"-1)) return NULL;
+        if (strncasecmp(str + 1, "alse", sizeof "alse"-1)) return nullptr;
         item->type = JSON_FALSE;
         return str + sizeof "alse";
     case '+': case '-': case '.':
@@ -414,7 +414,7 @@ static const char * parse_value(json_t item, const char * str) {
     case '{': return parse_object (item, str + 1);
     case '[': return parse_array  (item, str + 1);
     }
-    return NULL;
+    return nullptr;
 }
 
 // json_mini - 清洗 str 中冗余的串并返回最终串的长度. 纪念 mini 比男的还平 :)
@@ -488,21 +488,21 @@ size_t json_mini(char * str) {
 //
 // json_parse - json 解析函数
 // str      : json 字符串串
-// return   : json 对象, NULL 表示解析失败
+// return   : json 对象, nullptr 表示解析失败
 //
 json_t json_parse(const char * str) {
     json_t cj = json_new();
-    if (parse_value(cj, str) == NULL) {
+    if (parse_value(cj, str) == nullptr) {
         json_delete(cj);
-        return NULL;
+        return nullptr;
     }
     return cj;
 }
 
 json_t 
 json_create(const char * str) {
-    if (str == NULL || *str == 0) 
-        return NULL;
+    if (str == nullptr || *str == 0) 
+        return nullptr;
 
     char * ss = strdup(str);
     // 清洗 + 解析
@@ -516,8 +516,8 @@ json_t
 json_file(const char * path) {
     char * str = str_freads(path);
     // 读取文件中内容, 并事先检查参数
-    if (str == NULL)
-        return NULL;
+    if (str == nullptr)
+        return nullptr;
 
     // 尝试解析结果
     json_t c = json_create(str);
@@ -527,9 +527,9 @@ json_file(const char * path) {
 
 json_t 
 json_detach_array(json_t aj, int i) {
-    if (aj == NULL) return NULL;
+    if (aj == nullptr) return nullptr;
 
-    json_t p = NULL;
+    json_t p = nullptr;
     json_t c = aj->child;
 
     // 开始查找
@@ -542,16 +542,16 @@ json_detach_array(json_t aj, int i) {
     // 潜规则, i >= len 时候获取的是 i = len-1 处索引
     if (c) {
         (p ? p : aj)->next = c->next;
-        c->next = NULL;
+        c->next = nullptr;
     }
     return c;
 }
 
 json_t 
 json_detach_object(json_t obj, const char * k) {
-    if (obj == NULL || k == NULL || *k == 0) return NULL;
+    if (obj == nullptr || k == nullptr || *k == 0) return nullptr;
 
-    json_t p = NULL;
+    json_t p = nullptr;
     json_t c = obj->child;
     
     while (c && strcasecmp(c->key, k)) {
@@ -560,7 +560,7 @@ json_detach_object(json_t obj, const char * k) {
     }
     if (c) {
         (p ? p : obj)->next = c->next;
-        c->next = NULL;
+        c->next = nullptr;
     }
 
     return c;
@@ -604,7 +604,7 @@ static char * json_string_string(char * str, struct chars * p) {
     const char * ptr;
     char * cursor, * out;
     // 什么都没有 返回 "" empty string
-    if (NULL == str || *str == 0) {
+    if (nullptr == str || *str == 0) {
         out = chars_expand(p, 3);
         out[0] = out[1] = '"'; out[2] = '\0';
         p->len += 2;
@@ -723,11 +723,11 @@ static char * json_string_object(json_t item, struct chars * p) {
 
 static char * 
 json_string_value(json_t item, struct chars * p) {
-    char * out = NULL;
+    char * out = nullptr;
     switch(item->type) {
-    case JSON_NULL  :
-        out = memcpy(chars_expand(p, sizeof "null"), "null", sizeof "null");
-        p->len += sizeof "null" - 1;
+    case JSON_nullptr  :
+        out = memcpy(chars_expand(p, sizeof "nullptr"), "nullptr", sizeof "nullptr");
+        p->len += sizeof "nullptr" - 1;
         return out;
     case JSON_TRUE  :
         out = memcpy(chars_expand(p, sizeof "true"), "true", sizeof "true");
@@ -756,9 +756,9 @@ json_string_value(json_t item, struct chars * p) {
 char * 
 json_string(json_t cj) {
     struct chars p = {};
-    if (NULL == json_string_value(cj, &p)) {
+    if (nullptr == json_string_value(cj, &p)) {
         free(p.str);
-        return NULL;
+        return nullptr;
     }
     return p.str;
 }
@@ -768,12 +768,12 @@ json_create_array(unsigned type, const void * a, int n) {
     // JSON_ARAAY json array
     //                |
     //                child -> JSON json -> next
-    json_t aj = NULL, prev = NULL, node;
+    json_t aj = nullptr, prev = nullptr, node;
     int i = 0;
 
     if (n <= 0) {
         PERR("error n = %d, type = %u, a = %p", n, type, a);
-        return NULL;
+        return nullptr;
     }
 
 #define __a_i_get(type_define, default_value) a ? ((type_define)a)[i] : default_value
@@ -781,7 +781,7 @@ json_create_array(unsigned type, const void * a, int n) {
     do {
         // 类型分拆
         switch(type) {
-        case JSON_NULL :
+        case JSON_nullptr :
             node = json_new();
             break;
         case JSON_TRUE: 
@@ -793,14 +793,14 @@ json_create_array(unsigned type, const void * a, int n) {
             break;
         case JSON_STRING: 
         case JSON_STRING+JSON_CONST:
-            node = json_new_string(__a_i_get(const char **, NULL));
+            node = json_new_string(__a_i_get(const char **, nullptr));
             break;
         default:
             PERR("error type = %d, a = %p, n = %u", type, a, n);
-            return NULL;
+            return nullptr;
         }
 
-        if (prev != NULL)
+        if (prev != nullptr)
             prev->next = node;
         else {
             aj = json_new_array();

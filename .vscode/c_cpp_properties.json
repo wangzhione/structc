@@ -15,7 +15,7 @@
                 "__linux__",
                 "_GNU_SOURCE"
             ],
-            "compilerPath": "/usr/bin/gcc"
+            "compilerPath": "gcc"
         }
     ],
     "version": 4

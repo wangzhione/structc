@@ -48,7 +48,7 @@ extern char * str_sprintf(const char * fmt, ...) __attribute__((format(printf, 1
 //
 // str_freads - 读取整个文件内容返回, 需要事后 free
 // path     : 文件路径
-// return   : 文件内容字符串, NULL 表示读取失败
+// return   : 文件内容字符串, nullptr 表示读取失败
 //
 extern char * str_freads(const char * path);
 

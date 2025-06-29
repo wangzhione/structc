@@ -28,7 +28,7 @@ void dict_test(void) {
     val = dict_get(d, k = "hello_1");
     printf("key = %s, val = %s\n", k, val);
 
-    dict_set(d, k, NULL);
+    dict_set(d, k, nullptr);
     val = dict_get(d, k);
     printf("key = %s, val = %s\n", k, val);
 
@@ -41,7 +41,7 @@ void dict_test(void) {
         ++i;
     }
 
-    dict_move_filter(d, a, NULL);
+    dict_move_filter(d, a, nullptr);
 
     printf("d = %p, a = %p\n", d, a);
 

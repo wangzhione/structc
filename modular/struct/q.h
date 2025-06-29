@@ -48,7 +48,7 @@ do { struct q $p = r; r = w; w = $p; } while(0)
 //
 // q_pop - 队列中弹出消息数据
 // q      : 队列对象
-// return : 若队列 empty, 返回 NULL
+// return : 若队列 empty, 返回 nullptr
 //
 extern void * q_pop(struct q * q);
 

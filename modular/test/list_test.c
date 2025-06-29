@@ -31,7 +31,7 @@ inline static void people_each(struct people * node, void * arg) {
 // list test demo
 //
 void list_test(void) {
-    struct people * list = NULL; // 第二步: list 创建
+    struct people * list = nullptr; // 第二步: list 创建
 
     // people list 添加数据
     struct people ple[5];
@@ -42,5 +42,5 @@ void list_test(void) {
     }
 
     // 这里打印数据
-    list_each(list, people_each, NULL);
+    list_each(list, people_each, nullptr);
 }

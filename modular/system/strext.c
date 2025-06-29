@@ -12,7 +12,7 @@ unsigned BKDHash(const char * str) {
 
 int 
 str_cpyn(char * src, const char * tar, size_t n) {
-    if (src == NULL || tar == NULL || n == 0) return -1;
+    if (src == nullptr || tar == nullptr || n == 0) return -1;
 
     size_t i = 1;
     while (i < n && (*src++ = *tar++) != 0)
@@ -58,15 +58,15 @@ str_sprintf(const char * fmt, ...) {
     // 确定待分配内存 size
     va_list arg;
     va_start(arg, fmt);
-    int n = vsnprintf(NULL, 0, fmt, arg);
+    int n = vsnprintf(nullptr, 0, fmt, arg);
     va_end(arg);
 
     if (n < 0) 
-        return NULL;
+        return nullptr;
 
     // 获取待分配内存, 尝试填充格式化数据
     char * ret = malloc(++n);
-    if (ret == NULL) {
+    if (ret == nullptr) {
         RETNUL("malloc panic n = %d", n);
     }
 
@@ -76,7 +76,7 @@ str_sprintf(const char * fmt, ...) {
 
     if (n < 0) {
         free(ret);
-        return NULL;
+        return nullptr;
     }
 
     return ret;
@@ -85,24 +85,24 @@ str_sprintf(const char * fmt, ...) {
 //
 // str_freads - 读取整个文件内容返回, 需要事后 free
 // path     : 文件路径
-// return   : 文件内容字符串, NULL 表示读取失败
+// return   : 文件内容字符串, nullptr 表示读取失败
 //
 char * 
 str_freads(const char * path) {
-    if (path == NULL || *path == 0) return NULL;
+    if (path == nullptr || *path == 0) return nullptr;
     int64_t size = fsize(path);
-    if (size <  0) return NULL;
+    if (size <  0) return nullptr;
     if (size == 0) return calloc(1, sizeof (char));
 
     // 尝试打开文件读取处理
     FILE * txt = fopen(path, "rb");
-    if (txt == NULL) return NULL;
+    if (txt == nullptr) return nullptr;
 
     // 构建最终内存
     char * str = malloc(size + 1);
-    if (str == NULL) {
+    if (str == nullptr) {
         // 隐含内存不足问题
-        RETNUL("malloc panic return nullptr size = %ld", size);
+        RETNUL("malloc panic return nullptrptr size = %ld", size);
     }
 
 
@@ -111,7 +111,7 @@ str_freads(const char * path) {
     if (ferror(txt)) {
         free(str);
         fclose(txt);
-        return NULL;
+        return nullptr;
     }
     fclose(txt);
 

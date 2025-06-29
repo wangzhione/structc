@@ -1,7 +1,7 @@
 ﻿#include "file.h"
 
 struct file {
-    file_f func;        // 执行行为, NULL 标识删除
+    file_f func;        // 执行行为, nullptr 标识删除
     void * arg;         // 行为参数
     char * path;        // 文件路径
     unsigned hash;      // path hash
@@ -14,24 +14,24 @@ static struct file * file_create(unsigned hash, const char * path, file_f func, 
     assert(path && func);
     
     if (fmtime(path) == -1) {
-        RETURN(NULL, "mtime error p = %s", path);
+        RETURN(nullptr, "mtime error p = %s", path);
     }
 
     struct file * fu = malloc(sizeof(struct file));
-    if (NULL == fu) {
-        return NULL;
+    if (nullptr == fu) {
+        return nullptr;
     }
     fu->path = strdup(path);
-    if (NULL == path) {
+    if (nullptr == path) {
         free(fu);
-        return NULL;
+        return nullptr;
     }
 
     fu->lasttime = -1;
     fu->func = func;
     fu->arg = arg;
     fu->hash = hash;
-    fu->next = NULL;
+    fu->next = nullptr;
     return fu;
 }
 
@@ -50,7 +50,7 @@ static int file_each(struct file * fu) {
 
     if (fu->lasttime != lasttime) {
         FILE * c = fopen(path, "rb+");
-        if (c == NULL) {
+        if (c == nullptr) {
             RETURN(-1, "fopen error rb+ %s", path);
         }
         fu->lasttime = lasttime;
@@ -81,16 +81,16 @@ static void files_replace(const char * path, file_f func, void * arg) {
     struct file * prev = &F.data;
     struct file * node = prev->next;
     // list struct 瓶颈所在 find O(n)
-    while (node != NULL) {
+    while (node != nullptr) {
         if (node->hash == hash && strcmp(node->path, path) == 0) {
             break;
         }
         prev = node;
         node = node->next;
     }
-    // node != NULL 标识找到这个结点
-    if (node != NULL) {
-        if (func == NULL) {
+    // node != nullptr 标识找到这个结点
+    if (node != nullptr) {
+        if (func == nullptr) {
             prev->next = node->next;
             file_delete(node);
         } else {
@@ -99,8 +99,8 @@ static void files_replace(const char * path, file_f func, void * arg) {
         }
         return;
     }
-    // node == NULL 标识没有找到这个结点
-    if (func == NULL) {
+    // node == nullptr 标识没有找到这个结点
+    if (func == nullptr) {
         prev->next = file_create(hash, path, func, arg);
     }
 }
@@ -109,19 +109,19 @@ static void files_add(const char * path, file_f func, void * arg) {
     unsigned hash = BKDHash(path);
     struct file * prev = &F.backup;
     struct file * node = prev->next;
-    while (node != NULL) {
+    while (node != nullptr) {
         if (node->hash == hash && strcmp(node->path, path) == 0) {
             break;
         }
         prev = node;
         node = node->next;
     }
-    // node == NULL 标识没有找到这个结点, 触发添加
-    if (node == NULL) {
+    // node == nullptr 标识没有找到这个结点, 触发添加
+    if (node == nullptr) {
         prev->next = file_create(hash, path, func, arg);
         return;
     }
-    // node != NULL 标识找到这个结点, 触发更新
+    // node != nullptr 标识找到这个结点, 触发更新
     node->func = func;
     node->arg = arg;
 }
@@ -129,7 +129,7 @@ static void files_add(const char * path, file_f func, void * arg) {
 static void files_move_data(struct file * backup_node) {
     struct file * data_prev = &F.data;
     struct file * data_node = data_prev->next;
-    while (data_node != NULL) {
+    while (data_node != nullptr) {
         if (data_node->hash == backup_node->hash 
             && strcmp(data_node->path, backup_node->path) == 0) {
             break;
@@ -137,20 +137,20 @@ static void files_move_data(struct file * backup_node) {
         data_prev = data_node;
         data_node = data_node->next;
     }
-    // data_node == NULL 标识没有找到这个结点
-    if (data_node == NULL) {
-        if (backup_node->func == NULL) 
+    // data_node == nullptr 标识没有找到这个结点
+    if (data_node == nullptr) {
+        if (backup_node->func == nullptr) 
             file_delete(backup_node);
         else {
             // 从 backup 链表中摘出去
-            backup_node->next = NULL;
+            backup_node->next = nullptr;
             // 触发添加操作
             data_prev->next = backup_node;
         }
         return;
     }
-    // data_node != NULL 标识找到这个结点
-    if (backup_node->func == NULL) {
+    // data_node != nullptr 标识找到这个结点
+    if (backup_node->func == nullptr) {
         // 触发删除操作
         data_prev->next = data_node->next;
         file_delete(data_node);
@@ -166,20 +166,20 @@ static void files_move_data(struct file * backup_node) {
 static void files_move(void) {
     struct file * backup_prev = &F.backup;
     struct file * backup_node = backup_prev->next;
-    while (backup_node != NULL) {
+    while (backup_node != nullptr) {
         struct file * next = backup_node->next;
         // 尝试在移动到 data 中, 并维护好结点关系
         files_move_data(backup_node);
         backup_node = next;
     }
     // 重置 backup 链表
-    F.backup.next = NULL;
+    F.backup.next = nullptr;
 }
 
 //
 // file_set - 文件注册更新行为
 // path     : 文件路径
-// func     : NULL 标识清除, 正常 update -> func(path -> FILE, arg)
+// func     : nullptr 标识清除, 正常 update -> func(path -> FILE, arg)
 // arg      : func 额外参数
 // return   : void
 //
@@ -217,8 +217,8 @@ file_update(void) {
     struct file * prev = &F.data;
     struct file * node = prev->next;
     // list struct 瓶颈所在 find O(n)
-    while (node != NULL) {
-        if (node->func != NULL) {
+    while (node != nullptr) {
+        if (node->func != nullptr) {
             int res = file_each(node);
             POUT("file_each res = %d, path = %s", res, node->path);
             prev = node;

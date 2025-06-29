@@ -34,7 +34,7 @@ inline static int rtree_cmp_default(const void * l, const void * r) {
 inline rtree_t 
 rtree_create(void * fcmp, void * fdie) {
     rtree_t tree = malloc(sizeof *tree);
-    tree->root = NULL;
+    tree->root = nullptr;
     tree->fcmp = fcmp ? fcmp : (void *)rtree_cmp_default;
     tree->fdie = fdie;
     return tree;
@@ -42,7 +42,7 @@ rtree_create(void * fcmp, void * fdie) {
 
 // rtree_die - 后序删除树结点
 static void rtree_die(struct $rtree * root, node_f fdie) {
-    struct $rtree * pre = NULL;
+    struct $rtree * pre = nullptr;
     struct stack s = stack_create();
     stack_push(&s, root);
     do {
@@ -71,7 +71,7 @@ rtree_delete(rtree_t tree) {
     if (tree) {
         if (tree->root && tree->fdie)
             rtree_die(tree->root, tree->fdie);
-        tree->root = NULL;
+        tree->root = nullptr;
         free(tree);
     }
 }
@@ -103,7 +103,7 @@ rtree_search(rtree_t tree, void * pack) {
 
     性质1: 结点是红色或黑色
     性质2: 根是黑色
-    性质3: 所有 NULL 叶子都是黑色
+    性质3: 所有 nullptr 叶子都是黑色
     性质4: 从任一结点到其每个叶子的所有简单路径都包含相同数目的黑色结点
     性质5: 从每个叶子到根的所有路径上不能有两个连续的红色结点
  
@@ -285,7 +285,7 @@ static void rtree_insert_fixup(rtree_t tree, struct $rtree * node) {
 void 
 rtree_insert(rtree_t tree, void * pack) {
     cmp_f fcmp = tree->fcmp;
-    struct $rtree * x = tree->root, * y = NULL;
+    struct $rtree * x = tree->root, * y = nullptr;
     // 1. 构造插入结点, 并设置结点的颜色为红色
     struct $rtree * node = memset(pack, 0, sizeof(struct $rtree));
 

@@ -19,7 +19,7 @@ inline void spoll_delete(spoll_t p) {
 }
 
 inline void spoll_del(spoll_t p, SOCKET s) {
-    epoll_ctl(p, EPOLL_CTL_DEL, s, NULL);
+    epoll_ctl(p, EPOLL_CTL_DEL, s, nullptr);
 }
 
 // spoll_add 添加监测的 socket fd, 并设置读模式, 失败返回 true

@@ -21,7 +21,7 @@ char * chars_expand(struct chars * cs, size_t len) {
         }
 
         cs->str = realloc(cs->str, cs->cap = cap);
-        assert(cs->str != NULL && cs->cap > len);
+        assert(cs->str != nullptr && cs->cap > len);
     }
 
     return cs->str + cs->len;
@@ -37,7 +37,7 @@ chars_dup(struct chars * cs) {
     // 构造内存, 返回最终结果
     size_t len = cs->len + (cs->len == 0 || cs->str[cs->len-1] != 0);
     char * str = malloc(len);
-    assert(str != NULL);
+    assert(str != nullptr);
     memcpy(str, cs->str, len-1);
     str[len-1] = 0;
     return str;
@@ -70,7 +70,7 @@ chars_sprintf(struct chars * cs, const char * fmt, ...) {
     // 确定待分配内存 size
     va_list arg;
     va_start(arg, fmt);
-    int n = vsnprintf(NULL, 0, fmt, arg);
+    int n = vsnprintf(nullptr, 0, fmt, arg);
     va_end(arg);
 
     if (n <= 0) 

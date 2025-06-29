@@ -49,12 +49,12 @@ ret_faild:
 csv_t csv_parse(char * str) {
     int n, rnt, cnt;
     if ((n = csv_parse_partial(str, &rnt, &cnt)) < 0)
-        return NULL;
+        return nullptr;
     
     // 分配最终内存
     csv_t csv = malloc(n + sizeof *csv + sizeof(char *) * cnt);
-    if (csv == NULL) {
-        RETNUL("malloc panic return null, n = %d, cnt = %d", n, cnt);
+    if (csv == nullptr) {
+        RETNUL("malloc panic return nullptr, n = %d, cnt = %d", n, cnt);
     }
 
     char * s = (char *)csv + sizeof *csv + sizeof(char *) * cnt;
@@ -76,7 +76,7 @@ csv_t csv_parse(char * str) {
 //
 // csv_create - 文件中构建 csv_t 对象
 // path    : 文件路径
-// return  : 返回 csv_t 对象, NULL is error
+// return  : 返回 csv_t 对象, nullptr is error
 //
 csv_t 
 csv_create(const char * path) {
@@ -87,6 +87,6 @@ csv_create(const char * path) {
         free(str);
         return csv;   
     }
-    // 意外返回 NULL
+    // 意外返回 nullptr
     RETNUL("str_freads path = %s is error!", path);
 }

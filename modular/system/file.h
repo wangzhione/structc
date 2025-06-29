@@ -12,7 +12,7 @@ typedef void (* file_f)(FILE * c, void * arg);
 //
 // file_set - 文件注册更新行为
 // path     : 文件路径
-// func     : NULL 标识清除, 正常 update -> func(path -> FILE, arg)
+// func     : nullptr 标识清除, 正常 update -> func(path -> FILE, arg)
 // arg      : func 额外参数
 // return   : void
 //

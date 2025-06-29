@@ -56,7 +56,7 @@ mkdirs(const char * path) {
 
     // 开始循环构建多级目录
     s = p = strdup(path);
-    if (p == NULL) {
+    if (p == nullptr) {
         RETURN(-1, "strdup path = %p panic", path);
     }
 
@@ -102,7 +102,7 @@ fmkdir(const char * path) {
 
     // 复制地址地址并构建
     s = p = strdup(path);
-    if (p == NULL) {
+    if (p == nullptr) {
         RETURN(-1, "strdup path = %p panic", path);
     }
 

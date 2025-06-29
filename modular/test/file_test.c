@@ -34,7 +34,7 @@ void file_test(void) {
     // removes_test("logs/");
 
     // 开始注册一个
-    file_set(CONF_STR, conf_update, NULL);
+    file_set(CONF_STR, conf_update, nullptr);
 
     // 定时刷新, 不要凡事追求 61分. 把心投入到喜欢的事物上.
     for (int i = 0; i < 1/*61*/; ++i) {

@@ -7,7 +7,7 @@ void array_test(void) {
 
     IF (array_init(&a, sizeof(double)) == false);
 
-    // 开始处理数据, 内存不足返回 NULL 程序会崩溃
+    // 开始处理数据, 内存不足返回 nullptr 程序会崩溃
     *(double *)array_push(&a) = 1.1234;
     *(double *)array_push(&a) = 2.2345;
     *(double *)array_push(&a) = 4.9876;

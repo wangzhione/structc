@@ -9,10 +9,10 @@
 
 bool 
 stack_init(struct stack * s) {
-    assert(s != NULL);
+    assert(s != nullptr);
 
     void * data = malloc(sizeof(void *) * INT_STACK);
-    if (data == NULL) {
+    if (data == nullptr) {
         RETURN(false, "malloc panic INT_STACK = %d", INT_STACK);
     }
 
@@ -30,12 +30,12 @@ stack_init(struct stack * s) {
 // 
 bool 
 stack_push(struct stack * s, void * m) {
-    assert(s != NULL);
+    assert(s != nullptr);
     
     if (s->cap <= s->tail || s->cap <= 0) {
         int cap = s->cap <= 0 ? INT_STACK : s->cap * 2;
         void * data = realloc(s->data, sizeof(void *) * cap);
-        if (data == NULL) {
+        if (data == nullptr) {
             RETURN(false, "realloc panic s = %p, cap = %d, tail = %d", s, cap, s->tail);
         }
         s->cap = cap;

@@ -81,7 +81,7 @@ extern int pthread_async(void * frun, void * arg);
 // return   : void 
 //
 inline void thread_async(void * frun) {
-    IF(pthread_async(frun, NULL));
+    IF(pthread_async(frun, nullptr));
 }
 
 //
@@ -92,7 +92,7 @@ inline void thread_async(void * frun) {
 // return   : 0 is success, -1 is error
 //
 inline int pthread_run(pthread_t * p, void * frun, void * arg) {
-    return pthread_create(p, NULL, frun, arg);
+    return pthread_create(p, nullptr, frun, arg);
 }
 
 //
@@ -101,7 +101,7 @@ inline int pthread_run(pthread_t * p, void * frun, void * arg) {
 // return   : void
 //
 inline void pthread_end(pthread_t id) {
-    pthread_join(id, NULL);
+    pthread_join(id, nullptr);
 }
 ```
 

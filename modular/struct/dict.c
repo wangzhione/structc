@@ -21,7 +21,7 @@ struct keypair * keypair_create(unsigned hash,
                                        void * v, const char * k) {
     size_t len = strlen(k) + 1;
     struct keypair * pair = malloc(sizeof(struct keypair) + len);
-    if (pair == NULL) {
+    if (pair == nullptr) {
         RETNUL("malloc panic len = %zu", len);
     }
     pair->hash = hash;
@@ -75,7 +75,7 @@ static void dict_resize(struct dict * d) {
     
     // 构造新的内存布局大小
     table = calloc(size, sizeof(struct keypair *));
-    if (table == NULL) {
+    if (table == nullptr) {
         RETNIL("calloc panic size = %u", size);
     }
 
@@ -136,7 +136,7 @@ dict_delete(dict_t d) {
 dict_t 
 dict_create(void * fdie) {
     struct dict * d = malloc(sizeof(struct dict));
-    if (d == NULL) {
+    if (d == nullptr) {
         RETNUL("malloc panic size = %zu", sizeof(struct dict));
     }
 
@@ -145,7 +145,7 @@ dict_create(void * fdie) {
     d->fdie = fdie;
     // 默认构建的第一个素数表 index = 0
     d->table = calloc(DICT_INIT_UINT, sizeof(struct keypair *));
-    if (d->table == NULL) {
+    if (d->table == nullptr) {
         free(d);
         RETNUL("calloc panic size = %zu, count=%u", sizeof(struct keypair *), DICT_INIT_UINT);
     }
@@ -164,7 +164,7 @@ static unsigned SDBMHash(const char * k) {
 // dict_get - 获取字典中对映的 v
 // d        : dict_create 创建的字典对象
 // k        : 查找的 key 
-// return   : 查找的 v, NULL 表示没有
+// return   : 查找的 v, nullptr 表示没有
 //
 void * 
 dict_get(dict_t d, const char * k) {
@@ -182,20 +182,20 @@ dict_get(dict_t d, const char * k) {
         pair = pair->next;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void dict_del(dict_t d, const char * k) {
     unsigned hash = SDBMHash(k);
     unsigned index = hash & (d->size - 1);
     struct keypair * pair = d->table[index];
-    struct keypair * prev = NULL;
+    struct keypair * prev = nullptr;
 
     while (pair) {
         // 找见了数据
         if (pair->hash == hash && !strcmp(pair->key, k)) {
             // 删除操作
-            if (NULL == prev)
+            if (nullptr == prev)
                 d->table[index] = pair->next;
             else
                 prev->next = pair->next;
@@ -215,7 +215,7 @@ void dict_del(dict_t d, const char * k) {
 // dict_set - 设置一个 <k, v> 结构
 // d        : dict_create 创建的字典对象
 // k        : 插入的 key
-// v        : 插入数据的值, NULL 会销毁 k
+// v        : 插入数据的值, nullptr 会销毁 k
 // return   : void
 //
 void 
@@ -223,7 +223,7 @@ dict_set(dict_t d, const char * k, void * v) {
     assert(d && k);
 
     // 走删除分支
-    if (NULL == v) {
+    if (nullptr == v) {
         return dict_del(d, k);
     }
 
@@ -255,7 +255,7 @@ dict_set(dict_t d, const char * k, void * v) {
 
     // 没有找见设置操作, 直接插入数据
     pair = keypair_create(hash, v, k);
-    if (pair == NULL) {
+    if (pair == nullptr) {
         // 插入失败, 记录错误日志直接返回
         RETNIL("keypair_create panic hash=%u, k = %s, v = %p", hash, k, v);
     }
@@ -288,7 +288,7 @@ void dict_add_keypair(dict_t d, struct keypair * prev) {
             // 相同数据, 不推荐, 最好追查下
             if (pair->val == val) {
                 POUT("incorrect usage 2 pair=%p, key=%s, prev = %p", pair, pair->key, prev);
-                return keypair_delete(prev, NULL);
+                return keypair_delete(prev, nullptr);
             }
 
             // 交互结点, 删除之前结点
@@ -340,7 +340,7 @@ int dict_each(dict_t d, void * feach, void * arg) {
     unsigned used, index;
     struct keypair * pair;
 
-    if (NULL == d || feach == NULL) {
+    if (nullptr == d || feach == nullptr) {
         POUT("d = %p, used = %u, feach = %p", d, dict_used(d), feach);
         return 0;
     }
