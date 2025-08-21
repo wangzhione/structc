@@ -13,7 +13,7 @@
 //
 #ifndef JSON_nullptr
 
-#define JSON_nullptr           (0u << 0)
+#define JSON_nullptr        (0u << 0)
 #define JSON_TRUE           (1u << 1)
 #define JSON_FALSE          (1u << 2)
 #define JSON_NUMBER         (1u << 3)
@@ -22,17 +22,11 @@
 #define JSON_ARRAY          (1u << 6)
 #define JSON_CONST          (1u << 7)
 
-// JSON_OBJECT or JSON_ARRAY data struct
-// |
-// child
-//     -> next -> ... -> next 
-//                          |
-//                          child
-//                              -> next -> ..
+
 struct json {
     unsigned type;          // C JSON_nullptr - JSON_ARRAY and JSON_CONST
-    struct json * next;     // type & JSON_ARRAY | JSON_OBJECT -> 同级下个结点
-    struct json * child;    // type & JSON_ARRAY | JSON_OBJECT -> 子结点
+    struct json * next;     // 同级下一个结点
+    struct json * child;    // type & JSON_ARRAY | JSON_OBJECT -> 子结点 ; 例如 { "a": 1, "b": [true, "x"] } 这个 b 就需要有个 child
 
     char * key;             // json 结点的 key
     union {
@@ -128,8 +122,7 @@ inline json_t json_new_type(unsigned type) {
 }
 
 inline json_t json_new_bool(bool v) {
-    json_t item;
-    item = v ? json_new_type(JSON_TRUE) : json_new_type(JSON_FALSE);
+    json_t item = json_new_type(v ? JSON_TRUE : JSON_FALSE);
     item->num = v;
     return item;
 }
@@ -154,11 +147,3 @@ inline json_t json_new_array(void) {
     return json_new_type(JSON_ARRAY);
 }
 
-//
-// json_create_array - 创建数组类型 json 对象
-// type     : 创建对象 JSON define 类型宏
-// a        : 原数组对象
-// n        : 原数组长度
-// return   : 返回创建好的 json 数组
-//
-extern json_t json_create_array(unsigned type, const void * a, int n);

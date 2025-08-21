@@ -33,6 +33,8 @@
 
         测试文件. 方便统一生成特定内容.
 
+    c). cd struct/modular ; make test ; update launch.json -> test.out ; debug
+
 ## 2. 设计交流
 
 C 中 很多结构, 用数组和链表以及 char * 也许都能简单的构造出来. 非常灵活. 

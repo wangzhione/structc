@@ -17,7 +17,7 @@ void q_test(void) {
         object[i].value = i;
     }
 
-    struct q q = q_create();
+    struct q q; q_init(&q);
     
     printf("i = %2d, q_len = %2d, q->tail=%2d, q->head=%2d, q->cap=%2d\n", i, q_len(&q), q.tail, q.head, q.cap);
     i = 0; q_push(&q, object+i);

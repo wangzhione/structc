@@ -1,7 +1,7 @@
 ﻿#include <stack.h>
 
 void stack_test(void) {
-    struct stack s = stack_create();
+    struct stack s ; stack_init(&s);
 
     char * str = nullptr;
     stack_push(&s, ++str);

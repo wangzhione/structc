@@ -1,4 +1,4 @@
-#include <crc.h>
+#include "crc.h"
 #include <base.h>
 
 void crc_test(void) {
@@ -7,6 +7,4 @@ void crc_test(void) {
 
     crc = crc16(data, strlen(data));
     printf("crc = %hu\n", crc);
-
-    
 }

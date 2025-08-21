@@ -6,7 +6,7 @@ void json_delete1(json_t cj) {
         return;
     }
 
-    struct q q = q_create();
+    struct q q; q_init(&q);
 
     do {
         json_t next = cj->next;

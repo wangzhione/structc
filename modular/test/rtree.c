@@ -43,7 +43,7 @@ rtree_create(void * fcmp, void * fdie) {
 // rtree_die - 后序删除树结点
 static void rtree_die(struct $rtree * root, node_f fdie) {
     struct $rtree * pre = nullptr;
-    struct stack s = stack_create();
+    struct stack s; stack_init(&s);
     stack_push(&s, root);
     do {
         struct $rtree * cur = stack_top(&s);

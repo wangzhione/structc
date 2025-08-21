@@ -14,7 +14,7 @@ void utf8_test(void) {
     printf("[%s] is utf8 = %d.\n", name, isutf8s(name));
 
     // utf8 -> gbk 
-    char * u8s = u8"你好吗, 😀";
+    unsigned char * u8s = u8"你好吗, 😀";
     printf("u8s -> %d\n", isutf8s(u8s));
 
     puts("success");

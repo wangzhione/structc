@@ -1,6 +1,6 @@
 ﻿#include <base.h>
 
-static atomic_int id = ATOMIC_VAR_INIT(1);
+static atomic_int id = 1;
 
 //
 // EXTERN_TEST  - 单元测试宏, 并打印执行时间
@@ -44,6 +44,6 @@ int main(int argc, char * argv[]) {
 //
 // make test 单元测试 show time 开始你的表演
 //
-void test(void) {
-    EXTERN_TEST(array_test);
+void test(...) {
+    EXTERN_TEST(json_test);
 }
