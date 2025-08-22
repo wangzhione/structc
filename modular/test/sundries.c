@@ -1,5 +1,7 @@
 ﻿#include "sundries.h"
 
+// 真实 email 协议判断比较麻烦, 请通过网络协议判断
+
 //
 // is_email - 判断是否是邮箱
 // mail     : email 串 
