@@ -175,12 +175,12 @@ static bool isutf8_local(unsigned char c, unsigned char * bytes, bool * ascii) {
 // return   : true 表示 utf8 编码
 //
 bool 
-isutf8s(const char * s) {
+isutf8s(void * s) {
     bool ascii = true;
     // bytes 表示编码字节数, utf8 [1, 6] 字节编码
     unsigned char bytes = 0;
-
-    for (unsigned char c; (c = *s); ++s)
+    unsigned char * str = (unsigned char *)s;
+    for (unsigned char c; (c = *str) != 0; ++str)
         if (!isutf8_local(c, &bytes, &ascii)) 
             return false;
 

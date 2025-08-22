@@ -25,7 +25,7 @@ extern void gbk2utf8(char d[], size_t n);
 // s        : 输入的串
 // return   : true 表示 utf8 编码
 //
-extern bool isutf8s(const char * s);
+extern bool isutf8s(void * s);
 
 //
 // isutf8 - check is utf8

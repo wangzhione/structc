@@ -11,6 +11,9 @@
 all: env
 	cd modular && $(MAKE)
 
+test: env
+	cd modular && $(MAKE) test
+
 env:
 	@echo "Operating System: $(shell uname -s)"            # 操作系统
 	@echo "CPU Architecture: $(shell uname -m)"            # CPU 架构
